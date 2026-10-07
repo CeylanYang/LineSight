@@ -47,8 +47,8 @@ Avoid describing planned work as completed. For group contributions, identify wh
 
 | Person | Practice completed | Concrete output | What changed / was learned | Evidence | Contribution statement ready? |
 |---|---|---|---|---|---|
-| Member 1 | TBD | TBD | TBD | TBD | No |
-| Member 2 | TBD | TBD | TBD | TBD | No |
+| chaoyang | TBD | TBD | TBD | TBD | No |
+| KrOik | TBD | TBD | TBD | TBD | No |
 | Member 3 | TBD | TBD | TBD | TBD | No |
 | Member 4 | TBD | TBD | TBD | TBD | No |
 | Member 5 | TBD | TBD | TBD | TBD | No |

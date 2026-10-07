@@ -4,6 +4,11 @@ Flutter mobile prototype for LineSight, a production-line inspection HMI. The ap
 
 ![LineSight running in the Android emulator](screenshots/android-home.png)
 
+## Contributors
+
+- [chaoyang](https://github.com/ChaoYANG)
+- [KrOik](https://github.com/KrOik)
+
 ## Project progress — Week 4
 
 | Workstream | Status | Deliverable / evidence |
