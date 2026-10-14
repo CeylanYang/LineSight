@@ -1,8 +1,37 @@
 # LineSight
 
-Flutter mobile prototype for LineSight, a production-line inspection HMI. The app currently has Home, Modules, PR inspection history, and Profile & Settings screens.
+**Workspace location:** this D: copy is preserved at 1.1.6. Continue development in `C:/Users/29668/LineSight-workspaces/startup-performance` (1.1.8).
 
-![LineSight running in the Android emulator](screenshots/android-home.png)
+LineSight is an offline Flutter workspace for production-line quality inspection. Version 1.1 adds local authentication, persistent inspection workflows, recipe configuration, quality statistics, and data management. Version 1.1.6 adds immutable CSV previews, streaming generation and verified native saving. Authenticated startup recovery preserves original data atomically. Complete streaming backups, portable timestamps, audit traceability and item-by-item restore/undo previews are included. The interface is in Simplified Chinese with light/dark glass surfaces and responsive phone/tablet layouts.
+
+## Local workspace — version 1.1
+
+- **Accounts:** first-run administrator setup, salted PBKDF2 password verification, recovery codes, password changes, account roles, disabled accounts, login throttling, sign-out, and background locking. No cloud account is required.
+- **Inspection:** configurable stations, start/pause, explicit simulated inspections, synthetic part previews, immutable original verdicts and recipe parameter snapshots, defect review with reasons, and audit history.
+- **Records:** keyword/station/date/verdict filters, sorting, pagination, bulk archive/restore, and CSV export of filtered or complete records.
+- **Recipes:** create/edit/copy/delete, configurable defect classes and thresholds, station changeovers with reasons, and protection for recipes currently in use.
+- **Insights:** date and station ranges, original and reviewed yield, daily volume, defect distribution, and chart-to-record drilldowns.
+- **Data:** SQLite persistence, validated LSB/JSON backups, restore preview, transactional restore, a local undo point, sample-data management, and storage diagnostics.
+- **Traceability:** record/station/recipe histories, searchable audit details, linked objects, before/after values, and original-account attribution for native export results after locking. [1.1.1 changes and compatibility](docs/CHANGELOG_1.1.1.md).
+- **Restore workspace:** backup metadata, added/changed/removed object lists, field comparisons, stale-preview protection, persistent restore points, undo previews and local backup-save receipts. [1.1.2 changes](docs/CHANGELOG_1.1.2.md). JSON import/export supports up to 20 MB without truncating history.
+- **Time:** UTC storage/export, local calendar filters and statistics, timezone-aware details, legacy-backup interpretation and preserved pre-upgrade originals. [1.1.3 changes](docs/CHANGELOG_1.1.3.md).
+- **Complete backups:** streaming LSB files with a 256 MiB format limit, preparation/read progress and cancellation, SHA-256 checks, Android destination readback, and chunked storage for large workspaces and undo points. Compatible JSON remains available up to 20 MiB. [1.1.4 changes and limits](docs/CHANGELOG_1.1.4.md).
+- **Startup recovery:** enabled-administrator verification, validated backup selection, explicit recovery preview, atomic original preservation and workspace replacement, recovery history, and byte-exact LSR diagnostic export. Local accounts and their credentials are retained. [1.1.5 behavior and limits](docs/CHANGELOG_1.1.5.md).
+- **Experience:** custom vector branding and synthetic workpieces, optional blur, dark mode, haptic feedback, reduced motion, readable empty/error states, and a built-in guide.
+
+On first launch, create an administrator and save the one-time-displayed recovery code. Optionally include 96 marked example inspections. Additional accounts are created in **我的 → 成员与权限**. Every cold start requires local login. All accounts on the device share the same business workspace.
+
+| Capability | Operator | Engineer | Administrator |
+|---|---|---|---|
+| View records, run simulations, start/pause stations | Yes | Yes | Yes |
+| Review, archive, configure recipes/stations, export | — | Yes | Yes |
+| Manage accounts, restore, clear sample data | — | — | Yes |
+
+Passwords are derived with PBKDF2-HMAC-SHA256 (210,000 iterations, random 24-byte salt), with computation off the UI thread. Business data is stored in the application's private SQLite database. LSB and JSON exports are unencrypted business backups and exclude account credentials. Android automatic OS backup is disabled. This is an application-level local login, not full disk encryption.
+
+Camera images and inference are explicitly simulated. The app has no real camera connection, cloud sync, MES integration, or cloud authentication. Uninstalling removes local accounts and data; export a business backup first. Recovery codes support password reset and administrator verification for startup recovery while the account remains readable; they do not restore an uninstalled database.
+
+![LineSight local workspace running in the Android emulator](screenshots/v1.1/dashboard.png)
 
 ## Contributors
 
@@ -25,7 +54,7 @@ Use the [weekly progress tracker](docs/PROJECT_PROGRESS.md) to update evidence, 
 
 ## Run on Android
 
-Requirements: Flutter 3.27 or newer and Android SDK. The Android runner is included.
+Requirements: Flutter with Dart 3.10 or newer and Android SDK. Development is verified against Flutter 3.44.4 / Dart 3.12.2. The Android runner is included.
 
 ```sh
 flutter pub get
@@ -33,12 +62,46 @@ flutter emulators
 flutter run -d <device-id>
 ```
 
-The app has no runtime package dependencies. Its current data is sample content for the prototype.
+Runtime packages provide SQLite persistence, password derivation, native file picking/saving, and Flutter's Chinese localization. No network service is required at runtime.
+
+## Checks
+
+```sh
+flutter analyze
+flutter test test
+flutter test integration_test/local_workflow_test.dart -d <android-device>
+flutter test integration_test/ui_journey_test.dart -d <android-device>
+flutter build apk --debug
+```
+
+Run device tests on a disposable emulator: they use uniquely named databases, but Flutter's device runner installs and removes the app package and can clear its data. Layout tests cover both themes, navigation, detail screens, and narrow/tablet/landscape onboarding. See [implementation and validation notes](docs/LOCAL_WORKSPACE.md).
+
+## Installable builds
+
+Latest: **1.1.8+10**. Packages, exact source and verification:
+`C:/Users/29668/LineSight-releases/1.1.8/README.md`.
+
+D: is full and retains the **1.1.6 source snapshot**. Active development:
+`C:/Users/29668/LineSight-workspaces/startup-performance/README.md`.
+
+1.1.8 passes 56 host and 9 Android scenarios, analysis and repeated release cold starts. Read-latency tradeoffs and an initial launch-wait timeout are documented in the release notes. Earlier packages are preserved.
 
 ## Repository layout
 
 ```text
-lib/main.dart                         Flutter app and screens
+lib/main.dart                         App bootstrap, auth gate, lifecycle lock, navigation
+lib/store.dart                        SQLite, local accounts, permissions, transactional operations
+lib/models.dart                       Data model, validation, example fixtures
+lib/time.dart                         Strict time parsing, UTC storage, local calendar boundaries
+lib/state_storage.dart                Transactional chunk storage and legacy-cell reads
+lib/recovery_storage.dart             Preserved originals and streaming LSR diagnostic export
+lib/stream_backup.dart                LSB streaming format, checksums, progress and cancellation
+lib/ui.dart                           Theme, glass panels, vector artwork, shared components
+lib/screens/                          Main screens and all secondary workflows
+lib/files.dart                        Native CSV / JSON / LSB / LSR file workflows
+tool/read_recovery_archive.py          Verify or extract preserved LSR originals offline
+test/                                 Data invariants and responsive layout tests
+integration_test/                     Real SQLite and visible Android workflow tests
 design/svg-redraw/                    Editable SVG screen redraws
 screenshots/android-home.png          Emulator screenshot
 deliverables/week4/                   Week 4 technology-stack report

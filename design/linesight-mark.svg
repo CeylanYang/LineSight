@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="LineSight">
+  <defs><linearGradient id="glass" x2="1" y2="1"><stop stop-color="#5699ff"/><stop offset="1" stop-color="#2862e6"/></linearGradient></defs>
+  <rect width="128" height="128" rx="36" fill="url(#glass)"/>
+  <g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M49 33H32v18m47-18h17v18M32 79v17h17m30 0h17V79"/>
+    <circle cx="64" cy="64" r="15"/>
+    <path d="M22 64h84" stroke-width="3"/>
+  </g>
+</svg>

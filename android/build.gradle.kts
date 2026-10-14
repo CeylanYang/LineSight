@@ -1,9 +1,27 @@
 allprojects {
+    buildscript {
+        repositories {
+            maven { url = uri("https://maven.aliyun.com/repository/google") }
+            maven { url = uri("https://maven.aliyun.com/repository/central") }
+            google()
+            mavenCentral()
+        }
+    }
     repositories {
         maven { url = uri("https://maven.aliyun.com/repository/google") }
         maven { url = uri("https://maven.aliyun.com/repository/central") }
         google()
         mavenCentral()
+    }
+    if (System.getenv("LINESIGHT_DIRECT_NETWORK") == "1") {
+        afterEvaluate {
+            repositories.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>().forEach { repository ->
+                when (repository.url.host) {
+                    "dl.google.com", "maven.google.com" -> repository.setUrl("https://maven.aliyun.com/repository/google")
+                    "repo.maven.apache.org", "repo1.maven.org" -> repository.setUrl("https://maven.aliyun.com/repository/central")
+                }
+            }
+        }
     }
 }
 

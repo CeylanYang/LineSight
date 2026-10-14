@@ -1,0 +1,5 @@
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/linesight_blue"/>
+    <foreground android:drawable="@drawable/linesight_foreground"/>
+    <monochrome android:drawable="@drawable/linesight_foreground"/>
+</adaptive-icon>
