@@ -85,6 +85,39 @@ class Station {
   };
 }
 
+/// A production handoff that connects a print job to its human quality decision.
+class ProductionJob {
+  String id, partName, printer, quantity, status, note;
+  DateTime createdAt;
+  ProductionJob({
+    required this.id,
+    required this.partName,
+    required this.printer,
+    required this.quantity,
+    required this.status,
+    required this.note,
+    required this.createdAt,
+  });
+  factory ProductionJob.fromJson(Json j) => ProductionJob(
+    id: j['id'],
+    partName: j['partName'],
+    printer: j['printer'],
+    quantity: j['quantity'],
+    status: j['status'],
+    note: j['note'] ?? '',
+    createdAt: parseInstant(j['createdAt']),
+  );
+  Json toJson() => {
+    'id': id,
+    'partName': partName,
+    'printer': printer,
+    'quantity': quantity,
+    'status': status,
+    'note': note,
+    'createdAt': instantJson(createdAt),
+  };
+}
+
 class Inspection {
   String id, stationId, recipeName, serial, defect, note, operatorName;
   DateTime at;
@@ -164,6 +197,7 @@ class AuditTarget {
     'record' => '检测记录',
     'station' => '工位',
     'recipe' => '配方',
+    'job' => '生产任务',
     'account' => '本机账户',
     _ => '关联对象',
   };
@@ -247,12 +281,14 @@ class Workspace {
   List<Station> stations;
   List<Inspection> inspections;
   List<AuditEntry> audits;
+  List<ProductionJob> jobs;
   Workspace({
     required this.recipes,
     required this.stations,
     required this.inspections,
     required this.audits,
-  });
+    List<ProductionJob>? jobs,
+  }) : jobs = jobs ?? <ProductionJob>[];
   factory Workspace.fromJson(Json j) => Workspace(
     recipes: (j['recipes'] as List)
         .map((x) => Recipe.fromJson(Json.from(x)))
@@ -266,12 +302,16 @@ class Workspace {
     audits: (j['audits'] as List)
         .map((x) => AuditEntry.fromJson(Json.from(x)))
         .toList(),
+    jobs: (j['jobs'] as List? ?? [])
+        .map((x) => ProductionJob.fromJson(Json.from(x)))
+        .toList(),
   );
   Json toJson() => {
     'recipes': recipes.map((x) => x.toJson()).toList(),
     'stations': stations.map((x) => x.toJson()).toList(),
     'inspections': inspections.map((x) => x.toJson()).toList(),
     'audits': audits.map((x) => x.toJson()).toList(),
+    'jobs': jobs.map((x) => x.toJson()).toList(),
   };
   void validate() {
     if (recipes.isEmpty ||
@@ -279,7 +319,8 @@ class Workspace {
         stations.isEmpty ||
         stations.length > 100 ||
         inspections.length > 100000 ||
-        audits.length > 100000) {
+        audits.length > 100000 ||
+        jobs.length > 10000) {
       throw const FormatException('数据规模超出限制，或缺少配方与工位');
     }
     void unique(Iterable<String> ids) {
@@ -300,6 +341,26 @@ class Workspace {
     unique(stations.map((x) => x.id));
     unique(inspections.map((x) => x.id));
     unique(audits.map((x) => x.id));
+    unique(jobs.map((x) => x.id));
+    const jobStatuses = {
+      'queued',
+      'printing',
+      'inspection',
+      'exception',
+      'closed',
+    };
+    for (final job in jobs) {
+      validText(job.partName, 100);
+      validText(job.printer, 40);
+      final quantity = int.tryParse(job.quantity);
+      if (quantity == null ||
+          quantity < 1 ||
+          quantity > 10000 ||
+          !jobStatuses.contains(job.status) ||
+          job.note.length > 500) {
+        throw const FormatException('生产任务字段无效');
+      }
+    }
     for (final r in recipes) {
       validText(r.name, 80);
       validText(r.version, 30);
@@ -378,7 +439,13 @@ class Workspace {
       for (final t in a.targets) {
         validText(t.id, 100);
         validText(t.label, 200);
-        if (!['record', 'station', 'recipe', 'account'].contains(t.type) ||
+        if (![
+              'record',
+              'station',
+              'recipe',
+              'account',
+              'job',
+            ].contains(t.type) ||
             !targetKeys.add('${t.type}:${t.id}')) {
           throw const FormatException('日志关联类型无效或关联对象重复');
         }

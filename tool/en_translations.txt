@@ -932,3 +932,29 @@
 931|SYNTHETIC · Example image
 932|Defect detected
 933|Surface intact
+934|Production jobs
+935|Keep print jobs, quality decisions, and exception handling in one workflow.
+936|Local workspace · {0} open
+937|New job
+938|No production jobs yet
+939|Create a print job and track printing, inspection, and exception resolution.
+940|Create production job
+941|Part name
+942|Printer profile
+943|Quantity
+944|Handoff note
+945|Enter a part name
+946|Quantity must be greater than 0
+947|Create job
+948|Queued
+949|Printing
+950|Awaiting inspection
+951|Exception open
+952|Closed
+953|{0} units
+954|Start printing
+955|Send to inspection
+956|Pass and close
+957|Flag exception
+958|Return to inspection
+959|Resolve and close

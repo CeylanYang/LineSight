@@ -6,6 +6,7 @@ import '../ui.dart';
 import 'records.dart';
 import 'modules.dart';
 import 'statistics.dart';
+import 'production.dart';
 
 class DashboardPage extends StatelessWidget {
   final VoidCallback onRecords;
@@ -161,6 +162,24 @@ class DashboardPage extends StatelessWidget {
               color: amber,
             ),
           ],
+        ),
+        const SizedBox(height: 14),
+        GlassPanel(
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 7,
+            ),
+            leading: const Icon(
+              Icons.precision_manufacturing_outlined,
+              color: blue,
+            ),
+            title: Text(tr(context, "生产任务")),
+            subtitle: Text(tr(context, "把打印任务、质检决定和异常处理放在同一条流程里。")),
+            trailing: const Icon(Icons.arrow_forward_rounded, size: 20),
+            onTap: () => openPage(context, const ProductionPage()),
+          ),
         ),
         if (s.pending.isNotEmpty) ...[
           const SizedBox(height: 14),

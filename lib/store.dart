@@ -874,6 +874,48 @@ class AppStore extends ChangeNotifier {
     );
   }
 
+  Future<void> createProductionJob(ProductionJob job) => _commit(
+    '创建生产任务',
+    '${job.partName} · ${job.quantity} 件 · ${job.printer}',
+    (w) {
+      w.jobs.add(job);
+    },
+    targets: [AuditTarget('job', job.id, job.partName)],
+  );
+
+  Future<void> updateProductionJob(
+    String id, {
+    required String status,
+    String? note,
+  }) {
+    final existing = data.jobs.where((job) => job.id == id).firstOrNull;
+    if (existing == null) throw StateError('生产任务不存在');
+    final previousStatus = existing.status;
+    return _commit(
+      '更新生产任务',
+      '${existing.partName} · $previousStatus → $status',
+      (w) {
+        final index = w.jobs.indexWhere((job) => job.id == id);
+        if (index < 0) throw StateError('生产任务不存在');
+        final job = w.jobs[index];
+        const transitions = {
+          'queued': {'printing'},
+          'printing': {'inspection'},
+          'inspection': {'closed', 'exception'},
+          'exception': {'inspection', 'closed'},
+          'closed': <String>{},
+        };
+        if (status != job.status &&
+            !(transitions[job.status]?.contains(status) ?? false)) {
+          throw StateError('当前任务状态不能进行此操作');
+        }
+        job.status = status;
+        if (note != null) job.note = note;
+      },
+      targets: [AuditTarget('job', id, existing.partName)],
+    );
+  }
+
   Future<void> deleteRecipe(String id) => _commit(
     '删除配方',
     data.recipes.firstWhere((r) => r.id == id).label,
