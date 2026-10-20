@@ -1,0 +1,33 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+/android/.gradle/
+/android/local.properties
+/android/app/build/
+/android/build/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration, keys, and generated runtime data
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+backend/shared/
+backend/media/
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

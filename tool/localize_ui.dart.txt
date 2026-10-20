@@ -1,0 +1,82 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
+import 'package:analyzer/dart/ast/token.dart';
+
+class Edit {
+  final int start, end;
+  final String value;
+  Edit(this.start, this.end, this.value);
+}
+
+class Localize extends RecursiveAstVisitor<void> {
+  final String source;
+  final List<Edit> edits = [];
+  final Set<int> constants = {};
+  Localize(this.source);
+  String segment(int start, int end) {
+    var value = source.substring(start, end);
+    final inside = edits.where((e) => e.start >= start && e.end <= end).toList()..sort((a,b)=>b.start.compareTo(a.start));
+    for (final e in inside) { value = value.replaceRange(e.start-start, e.end-start, e.value); edits.remove(e); }
+    return value;
+  }
+  void relax(AstNode node) {
+    for (AstNode? p = node.parent; p != null; p = p.parent) {
+      Token? token;
+      if (p is InstanceCreationExpression && p.keyword?.lexeme == 'const') token=p.keyword;
+      if (p is TypedLiteral && p.constKeyword != null) token=p.constKeyword;
+      if (p is VariableDeclarationList && p.keyword?.lexeme == 'const') token=p.keyword;
+      if (token != null && constants.add(token.offset)) {
+        edits.add(Edit(token.offset, token.end, p is VariableDeclarationList ? 'final' : ''));
+      }
+    }
+  }
+  bool skip(StringLiteral node) {
+    for (AstNode? p=node; p!=null; p=p.parent) {
+      if (p is DefaultFormalParameter || p is ConstructorDeclaration || p is FieldDeclaration) return true;
+      if (p is ThrowExpression) return true;
+      if (p is ConstantPattern) return true;
+    }
+    final parent=node.parent;
+    if (parent is MapLiteralEntry && identical(parent.key,node)) return true;
+    if (parent is BinaryExpression && ['==','!='].contains(parent.operator.lexeme)) return true;
+    // Defect values are canonical business data; translate only their labels.
+    if (parent is SetOrMapLiteral && parent.elements.any((e)=>e.toSource()=='...defects')) return true;
+    return false;
+  }
+  void literal(StringLiteral node) {
+    if (skip(node)) return;
+    if (node.parent is AdjacentStrings) return;
+    if (node is StringInterpolation && !node.elements.whereType<InterpolationString>().any((e) => RegExp(r'[\u3400-\u9fff]').hasMatch(e.value))) return;
+    String key;
+    final args=<String>[];
+    if (node is SimpleStringLiteral) { key=node.value; }
+    else if (node is StringInterpolation) {
+      key='';
+      for (final e in node.elements) {
+        if(e is InterpolationString) key+=e.value;
+        if(e is InterpolationExpression) { key+='{${args.length}}'; args.add(segment(e.expression.offset,e.expression.end)); }
+      }
+    } else { return; }
+    if (!RegExp(r'[\u3400-\u9fff]').hasMatch(key)) return;
+    relax(node);
+    edits.add(Edit(node.offset,node.end,'tr(context, ${jsonEncode(key).replaceAll(r"$",r"\$")}${args.isEmpty ? '' : ', [${args.join(', ')}]'})'));
+  }
+  @override
+  void visitSimpleStringLiteral(SimpleStringLiteral node) { super.visitSimpleStringLiteral(node); literal(node); }
+  @override
+  void visitStringInterpolation(StringInterpolation node) { super.visitStringInterpolation(node); literal(node); }
+}
+
+void main() {
+  final files = [File('lib/main.dart'), File('lib/ui.dart'), ...Directory('lib/screens').listSync().whereType<File>().where((f)=>f.path.endsWith('.dart'))];
+  for (final f in files) {
+    final s=f.readAsStringSync();
+    final v=Localize(s);
+    parseString(content:s).unit.accept(v);
+    final value=v.segment(0,s.length);
+    if(value!=s) f.writeAsStringSync("import '${f.path.contains('screens') ? '../' : ''}l10n.dart';\n$value");
+  }
+}

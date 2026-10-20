@@ -1,0 +1,8571 @@
+[
+  {
+    "file": "lib/backup.dart",
+    "offset": 375,
+    "length": 10,
+    "zh": "本机时区历史规则",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 395,
+    "length": 38,
+    "zh": "固定 {0}",
+    "args": [
+      "utcOffsetLabel(offsetMinutes!)"
+    ]
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 1571,
+    "length": 5,
+    "zh": "待选择",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 2233,
+    "length": 43,
+    "zh": "兼容 JSON 超过 20 MB，请选择完整备份（LSB），可保留全部记录与日志。",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 2568,
+    "length": 14,
+    "zh": "备份不能超过 20 MB",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 2728,
+    "length": 13,
+    "zh": "不支持的备份格式或版本",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 4168,
+    "length": 95,
+    "zh": "{0}；选择时 {1}",
+    "args": [
+      "DateTime.now().timeZoneName",
+      "utcOffsetLabel(DateTime.now().timeZoneOffset.inMinutes)"
+    ]
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 4610,
+    "length": 16,
+    "zh": "备份内容不完整或字段格式无效",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 5024,
+    "length": 4,
+    "zh": "新增",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 5064,
+    "length": 4,
+    "zh": "替换",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 5104,
+    "length": 4,
+    "zh": "移除",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 6601,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 6776,
+    "length": 4,
+    "zh": "配方",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 6939,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 8354,
+    "length": 7,
+    "zh": "旧版还原点",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 11009,
+    "length": 9,
+    "zh": "旧版原件不存在",
+    "args": []
+  },
+  {
+    "file": "lib/backup.dart",
+    "offset": 11201,
+    "length": 27,
+    "zh": "旧版原件超过当前支持的 20 MB，请保留本机数据",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 2513,
+    "length": 8,
+    "zh": "LSB 备份",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 4190,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 4223,
+    "length": 21,
+    "zh": "恢复编号 {0}",
+    "args": [
+      "snapshot.id"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 5588,
+    "length": 8,
+    "zh": "保存导出文件",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 5837,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 6183,
+    "length": 49,
+    "zh": "{0} · 快照 {1}",
+    "args": [
+      "scope",
+      "instantJson(snapshot.capturedAt)"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 7974,
+    "length": 9,
+    "zh": "JSON 备份",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 8459,
+    "length": 14,
+    "zh": "备份不能超过 20 MB",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 9310,
+    "length": 13,
+    "zh": "旧版时间原件（工作区）",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 9326,
+    "length": 13,
+    "zh": "旧版时间原件（还原点）",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10530,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10551,
+    "length": 26,
+    "zh": "恢复前原件已保存并回读校验，可用于排查原始数据。",
+    "args": []
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10618,
+    "length": 28,
+    "zh": "CSV 已保存并回读校验，共 {0} 条记录。",
+    "args": [
+      "count"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10660,
+    "length": 25,
+    "zh": "{0} 已保存，共 {1} 条记录。",
+    "args": [
+      "kind",
+      "count"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10719,
+    "length": 21,
+    "zh": "已取消 {0} 导出，未保存文件。",
+    "args": [
+      "kind"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 10771,
+    "length": 27,
+    "zh": "{0} 未确认保存，请检查文件位置或存储空间。",
+    "args": [
+      "kind"
+    ]
+  },
+  {
+    "file": "lib/files.dart",
+    "offset": 11020,
+    "length": 22,
+    "zh": " 操作日志未能写入，请检查本机存储空间。",
+    "args": []
+  },
+  {
+    "file": "lib/local_state.dart",
+    "offset": 1271,
+    "length": 9,
+    "zh": "本机工作区缺失",
+    "args": []
+  },
+  {
+    "file": "lib/main.dart",
+    "offset": 4378,
+    "length": 5,
+    "zh": "工作台",
+    "args": []
+  },
+  {
+    "file": "lib/main.dart",
+    "offset": 4385,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/main.dart",
+    "offset": 4393,
+    "length": 6,
+    "zh": "配方中心",
+    "args": []
+  },
+  {
+    "file": "lib/main.dart",
+    "offset": 4401,
+    "length": 4,
+    "zh": "我的",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 304,
+    "length": 5,
+    "zh": "管理员",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 328,
+    "length": 7,
+    "zh": "质量工程师",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 345,
+    "length": 5,
+    "zh": "操作员",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 4515,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 4541,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 4564,
+    "length": 4,
+    "zh": "配方",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 4588,
+    "length": 6,
+    "zh": "本机账户",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 4606,
+    "length": 6,
+    "zh": "关联对象",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 6337,
+    "length": 6,
+    "zh": "质量复核",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 6409,
+    "length": 6,
+    "zh": "模拟检测",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 8316,
+    "length": 19,
+    "zh": "数据规模超出限制，或缺少配方与工位",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 8561,
+    "length": 13,
+    "zh": "数据 ID 重复或无效",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 8734,
+    "length": 11,
+    "zh": "字段内容为空或过长",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 9423,
+    "length": 8,
+    "zh": "配方参数无效",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 9706,
+    "length": 13,
+    "zh": "工位引用了不存在的配方",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 10370,
+    "length": 13,
+    "zh": "检测记录的配方快照无效",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 10861,
+    "length": 13,
+    "zh": "检测记录格式或关联无效",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 11207,
+    "length": 10,
+    "zh": "日志变更字段过多",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 11476,
+    "length": 15,
+    "zh": "日志变更字段重复或内容过长",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 11591,
+    "length": 10,
+    "zh": "日志关联对象过多",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 11921,
+    "length": 17,
+    "zh": "日志关联类型无效或关联对象重复",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12237,
+    "length": 10,
+    "zh": "铝合金 · 支架",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12320,
+    "length": 6,
+    "zh": "表面划痕",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12328,
+    "length": 6,
+    "zh": "边缘缺口",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12336,
+    "length": 6,
+    "zh": "孔位偏移",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12461,
+    "length": 11,
+    "zh": "PLA · 结构件",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12544,
+    "length": 6,
+    "zh": "层间裂纹",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12552,
+    "length": 6,
+    "zh": "表面划痕",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12677,
+    "length": 10,
+    "zh": "不锈钢 · 叶轮",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12760,
+    "length": 6,
+    "zh": "表面划痕",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 12768,
+    "length": 6,
+    "zh": "边缘缺口",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 13787,
+    "length": 7,
+    "zh": "示例操作员",
+    "args": []
+  },
+  {
+    "file": "lib/models.dart",
+    "offset": 13895,
+    "length": 7,
+    "zh": "示例工程师",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 46,
+    "length": 7,
+    "zh": "记录 ID",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 57,
+    "length": 5,
+    "zh": "序列号",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 66,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 74,
+    "length": 11,
+    "zh": "检测时间（UTC）",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 89,
+    "length": 6,
+    "zh": "配方快照",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 99,
+    "length": 6,
+    "zh": "原始结果",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 109,
+    "length": 4,
+    "zh": "缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 117,
+    "length": 5,
+    "zh": "置信度",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 126,
+    "length": 6,
+    "zh": "复核结果",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 136,
+    "length": 5,
+    "zh": "复核人",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 145,
+    "length": 11,
+    "zh": "复核时间（UTC）",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 160,
+    "length": 4,
+    "zh": "依据",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 168,
+    "length": 5,
+    "zh": "操作员",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 177,
+    "length": 4,
+    "zh": "示例",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 185,
+    "length": 5,
+    "zh": "已归档",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 1379,
+    "length": 12,
+    "zh": "记录关联的工位不存在",
+    "args": []
+  },
+  {
+    "file": "lib/record_csv.dart",
+    "offset": 1591,
+    "length": 18,
+    "zh": "导出记录超出限制或包含重复 ID",
+    "args": []
+  },
+  {
+    "file": "lib/record_review.dart",
+    "offset": 841,
+    "length": 17,
+    "zh": "请填写至少 3 个字的复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/record_review.dart",
+    "offset": 894,
+    "length": 19,
+    "zh": "复核依据不能超过 2000 个字符",
+    "args": []
+  },
+  {
+    "file": "lib/recovery_storage.dart",
+    "offset": 4015,
+    "length": 10,
+    "zh": "恢复前原件不存在",
+    "args": []
+  },
+  {
+    "file": "lib/recovery_storage.dart",
+    "offset": 4642,
+    "length": 25,
+    "zh": "恢复前原件超过 256 MB，请保留本机数据。",
+    "args": []
+  },
+  {
+    "file": "lib/recovery_storage.dart",
+    "offset": 6291,
+    "length": 12,
+    "zh": "正在准备恢复前原件…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 542,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 955,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 1050,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 1256,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 1885,
+    "length": 6,
+    "zh": "操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 1894,
+    "length": 23,
+    "zh": "{0}轨迹",
+    "args": [
+      "target.typeLabel"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 2039,
+    "length": 12,
+    "zh": "每一步，都留有依据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 2106,
+    "length": 21,
+    "zh": "查看操作详情、关联对象和文件导出结果。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 2145,
+    "length": 22,
+    "zh": "按对象 ID 关联，名称修改后仍可追溯。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 2403,
+    "length": 16,
+    "zh": "搜索人员、动作、名称或 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 2551,
+    "length": 6,
+    "zh": "清空搜索",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3024,
+    "length": 6,
+    "zh": "操作类型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3477,
+    "length": 6,
+    "zh": "全部时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3486,
+    "length": 8,
+    "zh": "近 {0} 天",
+    "args": [
+      "d"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3734,
+    "length": 20,
+    "zh": "{0} 条操作",
+    "args": [
+      "rows.length"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3819,
+    "length": 9,
+    "zh": "暂无匹配的操作",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 3840,
+    "length": 16,
+    "zh": "调整搜索词、时间或操作类型。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4237,
+    "length": 35,
+    "zh": "加载更多（剩余 {0} 条）",
+    "args": [
+      "rows.length - limit"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4358,
+    "length": 36,
+    "zh": "旧版日志保留原文；未记录关联 ID 的批量操作无法分配到某一条记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4576,
+    "length": 6,
+    "zh": "质量复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4616,
+    "length": 6,
+    "zh": "归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4653,
+    "length": 6,
+    "zh": "恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4692,
+    "length": 6,
+    "zh": "导出数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4734,
+    "length": 6,
+    "zh": "开始导出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4777,
+    "length": 6,
+    "zh": "取消导出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4787,
+    "length": 7,
+    "zh": "导出未完成",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 4836,
+    "length": 6,
+    "zh": "配方换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 6778,
+    "length": 31,
+    "zh": "{0} 个关联对象",
+    "args": [
+      "entry.targets.length"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 7529,
+    "length": 6,
+    "zh": "操作详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 7575,
+    "length": 11,
+    "zh": "日志不在当前工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 7598,
+    "length": 15,
+    "zh": "返回操作日志查看现有记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 7720,
+    "length": 7,
+    "zh": "文件字节数",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 7938,
+    "length": 6,
+    "zh": "导出数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 8705,
+    "length": 6,
+    "zh": "操作详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 9061,
+    "length": 6,
+    "zh": "文件校验",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 9173,
+    "length": 6,
+    "zh": "文件大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 9409,
+    "length": 6,
+    "zh": "变更前后",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 9966,
+    "length": 4,
+    "zh": "之前",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10019,
+    "length": 5,
+    "zh": "（空）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10143,
+    "length": 4,
+    "zh": "之后",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10172,
+    "length": 5,
+    "zh": "（空）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10327,
+    "length": 6,
+    "zh": "事件信息",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10490,
+    "length": 11,
+    "zh": "操作人（当时名称）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10536,
+    "length": 6,
+    "zh": "操作时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10665,
+    "length": 7,
+    "zh": "日志 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 10938,
+    "length": 8,
+    "zh": "操作人 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 11246,
+    "length": 9,
+    "zh": "导出操作 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 11534,
+    "length": 7,
+    "zh": "同一次导出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 11658,
+    "length": 6,
+    "zh": "开始导出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 11688,
+    "length": 41,
+    "zh": "尚无完成结果。文件选择器可能仍在等待；若应用中途退出，无法确认文件是否已保存。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 11753,
+    "length": 19,
+    "zh": "此工作区未包含该次导出的其他日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 12094,
+    "length": 28,
+    "zh": "关联对象 · {0}",
+    "args": [
+      "a.targets.length"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 12168,
+    "length": 24,
+    "zh": "此操作没有单独关联对象，详情以日志原文为准。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 12271,
+    "length": 39,
+    "zh": "显示操作发生时的名称；点击对象查看当前数据。已移除的对象仍保留历史 ID。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 12616,
+    "length": 16,
+    "zh": "在关联对象中搜索名称或 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 12986,
+    "length": 8,
+    "zh": "暂无匹配对象",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 13006,
+    "length": 13,
+    "zh": "尝试其他名称或 ID。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 13178,
+    "length": 38,
+    "zh": "加载更多（剩余 {0} 个）",
+    "args": [
+      "targets.length - limit"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 14081,
+    "length": 10,
+    "zh": " · 当前已移除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 14775,
+    "length": 23,
+    "zh": "处理轨迹 · {0}",
+    "args": [
+      "rows.length"
+    ]
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 14857,
+    "length": 22,
+    "zh": "暂无关联操作。历史示例可能没有生成日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/audit.dart",
+    "offset": 15415,
+    "length": 8,
+    "zh": "查看完整轨迹",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 2339,
+    "length": 15,
+    "zh": "让每一次检测，都有迹可循。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 2873,
+    "length": 6,
+    "zh": "本机存储",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 2935,
+    "length": 6,
+    "zh": "离线可用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 2983,
+    "length": 6,
+    "zh": "角色权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 4360,
+    "length": 8,
+    "zh": "找回本机账户",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 4453,
+    "length": 11,
+    "zh": "准备好，看见细节。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 4504,
+    "length": 9,
+    "zh": "欢迎回到工作台",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 4880,
+    "length": 22,
+    "zh": "使用创建账户时保存的恢复码，设置新密码。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 4987,
+    "length": 23,
+    "zh": "创建此设备的管理员账户，开始管理你的产线。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 5050,
+    "length": 18,
+    "zh": "登录本机账户，继续你的质量工作。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 6438,
+    "length": 5,
+    "zh": "用户名",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 6567,
+    "length": 22,
+    "zh": "3–32 位字母、数字、点、横线或下划线",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 7106,
+    "length": 6,
+    "zh": "显示名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 7624,
+    "length": 7,
+    "zh": "账户恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 8477,
+    "length": 14,
+    "zh": "设置密码（至少 8 位）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 8533,
+    "length": 4,
+    "zh": "密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 8732,
+    "length": 6,
+    "zh": "显示密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 8741,
+    "length": 6,
+    "zh": "隐藏密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 9657,
+    "length": 8,
+    "zh": "再次输入密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 10298,
+    "length": 10,
+    "zh": "加入示例检测数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 10367,
+    "length": 18,
+    "zh": "可体验统计与复核，之后可一键清理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 10849,
+    "length": 6,
+    "zh": "重设密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 10944,
+    "length": 9,
+    "zh": "创建本地工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 10995,
+    "length": 7,
+    "zh": "登录工作台",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 11324,
+    "length": 11,
+    "zh": "两次密码输入不一致",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 12001,
+    "length": 13,
+    "zh": "密码已更新，请重新登录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 14367,
+    "length": 6,
+    "zh": "返回登录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 14376,
+    "length": 12,
+    "zh": "忘记密码？使用恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 15299,
+    "length": 37,
+    "zh": "账户与业务数据保存在此设备。首次创建者为管理员，后续成员由管理员添加。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 16867,
+    "length": 9,
+    "zh": "保存账户恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 17062,
+    "length": 34,
+    "zh": "这是密码丢失后恢复账户的凭据，仅在此显示一次。请存放在安全位置。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 17585,
+    "length": 8,
+    "zh": "恢复码已复制",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 17708,
+    "length": 7,
+    "zh": "复制恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 17948,
+    "length": 9,
+    "zh": "我已保存恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/auth.dart",
+    "offset": 18155,
+    "length": 4,
+    "zh": "继续",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 1400,
+    "length": 19,
+    "zh": "备份未完成，请检查存储空间后重试。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 1724,
+    "length": 8,
+    "zh": "保存业务备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 1836,
+    "length": 12,
+    "zh": "完整保存，随时接续。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 1871,
+    "length": 22,
+    "zh": "包含归档记录、配方、工位及全部操作日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2002,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2010,
+    "length": 32,
+    "zh": "{0} 条",
+    "args": [
+      "s.data.inspections.length"
+    ]
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2068,
+    "length": 6,
+    "zh": "操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2076,
+    "length": 27,
+    "zh": "{0} 条",
+    "args": [
+      "s.data.audits.length"
+    ]
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2147,
+    "length": 9,
+    "zh": "工位 / 配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2321,
+    "length": 6,
+    "zh": "备份格式",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2689,
+    "length": 10,
+    "zh": "完整备份 LSB",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2740,
+    "length": 16,
+    "zh": "推荐 · 最大 256 MB",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2911,
+    "length": 9,
+    "zh": "兼容 JSON",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 2961,
+    "length": 17,
+    "zh": "旧版应用 · 最大 20 MB",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 3166,
+    "length": 52,
+    "zh": "适合交给旧版 LineSight，最大 20 MB。超过限制时可切换为完整备份，无需清理或删减历史。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 3238,
+    "length": 73,
+    "zh": "推荐用于日常备份，最大 256 MB。保存后会重新读取目标文件并校验完整性，恢复时也会检查。需要 LineSight 1.1.4 或更新版本。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 3458,
+    "length": 72,
+    "zh": "保存开始备份时的数据，期间的变更需另行备份。不包含本机账户、密码、恢复码和升级原件。文件未加密，请选择妥善保存的位置。恢复前可查看逐项差异。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 4284,
+    "length": 12,
+    "zh": "等待保存并回读校验…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 4299,
+    "length": 9,
+    "zh": "正在准备文件…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 4613,
+    "length": 6,
+    "zh": "取消准备",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 4724,
+    "length": 11,
+    "zh": "保存兼容 JSON",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 4738,
+    "length": 8,
+    "zh": "保存完整备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 7869,
+    "length": 18,
+    "zh": "无法读取备份，请检查文件后重试。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8006,
+    "length": 6,
+    "zh": "检查备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8102,
+    "length": 10,
+    "zh": "先检查，再恢复。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8214,
+    "length": 9,
+    "zh": "备份未通过检查",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8235,
+    "length": 20,
+    "zh": "{0} 当前业务数据尚未修改。",
+    "args": [
+      "error"
+    ]
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8401,
+    "length": 10,
+    "zh": "返回选择其他文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8675,
+    "length": 9,
+    "zh": "正在读取备份…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 8997,
+    "length": 27,
+    "zh": "检查通过后会显示恢复预览。此步骤不会写入业务数据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/backup_transfer.dart",
+    "offset": 9303,
+    "length": 6,
+    "zh": "取消读取",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 1403,
+    "length": 12,
+    "zh": "导出未完成，请重试。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 1785,
+    "length": 8,
+    "zh": "导出检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 1890,
+    "length": 10,
+    "zh": "把记录带到表格。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 1922,
+    "length": 21,
+    "zh": "先确认范围，保存后自动检查文件完整性。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2047,
+    "length": 6,
+    "zh": "导出范围",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2092,
+    "length": 7,
+    "zh": "筛选与顺序",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2146,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2154,
+    "length": 21,
+    "zh": "{0} 条",
+    "args": [
+      "records.length"
+    ]
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2200,
+    "length": 6,
+    "zh": "其中归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2208,
+    "length": 13,
+    "zh": "{0} 条",
+    "args": [
+      "archived"
+    ]
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2246,
+    "length": 9,
+    "zh": "示例 / 模拟",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2257,
+    "length": 44,
+    "zh": "{0} 条",
+    "args": [
+      "records.where((r) => r.sample).length"
+    ]
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2326,
+    "length": 6,
+    "zh": "快照时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2488,
+    "length": 64,
+    "zh": "保存打开此页时的记录、工位名称和排列顺序。之后的复核、归档或新增记录不会改变本次内容；需要最新数据时，请返回后重新打开导出。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2635,
+    "length": 8,
+    "zh": "表格包含什么",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2707,
+    "length": 149,
+    "zh": "15 列：记录 ID、序列号、工位、检测时间、配方快照名称、原始结果、缺陷、置信度、复核结果、复核人、复核时间、依据、操作员、示例标记和归档标记。\n\n时间统一使用 UTC，末尾带 Z。UTF-8 编码兼容中文；可能被表格软件当作公式的文本会加单引号保护。CSV 用于分析，不能替代业务备份。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 2993,
+    "length": 9,
+    "zh": "前 3 条预览",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 3397,
+    "length": 55,
+    "zh": "生成文件时可取消。生成后选择保存位置，保存完成会回读校验。文件上限 256 MB，内容未加密，请妥善保管。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 4186,
+    "length": 12,
+    "zh": "等待保存并回读校验…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 4201,
+    "length": 9,
+    "zh": "正在准备导出…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 4461,
+    "length": 6,
+    "zh": "取消准备",
+    "args": []
+  },
+  {
+    "file": "lib/screens/csv_export.dart",
+    "offset": 4541,
+    "length": 8,
+    "zh": "保存 CSV",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 1149,
+    "length": 8,
+    "zh": "上次文件操作",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 1356,
+    "length": 10,
+    "zh": "关闭文件操作提示",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 1851,
+    "length": 8,
+    "zh": "查看操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 2088,
+    "length": 7,
+    "zh": "质量工作台",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 2193,
+    "length": 5,
+    "zh": "上午好",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 2255,
+    "length": 5,
+    "zh": "下午好",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 2282,
+    "length": 5,
+    "zh": "晚上好",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 2393,
+    "length": 7,
+    "zh": "待复核异常",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 3081,
+    "length": 13,
+    "zh": "模拟产线 · 示例环境",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 3517,
+    "length": 58,
+    "zh": "{0} 个工位运行中",
+    "args": [
+      "s.data.stations.where((x) => x.running).length"
+    ]
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 3798,
+    "length": 31,
+    "zh": "本机记录，实时追溯。\n从一次检测开始，建立完整质量档案。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 4587,
+    "length": 7,
+    "zh": "进入检测台",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 4842,
+    "length": 6,
+    "zh": "质量洞察",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 5104,
+    "length": 6,
+    "zh": "今日检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 5260,
+    "length": 7,
+    "zh": "原始合格率",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 5539,
+    "length": 7,
+    "zh": "待复核异常",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 6130,
+    "length": 29,
+    "zh": "{0} 条异常等待确认",
+    "args": [
+      "s.pending.length"
+    ]
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 6198,
+    "length": 15,
+    "zh": "查看缺陷证据并完成质量复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 6431,
+    "length": 6,
+    "zh": "产线工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 6451,
+    "length": 7,
+    "zh": "本机工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 8481,
+    "length": 5,
+    "zh": "运行中",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 8489,
+    "length": 5,
+    "zh": "已暂停",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 8948,
+    "length": 41,
+    "zh": "{0} 条记录  ·  {1} 条待复核",
+    "args": [
+      "records.length",
+      "pending"
+    ]
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 9597,
+    "length": 6,
+    "zh": "查看工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 9778,
+    "length": 6,
+    "zh": "最近检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 9856,
+    "length": 8,
+    "zh": "全部记录 →",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 9961,
+    "length": 13,
+    "zh": "第一条记录，从这里开始",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 9999,
+    "length": 24,
+    "zh": "进入任一工位，点击「模拟检测」即可生成记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 10372,
+    "length": 23,
+    "zh": "所有指标来自本机记录 · 示例数据均有标记",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 10996,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11040,
+    "length": 9,
+    "zh": "该工位已不存在",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11061,
+    "length": 19,
+    "zh": "数据恢复后，工位列表可能发生变化。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11436,
+    "length": 8,
+    "zh": "工位操作轨迹",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11741,
+    "length": 7,
+    "zh": "工位检测台",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11771,
+    "length": 25,
+    "zh": "模拟相机与检测引擎 · 每次操作都会保存至本机",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11855,
+    "length": 5,
+    "zh": "运行中",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 11863,
+    "length": 5,
+    "zh": "已暂停",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 12565,
+    "length": 11,
+    "zh": "正在分析示例画面…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 12650,
+    "length": 8,
+    "zh": "等待首次检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 12731,
+    "length": 15,
+    "zh": "PASS · 原始判定合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 12776,
+    "length": 15,
+    "zh": "FAIL · 原始判定异常",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 13605,
+    "length": 19,
+    "zh": "启动工位后可生成一条模拟检测记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 13648,
+    "length": 94,
+    "zh": "{0}\n{1} · 置信度 {2}%",
+    "args": [
+      "latest.serial",
+      "stamp(latest.at)",
+      "(latest.confidence * 100).toStringAsFixed(1)"
+    ]
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 14031,
+    "length": 6,
+    "zh": "模拟检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 15490,
+    "length": 6,
+    "zh": "暂停工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 15499,
+    "length": 6,
+    "zh": "启动工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 15762,
+    "length": 10,
+    "zh": "查看最新记录 →",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 15909,
+    "length": 6,
+    "zh": "当前配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 16154,
+    "length": 6,
+    "zh": "工件材料",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 16203,
+    "length": 5,
+    "zh": "灵敏度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 16268,
+    "length": 7,
+    "zh": "置信度阈值",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 16818,
+    "length": 6,
+    "zh": "更换配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 16925,
+    "length": 10,
+    "zh": "此工位的检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17102,
+    "length": 6,
+    "zh": "查看全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17436,
+    "length": 8,
+    "zh": "暂无检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17456,
+    "length": 19,
+    "zh": "模拟检测完成后，记录会出现在这里。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17716,
+    "length": 6,
+    "zh": "异常待办",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17822,
+    "length": 26,
+    "zh": "{0} 条待复核",
+    "args": [
+      "s.pending.length"
+    ]
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17871,
+    "length": 24,
+    "zh": "按检测时间排列，打开记录查看缺陷和判定依据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 17990,
+    "length": 9,
+    "zh": "所有异常已处理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/dashboard.dart",
+    "offset": 18024,
+    "length": 17,
+    "zh": "新的检测异常会自动出现在这里。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 796,
+    "length": 6,
+    "zh": "配方中心",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 825,
+    "length": 19,
+    "zh": "配方参数、工位换型和本机运行状态。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 947,
+    "length": 6,
+    "zh": "创建配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1247,
+    "length": 4,
+    "zh": "配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1304,
+    "length": 4,
+    "zh": "换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1361,
+    "length": 4,
+    "zh": "系统",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1769,
+    "length": 14,
+    "zh": "搜索配方名称、材料或版本",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1923,
+    "length": 7,
+    "zh": "未找到配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 1942,
+    "length": 18,
+    "zh": "调整关键词，或创建新的检测配方。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 2681,
+    "length": 13,
+    "zh": "{0} 个工位使用",
+    "args": [
+      "used"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 2697,
+    "length": 4,
+    "zh": "可用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 3389,
+    "length": 5,
+    "zh": "灵敏度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 3455,
+    "length": 7,
+    "zh": "最小置信度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 4113,
+    "length": 6,
+    "zh": "查看详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 4368,
+    "length": 7,
+    "zh": "应用到工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 4963,
+    "length": 44,
+    "zh": "换型会更新工位的当前配方。历史记录保留检测时的配方名称与版本，每次换型需要填写原因。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 5117,
+    "length": 8,
+    "zh": "工位当前配置",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 6110,
+    "length": 6,
+    "zh": "最近换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 6172,
+    "length": 6,
+    "zh": "配方换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 6218,
+    "length": 8,
+    "zh": "暂无换型记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 6238,
+    "length": 20,
+    "zh": "选择一个工位，开始配置它的检测配方。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 6330,
+    "length": 6,
+    "zh": "配方换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7235,
+    "length": 6,
+    "zh": "配方详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7281,
+    "length": 7,
+    "zh": "配方已删除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7300,
+    "length": 15,
+    "zh": "返回配方中心查看当前配置。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7486,
+    "length": 6,
+    "zh": "配方详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7736,
+    "length": 6,
+    "zh": "检测参数",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7899,
+    "length": 4,
+    "zh": "版本",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 7940,
+    "length": 5,
+    "zh": "灵敏度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 8000,
+    "length": 7,
+    "zh": "置信度阈值",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 8069,
+    "length": 6,
+    "zh": "缺陷类别",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 8077,
+    "length": 25,
+    "zh": "{0} 项启用",
+    "args": [
+      "r.defects.length"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 8435,
+    "length": 10,
+    "zh": "使用此配方的工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 8490,
+    "length": 14,
+    "zh": "当前没有工位使用此配方。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 9308,
+    "length": 6,
+    "zh": "应用配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 9544,
+    "length": 4,
+    "zh": "编辑",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 9852,
+    "length": 8,
+    "zh": "复制为新配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 10194,
+    "length": 8,
+    "zh": "删除此配方？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 10227,
+    "length": 24,
+    "zh": "历史记录中的配方快照会保留。此操作不能撤销。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 10290,
+    "length": 4,
+    "zh": "删除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 10585,
+    "length": 12,
+    "zh": "使用中的配方不能删除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 10600,
+    "length": 6,
+    "zh": "删除配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 11693,
+    "length": 6,
+    "zh": "表面划痕",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 11701,
+    "length": 6,
+    "zh": "边缘缺口",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 12149,
+    "length": 11,
+    "zh": "放弃未保存的修改？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 12177,
+    "length": 9,
+    "zh": "配方尚未保存。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 12217,
+    "length": 4,
+    "zh": "放弃",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 12583,
+    "length": 6,
+    "zh": "创建配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 12592,
+    "length": 6,
+    "zh": "编辑配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13030,
+    "length": 6,
+    "zh": "配方名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13135,
+    "length": 7,
+    "zh": "请填写名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13398,
+    "length": 6,
+    "zh": "配方版本",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13503,
+    "length": 7,
+    "zh": "请填写版本",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13767,
+    "length": 9,
+    "zh": "工件材料与描述",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 13875,
+    "length": 7,
+    "zh": "请填写材料",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 14013,
+    "length": 6,
+    "zh": "检测参数",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 14203,
+    "length": 30,
+    "zh": "灵敏度  {0}%",
+    "args": [
+      "sensitivity.round()"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 14750,
+    "length": 24,
+    "zh": "示例引擎中，灵敏度越高，触发异常的概率越高。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 14934,
+    "length": 39,
+    "zh": "最小置信度  {0}%",
+    "args": [
+      "(confidence * 100).round()"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15525,
+    "length": 9,
+    "zh": "启用的缺陷类别",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15648,
+    "length": 6,
+    "zh": "表面划痕",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15656,
+    "length": 6,
+    "zh": "边缘缺口",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15664,
+    "length": 6,
+    "zh": "孔位偏移",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15672,
+    "length": 6,
+    "zh": "层间裂纹",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15680,
+    "length": 6,
+    "zh": "尺寸偏差",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 15688,
+    "length": 6,
+    "zh": "表面气孔",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 16246,
+    "length": 6,
+    "zh": "保存配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 16508,
+    "length": 12,
+    "zh": "至少启用一个缺陷类别",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 16864,
+    "length": 12,
+    "zh": "更新正在使用的配方？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 16903,
+    "length": 37,
+    "zh": "使用此配方的工位将从下一次检测起采用新参数。历史检测记录保持原始快照。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 18890,
+    "length": 6,
+    "zh": "工位换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 19005,
+    "length": 13,
+    "zh": "确认下一次检测的标准。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 19041,
+    "length": 20,
+    "zh": "选择工位与目标配方，并记录换型原因。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 19334,
+    "length": 6,
+    "zh": "目标工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 19860,
+    "length": 6,
+    "zh": "目标配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20255,
+    "length": 6,
+    "zh": "变更预览",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20359,
+    "length": 6,
+    "zh": "当前配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20486,
+    "length": 6,
+    "zh": "目标配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20530,
+    "length": 6,
+    "zh": "工件材料",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20577,
+    "length": 5,
+    "zh": "灵敏度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20640,
+    "length": 7,
+    "zh": "最小置信度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20964,
+    "length": 6,
+    "zh": "换型原因",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 20995,
+    "length": 16,
+    "zh": "例如：切换至下一批铝合金支架",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 21146,
+    "length": 9,
+    "zh": "此配方已在使用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 21158,
+    "length": 7,
+    "zh": "确认并应用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 21417,
+    "length": 7,
+    "zh": "确认换型？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 21447,
+    "length": 45,
+    "zh": "{0} 将使用 {1} 进行后续模拟检测。",
+    "args": [
+      "station.name",
+      "next.label"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22270,
+    "length": 6,
+    "zh": "运行模式",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22278,
+    "length": 14,
+    "zh": "完全离线 · 本机工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22318,
+    "length": 7,
+    "zh": "本地数据库",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22341,
+    "length": 5,
+    "zh": "已连接",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22349,
+    "length": 5,
+    "zh": "未连接",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22380,
+    "length": 7,
+    "zh": "工作区记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22389,
+    "length": 32,
+    "zh": "{0} 条",
+    "args": [
+      "s.data.inspections.length"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22465,
+    "length": 9,
+    "zh": "配方 / 工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22590,
+    "length": 6,
+    "zh": "操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22598,
+    "length": 27,
+    "zh": "{0} 条",
+    "args": [
+      "s.data.audits.length"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22657,
+    "length": 7,
+    "zh": "相机与检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22666,
+    "length": 13,
+    "zh": "示例引擎 · 合成画面",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22711,
+    "length": 6,
+    "zh": "数据同步",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22719,
+    "length": 7,
+    "zh": "仅本机保存",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22788,
+    "length": 7,
+    "zh": "数据库大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 22960,
+    "length": 8,
+    "zh": "运行存储诊断",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 23355,
+    "length": 20,
+    "zh": "检查通过：数据库完整，记录关联有效。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 23399,
+    "length": 34,
+    "zh": "数据库报告：{0}",
+    "args": [
+      "rows.first.values.first"
+    ]
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 23692,
+    "length": 6,
+    "zh": "工位配置",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 23941,
+    "length": 6,
+    "zh": "添加工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 24787,
+    "length": 6,
+    "zh": "运行说明",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 24828,
+    "length": 51,
+    "zh": "模拟检测仅用于体验操作、复核与追溯流程。暂停的工位不会生成新记录。没有连接真实工业相机或产线设备。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 25917,
+    "length": 6,
+    "zh": "添加工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 25926,
+    "length": 6,
+    "zh": "编辑工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26046,
+    "length": 9,
+    "zh": "组织你的产线。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26078,
+    "length": 26,
+    "zh": "新工位初始为暂停状态，准备好后可进入检测台启动。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26407,
+    "length": 6,
+    "zh": "工位名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26508,
+    "length": 9,
+    "zh": "请填写工位名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26758,
+    "length": 6,
+    "zh": "产线名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 26859,
+    "length": 9,
+    "zh": "请填写产线名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 27196,
+    "length": 6,
+    "zh": "初始配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 27764,
+    "length": 6,
+    "zh": "保存工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 28622,
+    "length": 8,
+    "zh": "更换检测配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 28849,
+    "length": 7,
+    "zh": "删除工位？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 28875,
+    "length": 23,
+    "zh": "只允许删除已暂停且没有关联检测记录的工位。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 28931,
+    "length": 4,
+    "zh": "删除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/modules.dart",
+    "offset": 29197,
+    "length": 7,
+    "zh": "删除此工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 523,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 2304,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 2333,
+    "length": 18,
+    "zh": "搜索、筛选和复核，让质量可追溯。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 2408,
+    "length": 8,
+    "zh": "切换时间排序",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 2806,
+    "length": 16,
+    "zh": "搜索序列号、缺陷、配方或备注",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 2999,
+    "length": 6,
+    "zh": "清空搜索",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 3435,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 3467,
+    "length": 5,
+    "zh": "待复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 3497,
+    "length": 4,
+    "zh": "合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 3526,
+    "length": 5,
+    "zh": "不合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 3880,
+    "length": 5,
+    "zh": "已归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 4441,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 4542,
+    "length": 6,
+    "zh": "全部工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 5538,
+    "length": 6,
+    "zh": "选择日期",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 5955,
+    "length": 8,
+    "zh": "清除日期筛选",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6032,
+    "length": 48,
+    "zh": "{0} 条{1}记录",
+    "args": [
+      "records.length",
+      "archived ? '归档' : '检测'"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6065,
+    "length": 4,
+    "zh": "归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6072,
+    "length": 4,
+    "zh": "检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6220,
+    "length": 12,
+    "zh": "导出筛选结果 CSV",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6641,
+    "length": 6,
+    "zh": "筛选结果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6741,
+    "length": 6,
+    "zh": "归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6750,
+    "length": 7,
+    "zh": "未归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6836,
+    "length": 6,
+    "zh": "全部判定",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6890,
+    "length": 5,
+    "zh": "待复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6940,
+    "length": 4,
+    "zh": "合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 6989,
+    "length": 5,
+    "zh": "不合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7131,
+    "length": 6,
+    "zh": "全部工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7260,
+    "length": 12,
+    "zh": "关键词：{0}",
+    "args": [
+      "query"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7361,
+    "length": 81,
+    "zh": "{0} 至 {1}",
+    "args": [
+      "stamp(range!.start).split(' ').first",
+      "stamp(range!.end).split(' ').first"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7486,
+    "length": 8,
+    "zh": "时间从新到旧",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7497,
+    "length": 8,
+    "zh": "时间从旧到新",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7991,
+    "length": 4,
+    "zh": "完成",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 7998,
+    "length": 4,
+    "zh": "选择",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 8424,
+    "length": 25,
+    "zh": "已选 {0} 条",
+    "args": [
+      "selected.length"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 8630,
+    "length": 8,
+    "zh": "全选筛选结果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 8733,
+    "length": 6,
+    "zh": "恢复所选",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 8742,
+    "length": 6,
+    "zh": "归档所选",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 9138,
+    "length": 7,
+    "zh": "恢复记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 9148,
+    "length": 7,
+    "zh": "归档记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 9188,
+    "length": 48,
+    "zh": "将处理 {0} 条记录。归档记录仍可在「已归档」中查看和恢复。",
+    "args": [
+      "selected.length"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 9725,
+    "length": 9,
+    "zh": "没有匹配的记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 9759,
+    "length": 22,
+    "zh": "试试清除筛选条件，或到工位生成模拟检测。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 10484,
+    "length": 38,
+    "zh": "加载更多（剩余 {0} 条）",
+    "args": [
+      "records.length - limit"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 12446,
+    "length": 5,
+    "zh": "待复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 12570,
+    "length": 6,
+    "zh": "复核放行",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 12610,
+    "length": 6,
+    "zh": "复核判退",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 12680,
+    "length": 4,
+    "zh": "合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 12712,
+    "length": 5,
+    "zh": "不合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 13032,
+    "length": 4,
+    "zh": "示例",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 14657,
+    "length": 12,
+    "zh": "正在保存复核，请稍候",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 14794,
+    "length": 11,
+    "zh": "放弃未提交的复核？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 14816,
+    "length": 22,
+    "zh": "复核草稿尚未保存，返回后将丢弃本次修改。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 14863,
+    "length": 7,
+    "zh": "放弃并返回",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15506,
+    "length": 10,
+    "zh": "已核对最新记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15519,
+    "length": 12,
+    "zh": "放弃草稿并重新载入？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15563,
+    "length": 47,
+    "zh": "请确认已查看上方最新检测证据和复核记录。将保留你的草稿，之后的提交会作为新的复核写入日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15624,
+    "length": 33,
+    "zh": "当前未提交的内容将被丢弃，表单会显示最新保存的复核结论与依据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15692,
+    "length": 10,
+    "zh": "保留草稿继续复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 15705,
+    "length": 6,
+    "zh": "重新载入",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16012,
+    "length": 16,
+    "zh": "记录再次发生变化，请重新核对",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16512,
+    "length": 10,
+    "zh": "未提交的复核草稿",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16690,
+    "length": 41,
+    "zh": "复核结论：{0}",
+    "args": [
+      "verdict == 'pass' ? '放行' : '判退'"
+    ]
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16718,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16725,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 16818,
+    "length": 9,
+    "zh": "（未填写依据）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 17386,
+    "length": 6,
+    "zh": "检测详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 17470,
+    "length": 7,
+    "zh": "记录已移除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 17504,
+    "length": 26,
+    "zh": "示例清理或备份恢复后，这条记录已不在当前工作区。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 17591,
+    "length": 27,
+    "zh": "记录已移除，无法提交。可以复制草稿中的文字后返回。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 17924,
+    "length": 6,
+    "zh": "检测详情",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 18028,
+    "length": 7,
+    "zh": "导出此记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 18305,
+    "length": 8,
+    "zh": "单条检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 18866,
+    "length": 11,
+    "zh": "原始判定 PASS",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 18880,
+    "length": 11,
+    "zh": "原始判定 FAIL",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 18999,
+    "length": 6,
+    "zh": "等待复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19061,
+    "length": 6,
+    "zh": "示例记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19111,
+    "length": 5,
+    "zh": "已归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19343,
+    "length": 27,
+    "zh": "画面为程序绘制的合成工件示意，不代表真实相机采集。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19487,
+    "length": 6,
+    "zh": "检测证据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19599,
+    "length": 7,
+    "zh": "记录 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19640,
+    "length": 6,
+    "zh": "缺陷类型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19667,
+    "length": 5,
+    "zh": "未检出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19711,
+    "length": 5,
+    "zh": "置信度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19791,
+    "length": 6,
+    "zh": "配方快照",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19896,
+    "length": 8,
+    "zh": "检测时灵敏度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 19995,
+    "length": 7,
+    "zh": "检测时阈值",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20159,
+    "length": 6,
+    "zh": "启用缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20304,
+    "length": 6,
+    "zh": "操作人员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20354,
+    "length": 6,
+    "zh": "检测时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20516,
+    "length": 8,
+    "zh": "最近一次复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20638,
+    "length": 6,
+    "zh": "复核结果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20667,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20674,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20708,
+    "length": 6,
+    "zh": "复核人员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20757,
+    "length": 6,
+    "zh": "复核时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 20835,
+    "length": 6,
+    "zh": "复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 21014,
+    "length": 6,
+    "zh": "质量复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 21023,
+    "length": 8,
+    "zh": "更新复核结论",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 21267,
+    "length": 7,
+    "zh": "记录已更新",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 21372,
+    "length": 36,
+    "zh": "草稿已保留。请核对上方最新记录，再选择重新载入，或保留草稿继续复核。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 21790,
+    "length": 8,
+    "zh": "载入最新复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 22099,
+    "length": 9,
+    "zh": "核对后保留草稿",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 22640,
+    "length": 29,
+    "zh": "原始检测结果将保留，复核结论和每次变更均写入操作日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 23022,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 23230,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 24074,
+    "length": 6,
+    "zh": "复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 24117,
+    "length": 21,
+    "zh": "描述核查发现与处理原因，至少 3 个字",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 24630,
+    "length": 16,
+    "zh": "记录已更新，请先核对上方提示",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 24732,
+    "length": 9,
+    "zh": "有未提交的修改",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 24781,
+    "length": 11,
+    "zh": "与已保存的复核一致",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 25280,
+    "length": 6,
+    "zh": "撤销修改",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 25601,
+    "length": 6,
+    "zh": "提交复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 27210,
+    "length": 7,
+    "zh": "复核已保存",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 27688,
+    "length": 31,
+    "zh": "记录已归档，无法提交。可以复制草稿，或恢复记录后重新核对。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 27741,
+    "length": 27,
+    "zh": "当前账户无法提交复核。可以复制草稿中的文字后返回。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 27902,
+    "length": 27,
+    "zh": "当前为操作员账户。请由质量工程师或管理员完成复核。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28165,
+    "length": 19,
+    "zh": "先提交或撤销复核草稿，再归档记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28580,
+    "length": 7,
+    "zh": "恢复记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28590,
+    "length": 7,
+    "zh": "归档记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28637,
+    "length": 19,
+    "zh": "记录会重新出现在检测列表和统计中。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28659,
+    "length": 17,
+    "zh": "记录将移入归档区，可随时恢复。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28985,
+    "length": 7,
+    "zh": "恢复此记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/records.dart",
+    "offset": 28995,
+    "length": 7,
+    "zh": "归档此记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 2385,
+    "length": 15,
+    "zh": "无法解释旧时间，请重新选择",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3176,
+    "length": 7,
+    "zh": "还原点预览",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3186,
+    "length": 8,
+    "zh": "备份恢复预览",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3328,
+    "length": 11,
+    "zh": "撤回前，看清影响。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3342,
+    "length": 10,
+    "zh": "恢复前，先确认。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3375,
+    "length": 41,
+    "zh": "逐项比较当前数据与{0}，包含归档记录。",
+    "args": [
+      "undo ? '还原点' : '备份'"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3394,
+    "length": 5,
+    "zh": "还原点",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3402,
+    "length": 4,
+    "zh": "备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3532,
+    "length": 6,
+    "zh": "还原来源",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3541,
+    "length": 6,
+    "zh": "备份文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3634,
+    "length": 6,
+    "zh": "文件大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3715,
+    "length": 6,
+    "zh": "导出时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3778,
+    "length": 8,
+    "zh": "等待时间解释",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3866,
+    "length": 8,
+    "zh": "旧备份未记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3980,
+    "length": 6,
+    "zh": "格式检查",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 3988,
+    "length": 36,
+    "zh": "通过 · LineSight {0}",
+    "args": [
+      "document!.format"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4109,
+    "length": 7,
+    "zh": "完整性校验",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4118,
+    "length": 12,
+    "zh": "SHA-256 通过",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4192,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4341,
+    "length": 4,
+    "zh": "配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4480,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4871,
+    "length": 7,
+    "zh": "旧备份时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 4923,
+    "length": 75,
+    "zh": "{0} 个时间没有时区信息。请选择原设备记录这些时间时使用的规则；已经带时区的时间会保持原时刻。",
+    "args": [
+      "document!.legacyTimeCount"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 5341,
+    "length": 8,
+    "zh": "来源时间解释",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 5382,
+    "length": 5,
+    "zh": "请选择",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 5558,
+    "length": 10,
+    "zh": "本机时区历史规则",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 5951,
+    "length": 30,
+    "zh": "固定 {0}",
+    "args": [
+      "utcOffsetLabel(offset)"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 6254,
+    "length": 86,
+    "zh": "固定偏移适用于所有旧时间，不会切换夏令时。来源使用夏令时且跨季节时，应在对应时区设备上选历史规则；重复出现的钟表时间仍需人工核对。中国标准时间可选 UTC+08:00。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 7208,
+    "length": 6,
+    "zh": "原始时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 7365,
+    "length": 6,
+    "zh": "本地时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 7630,
+    "length": 16,
+    "zh": "已确认时间解释及下方恢复影响",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 7975,
+    "length": 8,
+    "zh": "还原点已更新",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 7995,
+    "length": 20,
+    "zh": "请返回数据管理，重新打开当前还原点。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 8650,
+    "length": 11,
+    "zh": "正在逐项比较数据…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 8877,
+    "length": 10,
+    "zh": "无法完成数据比较",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 8918,
+    "length": 22,
+    "zh": "请返回并重新选择备份。当前数据尚未修改。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 9303,
+    "length": 6,
+    "zh": "恢复影响",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 9477,
+    "length": 6,
+    "zh": "新增对象",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 9744,
+    "length": 6,
+    "zh": "内容替换",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10012,
+    "length": 6,
+    "zh": "当前移除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10360,
+    "length": 51,
+    "zh": "{0} 个对象内容相同。以下数量按记录、配方和工位的 ID 逐项比较。",
+    "args": [
+      "diff.unchanged"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10593,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10601,
+    "length": 4,
+    "zh": "配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10607,
+    "length": 4,
+    "zh": "工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 10964,
+    "length": 171,
+    "zh": "新增 {0} · 替换 {1} · 移除 {2}",
+    "args": [
+      "diff.count(RestoreChangeKind.added, type: type)",
+      "diff.count(RestoreChangeKind.changed, type: type)",
+      "diff.count(RestoreChangeKind.removed, type: type)"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 11761,
+    "length": 9,
+    "zh": "日志与还原保障",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12047,
+    "length": 21,
+    "zh": "当前操作日志全部保留，并追加撤回记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12229,
+    "length": 6,
+    "zh": "追加日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12237,
+    "length": 21,
+    "zh": "{0} 条",
+    "args": [
+      "diff.newAudits"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12296,
+    "length": 6,
+    "zh": "相同日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12304,
+    "length": 32,
+    "zh": "{0} 条，去重保留",
+    "args": [
+      "diff.duplicateAudits"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12467,
+    "length": 11,
+    "zh": "同 ID 内容不同",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12511,
+    "length": 38,
+    "zh": "{0} 条，以本机原日志为准",
+    "args": [
+      "diff.conflictingAudits"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12760,
+    "length": 44,
+    "zh": "此操作会替换恢复之后产生或修改的业务数据，并用完当前还原点。请先备份需要保留的内容。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12838,
+    "length": 82,
+    "zh": "恢复前将保存当前业务数据为本机还原点{0}。本机账户、密码和外观设置保持不变。",
+    "args": [
+      "s.restorePoint == null ? '' : '，覆盖上一个还原点'"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 12889,
+    "length": 11,
+    "zh": "，覆盖上一个还原点",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 13192,
+    "length": 9,
+    "zh": "先备份当前数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 13579,
+    "length": 8,
+    "zh": "确认撤回恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 13590,
+    "length": 9,
+    "zh": "确认恢复此备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 13983,
+    "length": 10,
+    "zh": "恢复到此还原点？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 13996,
+    "length": 13,
+    "zh": "用此备份替换业务数据？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 14224,
+    "length": 13,
+    "zh": "还原点将在成功后移除。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 14240,
+    "length": 16,
+    "zh": "当前数据会自动保留为还原点。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 14345,
+    "length": 48,
+    "zh": "\n时间解释：{0}",
+    "args": [
+      "comparedDocument!.timeInterpretation"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 14449,
+    "length": 6,
+    "zh": "撤回恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 14458,
+    "length": 4,
+    "zh": "恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 15608,
+    "length": 11,
+    "zh": "已还原恢复前的数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 15622,
+    "length": 7,
+    "zh": "备份已恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 16583,
+    "length": 18,
+    "zh": "{0}变更",
+    "args": [
+      "widget.type"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 16756,
+    "length": 10,
+    "zh": "搜索名称或 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17057,
+    "length": 4,
+    "zh": "全部",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17415,
+    "length": 4,
+    "zh": "新增",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17469,
+    "length": 4,
+    "zh": "替换",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17523,
+    "length": 4,
+    "zh": "移除",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17787,
+    "length": 20,
+    "zh": "{0} 个变更",
+    "args": [
+      "rows.length"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17872,
+    "length": 6,
+    "zh": "暂无变更",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 17890,
+    "length": 16,
+    "zh": "没有符合当前筛选条件的变更。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 18689,
+    "length": 35,
+    "zh": "加载更多（剩余 {0} 个）",
+    "args": [
+      "rows.length - limit"
+    ]
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 18810,
+    "length": 36,
+    "zh": "这里显示打开预览时的比较结果。返回恢复预览后会按当前工作区重新比较。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19141,
+    "length": 4,
+    "zh": "名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19163,
+    "length": 4,
+    "zh": "版本",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19186,
+    "length": 4,
+    "zh": "材料",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19212,
+    "length": 8,
+    "zh": "灵敏度（%）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19241,
+    "length": 5,
+    "zh": "置信度",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19264,
+    "length": 6,
+    "zh": "启用缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19285,
+    "length": 4,
+    "zh": "产线",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19307,
+    "length": 6,
+    "zh": "运行状态",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19332,
+    "length": 7,
+    "zh": "配方 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19359,
+    "length": 7,
+    "zh": "工位 ID",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19387,
+    "length": 6,
+    "zh": "配方名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19418,
+    "length": 9,
+    "zh": "检测时配方快照",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19444,
+    "length": 5,
+    "zh": "序列号",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19462,
+    "length": 6,
+    "zh": "检测时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19485,
+    "length": 6,
+    "zh": "原始结果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19508,
+    "length": 4,
+    "zh": "缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19535,
+    "length": 5,
+    "zh": "操作人",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19555,
+    "length": 6,
+    "zh": "复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19578,
+    "length": 6,
+    "zh": "复核结果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19603,
+    "length": 5,
+    "zh": "复核人",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19629,
+    "length": 6,
+    "zh": "复核时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19654,
+    "length": 6,
+    "zh": "归档状态",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19677,
+    "length": 6,
+    "zh": "示例标记",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19757,
+    "length": 5,
+    "zh": "未设置",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19803,
+    "length": 3,
+    "zh": "是",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 19809,
+    "length": 3,
+    "zh": "否",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20051,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20092,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20129,
+    "length": 5,
+    "zh": "（空）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20425,
+    "length": 9,
+    "zh": "合格 PASS",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20437,
+    "length": 10,
+    "zh": "不合格 FAIL",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20479,
+    "length": 5,
+    "zh": "运行中",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20487,
+    "length": 5,
+    "zh": "已暂停",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20525,
+    "length": 5,
+    "zh": "已归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20533,
+    "length": 5,
+    "zh": "未归档",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20569,
+    "length": 9,
+    "zh": "示例 / 模拟",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 20581,
+    "length": 5,
+    "zh": "非示例",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 21779,
+    "length": 4,
+    "zh": "当前",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 21825,
+    "length": 5,
+    "zh": "不存在",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 21983,
+    "length": 5,
+    "zh": "恢复后",
+    "args": []
+  },
+  {
+    "file": "lib/screens/restore.dart",
+    "offset": 22029,
+    "length": 5,
+    "zh": "不存在",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 826,
+    "length": 8,
+    "zh": "你的工作区。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 857,
+    "length": 21,
+    "zh": "管理账户、数据，以及适合你的使用方式。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2086,
+    "length": 8,
+    "zh": "编辑个人资料",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2316,
+    "length": 7,
+    "zh": "账户与安全",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2543,
+    "length": 9,
+    "zh": "个人资料与密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2581,
+    "length": 15,
+    "zh": "修改显示名称、更新本机密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2855,
+    "length": 7,
+    "zh": "成员与权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 2893,
+    "length": 25,
+    "zh": "{0} 个本机账户",
+    "args": [
+      "s.users.length"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3163,
+    "length": 6,
+    "zh": "操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3198,
+    "length": 17,
+    "zh": "查看登录、检测、复核与配置变更",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3375,
+    "length": 7,
+    "zh": "工作区管理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3594,
+    "length": 6,
+    "zh": "数据管理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3629,
+    "length": 15,
+    "zh": "导出、备份、恢复与示例数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3869,
+    "length": 6,
+    "zh": "系统状态",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 3904,
+    "length": 15,
+    "zh": "检查本机数据库与数据完整性",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 4058,
+    "length": 6,
+    "zh": "系统状态",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 4246,
+    "length": 7,
+    "zh": "外观与交互",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 4534,
+    "length": 6,
+    "zh": "深色模式",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 4840,
+    "length": 6,
+    "zh": "通透玻璃",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 4887,
+    "length": 12,
+    "zh": "半透明面板与背景模糊",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 5203,
+    "length": 6,
+    "zh": "触觉反馈",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 5250,
+    "length": 13,
+    "zh": "导航与保存时的轻微反馈",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 5571,
+    "length": 8,
+    "zh": "减少动态效果",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 5899,
+    "length": 9,
+    "zh": "离开后自动锁定",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 5949,
+    "length": 19,
+    "zh": "进入后台超过 30 秒后需重新登录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 6206,
+    "length": 4,
+    "zh": "帮助",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 6370,
+    "length": 9,
+    "zh": "使用指南与关于",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 6404,
+    "length": 13,
+    "zh": "了解操作流程和示例环境",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 6782,
+    "length": 6,
+    "zh": "立即锁定",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 7082,
+    "length": 9,
+    "zh": "退出本机账户？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 7114,
+    "length": 22,
+    "zh": "检测数据、配置和操作日志会保留在此设备。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 7173,
+    "length": 4,
+    "zh": "退出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 7377,
+    "length": 6,
+    "zh": "退出登录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 7543,
+    "length": 31,
+    "zh": "LineSight {0} · 离线工作区",
+    "args": [
+      "appVersion"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9167,
+    "length": 9,
+    "zh": "个人资料与密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9292,
+    "length": 5,
+    "zh": "用户名",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9335,
+    "length": 6,
+    "zh": "账户角色",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9385,
+    "length": 6,
+    "zh": "显示名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9696,
+    "length": 8,
+    "zh": "修改显示名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 9776,
+    "length": 4,
+    "zh": "名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 10035,
+    "length": 6,
+    "zh": "修改名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 10154,
+    "length": 6,
+    "zh": "修改密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 10438,
+    "length": 6,
+    "zh": "当前密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 10679,
+    "length": 13,
+    "zh": "新密码（至少 8 位）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 10929,
+    "length": 9,
+    "zh": "再次输入新密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11142,
+    "length": 6,
+    "zh": "更新密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11341,
+    "length": 11,
+    "zh": "两次密码输入不一致",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11651,
+    "length": 7,
+    "zh": "密码已更新",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11817,
+    "length": 6,
+    "zh": "我的权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11927,
+    "length": 7,
+    "zh": "查看与检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11936,
+    "length": 5,
+    "zh": "已允许",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11967,
+    "length": 7,
+    "zh": "复核与配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11989,
+    "length": 5,
+    "zh": "已允许",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 11997,
+    "length": 11,
+    "zh": "需要工程师或管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12034,
+    "length": 8,
+    "zh": "业务数据导出",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12057,
+    "length": 5,
+    "zh": "已允许",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12065,
+    "length": 11,
+    "zh": "需要工程师或管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12102,
+    "length": 7,
+    "zh": "成员与恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12121,
+    "length": 5,
+    "zh": "已允许",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12129,
+    "length": 7,
+    "zh": "需要管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12421,
+    "length": 7,
+    "zh": "成员与权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12515,
+    "length": 8,
+    "zh": "添加本机成员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12796,
+    "length": 12,
+    "zh": "各司其职，一起协作。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12831,
+    "length": 25,
+    "zh": "本机成员共享业务数据，操作以当前账户记入日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12971,
+    "length": 5,
+    "zh": "操作员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 12978,
+    "length": 21,
+    "zh": "查看记录、运行模拟检测、启动或暂停工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13025,
+    "length": 7,
+    "zh": "质量工程师",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13034,
+    "length": 19,
+    "zh": "增加复核、归档、配方管理与导出权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13079,
+    "length": 5,
+    "zh": "管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13086,
+    "length": 20,
+    "zh": "增加成员管理、备份恢复和数据清理权限",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13181,
+    "length": 6,
+    "zh": "本机成员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13706,
+    "length": 5,
+    "zh": "（我）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13827,
+    "length": 5,
+    "zh": "已启用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 13835,
+    "length": 5,
+    "zh": "已停用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 14407,
+    "length": 14,
+    "zh": "管理 {0}",
+    "args": [
+      "u.name"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 15038,
+    "length": 6,
+    "zh": "账户启用",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 15219,
+    "length": 20,
+    "zh": "不能停用自己或撤销自己的管理员权限。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 15422,
+    "length": 4,
+    "zh": "取消",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 15486,
+    "length": 4,
+    "zh": "保存",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 16436,
+    "length": 8,
+    "zh": "添加本机成员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 16554,
+    "length": 9,
+    "zh": "欢迎新的搭档。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 16586,
+    "length": 27,
+    "zh": "新账户默认拥有操作员权限，创建后可在成员列表调整。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 16846,
+    "length": 5,
+    "zh": "用户名",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 16884,
+    "length": 22,
+    "zh": "3–32 位字母、数字、点、横线或下划线",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 17144,
+    "length": 6,
+    "zh": "显示名称",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 17377,
+    "length": 14,
+    "zh": "初始密码（至少 8 位）",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 17616,
+    "length": 8,
+    "zh": "再次输入密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 17763,
+    "length": 6,
+    "zh": "创建成员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 17986,
+    "length": 11,
+    "zh": "两次密码输入不一致",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 18705,
+    "length": 6,
+    "zh": "数据管理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 18822,
+    "length": 12,
+    "zh": "数据在手，心中有数。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 18857,
+    "length": 17,
+    "zh": "在本机保存和管理你的质量档案。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 19003,
+    "length": 8,
+    "zh": "全部检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 19171,
+    "length": 7,
+    "zh": "已归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 19405,
+    "length": 6,
+    "zh": "备份状态",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20004,
+    "length": 13,
+    "zh": "还没有本机备份保存记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20020,
+    "length": 11,
+    "zh": "最近一次备份已保存",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20307,
+    "length": 6,
+    "zh": "保存时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20376,
+    "length": 6,
+    "zh": "备份记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20384,
+    "length": 28,
+    "zh": "{0} 条",
+    "args": [
+      "s.lastBackup!.records"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20440,
+    "length": 5,
+    "zh": "保存人",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20494,
+    "length": 6,
+    "zh": "文件格式",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20602,
+    "length": 6,
+    "zh": "文件大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20727,
+    "length": 6,
+    "zh": "保存校验",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20735,
+    "length": 10,
+    "zh": "目标文件回读通过",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 20810,
+    "length": 48,
+    "zh": "备份文件请保存在应用之外。开始备份之后的变更可能尚未备份；此处不会检查外部文件是否仍然存在。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21012,
+    "length": 7,
+    "zh": "时间与日期",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21232,
+    "length": 17,
+    "zh": "UTC 保存 · 本地时间显示",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21252,
+    "length": 15,
+    "zh": "旧版时间已转换，原件已保留",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21338,
+    "length": 8,
+    "zh": "查看时间规则",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21349,
+    "length": 15,
+    "zh": "查看升级解释并导出旧版原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21549,
+    "length": 7,
+    "zh": "导出与备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 21734,
+    "length": 90,
+    "zh": "完整备份（LSB）支持最大 256 MB，保留全部记录与日志，并校验文件完整性。兼容 JSON 供旧版应用使用，最大 20 MB。CSV 时间列以 UTC 标注，用于表格分析。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 22107,
+    "length": 10,
+    "zh": "导出全部 CSV",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 22545,
+    "length": 8,
+    "zh": "全部检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 22601,
+    "length": 23,
+    "zh": "包含归档和示例记录 · 保持工作区排列顺序",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 22769,
+    "length": 8,
+    "zh": "保存完整备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 23191,
+    "length": 18,
+    "zh": "需要工程师或管理员权限才能导出。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 23331,
+    "length": 8,
+    "zh": "异常恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 23537,
+    "length": 14,
+    "zh": "查看恢复记录与恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 23590,
+    "length": 19,
+    "zh": "管理员专用 · 导出保留的原始存储",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 23808,
+    "length": 8,
+    "zh": "恢复业务数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 24006,
+    "length": 67,
+    "zh": "选择 LineSight LSB 或 JSON 备份，先校验并查看内容再恢复。恢复会替换当前业务数据，保留本机账户和现有操作日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 24245,
+    "length": 8,
+    "zh": "选择备份文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 24974,
+    "length": 15,
+    "zh": "备份不能超过 256 MB",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 25112,
+    "length": 17,
+    "zh": "无法读取此文件，请选择本机文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 25679,
+    "length": 28,
+    "zh": "尚无还原点。成功恢复备份后，会自动保留恢复前的数据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 25850,
+    "length": 7,
+    "zh": "还原点记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 25859,
+    "length": 34,
+    "zh": "{0} 条检测记录",
+    "args": [
+      "s.restorePoint!.records"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 25945,
+    "length": 6,
+    "zh": "创建时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 26035,
+    "length": 7,
+    "zh": "旧版未记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 26159,
+    "length": 5,
+    "zh": "创建人",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 26296,
+    "length": 10,
+    "zh": "查看还原点并撤回",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 26834,
+    "length": 7,
+    "zh": "本机还原点",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 26875,
+    "length": 45,
+    "zh": "{0} 的本机还原点",
+    "args": [
+      "stamp(point.createdAt!.toLocal())"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 27168,
+    "length": 6,
+    "zh": "示例数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 27358,
+    "length": 26,
+    "zh": "当前有 {0} 条示例 / 模拟记录。",
+    "args": [
+      "samples"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 27571,
+    "length": 42,
+    "zh": "示例用于体验流程。清理时将删除带有示例标记的检测记录，包括在工位生成的模拟记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 27914,
+    "length": 8,
+    "zh": "添加一组示例",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 28137,
+    "length": 14,
+    "zh": "已添加 96 条示例记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 28515,
+    "length": 11,
+    "zh": "清理所有示例记录？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 28561,
+    "length": 50,
+    "zh": "将删除 {0} 条示例 / 模拟检测记录，包含已归档记录。配方、成员和操作日志会保留。",
+    "args": [
+      "samples"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 28660,
+    "length": 6,
+    "zh": "清理示例",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 28831,
+    "length": 9,
+    "zh": "示例记录已清理",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 29025,
+    "length": 6,
+    "zh": "清理示例",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 29229,
+    "length": 53,
+    "zh": "卸载应用会移除本机账户和数据。需要保留业务数据时，请先保存 JSON 备份，并单独妥善保存账户恢复码。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 29646,
+    "length": 7,
+    "zh": "时间与日期",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 29755,
+    "length": 12,
+    "zh": "同一时刻，清楚记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 29790,
+    "length": 25,
+    "zh": "记录按 UTC 保存，页面按设备本地时区显示。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30001,
+    "length": 8,
+    "zh": "设备当前时区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30162,
+    "length": 17,
+    "zh": "UTC 时间，末尾带 Z 标记",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30226,
+    "length": 76,
+    "zh": "今天、日期筛选与每日统计使用本地日历边界。设备时区改变后，记录的显示时间和所属日期可能变化，记录代表的时刻保持不变。详情显示该时刻的 UTC 偏移。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30442,
+    "length": 8,
+    "zh": "旧版时间兼容",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30485,
+    "length": 56,
+    "zh": "旧版没有时区标记的时间无法反推出原始时区。导入时需要选择来源时间规则并确认预览。固定偏移不会自动切换夏令时。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30700,
+    "length": 18,
+    "zh": "本机没有需要转换的旧版时间原件。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 30997,
+    "length": 6,
+    "zh": "升级时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 31097,
+    "length": 9,
+    "zh": "升级时设备时区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 31238,
+    "length": 9,
+    "zh": "已解释的旧时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 31249,
+    "length": 20,
+    "zh": "{0} 个",
+    "args": [
+      "archive.count"
+    ]
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 31320,
+    "length": 101,
+    "zh": "升级按当时设备的历史时区规则解释旧时间；夏令时跳过的钟表时间沿用系统校正结果。上方偏移仅表示升级时刻；历史时间可能采用不同的夏令时偏移。原始工作区及旧还原点另行保留在本机，恢复操作不会覆盖这些原件。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 31586,
+    "length": 79,
+    "zh": "如来源时区有误，可导出原件，再从数据管理选择该文件并重新解释时间。原件是升级时的快照，恢复前请先保存当前完整备份。相同 ID 的现有日志仍以本机日志为准。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32142,
+    "length": 9,
+    "zh": "导出工作区原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32154,
+    "length": 10,
+    "zh": "导出旧还原点原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32508,
+    "length": 18,
+    "zh": "需要工程师或管理员权限才能导出。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32779,
+    "length": 9,
+    "zh": "使用指南与关于",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32945,
+    "length": 11,
+    "zh": "让质量，有迹可循。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 32977,
+    "length": 15,
+    "zh": "面向产线检测的本机工作区。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 33125,
+    "length": 12,
+    "zh": "01  开始一次检测",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 33294,
+    "length": 61,
+    "zh": "在工作台选择工位，确认当前配方，启动工位后点击「模拟检测」。检测结果与配方快照会自动保存。目前所有画面与检测均为模拟。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 33540,
+    "length": 13,
+    "zh": "02  处理异常与复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 33710,
+    "length": 65,
+    "zh": "从异常待办或检测记录打开详情，查看缺陷与置信度。工程师和管理员可填写复核依据并放行或判退。原始结果保留，每次复核变更写入日志。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 33960,
+    "length": 11,
+    "zh": "03  配方与换型",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 34128,
+    "length": 68,
+    "zh": "在配方中心新增、编辑或复制配方。换型时选择工位、目标配方并填写原因。新配置只影响后续检测，历史快照保持不变。正在使用的配方不能删除。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 34381,
+    "length": 13,
+    "zh": "04  管理数据与备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 34551,
+    "length": 80,
+    "zh": "记录支持搜索、日期范围、工位和判定筛选。已处理的记录可归档并恢复。CSV 可用于分析；JSON 可恢复业务数据。账户不随备份迁移，恢复前自动保留一个还原点。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 34816,
+    "length": 12,
+    "zh": "05  账户与恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 34985,
+    "length": 73,
+    "zh": "首个账户为管理员。管理员可添加成员、设置角色或停用账户。登录连续失败会触发短暂锁定。忘记密码时使用创建账户时保存的恢复码。每次冷启动都需登录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 35243,
+    "length": 13,
+    "zh": "06  本机数据与隐私",
+    "args": []
+  },
+  {
+    "file": "lib/screens/settings.dart",
+    "offset": 35413,
+    "length": 80,
+    "zh": "账户与检测数据保存在应用的本机数据库中，密码经过加盐派生处理。应用没有云账户和同步服务。业务备份为明文 JSON，请选择合适的保存位置。示例记录始终有标记。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/startup.dart",
+    "offset": 1718,
+    "length": 13,
+    "zh": "正在打开\n本机工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/startup.dart",
+    "offset": 1942,
+    "length": 24,
+    "zh": "记录较多时可能需要稍候。准备完成后即可登录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/startup.dart",
+    "offset": 4065,
+    "length": 30,
+    "zh": "LineSight {0} · 离线可用",
+    "args": [
+      "appVersion"
+    ]
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 1531,
+    "length": 6,
+    "zh": "质量洞察",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 1627,
+    "length": 13,
+    "zh": "导出当前统计范围的记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2018,
+    "length": 8,
+    "zh": "当前统计范围",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2232,
+    "length": 6,
+    "zh": "全部工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2551,
+    "length": 10,
+    "zh": "从数据，到判断。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2584,
+    "length": 28,
+    "zh": "按设备本地日期统计未归档记录，包含已标记的示例数据。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2735,
+    "length": 4,
+    "zh": "今天",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2792,
+    "length": 7,
+    "zh": "近 7 天",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 2853,
+    "length": 8,
+    "zh": "近 30 天",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 3199,
+    "length": 6,
+    "zh": "工位范围",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 3290,
+    "length": 6,
+    "zh": "全部工位",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 3685,
+    "length": 6,
+    "zh": "检测总数",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 3843,
+    "length": 7,
+    "zh": "原始合格率",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 4130,
+    "length": 8,
+    "zh": "复核后合格率",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 4414,
+    "length": 8,
+    "zh": "范围内待复核",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 4715,
+    "length": 10,
+    "zh": "此范围还没有数据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 4737,
+    "length": 22,
+    "zh": "调整日期或工位，或生成一条模拟检测记录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 4810,
+    "length": 7,
+    "zh": "每日检测量",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 5027,
+    "length": 8,
+    "zh": "查看记录 →",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 5304,
+    "length": 4,
+    "zh": "合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 5348,
+    "length": 5,
+    "zh": "不合格",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 6248,
+    "length": 55,
+    "zh": "{0}/{1}：{2} 次，{3} 次不合格",
+    "args": [
+      "date.month",
+      "date.day",
+      "list.length",
+      "fail"
+    ]
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 9870,
+    "length": 13,
+    "zh": "缺陷分布 · 原始判定",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 9944,
+    "length": 14,
+    "zh": "当前范围没有检出的缺陷。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 10721,
+    "length": 14,
+    "zh": "{0} 次",
+    "args": [
+      "e.value"
+    ]
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 11177,
+    "length": 6,
+    "zh": "工位对比",
+    "args": []
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 11856,
+    "length": 70,
+    "zh": "{0} 次检测 · {1} 条待复核",
+    "args": [
+      "subset.length",
+      "subset.where((r) => r.pending).length"
+    ]
+  },
+  {
+    "file": "lib/screens/statistics.dart",
+    "offset": 12650,
+    "length": 61,
+    "zh": "原始合格率 = 原始合格数 / 检测数。复核后合格率使用最近一次复核结论；未复核记录沿用原始判定。归档记录不计入统计。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 916,
+    "length": 8,
+    "zh": "本机数据恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1027,
+    "length": 12,
+    "zh": "保留原件，恢复工作。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1061,
+    "length": 23,
+    "zh": "工作区暂时无法打开，现有存储仍保留在本机。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1469,
+    "length": 13,
+    "zh": "请检查本机存储后重试。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1618,
+    "length": 7,
+    "zh": "未完成步骤",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1686,
+    "length": 32,
+    "zh": "可以先释放设备存储空间，再重试读取。重试会继续读取原数据库。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 1875,
+    "length": 6,
+    "zh": "重试读取",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 2125,
+    "length": 10,
+    "zh": "使用已有备份恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 2319,
+    "length": 54,
+    "zh": "先验证本机管理员，再选择 LSB 或 JSON 备份。恢复前会保留原始存储；本机账户保持原有密码和权限。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 2928,
+    "length": 8,
+    "zh": "管理员用户名",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 3201,
+    "length": 11,
+    "zh": "使用账户恢复码验证",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 3726,
+    "length": 7,
+    "zh": "账户恢复码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 3736,
+    "length": 7,
+    "zh": "管理员密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 3893,
+    "length": 6,
+    "zh": "显示凭据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 3902,
+    "length": 6,
+    "zh": "隐藏凭据",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 4343,
+    "length": 45,
+    "zh": "恢复码验证仅用于本次数据恢复，不会重设密码。连续验证失败 5 次会限制尝试 1 分钟。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 4569,
+    "length": 7,
+    "zh": "验证管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 4941,
+    "length": 11,
+    "zh": "暂时无法验证管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5022,
+    "length": 85,
+    "zh": "需要可读取且已启用的本机管理员账户才能恢复。请保留应用及其本机数据，检查设备存储后重试；如需进一步排查，可联系设备维护人员。现有备份可以在另一台设备建立工作区后导入。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5259,
+    "length": 30,
+    "zh": "卸载应用或清除应用数据会删除本机账户、记录和保留的原件。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5601,
+    "length": 10,
+    "zh": "从备份恢复工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5669,
+    "length": 8,
+    "zh": "退出恢复验证",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5886,
+    "length": 10,
+    "zh": "选择可用的备份。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 5918,
+    "length": 14,
+    "zh": "先检查文件，再确认恢复。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6036,
+    "length": 8,
+    "zh": "已验证管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6070,
+    "length": 7,
+    "zh": "验证已过期",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6108,
+    "length": 7,
+    "zh": "账户与密码",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6117,
+    "length": 10,
+    "zh": "保留现有本机账户",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6158,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6167,
+    "length": 11,
+    "zh": "成功恢复时自动保留",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6317,
+    "length": 82,
+    "zh": "当前工作区无法完整读取，不能可靠比较新旧内容。恢复以所选备份为准，备份之后的变更和损坏数据不会自动合并。旧还原点与备份回执会转入恢复前原件，可在恢复后导出排查。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6534,
+    "length": 62,
+    "zh": "原件保留与新工作区写入会一起完成。空间不足或写入失败时，原数据库保持恢复前的状态。恢复验证离开应用 30 秒后自动锁定。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 6723,
+    "length": 8,
+    "zh": "选择恢复备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 7262,
+    "length": 15,
+    "zh": "备份不能超过 256 MB",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 7373,
+    "length": 17,
+    "zh": "无法读取此文件，请选择本机文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 9450,
+    "length": 16,
+    "zh": "无法解释旧时间，请重新选择。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 9818,
+    "length": 8,
+    "zh": "异常恢复确认",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 9931,
+    "length": 10,
+    "zh": "确认恢复的内容。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 9963,
+    "length": 21,
+    "zh": "原始存储将保留，业务数据以此备份为准。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10088,
+    "length": 6,
+    "zh": "备份文件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10136,
+    "length": 6,
+    "zh": "文件大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10193,
+    "length": 4,
+    "zh": "格式",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10256,
+    "length": 6,
+    "zh": "导出时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10309,
+    "length": 8,
+    "zh": "等待时间解释",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10390,
+    "length": 8,
+    "zh": "旧备份未记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10547,
+    "length": 7,
+    "zh": "完整性校验",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10556,
+    "length": 12,
+    "zh": "SHA-256 通过",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10593,
+    "length": 6,
+    "zh": "检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10601,
+    "length": 32,
+    "zh": "{0} 条（含归档）",
+    "args": [
+      "w.inspections.length"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10658,
+    "length": 6,
+    "zh": "操作日志",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10666,
+    "length": 22,
+    "zh": "{0} 条",
+    "args": [
+      "w.audits.length"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10713,
+    "length": 9,
+    "zh": "工位 / 配方",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 10888,
+    "length": 9,
+    "zh": "解释旧备份时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 11056,
+    "length": 50,
+    "zh": "{0} 个时间没有时区。请选择原设备的记录规则。",
+    "args": [
+      "document.legacyTimeCount"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 11347,
+    "length": 8,
+    "zh": "来源时间解释",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 11501,
+    "length": 10,
+    "zh": "本机时区历史规则",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 11884,
+    "length": 30,
+    "zh": "固定 {0}",
+    "args": [
+      "utcOffsetLabel(offset)"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 12178,
+    "length": 68,
+    "zh": "固定偏移不会切换夏令时。来源跨夏令时时，请在对应时区设备选择历史规则；重复钟表时间需人工核对。中国标准时间可选 UTC+08:00。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 12589,
+    "length": 6,
+    "zh": "原始时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 12670,
+    "length": 6,
+    "zh": "本地时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 12880,
+    "length": 8,
+    "zh": "恢复后会怎样",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 12952,
+    "length": 89,
+    "zh": "保留本机账户、密码和角色。能读取的外观设置与时间升级原件继续保留；旧还原点、备份回执及其余原始存储进入恢复前原件。无法读取的旧日志不会合并到新工作区。恢复完成后需要重新登录。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 13243,
+    "length": 19,
+    "zh": "已确认备份内容、时间解释和恢复影响",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 13494,
+    "length": 9,
+    "zh": "保留原件并恢复",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 13796,
+    "length": 8,
+    "zh": "恢复工作区？",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 13826,
+    "length": 42,
+    "zh": "将保留当前原始存储，并使用此备份建立可读取的工作区。备份之后的变更不会自动恢复。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 13904,
+    "length": 7,
+    "zh": "恢复工作区",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 14784,
+    "length": 8,
+    "zh": "异常恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 14889,
+    "length": 12,
+    "zh": "恢复过程，有据可查。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 14921,
+    "length": 21,
+    "zh": "恢复前原件保留在本机，可单独导出排查。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 15008,
+    "length": 77,
+    "zh": "原件包含恢复前的原始业务存储与设置，可能含损坏内容；它不是可以直接恢复的业务备份。导出不包含账户密码和恢复码。卸载或清除应用数据会删除本机保留的原件。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 15531,
+    "length": 10,
+    "zh": "无法读取恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 15567,
+    "length": 18,
+    "zh": "请返回重试，或检查本机存储空间。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 15712,
+    "length": 10,
+    "zh": "暂无异常恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 15748,
+    "length": 22,
+    "zh": "工作区正常打开时，请使用常规备份与恢复。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 16284,
+    "length": 100,
+    "zh": "{0}\n{1} · 恢复 {2} 条记录 · 原件 {3}",
+    "args": [
+      "zonedStamp(item.createdAt)",
+      "item.actor",
+      "item.records",
+      "fileSize(item.bytes)"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17230,
+    "length": 6,
+    "zh": "准备中…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17449,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17562,
+    "length": 10,
+    "zh": "保留最初的内容。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17594,
+    "length": 20,
+    "zh": "导出原件供排查，不会覆盖当前工作区。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17718,
+    "length": 6,
+    "zh": "恢复时间",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17792,
+    "length": 5,
+    "zh": "管理员",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17834,
+    "length": 7,
+    "zh": "使用的备份",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17883,
+    "length": 7,
+    "zh": "恢复记录数",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17892,
+    "length": 19,
+    "zh": "{0} 条",
+    "args": [
+      "item.records"
+    ]
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17936,
+    "length": 8,
+    "zh": "原始内容大小",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 17991,
+    "length": 6,
+    "zh": "恢复编号",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 18114,
+    "length": 93,
+    "zh": "导出为 LSR 排查文件，保存后会回读校验。文件未加密，包含原始业务内容及设置，不能作为 LSB / JSON 备份导入。分段编码会使文件大于原始内容，导出文件上限为 256 MB。",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 18686,
+    "length": 12,
+    "zh": "等待保存并回读校验…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 18965,
+    "length": 6,
+    "zh": "取消准备",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 19045,
+    "length": 9,
+    "zh": "导出恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 19304,
+    "length": 6,
+    "zh": "准备中…",
+    "args": []
+  },
+  {
+    "file": "lib/screens/storage_recovery.dart",
+    "offset": 20172,
+    "length": 21,
+    "zh": "原件导出未完成，请检查存储空间后重试。",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 1036,
+    "length": 12,
+    "zh": "本机数据分块标记无效",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 1295,
+    "length": 12,
+    "zh": "本机数据分块信息无效",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 1629,
+    "length": 12,
+    "zh": "本机数据分块信息无效",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 2978,
+    "length": 10,
+    "zh": "本机数据分块缺失",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 3212,
+    "length": 10,
+    "zh": "本机数据分块过大",
+    "args": []
+  },
+  {
+    "file": "lib/state_codec.dart",
+    "offset": 3442,
+    "length": 12,
+    "zh": "本机数据分块校验失败",
+    "args": []
+  },
+  {
+    "file": "lib/state_storage.dart",
+    "offset": 2632,
+    "length": 10,
+    "zh": "本机数据分块缺失",
+    "args": []
+  },
+  {
+    "file": "lib/state_storage.dart",
+    "offset": 3054,
+    "length": 12,
+    "zh": "本机数据分块顺序无效",
+    "args": []
+  },
+  {
+    "file": "lib/state_storage.dart",
+    "offset": 3202,
+    "length": 10,
+    "zh": "本机数据分块过大",
+    "args": []
+  },
+  {
+    "file": "lib/state_storage.dart",
+    "offset": 3331,
+    "length": 10,
+    "zh": "本机数据分块缺失",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 2426,
+    "length": 8,
+    "zh": "打开本机存储",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 3376,
+    "length": 15,
+    "zh": "正在读取或保存，请稍后重试",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 3579,
+    "length": 8,
+    "zh": "打开本机存储",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 4859,
+    "length": 8,
+    "zh": "读取本机账户",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 4994,
+    "length": 13,
+    "zh": "读取检测记录与本机设置",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 5096,
+    "length": 11,
+    "zh": "检查工作区与还原点",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 5243,
+    "length": 10,
+    "zh": "保存旧版时间原件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 5896,
+    "length": 33,
+    "zh": "无法读取本机数据库。请检查存储空间，然后重试。原始数据已保留。",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 6918,
+    "length": 16,
+    "zh": "密码需要 8–128 个字符",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 7095,
+    "length": 11,
+    "zh": "本机工作区尚未打开",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 7149,
+    "length": 6,
+    "zh": "请先登录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 7235,
+    "length": 13,
+    "zh": "当前账户没有此操作权限",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 8069,
+    "length": 26,
+    "zh": "离开应用超过 30 秒，已自动锁定。请重新登录。",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 8409,
+    "length": 13,
+    "zh": "会话已过期，请重新操作",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 8842,
+    "length": 6,
+    "zh": "退出登录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 8850,
+    "length": 9,
+    "zh": "本地会话已结束",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 9107,
+    "length": 11,
+    "zh": "本机工作区尚未打开",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 9156,
+    "length": 12,
+    "zh": "正在保存，请稍后重试",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 9441,
+    "length": 28,
+    "zh": "用户名需为 3–32 位字母、数字、点、横线或下划线",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 9539,
+    "length": 15,
+    "zh": "姓名需要 1–40 个字符",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 10288,
+    "length": 6,
+    "zh": "创建账户",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 10330,
+    "length": 5,
+    "zh": "管理员",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 10338,
+    "length": 5,
+    "zh": "操作员",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 11191,
+    "length": 9,
+    "zh": "该用户名已存在",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 11702,
+    "length": 11,
+    "zh": "账户或恢复码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 11716,
+    "length": 11,
+    "zh": "用户名或密码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 11900,
+    "length": 19,
+    "zh": "尝试次数过多，请在 1 分钟后重试",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12500,
+    "length": 11,
+    "zh": "账户或恢复码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12514,
+    "length": 11,
+    "zh": "用户名或密码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12611,
+    "length": 15,
+    "zh": "异常恢复需要本机管理员账户",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12687,
+    "length": 17,
+    "zh": "该账户已停用，请联系本机管理员",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12760,
+    "length": 13,
+    "zh": "会话已过期，请重新登录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 12979,
+    "length": 13,
+    "zh": "会话已过期，请重新登录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13165,
+    "length": 16,
+    "zh": "请通过异常恢复入口验证管理员",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13219,
+    "length": 10,
+    "zh": "正在处理，请稍后",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13497,
+    "length": 4,
+    "zh": "登录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13503,
+    "length": 10,
+    "zh": "本机密码验证成功",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13831,
+    "length": 18,
+    "zh": "当前无需异常恢复，或账户无法读取",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 13910,
+    "length": 10,
+    "zh": "正在处理，请稍后",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 14259,
+    "length": 13,
+    "zh": "会话已过期，请重新验证",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 14692,
+    "length": 18,
+    "zh": "恢复验证已过期，请重新验证管理员",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 15242,
+    "length": 10,
+    "zh": "正在保存，请稍后",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 15333,
+    "length": 16,
+    "zh": "请先确认备份内容和旧时间解释",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 15428,
+    "length": 9,
+    "zh": "备份文件名无效",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 15701,
+    "length": 6,
+    "zh": "异常恢复",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 15855,
+    "length": 39,
+    "zh": "；旧时间解释：{0}",
+    "args": [
+      "document.timeInterpretation"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 16463,
+    "length": 16,
+    "zh": "管理员权限已改变，请重新验证",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 18862,
+    "length": 41,
+    "zh": "业务数据已恢复，请重新登录。恢复前原件可在“数据管理 → 异常恢复记录”查看。",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 19101,
+    "length": 11,
+    "zh": "本机工作区尚未打开",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 19179,
+    "length": 10,
+    "zh": "正在处理，请稍后",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 19418,
+    "length": 11,
+    "zh": "账户或恢复码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 19580,
+    "length": 12,
+    "zh": "请在 1 分钟后重试",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 20019,
+    "length": 11,
+    "zh": "账户或恢复码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 20284,
+    "length": 6,
+    "zh": "密码恢复",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 20303,
+    "length": 13,
+    "zh": "通过本机恢复码重设密码",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 21328,
+    "length": 9,
+    "zh": "当前密码不正确",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 21481,
+    "length": 6,
+    "zh": "修改密码",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 21496,
+    "length": 11,
+    "zh": "已更新当前账户密码",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 22293,
+    "length": 21,
+    "zh": "工作区已发生变化，请重新查看预览后确认",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 22359,
+    "length": 12,
+    "zh": "正在保存，请稍后重试",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24003,
+    "length": 15,
+    "zh": "姓名需要 1–40 个字符",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24074,
+    "length": 6,
+    "zh": "修改资料",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24089,
+    "length": 15,
+    "zh": "显示名称更新为 {0}",
+    "args": [
+      "name"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24519,
+    "length": 6,
+    "zh": "角色无效",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24626,
+    "length": 19,
+    "zh": "不能撤销自己的管理员权限或停用自己",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24682,
+    "length": 8,
+    "zh": "更新账户权限",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24753,
+    "length": 4,
+    "zh": "启用",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 24760,
+    "length": 4,
+    "zh": "停用",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 25275,
+    "length": 6,
+    "zh": "保存配方",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 25525,
+    "length": 12,
+    "zh": "配方名称与版本已存在",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26020,
+    "length": 6,
+    "zh": "配方名称",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26050,
+    "length": 4,
+    "zh": "版本",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26079,
+    "length": 4,
+    "zh": "材料",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26111,
+    "length": 8,
+    "zh": "灵敏度（%）",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26146,
+    "length": 7,
+    "zh": "置信度阈值",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26177,
+    "length": 6,
+    "zh": "启用缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26279,
+    "length": 6,
+    "zh": "删除配方",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26433,
+    "length": 16,
+    "zh": "配方正在使用，请先为工位换型",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26694,
+    "length": 6,
+    "zh": "配方换型",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 26883,
+    "length": 18,
+    "zh": "请填写 3–500 字的换型原因",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 27031,
+    "length": 11,
+    "zh": "该工位已使用此配方",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 27341,
+    "length": 6,
+    "zh": "当前配方",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 27516,
+    "length": 6,
+    "zh": "工位状态",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 27576,
+    "length": 4,
+    "zh": "暂停",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 27583,
+    "length": 4,
+    "zh": "启动",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 28386,
+    "length": 5,
+    "zh": "未设置",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 29019,
+    "length": 6,
+    "zh": "配置工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 29272,
+    "length": 14,
+    "zh": "这条产线上已存在同名工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 29534,
+    "length": 13,
+    "zh": "更换配方请使用工位换型",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30003,
+    "length": 6,
+    "zh": "工位名称",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30019,
+    "length": 4,
+    "zh": "产线",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30098,
+    "length": 6,
+    "zh": "删除工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30219,
+    "length": 10,
+    "zh": "至少保留一个工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30316,
+    "length": 21,
+    "zh": "工位关联了检测记录，请保留工位以便追溯",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30438,
+    "length": 8,
+    "zh": "请先暂停工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 30745,
+    "length": 8,
+    "zh": "请先启动工位",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31352,
+    "length": 6,
+    "zh": "模拟检测",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31410,
+    "length": 5,
+    "zh": "不合格",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31418,
+    "length": 4,
+    "zh": "合格",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31872,
+    "length": 21,
+    "zh": "记录已移除，请返回检测列表查看当前记录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31924,
+    "length": 6,
+    "zh": "质量复核",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31968,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 31975,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32141,
+    "length": 24,
+    "zh": "请选择结果并填写 3–2000 字的复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32342,
+    "length": 24,
+    "zh": "记录已发生变化，请核对最新记录后重新提交复核",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32422,
+    "length": 11,
+    "zh": "请先恢复已归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32873,
+    "length": 5,
+    "zh": "未复核",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32913,
+    "length": 4,
+    "zh": "放行",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 32929,
+    "length": 4,
+    "zh": "判退",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33099,
+    "length": 6,
+    "zh": "复核结论",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33115,
+    "length": 6,
+    "zh": "复核依据",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33395,
+    "length": 17,
+    "zh": "所选记录已发生变化，请重新选择",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33541,
+    "length": 13,
+    "zh": "所选记录已处于目标状态",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33595,
+    "length": 6,
+    "zh": "归档记录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33604,
+    "length": 6,
+    "zh": "恢复记录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33619,
+    "length": 23,
+    "zh": "{0} 条记录",
+    "args": [
+      "changed.length"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 33784,
+    "length": 13,
+    "zh": "请先完成异常记录的复核",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 34288,
+    "length": 25,
+    "zh": "旧备份缺少时区，请在恢复预览中选择时间解释方式",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 34543,
+    "length": 16,
+    "zh": "请先选择旧备份的时间解释方式",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 35116,
+    "length": 6,
+    "zh": "恢复备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 35227,
+    "length": 28,
+    "zh": "；旧时间解释：{0}",
+    "args": [
+      "timeInterpretation"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 36231,
+    "length": 16,
+    "zh": "还原点已更新，请重新打开预览",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 36462,
+    "length": 16,
+    "zh": "还原点已更新，请重新打开预览",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 36523,
+    "length": 13,
+    "zh": "还没有可撤回的恢复操作",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 36983,
+    "length": 13,
+    "zh": "还没有可撤回的恢复操作",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 37131,
+    "length": 6,
+    "zh": "撤回恢复",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 37146,
+    "length": 19,
+    "zh": "业务数据已还原为上一次恢复前的状态",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 37651,
+    "length": 6,
+    "zh": "清理示例",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 37664,
+    "length": 18,
+    "zh": "移除模拟和示例记录，保留审计日志",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 38003,
+    "length": 6,
+    "zh": "添加示例",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 38018,
+    "length": 15,
+    "zh": "补充 96 条示例检测记录",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 38740,
+    "length": 6,
+    "zh": "导出数据",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 38748,
+    "length": 20,
+    "zh": "{0} · {1} 条记录",
+    "args": [
+      "kind",
+      "count"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39033,
+    "length": 12,
+    "zh": "请先完成当前文件导出",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39103,
+    "length": 9,
+    "zh": "导出记录数无效",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39195,
+    "length": 10,
+    "zh": "导出关联说明过长",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39402,
+    "length": 6,
+    "zh": "开始导出",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39417,
+    "length": 109,
+    "zh": "{0} · {1}{2} · 准备文件并等待保存结果",
+    "args": [
+      "kind",
+      "kind == '恢复前原件' ? '原始存储' : '$count 条记录'",
+      "reference == null ? '' : ' · $reference'"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39436,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39446,
+    "length": 6,
+    "zh": "原始存储",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 39455,
+    "length": 12,
+    "zh": "{0} 条记录",
+    "args": [
+      "count"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40160,
+    "length": 16,
+    "zh": "导出操作已结束或不是本机发起",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40230,
+    "length": 8,
+    "zh": "LSB 备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40240,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40568,
+    "length": 12,
+    "zh": "缺少文件保存校验信息",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40627,
+    "length": 9,
+    "zh": "JSON 备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40638,
+    "length": 8,
+    "zh": "LSB 备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 40900,
+    "length": 8,
+    "zh": "LSB 备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41104,
+    "length": 6,
+    "zh": "导出数据",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41148,
+    "length": 6,
+    "zh": "取消导出",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41189,
+    "length": 7,
+    "zh": "导出未完成",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41293,
+    "length": 8,
+    "zh": "LSB 备份",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41303,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41358,
+    "length": 14,
+    "zh": "文件已保存并回读校验通过",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41390,
+    "length": 12,
+    "zh": "文件选择器已确认保存",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41440,
+    "length": 7,
+    "zh": "未保存文件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41482,
+    "length": 20,
+    "zh": "文件选择器未确认保存，请检查目标位置",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41722,
+    "length": 7,
+    "zh": "恢复前原件",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41732,
+    "length": 6,
+    "zh": "原始存储",
+    "args": []
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 41741,
+    "length": 21,
+    "zh": "{0} 条记录",
+    "args": [
+      "ticket.count"
+    ]
+  },
+  {
+    "file": "lib/store.dart",
+    "offset": 42094,
+    "length": 7,
+    "zh": "文件字节数",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 1339,
+    "length": 6,
+    "zh": "准备中…",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 2801,
+    "length": 15,
+    "zh": "备份任务意外结束，请重试。",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 5498,
+    "length": 22,
+    "zh": "文件处理失败，请检查文件内容和可用空间。",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 6047,
+    "length": 11,
+    "zh": "正在生成 CSV…",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 6317,
+    "length": 32,
+    "zh": "CSV 超出文件限制，未生成完整文件。请缩小筛选范围后重试。",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 6667,
+    "length": 49,
+    "zh": "正在生成 CSV · {0} / {1} 条",
+    "args": [
+      "rows",
+      "snapshot.records.length"
+    ]
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 9150,
+    "length": 29,
+    "zh": "单项内容超过 16 MB，未生成备份。请保留本机数据。",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 9411,
+    "length": 30,
+    "zh": "完整备份超过 256 MB，未保存文件。请保留本机数据。",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 10065,
+    "length": 11,
+    "zh": "正在准备完整备份…",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 10475,
+    "length": 18,
+    "zh": "完整备份已准备，等待选择保存位置",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 11249,
+    "length": 17,
+    "zh": "完整备份不能超过 256 MB",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 12313,
+    "length": 20,
+    "zh": "完整备份中的时间必须带 UTC 标记",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 12454,
+    "length": 14,
+    "zh": "校验结尾之后还有多余内容",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 12604,
+    "length": 12,
+    "zh": "不支持的完整备份格式",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 13010,
+    "length": 18,
+    "zh": "备份长度校验失败，文件可能不完整",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 13160,
+    "length": 20,
+    "zh": "备份完整性校验失败，文件已改变或损坏",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 13315,
+    "length": 9,
+    "zh": "备份数量不完整",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 13748,
+    "length": 12,
+    "zh": "不支持的完整备份版本",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 14392,
+    "length": 13,
+    "zh": "备份声明的数据规模无效",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 14532,
+    "length": 10,
+    "zh": "备份包含未知内容",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 14671,
+    "length": 12,
+    "zh": "备份数量与声明不一致",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 14854,
+    "length": 10,
+    "zh": "备份内容顺序无效",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 15023,
+    "length": 15,
+    "zh": "日志关联对象缺少对应的日志",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 15507,
+    "length": 12,
+    "zh": "日志子项必须独立保存",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 15743,
+    "length": 13,
+    "zh": "日志关联数量或顺序无效",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 15906,
+    "length": 10,
+    "zh": "日志变更字段过多",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 16325,
+    "length": 17,
+    "zh": "完整备份不能超过 256 MB",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 16558,
+    "length": 10,
+    "zh": "备份单项内容过大",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 16829,
+    "length": 10,
+    "zh": "备份单项内容过大",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 16938,
+    "length": 14,
+    "zh": "正在读取并校验完整备份…",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 17172,
+    "length": 18,
+    "zh": "备份缺少完整结尾，文件可能已截断",
+    "args": []
+  },
+  {
+    "file": "lib/stream_backup.dart",
+    "offset": 17521,
+    "length": 16,
+    "zh": "备份内容不完整或字段格式无效",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 563,
+    "length": 8,
+    "zh": "时间格式无效",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 1138,
+    "length": 15,
+    "zh": "时间包含不存在的日期或时刻",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 1602,
+    "length": 14,
+    "zh": "时间的 UTC 偏移无效",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 1816,
+    "length": 12,
+    "zh": "UTC 偏移超出范围",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 2422,
+    "length": 29,
+    "zh": "旧时间在本机时区不存在，请选择来源的固定 UTC 偏移",
+    "args": []
+  },
+  {
+    "file": "lib/time.dart",
+    "offset": 2635,
+    "length": 17,
+    "zh": "UTC 时间超出支持的年份范围",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 14219,
+    "length": 6,
+    "zh": "处理中…",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 14703,
+    "length": 21,
+    "zh": "操作未完成，请检查文件或存储空间后重试",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 16130,
+    "length": 4,
+    "zh": "确认",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 16430,
+    "length": 4,
+    "zh": "取消",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 16729,
+    "length": 4,
+    "zh": "内容",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 17380,
+    "length": 4,
+    "zh": "取消",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 17503,
+    "length": 4,
+    "zh": "保存",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 17832,
+    "length": 14,
+    "zh": "LineSight 标志",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 19931,
+    "length": 19,
+    "zh": "合成支架示意图，右上方标记缺陷区域",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 19953,
+    "length": 9,
+    "zh": "合成支架示意图",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 20406,
+    "length": 18,
+    "zh": "SYNTHETIC · 示例画面",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 20752,
+    "length": 7,
+    "zh": "检测到缺陷",
+    "args": []
+  },
+  {
+    "file": "lib/ui.dart",
+    "offset": 20762,
+    "length": 6,
+    "zh": "表面完整",
+    "args": []
+  }
+]

@@ -1,0 +1,43 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:analyzer/dart/analysis/utilities.dart';
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
+
+class Audit extends RecursiveAstVisitor<void> {
+  final Set<String> keys;
+  final Set<String> missing = {};
+  final List<String> raw = [];
+  String file = '';
+  Audit(this.keys);
+  @override
+  void visitMethodInvocation(MethodInvocation node) {
+    if (node.methodName.name == 'tr' && node.argumentList.arguments.length > 1) {
+      final key = node.argumentList.arguments[1];
+      if (key is SimpleStringLiteral && !keys.contains(key.value)) missing.add(key.value);
+    }
+    super.visitMethodInvocation(node);
+  }
+  @override
+  void visitSimpleStringLiteral(SimpleStringLiteral node) {
+    if (RegExp(r'[\u3400-\u9fff]').hasMatch(node.value)) {
+      var translated = false;
+      for (AstNode? p = node.parent; p != null; p = p.parent) {
+        if (p is MethodInvocation && ['tr','trMessage'].contains(p.methodName.name)) translated=true;
+      }
+      if (!translated) raw.add('$file:${node.offset}: ${node.value}');
+    }
+    super.visitSimpleStringLiteral(node);
+  }
+}
+void main() {
+  final keys=(jsonDecode(File('tool/l10n_source.json').readAsStringSync()) as Map).values.cast<String>().toSet();
+  final a=Audit(keys);
+  for(final file in [File('lib/main.dart'), File('lib/ui.dart'), ...Directory('lib/screens').listSync().whereType<File>()]) {
+    a.file=file.path;
+    parseString(content:file.readAsStringSync()).unit.accept(a);
+  }
+  File('tool/missing_l10n.json').writeAsStringSync(jsonEncode(a.missing.toList()));
+  print('Missing keys: ${jsonEncode(a.missing.toList())}');
+  print(a.raw.join('\n'));
+}

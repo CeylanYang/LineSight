@@ -1,0 +1,934 @@
+0|Historical rules for this device's time zone
+1|Fixed {0}
+2|Not selected
+3|The compatible JSON exceeds 20 MB. Choose a full LSB backup to retain all records and logs.
+4|Backups must not exceed 20 MB
+5|Unsupported backup format or version
+6|{0}; selected at {1}
+7|The backup is incomplete or contains invalid fields
+8|Added
+9|Replaced
+10|Removed
+11|Records
+12|Recipes
+13|Stations
+14|Legacy restore point
+15|The original legacy file is unavailable
+16|The legacy file exceeds the supported 20 MB limit. Keep the local data.
+17|LSB backup
+18|Original data before recovery
+19|Recovery ID {0}
+20|Save exported file
+21|{0} · Snapshot {1}
+22|JSON backup
+23|Original legacy timestamps (workspace)
+24|Original legacy timestamps (restore point)
+25|Original data has been saved and verified for troubleshooting.
+26|CSV saved and verified: {0} records.
+27|{0} saved: {1} records.
+28|{0} export cancelled. No file was saved.
+29|{0} save could not be confirmed. Check the destination or available storage.
+30| The operation log could not be saved. Check available storage.
+31|Local workspace is missing
+32|Dashboard
+33|Recipe center
+34|Profile
+35|Administrator
+36|Quality engineer
+37|Operator
+38|Local account
+39|Related item
+40|Quality review
+41|Simulated inspection
+42|Data exceeds the limit, or recipes and stations are missing
+43|Duplicate or invalid data ID
+44|A field is empty or too long
+45|Invalid recipe parameters
+46|A station refers to a missing recipe
+47|Invalid recipe snapshot in an inspection record
+48|Invalid inspection record or reference
+49|Too many changed fields in a log entry
+50|Duplicate or oversized changed fields in a log entry
+51|Too many related items in a log entry
+52|Invalid related item type or duplicate reference
+53|Aluminum alloy · Bracket
+54|Surface scratch
+55|Edge notch
+56|Hole misalignment
+57|PLA · Structural part
+58|Layer crack
+59|Stainless steel · Impeller
+60|Example operator
+61|Example engineer
+62|Record ID
+63|Serial number
+64|Inspection time (UTC)
+65|Recipe snapshot
+66|Original result
+67|Defect
+68|Confidence
+69|Review result
+70|Reviewer
+71|Review time (UTC)
+72|Reason
+73|Example
+74|Archived
+75|The record's station no longer exists
+76|Export contains too many records or duplicate IDs
+77|Enter a review reason of at least 3 characters
+78|The review reason must not exceed 2,000 characters
+79|Original data before recovery is unavailable
+80|Original data exceeds 256 MB. Keep the local data.
+81|Preparing original data…
+82|All
+83|Activity log
+84|{0} history
+85|Every action has a record.
+86|View actions, related items and file export results.
+87|Linked by item ID, so history remains available after renaming.
+88|Search people, actions, names or IDs
+89|Clear search
+90|Action type
+91|All time
+92|Last {0} days
+93|{0} actions
+94|No matching actions
+95|Adjust the search, date range or action type.
+96|Load more ({0} remaining)
+97|Legacy logs retain their original text. Bulk actions without related IDs cannot be linked to individual records.
+98|Archive records
+99|Restore records
+100|Export data
+101|Start export
+102|Cancel export
+103|Export incomplete
+104|Recipe changeover
+105|{0} related items
+106|Action details
+107|This log entry is outside the current workspace
+108|Return to the activity log to view available entries.
+109|File bytes
+110|File verification
+111|File size
+112|Changes
+113|Before
+114|(empty)
+115|After
+116|Event information
+117|Actor (name at the time)
+118|Action time
+119|Log ID
+120|Actor ID
+121|Export action ID
+122|Same export
+123|No completion result yet. The file picker may still be waiting. If the app closed, the save cannot be confirmed.
+124|This workspace has no other logs for that export.
+125|Related items · {0}
+126|This action has no individual related items. Refer to the original log text.
+127|Names are shown as recorded at the time. Open an item to view current data. Removed items retain their historical IDs.
+128|Search related items by name or ID
+129|No matching items
+130|Try another name or ID.
+131|Load more ({0} remaining)
+132| · Removed
+133|Action history · {0}
+134|No related actions. Historical examples may have no logs.
+135|View full history
+136|Make every inspection traceable.
+137|Local storage
+138|Available offline
+139|Role permissions
+140|Recover local account
+141|Ready to see the details.
+142|Welcome back
+143|Use your saved recovery code to set a new password.
+144|Create this device's administrator account to manage your production line.
+145|Sign in to your local account to continue.
+146|Username
+147|3–32 letters, numbers, dots, hyphens or underscores
+148|Display name
+149|Account recovery code
+150|Set password (at least 8 characters)
+151|Password
+152|Show password
+153|Hide password
+154|Repeat password
+155|Include example inspection data
+156|Try statistics and reviews; remove examples later
+157|Reset password
+158|Create local workspace
+159|Sign in
+160|Passwords do not match
+161|Password updated. Please sign in again.
+162|Back to sign in
+163|Forgot password? Use recovery code
+164|Accounts and business data stay on this device. The first account is an administrator; administrators add subsequent members.
+165|Save account recovery code
+166|This code restores access if you forget your password. It appears only once. Store it securely.
+167|Recovery code copied
+168|Copy recovery code
+169|I have saved my recovery code
+170|Continue
+171|Backup incomplete. Check available storage and retry.
+172|Save business backup
+173|Back up everything. Continue anytime.
+174|Includes archived records, recipes, stations and all activity logs.
+175|{0} records
+176|Stations / Recipes
+177|Backup format
+178|Full LSB backup
+179|Recommended · Up to 256 MB
+180|Compatible JSON
+181|Legacy apps · Up to 20 MB
+182|For older LineSight versions, up to 20 MB. If the limit is exceeded, choose a full backup to keep all history.
+183|Recommended for regular backups, up to 256 MB. Saved files are read back and verified; restores are also checked. Requires LineSight 1.1.4 or newer.
+184|Captures data when backup starts. Back up later changes separately. Excludes local accounts, passwords, recovery codes and upgrade originals. Files are unencrypted; store them securely. Review differences before restoring.
+185|Waiting for save and verification…
+186|Preparing file…
+187|Cancel preparation
+188|Save compatible JSON
+189|Save full backup
+190|Could not read the backup. Check the file and retry.
+191|Check backup
+192|Check first. Restore second.
+193|Backup validation failed
+194|{0} Current business data has not been changed.
+195|Choose another file
+196|Reading backup…
+197|A restore preview appears after validation. This step does not change business data.
+198|Cancel reading
+199|Export incomplete. Please retry.
+200|Export inspection records
+201|Bring your records to a spreadsheet.
+202|Confirm the scope. Saved files are checked automatically.
+203|Export scope
+204|Filters and order
+205|Archived records
+206|Example / Simulated
+207|Snapshot time
+208|Captures records, station names and order when this page opens. Later reviews, archiving or additions do not change this export. Reopen the page to export the latest data.
+209|What's in the spreadsheet
+210|15 columns: record ID, serial number, station, inspection time, recipe snapshot name, original result, defect, confidence, review result, reviewer, review time, reason, operator, example flag and archived flag.\n\nTimes use UTC with a trailing Z. UTF-8 supports multilingual text. Formula-like text is protected with an apostrophe. CSV is for analysis and does not replace a business backup.
+211|First 3 records
+212|You can cancel file preparation. Choose a destination after generation; saved files are verified. Maximum size: 256 MB. Files are unencrypted; store them securely.
+213|Preparing export…
+214|Save CSV
+215|Last file operation
+216|Dismiss file operation notice
+217|View activity log
+218|Quality dashboard
+219|Good morning
+220|Good afternoon
+221|Good evening
+222|Exceptions to review
+223|Simulated line · Example environment
+224|{0} stations running
+225|Local records. Traceable results.\nBuild a quality history with every inspection.
+226|Open inspection station
+227|Quality insights
+228|Inspections today
+229|Original pass rate
+230|{0} exceptions awaiting review
+231|Inspect the evidence and complete quality reviews
+232|Production stations
+233|Local workspace
+234|Running
+235|Paused
+236|{0} records · {1} awaiting review
+237|View station
+238|Recent inspections
+239|All records →
+240|Your first record starts here
+241|Open a station and select “Simulated inspection” to generate a record.
+242|All metrics use local records · Example data is marked
+243|This station no longer exists
+244|The station list may change after a data restore.
+245|Station activity history
+246|Inspection station
+247|Simulated camera and inspection engine · Every action is saved locally
+248|Analyzing example image…
+249|Waiting for first inspection
+250|PASS · Original result: pass
+251|FAIL · Original result: fail
+252|Start the station to generate a simulated inspection record.
+253|{0}\n{1} · Confidence {2}%
+254|Pause station
+255|Start station
+256|View latest record →
+257|Current recipe
+258|Part material
+259|Sensitivity
+260|Confidence threshold
+261|Change recipe
+262|Records for this station
+263|View all
+264|No inspection records
+265|Records appear here after a simulated inspection.
+266|Exception queue
+267|{0} awaiting review
+268|Sorted by inspection time. Open a record to inspect the defect and reason.
+269|All exceptions reviewed
+270|New inspection exceptions appear here automatically.
+271|Recipe parameters, station changeovers and local system status.
+272|Create recipe
+273|Changeover
+274|System
+275|Search recipe name, material or version
+276|No recipes found
+277|Adjust the search or create a recipe.
+278|Used by {0} stations
+279|Available
+280|Minimum confidence
+281|View details
+282|Apply to station
+283|Changeovers update a station's current recipe. Historical records retain the recipe name and version used at inspection. Each changeover requires a reason.
+284|Current station configuration
+285|Recent changeovers
+286|No changeovers yet
+287|Select a station to configure its inspection recipe.
+288|Recipe details
+289|Recipe deleted
+290|Return to the recipe center to view current configurations.
+291|Inspection parameters
+292|Version
+293|Defect categories
+294|{0} enabled
+295|Stations using this recipe
+296|No stations currently use this recipe.
+297|Apply recipe
+298|Edit
+299|Duplicate as new recipe
+300|Delete this recipe?
+301|Historical recipe snapshots are retained. This action cannot be undone.
+302|Delete
+303|Recipes in use cannot be deleted
+304|Delete recipe
+305|Discard unsaved changes?
+306|The recipe has not been saved.
+307|Discard
+308|Edit recipe
+309|Recipe name
+310|Enter a name
+311|Recipe version
+312|Enter a version
+313|Part material and description
+314|Enter a material
+315|Sensitivity {0}%
+316|In the example engine, higher sensitivity increases the chance of a failed inspection.
+317|Minimum confidence {0}%
+318|Enabled defect categories
+319|Dimension error
+320|Surface porosity
+321|Save recipe
+322|Enable at least one defect category
+323|Update a recipe in use?
+324|Stations using this recipe will use the new parameters from their next inspection. Historical snapshots are retained.
+325|Station changeover
+326|Confirm the next inspection standard.
+327|Choose a station and recipe, then record the reason.
+328|Target station
+329|Target recipe
+330|Change preview
+331|Changeover reason
+332|For example: switch to the next batch of aluminum brackets
+333|This recipe is already in use
+334|Confirm and apply
+335|Confirm changeover?
+336|{0} will use {1} for subsequent simulated inspections.
+337|Operating mode
+338|Fully offline · Local workspace
+339|Local database
+340|Connected
+341|Disconnected
+342|Workspace records
+343|Recipes / Stations
+344|Camera and inspection
+345|Example engine · Synthetic images
+346|Data sync
+347|Saved on this device only
+348|Database size
+349|Run storage diagnostics
+350|Check passed: database integrity and record references are valid.
+351|Database report: {0}
+352|Station configuration
+353|Add station
+354|How it works
+355|Simulated inspections demonstrate actions, reviews and traceability. Paused stations cannot generate new records. No industrial cameras or production equipment are connected.
+356|Edit station
+357|Organize your production line.
+358|New stations start paused. Open the inspection station when ready to start.
+359|Station name
+360|Enter a station name
+361|Production line name
+362|Enter a production line name
+363|Initial recipe
+364|Save station
+365|Change inspection recipe
+366|Delete station?
+367|Only paused stations without related inspection records can be deleted.
+368|Delete this station
+369|Search, filter and review for traceable quality.
+370|Reverse time order
+371|Search serial, defect, recipe or notes
+372|Pending review
+373|Pass
+374|Fail
+375|All stations
+376|Select dates
+377|Clear date filter
+378|{0} {1} records
+379|Archive
+380|Inspection
+381|Export filtered CSV
+382|Filtered results
+383|Active records
+384|All results
+385|Keyword: {0}
+386|{0} to {1}
+387|Newest first
+388|Oldest first
+389|Done
+390|Select
+391|{0} selected
+392|Select all filtered results
+393|Restore selected
+394|Archive selected
+395|Restore records?
+396|Archive records?
+397|This affects {0} records. Archived records remain available under “Archived” and can be restored.
+398|No matching records
+399|Clear the filters or generate an inspection at a station.
+400|Review: accept
+401|Review: reject
+402|Saving review. Please wait.
+403|Discard unsubmitted review?
+404|Your review draft is unsaved. Going back discards these changes.
+405|Discard and go back
+406|Have you checked the latest record?
+407|Discard draft and reload?
+408|Confirm that you have checked the latest evidence and review above. Your draft is retained; submitting creates a new review log.
+409|Your unsubmitted changes will be discarded. The form will show the latest saved result and reason.
+410|Keep draft and continue review
+411|Reload
+412|The record changed again. Please check it again.
+413|Unsubmitted review draft
+414|Review result: {0}
+415|Accept
+416|Reject
+417|(no reason entered)
+418|Inspection details
+419|Record removed
+420|This record is no longer in the workspace after example cleanup or backup restoration.
+421|The record was removed and cannot be submitted. Copy your draft before going back.
+422|Export this record
+423|Single inspection record
+424|Original result: PASS
+425|Original result: FAIL
+426|Awaiting review
+427|Example record
+428|The image is a generated part illustration, not a real camera capture.
+429|Inspection evidence
+430|Defect type
+431|None detected
+432|Sensitivity at inspection
+433|Threshold at inspection
+434|Enabled defects
+435|Operator
+436|Inspection time
+437|Latest review
+438|Reviewer
+439|Review time
+440|Review reason
+441|Update review result
+442|Record updated
+443|Your draft is retained. Check the latest record above, then reload or keep your draft to continue.
+444|Load latest review
+445|Keep draft after checking
+446|Original inspection results are retained. Review results and every change are recorded in the activity log.
+447|Describe your findings and reason, at least 3 characters
+448|Record updated. Check the notice above first.
+449|Unsubmitted changes
+450|Matches the saved review
+451|Undo changes
+452|Submit review
+453|Review saved
+454|This record is archived and cannot be submitted. Copy your draft or restore the record and check it again.
+455|Your account cannot submit reviews. Copy your draft before going back.
+456|This is an operator account. A quality engineer or administrator must complete the review.
+457|Submit or discard your review draft before archiving.
+458|The record will appear in the inspection list and statistics again.
+459|The record will move to the archive and can be restored anytime.
+460|Restore this record
+461|Archive this record
+462|Could not interpret legacy timestamps. Select another rule.
+463|Restore point preview
+464|Backup restore preview
+465|Check the impact before undoing.
+466|Confirm before restoring.
+467|Compare current data with the {0}, including archived records.
+468|Restore point
+469|Backup
+470|Restore source
+471|Backup file
+472|Export time
+473|Awaiting timestamp interpretation
+474|Not recorded in legacy backup
+475|Format check
+476|Passed · LineSight {0}
+477|Integrity check
+478|SHA-256 verified
+479|Legacy backup timestamps
+480|{0} timestamps have no time zone. Choose the rules used by the source device. Timestamps with a time zone retain their original instants.
+481|Source timestamp interpretation
+482|Select an option
+483|A fixed offset applies to all legacy times without daylight saving changes. For seasonal daylight saving, choose historical rules on a device in the source time zone. Repeated clock times still need manual checking. For China Standard Time, choose UTC+08:00.
+484|Original time
+485|Local time
+486|I confirm the timestamp rules and restore impact below
+487|Restore point updated
+488|Return to data management and reopen the current restore point.
+489|Comparing data…
+490|Could not complete the comparison
+491|Go back and select the backup again. Current data has not been changed.
+492|Restore impact
+493|Added items
+494|Replaced items
+495|Removed items
+496|{0} items are unchanged. Counts compare record, recipe and station IDs individually.
+497|Added {0} · Replaced {1} · Removed {2}
+498|Logs and recovery protection
+499|All current logs are retained, with an additional undo entry.
+500|Additional logs
+501|Matching logs
+502|{0} entries, deduplicated
+503|Same ID, different content
+504|{0} entries; local originals take precedence
+505|This replaces business data created or changed after the restore and consumes the current restore point. Back up anything you need first.
+506|Current business data will be saved as a local restore point{0}. Local accounts, passwords and appearance settings are retained.
+507|, replacing the previous restore point
+508|Back up current data first
+509|Confirm undo restore
+510|Confirm restore backup
+511|Restore to this point?
+512|Replace business data with this backup?
+513|The restore point is removed after success.
+514|Current data is automatically retained as a restore point.
+515|\nTimestamp interpretation: {0}
+516|Undo restore
+517|Restore
+518|Data before restoration has been restored
+519|Backup restored
+520|{0} changes
+521|Search name or ID
+522|{0} changes
+523|No changes
+524|No changes match the current filters.
+525|This comparison was captured when you opened the preview. Returning to the restore preview compares the latest workspace.
+526|Name
+527|Material
+528|Sensitivity (%)
+529|Production line
+530|Running state
+531|Recipe ID
+532|Station ID
+533|Recipe snapshot at inspection
+534|Actor
+535|Archive status
+536|Example flag
+537|Not set
+538|Yes
+539|No
+540|Pass: PASS
+541|Fail: FAIL
+542|Active
+543|Not an example
+544|Current
+545|Does not exist
+546|After restore
+547|Your workspace.
+548|Manage accounts, data and your preferences.
+549|Edit profile
+550|Account and security
+551|Profile and password
+552|Change your display name and local password
+553|Members and permissions
+554|{0} local accounts
+555|View sign-ins, inspections, reviews and configuration changes
+556|Workspace management
+557|Data management
+558|Exports, backups, restores and example data
+559|System status
+560|Check the local database and data integrity
+561|Appearance and interaction
+562|Dark mode
+563|Glass panels
+564|Translucent panels and blurred backgrounds
+565|Haptic feedback
+566|Gentle feedback for navigation and saving
+567|Reduce motion
+568|Auto-lock when away
+569|Sign in again after 30 seconds in the background
+570|Help
+571|User guide and about
+572|Learn the workflows and example environment
+573|Lock now
+574|Sign out of this device?
+575|Inspection data, configurations and logs stay on this device.
+576|Sign out
+577|Sign out
+578|LineSight {0} · Offline workspace
+579|Account role
+580|Change display name
+581|Change name
+582|Change password
+583|Current password
+584|New password (at least 8 characters)
+585|Repeat new password
+586|Update password
+587|Password updated
+588|My permissions
+589|View and inspect
+590|Allowed
+591|Reviews and recipes
+592|Engineer or administrator required
+593|Export business data
+594|Members and restores
+595|Administrator required
+596|Add local member
+597|Work together, each with a role.
+598|Local members share business data. Actions are logged under the current account.
+599|View records, run simulated inspections, start or pause stations
+600|Also review, archive, manage recipes and export data
+601|Also manage members, restore backups and clean up data
+602|Local members
+603|(me)
+604|Enabled
+605|Disabled
+606|Manage {0}
+607|Account enabled
+608|You cannot disable yourself or remove your own administrator role.
+609|Cancel
+610|Save
+611|Welcome a new teammate.
+612|New accounts start as operators. Adjust their role in the member list after creation.
+613|Initial password (at least 8 characters)
+614|Create member
+615|Know your data.
+616|Save and manage your quality history locally.
+617|All inspection records
+618|Archived records
+619|Backup status
+620|No local backup save receipt yet
+621|Latest backup saved
+622|Saved at
+623|Backed-up records
+624|Saved by
+625|File format
+626|Save verification
+627|Destination verified by reading it back
+628|Keep backup files outside the app. Changes after backup started may not be included. This page does not check whether external files still exist.
+629|Time and dates
+630|Saved in UTC · Displayed locally
+631|Legacy timestamps converted; originals retained
+632|View timestamp rules
+633|View upgrade details and export legacy originals
+634|Export and backup
+635|Full LSB backups support up to 256 MB, retain all records and logs, and verify integrity. Compatible JSON is for legacy apps, up to 20 MB. CSV uses UTC timestamps for spreadsheet analysis.
+636|Export all CSV
+637|Includes archived and example records · Workspace order
+638|An engineer or administrator is required to export.
+639|Storage recovery history
+640|View recovery history and original data
+641|Administrators only · Export preserved original storage
+642|Restore business data
+643|Choose an LSB or JSON backup. Validate and preview it before restoring. Restoration replaces current business data while retaining local accounts and existing logs.
+644|Choose backup file
+645|Backups must not exceed 256 MB
+646|Could not read this file. Choose a local file.
+647|No restore point yet. A successful restore automatically retains the previous data.
+648|Restore point records
+649|{0} inspection records
+650|Created at
+651|Not recorded in legacy version
+652|Created by
+653|View restore point and undo
+654|Local restore point
+655|Local restore point from {0}
+656|Example data
+657|Currently {0} example / simulated records.
+658|Examples demonstrate the workflow. Cleanup deletes all marked example records, including simulations generated at stations.
+659|Add example set
+660|Added 96 example records
+661|Remove all example records?
+662|This deletes {0} example / simulated records, including archived records. Recipes, members and activity logs are retained.
+663|Remove examples
+664|Example records removed
+665|Uninstalling removes local accounts and data. Save a business backup first and keep account recovery codes separately.
+666|Record each instant clearly.
+667|Records are saved in UTC and displayed in the device's local time zone.
+668|Device time zone
+669|UTC time with a trailing Z
+670|Today, date filters and daily statistics use local calendar boundaries. Changing the device time zone may change displayed times and dates, while each recorded instant stays the same. Details show the UTC offset at that instant.
+671|Legacy timestamp compatibility
+672|Timestamps without a time zone do not reveal the original zone. Choose the source timestamp rules and confirm the import preview. Fixed offsets do not switch for daylight saving.
+673|No legacy timestamp originals need conversion on this device.
+674|Upgrade time
+675|Device time zone at upgrade
+676|Interpreted legacy timestamps
+677|{0} items
+678|The upgrade interpreted timestamps using the device's historical time zone rules, including system adjustments for skipped clock times. The offset above applies at upgrade time; historical offsets may differ. Original workspace and restore point data are retained separately and are not overwritten by restores.
+679|If the source time zone is wrong, export the original and import it from data management with new timestamp rules. Originals are snapshots from upgrade time; save a current full backup first. Existing local logs take precedence for matching IDs.
+680|Export original workspace
+681|Export original legacy restore point
+682|Make quality traceable.
+683|A local workspace for production inspections.
+684|01 Start an inspection
+685|Choose a station on the dashboard, confirm its recipe, start it and select “Simulated inspection”. Results and recipe snapshots are saved automatically. All images and inspections are currently simulated.
+686|02 Review exceptions
+687|Open details from the exception queue or records. Check the defect and confidence. Engineers and administrators can enter a reason and accept or reject the part. Original results are retained and each review change is logged.
+688|03 Recipes and changeovers
+689|Create, edit or duplicate recipes in the recipe center. For changeovers, choose a station and recipe and enter a reason. New settings affect subsequent inspections only. Historical snapshots are retained. Recipes in use cannot be deleted.
+690|04 Manage data and backups
+691|Search and filter records by dates, stations and results. Archive reviewed records and restore them later. CSV supports analysis; LSB and JSON restore business data. Accounts do not transfer with backups. A restore point is retained automatically before restoration.
+692|05 Accounts and recovery codes
+693|The first account is an administrator. Administrators add members, assign roles and disable accounts. Repeated sign-in failures trigger a temporary lock. Use your saved recovery code if you forget your password. Sign in after each cold start.
+694|06 Local data and privacy
+695|Accounts and inspection data stay in the local database. Passwords use salted key derivation. There are no cloud accounts or sync services. Business backups are unencrypted; store them securely. Example records are always marked.
+696|Opening your\nlocal workspace
+697|Large workspaces may take a moment. Sign in when ready.
+698|LineSight {0} · Available offline
+699|Export records in this statistics range
+700|Current statistics range
+701|From data to decisions.
+702|Statistics use local dates and active records, including marked example data.
+703|Today
+704|Last 7 days
+705|Last 30 days
+706|Station scope
+707|Total inspections
+708|Pass rate after review
+709|Pending reviews in range
+710|No data in this range
+711|Adjust the date or station, or generate a simulated inspection.
+712|Daily inspections
+713|View records →
+714|{0}/{1}: {2} inspections, {3} failed
+715|Defect distribution · Original results
+716|No defects detected in this range.
+717|{0} inspections
+718|Station comparison
+719|{0} inspections · {1} pending reviews
+720|Original pass rate = original passes / inspections. Pass rate after review uses the latest review result; unreviewed records use the original result. Archived records are excluded.
+721|Local data recovery
+722|Keep the originals. Restore your work.
+723|The workspace cannot open right now. Existing storage remains on this device.
+724|Check local storage and retry.
+725|Incomplete step
+726|Free some device storage, then retry reading the original database.
+727|Retry reading
+728|Recover from an existing backup
+729|Verify a local administrator, then choose an LSB or JSON backup. Original storage is retained before recovery; account passwords and permissions are preserved.
+730|Administrator username
+731|Verify with account recovery code
+732|Administrator password
+733|Show credentials
+734|Hide credentials
+735|Recovery code verification applies to this data recovery only and does not reset the password. Five failed attempts impose a one-minute lock.
+736|Verify administrator
+737|Administrator verification unavailable
+738|Recovery requires a readable, enabled local administrator account. Keep the app and local data, check device storage and retry. Contact your device maintainer if needed. Existing backups can be imported after creating a workspace on another device.
+739|Uninstalling or clearing app data deletes local accounts, records and retained originals.
+740|Recover workspace from backup
+741|Exit recovery verification
+742|Choose an available backup.
+743|Check the file, then confirm recovery.
+744|Verified administrator
+745|Verification expired
+746|Accounts and passwords
+747|Retain existing local accounts
+748|Automatically retained on successful recovery
+749|The current workspace cannot be read completely, so changes cannot be compared reliably. Recovery uses the chosen backup; later changes and damaged data are not merged automatically. Old restore points and backup receipts move into the original data archive for later export.
+750|Retaining originals and writing the new workspace happen together. On insufficient storage or write failure, the original database retains its previous state. Recovery verification locks after 30 seconds away.
+751|Choose recovery backup
+752|Could not interpret legacy timestamps. Select another rule.
+753|Storage recovery confirmation
+754|Confirm what to recover.
+755|Original storage is retained; business data comes from this backup.
+756|Format
+757|{0} records (including archived)
+758|Interpret legacy backup times
+759|{0} timestamps have no time zone. Choose the source device's rules.
+760|Fixed offsets do not switch for daylight saving. For seasonal changes, choose historical rules on a device in the source time zone. Repeated clock times need manual checking. China Standard Time: UTC+08:00.
+761|After recovery
+762|Local accounts, passwords and roles are retained. Readable appearance settings and upgrade originals are retained. Old restore points, backup receipts and other original storage are archived. Unreadable logs are not merged. Sign in again after recovery.
+763|I confirm the backup content, timestamp rules and recovery impact
+764|Keep originals and recover
+765|Recover workspace?
+766|Original storage will be retained, and this backup will create a readable workspace. Changes made after the backup are not recovered automatically.
+767|Recover workspace
+768|A traceable recovery process.
+769|Original data is retained locally and can be exported for troubleshooting.
+770|Originals contain business storage and settings from before recovery, potentially including damaged content. They are not restorable business backups. Exports exclude account passwords and recovery codes. Uninstalling or clearing app data deletes retained originals.
+771|Could not read recovery history
+772|Go back and retry, or check available storage.
+773|No storage recovery history
+774|Use regular backups and restores when your workspace opens normally.
+775|{0}\n{1} · {2} records restored · Originals {3}
+776|Preparing…
+777|Retain the original content.
+778|Export originals for troubleshooting without overwriting the current workspace.
+779|Recovery time
+780|Backup used
+781|Records restored
+782|Original content size
+783|Recovery ID
+784|Exports an LSR troubleshooting file and verifies it after saving. The file is unencrypted and contains original business data and settings. It cannot be imported as an LSB / JSON backup. Chunk encoding increases file size; the export limit is 256 MB.
+785|Export originals before recovery
+786|Original export incomplete. Check available storage and retry.
+787|Invalid local data chunk marker
+788|Invalid local data chunk metadata
+789|Local data chunk missing
+790|Local data chunk too large
+791|Local data chunk verification failed
+792|Invalid local data chunk order
+793|Opening local storage
+794|Reading or saving. Please retry later.
+795|Reading local accounts
+796|Reading inspection records and preferences
+797|Checking workspace and restore point
+798|Saving original legacy timestamps
+799|Could not read the local database. Check storage and retry. Original data is retained.
+800|Password must contain 8–128 characters
+801|Local workspace is not open yet
+802|Please sign in first
+803|Your account does not have permission for this action
+804|Automatically locked after 30 seconds away. Please sign in again.
+805|Session expired. Please try again.
+806|Local session has ended
+807|Saving. Please retry later.
+808|Username must contain 3–32 letters, numbers, dots, hyphens or underscores
+809|Name must contain 1–40 characters
+810|Create account
+811|This username already exists
+812|Incorrect account or recovery code
+813|Incorrect username or password
+814|Too many attempts. Retry in one minute.
+815|Storage recovery requires a local administrator
+816|This account is disabled. Contact a local administrator.
+817|Session expired. Please sign in again.
+818|Verify an administrator through the storage recovery entry
+819|Processing. Please wait.
+820|Sign in
+821|Local password verified
+822|Recovery is not needed, or accounts cannot be read
+823|Session expired. Verify again.
+824|Recovery verification expired. Verify the administrator again.
+825|Saving. Please wait.
+826|Confirm the backup and legacy timestamp interpretation first
+827|Invalid backup filename
+828|Storage recovery
+829|; Legacy timestamp rules: {0}
+830|Administrator permissions changed. Verify again.
+831|Business data recovered. Sign in again. View original data under Data management → Storage recovery history.
+832|Retry in one minute
+833|Password recovery
+834|Password reset using a local recovery code
+835|Incorrect current password
+836|Current account password updated
+837|Workspace changed. Review the preview again before confirming.
+838|Edit profile
+839|Display name updated to {0}
+840|Invalid role
+841|You cannot remove your own administrator role or disable yourself
+842|Update account permissions
+843|Enable
+844|Disable
+845|A recipe with this name and version already exists
+846|Recipe is in use. Change station recipes first.
+847|Enter a changeover reason of 3–500 characters
+848|This station already uses this recipe
+849|Station state
+850|Pause
+851|Start
+852|Configure station
+853|A station with this name already exists on this line
+854|Use station changeover to change the recipe
+855|Delete station
+856|Keep at least one station
+857|This station has inspection records. Retain it for traceability.
+858|Pause the station first
+859|Start the station first
+860|Record removed. Return to the list to view current records.
+861|Choose a result and enter a review reason of 3–2,000 characters
+862|Record changed. Check the latest record before resubmitting.
+863|Restore the archived record first
+864|Not reviewed
+865|Review conclusion
+866|Selected records changed. Select them again.
+867|Selected records already have the target state
+868|{0} records
+869|Complete exception reviews first
+870|Legacy backup has no time zone. Choose timestamp rules in the restore preview.
+871|Choose legacy timestamp rules first
+872|Restore backup
+873|Restore point updated. Reopen the preview.
+874|No restore operation to undo
+875|Business data restored to its state before the last restore
+876|Remove simulated and example records; retain audit logs
+877|Add examples
+878|Added 96 example inspection records
+879|{0} · {1} records
+880|Finish the current file export first
+881|Invalid export record count
+882|Export reference description too long
+883|{0} · {1}{2} · Preparing file and awaiting save result
+884|Original storage
+885|Export ended or was not started on this device
+886|File save verification information missing
+887|File saved and verified by reading it back
+888|File picker confirmed the save
+889|No file saved
+890|File picker did not confirm the save. Check the destination.
+891|Backup ended unexpectedly. Please retry.
+892|File processing failed. Check its content and available storage.
+893|Generating CSV…
+894|CSV exceeds the file limit. No complete file was generated. Narrow the filters and retry.
+895|Generating CSV · {0} / {1} records
+896|An item exceeds 16 MB. No backup generated. Keep the local data.
+897|Full backup exceeds 256 MB. No file saved. Keep the local data.
+898|Preparing full backup…
+899|Full backup ready. Choose a save destination.
+900|Full backup must not exceed 256 MB
+901|Full backup timestamps must include a UTC marker
+902|Extra content after the verification footer
+903|Unsupported full backup format
+904|Backup length mismatch. The file may be incomplete.
+905|Backup integrity check failed. The file changed or is damaged.
+906|Backup item counts are incomplete
+907|Unsupported full backup version
+908|Invalid declared backup size
+909|Backup contains unknown content
+910|Backup counts do not match the declaration
+911|Invalid backup content order
+912|A related log item has no corresponding log entry
+913|Log subitems must be saved independently
+914|Invalid related log item count or order
+915|A backup item is too large
+916|Reading and verifying full backup…
+917|Backup footer missing. The file may be truncated.
+918|Invalid timestamp format
+919|Timestamp contains an invalid date or time
+920|Invalid UTC offset in timestamp
+921|UTC offset outside supported range
+922|Legacy time does not exist in this time zone. Choose the source's fixed UTC offset.
+923|UTC timestamp outside supported year range
+924|Processing…
+925|Action incomplete. Check the file or available storage and retry.
+926|Confirm
+927|Content
+928|LineSight logo
+929|Synthetic bracket illustration with a marked defect at the upper right
+930|Synthetic bracket illustration
+931|SYNTHETIC · Example image
+932|Defect detected
+933|Surface intact
