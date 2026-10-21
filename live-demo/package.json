@@ -1,0 +1,11 @@
+{
+  "name": "linesight-web-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LineSight portable product experience",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node preview.mjs"
+  },
+  "engines": { "node": ">=18" }
+}

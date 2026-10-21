@@ -1,0 +1,11 @@
+{
+  "artifact": "deliverables/week6/LineSight-web-demo.zip",
+  "version": "1.0.0",
+  "bytes": 33702,
+  "sha256": "1be95bf6089dcfe27fa9cdef9c8595ae483943f4a5eaa556d151eefcb8cc90ce",
+  "dist_files": 11,
+  "dist_bytes": 95375,
+  "archive_entries": 14,
+  "manifest_verified": true,
+  "zip_crc_verified": true
+}

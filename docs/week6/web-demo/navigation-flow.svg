@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="m1 1 5 3-5 3" fill="none" stroke="#86a4ce" stroke-width="1.4"/></marker></defs>
+<rect width="1200" height="760" rx="24" fill="#f6f9fd"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect x="36" y="34" width="5" height="35" rx="2.5" fill="#3478f6"/><text x="57" y="59" fill="#22334d" font-size="24" font-weight="700">LineSight · 客户浏览流程</text><text x="57" y="91" fill="#7d8da4" font-size="13">生产、质检、配方与团队信息通过同一组对象串联。每个详情都支持返回与主导航切换。</text>
+<polyline points="260,195 340,195" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="560,195 640,195" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="860,195 940,195" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="1050,245 1050,350" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="750,245 750,350" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="640,400 560,400" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="260,400 340,400" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="150,350 150,297 450,297 450,245" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="260,605 340,605" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="560,605 640,605" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="750,555 750,505 900,505 900,195 860,195" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="40" y="145" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="57" y="171" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">01 / OVERVIEW</text>
+<text x="57" y="197" fill="#2e4360" font-size="16" font-weight="650">质量工作台</text>
+<text x="57" y="220" fill="#7d8da4" font-size="11">工位概览、任务与质量入口</text>
+<rect x="340" y="145" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="357" y="171" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">02 / PRODUCTION</text>
+<text x="357" y="197" fill="#2e4360" font-size="16" font-weight="650">生产任务</text>
+<text x="357" y="220" fill="#7d8da4" font-size="11">浏览进度、负责人和交接时间</text>
+<rect x="640" y="145" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="657" y="171" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">03 / JOB</text>
+<text x="657" y="197" fill="#2e4360" font-size="16" font-weight="650">任务详情</text>
+<text x="657" y="220" fill="#7d8da4" font-size="11">关联工位、配方和质检记录</text>
+<rect x="940" y="145" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="957" y="171" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">04 / INSPECTION</text>
+<text x="957" y="197" fill="#2e4360" font-size="16" font-weight="650">检测记录</text>
+<text x="957" y="220" fill="#7d8da4" font-size="11">质检状态、图像与任务追溯</text>
+<rect x="40" y="350" width="220" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="57" y="376" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">TEAM</text>
+<text x="57" y="402" fill="#2e4360" font-size="16" font-weight="650">团队工作区</text>
+<text x="57" y="425" fill="#7d8da4" font-size="11">共享任务与成员职责</text>
+<rect x="340" y="350" width="220" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="357" y="376" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">MEMBER</text>
+<text x="357" y="402" fill="#2e4360" font-size="16" font-weight="650">成员资料</text>
+<text x="357" y="425" fill="#7d8da4" font-size="11">查看负责人及工作职责</text>
+<rect x="640" y="350" width="220" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="657" y="376" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">ISSUE</text>
+<text x="657" y="402" fill="#2e4360" font-size="16" font-weight="650">异常处理记录</text>
+<text x="657" y="425" fill="#7d8da4" font-size="11">修整要求、负责人和复核进展</text>
+<rect x="940" y="350" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="957" y="376" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">IMAGE</text>
+<text x="957" y="402" fill="#2e4360" font-size="16" font-weight="650">图像与轮廓</text>
+<text x="957" y="425" fill="#7d8da4" font-size="11">并排查看、单图查看与放大</text>
+<rect x="40" y="555" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="57" y="581" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">RECIPES</text>
+<text x="57" y="607" fill="#2e4360" font-size="16" font-weight="650">配方中心</text>
+<text x="57" y="630" fill="#7d8da4" font-size="11">查看材料、版本与检查项目</text>
+<rect x="340" y="555" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="357" y="581" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">RECIPE</text>
+<text x="357" y="607" fill="#2e4360" font-size="16" font-weight="650">配方详情</text>
+<text x="357" y="630" fill="#7d8da4" font-size="11">检测参数与关联工位</text>
+<rect x="640" y="555" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="657" y="581" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">STATION</text>
+<text x="657" y="607" fill="#2e4360" font-size="16" font-weight="650">工位详情</text>
+<text x="657" y="630" fill="#7d8da4" font-size="11">设备、当前配方与生产任务</text>
+<path d="M40 708H1160" stroke="#e1e9f4"/><text x="40" y="734" fill="#93a4ba" font-size="10">LineSight / Week 6 / Web experience</text></g></svg>

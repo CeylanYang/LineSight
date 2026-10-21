@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f7fc">
+  <meta name="description" content="LineSight — 从生产到质检，让每一件品质都有迹可循。">
+  <title>LineSight · 生产与质量协同</title>
+  <link rel="icon" href="./assets/linesight-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./data.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#app-content" id="skip-link">跳至工作区</a>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="language-picker" aria-label="Language">
+    <button type="button" data-language="zh" lang="zh-CN" aria-pressed="true">中文</button>
+    <button type="button" data-language="en" lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="showcase">
+    <aside class="brand-story" aria-label="LineSight">
+      <a class="brand-lockup" href="#/home"><img src="./assets/linesight-mark.svg" alt="" width="36" height="36"><span>LineSight<span class="brand-dot">.</span></span></a>
+      <div class="story-main">
+        <p class="eyebrow" data-copy="storyEyebrow">生产与质量协同</p>
+        <h1 id="story-title">让每一件品质，<br>都有迹可循<span>。</span></h1>
+        <p class="story-description" data-copy="storyDescription">从生产任务到质检交接，<br>把每一个细节，交给清晰的协作。</p>
+        <div class="story-links" id="story-links"></div>
+      </div>
+      <div class="story-bottom">
+        <div class="journey-line" id="journey-line"></div>
+        <p data-copy="storyFootnote">让团队的每一步，都走在同一条线上。</p>
+      </div>
+      <svg class="story-orbit" viewBox="0 0 420 420" fill="none" aria-hidden="true"><rect x="92" y="92" width="236" height="236" rx="64" transform="rotate(22 210 210)"/><rect x="56" y="56" width="308" height="308" rx="90" transform="rotate(22 210 210)"/><rect x="20" y="20" width="380" height="380" rx="116" transform="rotate(22 210 210)"/></svg>
+    </aside>
+    <main class="phone" aria-label="LineSight">
+      <div class="phone-screen">
+        <div class="statusbar" aria-hidden="true"><span>9:41</span><span class="camera-pill"></span><svg width="56" height="13" viewBox="0 0 56 13" fill="currentColor"><path d="M1 9h3v3H1zm5-3h3v6H6zm5-3h3v9h-3zm5-3h3v12h-3z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M24 4q5-5 10 0m-8 3q3-3 6 0m-4 3h2"/><rect x="39" y="2" width="14" height="9" rx="2" fill="none" stroke="currentColor"/><rect x="41" y="4" width="10" height="5" rx="1"/><path d="M55 5v3" stroke="currentColor"/></svg></div>
+        <header class="detail-header" id="detail-header" hidden></header>
+        <div id="app-content" class="app-content" tabindex="-1"></div>
+        <nav class="bottom-nav" id="bottom-nav" aria-label="主导航"></nav>
+        <div class="home-indicator" aria-hidden="true"></div>
+        <div class="image-overlay" id="image-overlay" hidden></div>
+      </div>
+    </main>
+  </div>
+  <noscript><p class="noscript-message">请启用 JavaScript 以浏览 LineSight。 Please enable JavaScript to explore LineSight.</p></noscript>
+</body>
+</html>

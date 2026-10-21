@@ -7,6 +7,7 @@ This folder records the integrated LineSight team production and quality workflo
 - [Delivery checklist](delivery/checklist.md)
 - [Android build metadata](delivery/build-artifact.md)
 - [Screenshot index](screenshots/README.md)
+- [Portable web experience, navigation diagrams and browser evidence](web-demo/README.md)
 
 The screenshots show the bright Chinese-language app, team sign-in, pre-seeded demonstration workspace and task states, image review, and completed inspection flow. They were captured with empty credential fields where sign-in is shown. APK binaries, private keys, and account/password handoff details are intentionally kept out of this repository.
 

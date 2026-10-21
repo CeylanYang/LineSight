@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690">
+<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="m1 1 5 3-5 3" fill="none" stroke="#86a4ce" stroke-width="1.4"/></marker></defs>
+<rect width="1200" height="690" rx="24" fill="#f6f9fd"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect x="36" y="34" width="5" height="35" rx="2.5" fill="#3478f6"/><text x="57" y="59" fill="#22334d" font-size="24" font-weight="700">LineSight · 静态网页架构</text><text x="57" y="91" fill="#7d8da4" font-size="13">运行资源全部随包提供；Hash 路由适用于本地文件和静态托管，构建过程无需下载 npm 依赖。</text>
+<polyline points="280,195 325,195 325,360 370,360" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="280,360 370,360" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="280,525 325,525 325,360 370,360" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="590,360 660,360" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="880,360 920,360 920,195 960,195" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="880,360 960,360" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<polyline points="880,360 920,360 920,525 960,525" fill="none" stroke="#9ab2d2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="40" y="145" width="240" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="57" y="171" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">SOURCE / UI</text>
+<text x="57" y="197" fill="#2e4360" font-size="16" font-weight="650">HTML + CSS + JavaScript</text>
+<text x="57" y="220" fill="#7d8da4" font-size="11">页面、样式、导航与图片查看</text>
+<rect x="40" y="310" width="240" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="57" y="336" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">SOURCE / CONTENT</text>
+<text x="57" y="362" fill="#2e4360" font-size="16" font-weight="650">统一内容与双语文案</text>
+<text x="57" y="385" fill="#7d8da4" font-size="11">任务、记录、配方、工位与成员</text>
+<rect x="40" y="475" width="240" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="57" y="501" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">SOURCE / ASSETS</text>
+<text x="57" y="527" fill="#2e4360" font-size="16" font-weight="650">本地品牌与零件 SVG</text>
+<text x="57" y="550" fill="#7d8da4" font-size="11">三组零件图像及对应轮廓</text>
+<rect x="370" y="310" width="220" height="100" rx="16" fill="#eff5ff" stroke="#d7e5f9"/>
+<text x="387" y="336" fill="#3478f6" font-size="10" font-weight="700" letter-spacing="1.2">BUILD</text>
+<text x="387" y="362" fill="#2e4360" font-size="16" font-weight="650">Node.js 构建</text>
+<text x="387" y="385" fill="#7d8da4" font-size="11">复制资源并生成 SHA-256 清单</text>
+<rect x="660" y="310" width="220" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="677" y="336" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">DELIVERY</text>
+<text x="677" y="362" fill="#2e4360" font-size="16" font-weight="650">完整 dist/</text>
+<text x="677" y="385" fill="#7d8da4" font-size="11">可独立分发的静态文件</text>
+<rect x="960" y="145" width="200" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="977" y="171" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">LOCAL</text>
+<text x="977" y="197" fill="#2e4360" font-size="16" font-weight="650">本地浏览</text>
+<text x="977" y="220" fill="#7d8da4" font-size="11">双击 index.html</text>
+<rect x="960" y="310" width="200" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="977" y="336" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">HOSTING</text>
+<text x="977" y="362" fill="#2e4360" font-size="16" font-weight="650">Vercel / Netlify</text>
+<text x="977" y="385" fill="#7d8da4" font-size="11">静态托管与详情刷新</text>
+<rect x="960" y="475" width="200" height="100" rx="16" fill="#edf6f3" stroke="#cde8df"/>
+<text x="977" y="501" fill="#139d83" font-size="10" font-weight="700" letter-spacing="1.2">PREFERENCE</text>
+<text x="977" y="527" fill="#2e4360" font-size="16" font-weight="650">浏览器语言偏好</text>
+<text x="977" y="550" fill="#7d8da4" font-size="11">默认中文，可完整切换英文</text>
+<path d="M40 638H1160" stroke="#e1e9f4"/><text x="40" y="664" fill="#93a4ba" font-size="10">LineSight / Week 6 / Web experience</text></g></svg>

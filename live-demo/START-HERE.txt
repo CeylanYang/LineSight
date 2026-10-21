@@ -1,0 +1,18 @@
+LineSight
+
+1. 解压完整压缩包。
+2. 打开 dist 文件夹，双击 index.html。
+3. 使用底部导航浏览工作台、检测记录、配方中心和我的。
+4. 点击卡片进入详情；使用页面左上角返回或浏览器返回。
+5. 点击中文 / EN 切换语言。
+
+部署：将 dist 文件夹上传到 Netlify，或作为 Vercel 的静态输出目录。
+
+推荐路径：工作台 > 生产任务 > 传感器固定座 > 质检记录 > 检测图像。
+
+English
+
+Extract the full archive and open dist/index.html.
+Use the bottom navigation and select a card to explore its details.
+Use the back arrow or browser Back to return. Select EN for English.
+Deploy the dist folder to a static hosting provider such as Vercel or Netlify.

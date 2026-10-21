@@ -1,0 +1,20 @@
+flowchart LR
+  subgraph Source[独立网页源码]
+    HTML[HTML 入口]
+    CSS[亮色响应式样式]
+    Router[Hash 导航与浏览历史]
+    Render[页面渲染与图片查看]
+    Data[统一任务 / 配方 / 记录 / 成员内容]
+    Copy[中文与英文文案]
+    Assets[本地 SVG 品牌与零件图像]
+    HTML --> Router --> Render
+    CSS --> Render
+    Data --> Render
+    Copy --> Render
+    Assets --> Render
+  end
+  Source --> Build[Node.js 构建：复制静态资源 / 生成哈希清单]
+  Build --> Dist[dist/ 完整静态包]
+  Dist --> Local[本地双击 index.html]
+  Dist --> Hosting[Vercel / Netlify 静态托管]
+  Render --> Prefs[浏览器语言偏好]

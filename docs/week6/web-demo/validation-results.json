@@ -1,0 +1,180 @@
+{
+  "status": "pass",
+  "checked_at": "2026-10-21T08:47:12.990986+00:00",
+  "checks": 6126,
+  "routes": [
+    "evidence/2041",
+    "evidence/2041?view=contour",
+    "evidence/2041?view=image",
+    "evidence/2042",
+    "evidence/2042?view=contour",
+    "evidence/2042?view=image",
+    "evidence/2043",
+    "evidence/2043?view=contour",
+    "evidence/2043?view=image",
+    "evidence/2044",
+    "evidence/2044?view=contour",
+    "evidence/2044?view=image",
+    "evidence/2045",
+    "evidence/2045?view=contour",
+    "evidence/2045?view=image",
+    "evidence/2046",
+    "evidence/2046?view=contour",
+    "evidence/2046?view=image",
+    "evidence/2047",
+    "evidence/2047?view=contour",
+    "evidence/2047?view=image",
+    "evidence/2048",
+    "evidence/2048?view=contour",
+    "evidence/2048?view=image",
+    "evidence/2049",
+    "evidence/2049?view=contour",
+    "evidence/2049?view=image",
+    "evidence/2050",
+    "evidence/2050?view=contour",
+    "evidence/2050?view=image",
+    "evidence/2051",
+    "evidence/2051?view=contour",
+    "evidence/2051?view=image",
+    "evidence/2052",
+    "evidence/2052?view=contour",
+    "evidence/2052?view=image",
+    "evidence/2053",
+    "evidence/2053?view=contour",
+    "evidence/2053?view=image",
+    "guide",
+    "home",
+    "insights",
+    "insights?range=week",
+    "issues/1043",
+    "jobs",
+    "jobs/1041",
+    "jobs/1042",
+    "jobs/1043",
+    "jobs/1044",
+    "jobs/1045",
+    "jobs?filter=active",
+    "jobs?filter=closed",
+    "me",
+    "members/chen",
+    "members/lin",
+    "members/xu",
+    "members/zhou",
+    "notifications",
+    "recipes",
+    "recipes/abs",
+    "recipes/petg",
+    "recipes/pla",
+    "recipes?tab=stations",
+    "records",
+    "records/2041",
+    "records/2042",
+    "records/2043",
+    "records/2044",
+    "records/2045",
+    "records/2046",
+    "records/2047",
+    "records/2048",
+    "records/2049",
+    "records/2050",
+    "records/2051",
+    "records/2052",
+    "records/2053",
+    "records?filter=pass",
+    "records?filter=review",
+    "stations/01",
+    "stations/02",
+    "stations/03",
+    "team"
+  ],
+  "scenarios": [
+    {
+      "scenario": "Discover and open every linked Chinese route",
+      "status": "pass",
+      "routes": 83
+    },
+    {
+      "scenario": "All linked routes: http, zh",
+      "status": "pass",
+      "routes": 83
+    },
+    {
+      "scenario": "All linked routes: http, en",
+      "status": "pass",
+      "routes": 83
+    },
+    {
+      "scenario": "All linked routes: file, zh",
+      "status": "pass",
+      "routes": 83
+    },
+    {
+      "scenario": "All linked routes: file, en",
+      "status": "pass",
+      "routes": 83
+    },
+    {
+      "scenario": "Layout at 360×800, both languages",
+      "status": "pass",
+      "routes": 166
+    },
+    {
+      "scenario": "Layout at 390×844, both languages",
+      "status": "pass",
+      "routes": 166
+    },
+    {
+      "scenario": "Layout at 768×1024, both languages",
+      "status": "pass",
+      "routes": 166
+    },
+    {
+      "scenario": "Layout at 1440×960, both languages",
+      "status": "pass",
+      "routes": 166
+    },
+    {
+      "scenario": "Layout at 1280×720, both languages",
+      "status": "pass",
+      "routes": 166
+    },
+    {
+      "scenario": "Actual link journeys, image dialog and browser Back/Forward",
+      "status": "pass"
+    },
+    {
+      "scenario": "List scroll position preserved on Back",
+      "status": "pass"
+    },
+    {
+      "scenario": "Language switching, persistence and deep-link reload",
+      "status": "pass"
+    },
+    {
+      "scenario": "Unknown routes and direct-entry Back",
+      "status": "pass"
+    },
+    {
+      "scenario": "Data references and summary consistency",
+      "status": "pass",
+      "totals": {
+        "complete": 12,
+        "passed": 11,
+        "review": 2,
+        "valid": true
+      }
+    },
+    {
+      "scenario": "Final screenshots",
+      "status": "pass",
+      "count": 19
+    },
+    {
+      "scenario": "Offline file:// journey in a fresh browser context",
+      "status": "pass"
+    }
+  ],
+  "javascript_errors": [],
+  "remote_requests": [],
+  "failed_responses": []
+}

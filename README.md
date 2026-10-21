@@ -2,6 +2,10 @@
 
 LineSight is an offline Flutter workspace for production-line quality inspection. Version 1.1 adds local authentication, persistent inspection workflows, recipe configuration, quality statistics, and data management. Version 1.1.9 adds review-draft protection, stale-evidence checks and repeated-query reuse. Worker-based startup validation and accessible loading steps are included. Immutable CSV previews, streaming generation and verified native saving are included. Authenticated startup recovery preserves original data atomically. Complete streaming backups, portable timestamps, audit traceability and item-by-item restore/undo previews are included. The interface is in Simplified Chinese with light/dark glass surfaces and responsive phone/tablet layouts.
 
+## Portable web experience
+
+[Download the static web package](deliverables/week6/LineSight-web-demo.zip), extract it, and open `dist/index.html`. The bright Chinese/English experience connects production jobs, inspection images, recipes and team details. Deploy the complete `dist` folder to static hosting, or build from [`live-demo/`](live-demo/README.md). [Screenshots, navigation diagrams and browser validation](docs/week6/web-demo/README.md).
+
 ## Local workspace — version 1.1
 
 - **Accounts:** first-run administrator setup, salted PBKDF2 password verification, recovery codes, password changes, account roles, disabled accounts, login throttling, sign-out, and background locking. No cloud account is required.
