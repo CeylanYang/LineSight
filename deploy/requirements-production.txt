@@ -1,0 +1,7 @@
+Django==5.2.17
+djangorestframework==3.16.1
+Pillow==12.1.0
+opencv-python-headless==4.13.0.92
+gunicorn==23.0.0
+argon2-cffi==25.1.0
+pysqlite3-binary==0.5.4.post2

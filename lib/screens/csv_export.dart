@@ -94,7 +94,7 @@ class _CsvExportPageState extends State<CsvExportPage> {
               ),
               InfoRow(tr(context, "其中归档"), tr(context, "{0} 条", [archived])),
               InfoRow(
-                tr(context, "示例 / 模拟"),
+                tr(context, "示例记录"),
                 tr(context, "{0} 条", [records.where((r) => r.sample).length]),
               ),
               InfoRow(

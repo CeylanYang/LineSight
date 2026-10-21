@@ -89,7 +89,7 @@ class StartupPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 28),
                           Text(
-                            tr(context, "LineSight {0} · 离线可用", [appVersion]),
+                            tr(context, "LineSight {0} · 质量工作台", [appVersion]),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),

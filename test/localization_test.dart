@@ -37,6 +37,14 @@ class LanguageStore extends AppStore {
 }
 
 void main() {
+  test('team workspace customer labels have English counterparts', () {
+    expect(englishMessages['团队管理员'], 'Team admin');
+    expect(englishMessages['操作成员'], 'Operator');
+    expect(englishMessages['只读成员'], 'View only');
+    expect(englishMessages['团队成员'], 'Team members');
+    expect(englishMessages['查看照片与边缘参考 #{0}'], 'View photo and edge reference #{0}');
+  });
+
   test(
     'CSV header follows captured language while multilingual data stays unchanged',
     () {

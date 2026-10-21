@@ -163,7 +163,7 @@ class _ModulesPageState extends State<ModulesPage> {
                     Icons.precision_manufacturing_outlined,
                     color: blue,
                   ),
-                  title: Text(station.name),
+                  title: Text(trWorkspaceLabel(context, station.name)),
                   subtitle: Text(s.recipe(station.recipeId).label),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => openPage(
@@ -449,7 +449,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
                   }),
                 ),
                 Text(
-                  tr(context, "示例引擎中，灵敏度越高，触发异常的概率越高。"),
+                  tr(context, "调整灵敏度与置信度阈值，设置缺陷识别范围。"),
                   style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(height: 20),
@@ -645,8 +645,8 @@ class _ChangeoverPageState extends State<ChangeoverPage> {
                   if (await confirm(
                     context,
                     tr(context, "确认换型？"),
-                    tr(context, "{0} 将使用 {1} 进行后续模拟检测。", [
-                      station.name,
+                    tr(context, "{0} 将使用 {1} 进行后续检测。", [
+                      trWorkspaceLabel(context, station.name),
                       next.label,
                     ]),
                   )) {
@@ -678,7 +678,7 @@ class _SystemPanelState extends State<SystemPanel> {
         GlassPanel(
           child: Column(
             children: [
-              InfoRow(tr(context, "运行模式"), tr(context, "完全离线 · 本机工作区")),
+              InfoRow(tr(context, "工作区"), tr(context, "本机工作区")),
               InfoRow(
                 tr(context, "本地数据库"),
                 s.db.isOpen ? tr(context, "已连接") : tr(context, "未连接"),
@@ -695,8 +695,6 @@ class _SystemPanelState extends State<SystemPanel> {
                 tr(context, "操作日志"),
                 tr(context, "{0} 条", [s.data.audits.length]),
               ),
-              InfoRow(tr(context, "相机与检测"), tr(context, "示例引擎 · 合成画面")),
-              InfoRow(tr(context, "数据同步"), tr(context, "仅本机保存")),
               if (bytes != null)
                 InfoRow(
                   tr(context, "数据库大小"),
@@ -744,9 +742,9 @@ class _SystemPanelState extends State<SystemPanel> {
               Icons.precision_manufacturing_outlined,
               color: blue,
             ),
-            title: Text(station.name),
+            title: Text(trWorkspaceLabel(context, station.name)),
             subtitle: Text(
-              '${station.line} · ${s.recipe(station.recipeId).label}',
+              '${trWorkspaceLabel(context, station.line)} · ${s.recipe(station.recipeId).label}',
             ),
             trailing: Icon(
               s.engineer ? Icons.tune_rounded : Icons.chevron_right,
@@ -761,7 +759,7 @@ class _SystemPanelState extends State<SystemPanel> {
         ),
         SectionHeading(tr(context, "运行说明")),
         Text(
-          tr(context, "模拟检测仅用于体验操作、复核与追溯流程。暂停的工位不会生成新记录。没有连接真实工业相机或产线设备。"),
+          tr(context, "启动工位后可开始检测并生成记录；暂停工位后将停止生成新记录。"),
           style: const TextStyle(height: 1.8),
         ),
       ],

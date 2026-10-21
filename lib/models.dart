@@ -256,7 +256,7 @@ class AuditEntry {
     // Count-only bulk events cannot be reliably assigned to individual records.
     return type == 'record' &&
         ((action == '质量复核' && detail.startsWith('$targetId · ')) ||
-            (action == '模拟检测' &&
+            ((action == '模拟检测' || action == '检测记录') &&
                 legacySerial != null &&
                 detail.contains(' · $legacySerial · ')));
   }

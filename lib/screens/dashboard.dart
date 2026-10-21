@@ -58,7 +58,7 @@ class DashboardPage extends StatelessWidget {
           const SizedBox(height: 18),
         ],
         PageHeading(
-          eyebrow: 'LINESIGHT / WORKSPACE',
+          eyebrow: tr(context, "质量管理"),
           title: tr(context, "质量工作台"),
           subtitle:
               '${s.user?.name ?? ''}，${now.hour < 12
@@ -84,10 +84,7 @@ class DashboardPage extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: [
-                  const Tag('LOCAL FIRST', color: green),
-                  Tag(tr(context, "模拟产线 · 示例环境")),
-                ],
+                children: [Tag(tr(context, "质量协同"), color: green)],
               ),
               const SizedBox(height: 18),
               Row(
@@ -200,7 +197,7 @@ class DashboardPage extends StatelessWidget {
         ],
         SectionHeading(
           tr(context, "产线工位"),
-          action: Tag(tr(context, "本机工作区"), color: green),
+          action: Tag(tr(context, "工位概览"), color: green),
         ),
         AdaptiveGrid(
           children: s.data.stations.map((station) {
@@ -231,12 +228,12 @@ class DashboardPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              station.name,
+                              trWorkspaceLabel(context, station.name),
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              station.line,
+                              trWorkspaceLabel(context, station.line),
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.blueGrey,
@@ -295,7 +292,7 @@ class DashboardPage extends StatelessWidget {
         if (s.records.isEmpty)
           EmptyState(
             title: tr(context, "第一条记录，从这里开始"),
-            subtitle: tr(context, "进入任一工位，点击「模拟检测」即可生成记录。"),
+            subtitle: tr(context, "进入任一工位，点击「开始检测」即可生成记录。"),
           ),
         ...s.records
             .take(4)
@@ -344,7 +341,7 @@ class _StationPageState extends State<StationPage> {
     final records = s.records.where((r) => r.stationId == widget.id).toList();
     final latest = records.isEmpty ? null : records.first;
     return DetailScaffold(
-      title: station.name,
+      title: trWorkspaceLabel(context, station.name),
       actions: [
         IconButton(
           tooltip: tr(context, "工位操作轨迹"),
@@ -355,9 +352,9 @@ class _StationPageState extends State<StationPage> {
       ],
       children: [
         PageHeading(
-          eyebrow: '${station.line} / INSPECTION',
+          eyebrow: '${trWorkspaceLabel(context, station.line)} / INSPECTION',
           title: tr(context, "工位检测台"),
-          subtitle: tr(context, "模拟相机与检测引擎 · 每次操作都会保存至本机"),
+          subtitle: tr(context, "检测流程 · 结果自动保存至工作区"),
           trailing: Tag(
             station.running ? tr(context, "运行中") : tr(context, "已暂停"),
             color: station.running ? green : amber,
@@ -381,7 +378,7 @@ class _StationPageState extends State<StationPage> {
                   Expanded(
                     child: Text(
                       scanning
-                          ? tr(context, "正在分析示例画面…")
+                          ? tr(context, "正在分析画面…")
                           : latest == null
                           ? tr(context, "等待首次检测")
                           : latest.passed
@@ -409,7 +406,7 @@ class _StationPageState extends State<StationPage> {
               const SizedBox(height: 10),
               Text(
                 latest == null
-                    ? tr(context, "启动工位后可生成一条模拟检测记录。")
+                    ? tr(context, "启动工位后可开始检测并生成记录。")
                     : tr(context, "{0}\n{1} · 置信度 {2}%", [
                         latest.serial,
                         stamp(latest.at),
@@ -423,7 +420,7 @@ class _StationPageState extends State<StationPage> {
                 runSpacing: 10,
                 children: [
                   BusyButton(
-                    label: tr(context, "模拟检测"),
+                    label: tr(context, "开始检测"),
                     icon: Icons.center_focus_strong,
                     onPressed: !station.running
                         ? null
@@ -521,7 +518,7 @@ class _StationPageState extends State<StationPage> {
         if (records.isEmpty)
           EmptyState(
             title: tr(context, "暂无检测记录"),
-            subtitle: tr(context, "模拟检测完成后，记录会出现在这里。"),
+            subtitle: tr(context, "检测完成后，记录会显示在这里。"),
           ),
       ],
     );

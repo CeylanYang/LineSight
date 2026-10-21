@@ -15,6 +15,22 @@ String tr(
   });
 }
 
+/// Localize the built-in station labels while preserving names entered by a team.
+String trWorkspaceLabel(BuildContext context, String source) {
+  if (Localizations.localeOf(context).languageCode == 'en') return source;
+  final station = RegExp(
+    r'^Station\s+(\d+)$',
+    caseSensitive: false,
+  ).firstMatch(source);
+  if (station != null) return '工位 ${station[1]}';
+  final line = RegExp(
+    r'^LINE\s+(\d+)$',
+    caseSensitive: false,
+  ).firstMatch(source);
+  if (line != null) return '产线 ${line[1]}';
+  return source;
+}
+
 class _MessagePattern {
   final String source;
   final RegExp pattern;

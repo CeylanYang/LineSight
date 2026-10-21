@@ -4,8 +4,8 @@ django-tenant-users==3.0.1
 django-tenants==4.0.0
 django-helpdesk==2.6.1
 django-simple-history==3.13.0
-django-q2==1.8.1
+django-q2==1.8.0
 djangorestframework==3.16.1
 psycopg[binary]==3.3.2
 Pillow==12.1.0
-opencv-python-headless==4.13.0.96
+opencv-python-headless==4.13.0.92

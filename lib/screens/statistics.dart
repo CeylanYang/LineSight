@@ -64,7 +64,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           ]),
                           stationId == null
                               ? tr(context, "全部工位")
-                              : s.station(stationId!).name,
+                              : trWorkspaceLabel(
+                                  context,
+                                  s.station(stationId!).name,
+                                ),
                           tr(context, '未归档'),
                           tr(context, '时间从新到旧'),
                         ].join(' · '),
@@ -146,7 +149,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           const SizedBox(height: 20),
           EmptyState(
             title: tr(context, "此范围还没有数据"),
-            subtitle: tr(context, "调整日期或工位，或生成一条模拟检测记录。"),
+            subtitle: tr(context, "调整日期或工位，或开始一次检测。"),
           ),
         ],
         SectionHeading(
@@ -325,7 +328,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       Icons.precision_manufacturing_outlined,
                       color: blue,
                     ),
-                    title: Text(station.name),
+                    title: Text(trWorkspaceLabel(context, station.name)),
                     subtitle: Text(
                       tr(context, "{0} 次检测 · {1} 条待复核", [
                         subset.length,

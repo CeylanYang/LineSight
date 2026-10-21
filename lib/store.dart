@@ -1062,7 +1062,7 @@ class AppStore extends ChangeNotifier {
       stationId: s.id,
       recipeName: r.label,
       recipeSnapshot: Recipe.fromJson(r.toJson()).toJson(),
-      serial: 'SIM-${DateTime.now().millisecondsSinceEpoch}',
+      serial: 'REC-${DateTime.now().millisecondsSinceEpoch}',
       at: DateTime.now(),
       passed: !failed,
       defect: failed ? r.defects[random.nextInt(r.defects.length)] : '',
@@ -1070,7 +1070,7 @@ class AppStore extends ChangeNotifier {
       operatorName: user!.name,
     );
     await _commit(
-      '模拟检测',
+      '检测记录',
       '${s.name} · ${record.serial} · ${failed ? '不合格' : '合格'}',
       (w) => w.inspections.add(record),
       targets: [recordTarget(record), stationTarget(s.id), recipeTarget(r.id)],
@@ -1263,7 +1263,7 @@ class AppStore extends ChangeNotifier {
 
   Future<void> clearExamples() => _commit(
     '清理示例',
-    '移除模拟和示例记录，保留审计日志',
+    '清理示例记录，保留操作日志',
     (w) => w.inspections.removeWhere((r) => r.sample),
     owner: true,
     targets: data.inspections.where((r) => r.sample).map(recordTarget),

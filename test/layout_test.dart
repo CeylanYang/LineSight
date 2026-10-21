@@ -9,6 +9,7 @@ import 'package:linesight_flutter/screens/records.dart';
 import 'package:linesight_flutter/screens/modules.dart';
 import 'package:linesight_flutter/screens/settings.dart';
 import 'package:linesight_flutter/screens/statistics.dart';
+import 'package:linesight_flutter/screens/team_workspace.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -53,6 +54,7 @@ void main() {
           const DataPage(),
           const HelpPage(),
           const AlertsPage(),
+          const TeamWorkspacePage(),
         ]) {
           await tester.pumpWidget(
             AppScope(

@@ -1,0 +1,153 @@
+import io
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+from rest_framework.test import APIClient
+from PIL import Image
+from PIL import ImageDraw
+from .models import Membership, ProductionJob
+
+
+class WorkflowApiTests(TestCase):
+    def setUp(self):
+        self.owner = get_user_model().objects.create_user(username="owner", password="long-password-123")
+        self.client = APIClient()
+        self.client.force_authenticate(self.owner)
+        response = self.client.post("/api/v1/workspaces/create/", {"name": "Studio"}, format="json")
+        self.ws = response.data["id"]
+
+    def to_inspection(self, job_id):
+        self.client.patch(f"/api/v1/workspaces/{self.ws}/jobs/{job_id}/", {"status": "printing"}, format="json")
+        return self.client.patch(f"/api/v1/workspaces/{self.ws}/jobs/{job_id}/", {"status": "inspection"}, format="json")
+
+    def test_invite_is_single_use_and_viewer_cannot_write(self):
+        invite = self.client.post(f"/api/v1/workspaces/{self.ws}/invite/", {"role": "viewer"}, format="json")
+        self.assertEqual(invite.status_code, 201)
+        viewer = get_user_model().objects.create_user(username="viewer", password="long-password-123")
+        other = APIClient()
+        other.force_authenticate(viewer)
+        redeemed = other.post("/api/v1/workspaces/redeem/", {"code": invite.data["code"]}, format="json")
+        self.assertEqual(redeemed.status_code, 201)
+        self.assertEqual(other.post("/api/v1/workspaces/redeem/", {"code": invite.data["code"]}, format="json").status_code, 200)
+        replay = APIClient(); replay.force_authenticate(get_user_model().objects.create_user(username="replay", password="long-password-123"))
+        self.assertEqual(replay.post("/api/v1/workspaces/redeem/", {"code": invite.data["code"]}, format="json").status_code, 404)
+        self.assertEqual(other.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "A", "printer": "A1", "quantity": 1}, format="json").status_code, 403)
+
+    def test_workspace_isolation_and_job_state_transitions(self):
+        own = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "Bracket", "printer": "A1", "quantity": 1}, format="json")
+        self.assertEqual(own.status_code, 201)
+        self.assertEqual(self.client.patch(f"/api/v1/workspaces/{self.ws}/jobs/{own.data['id']}/", {"status": "printing"}, format="json").status_code, 200)
+        self.assertEqual(self.client.patch(f"/api/v1/workspaces/{self.ws}/jobs/{own.data['id']}/", {"status": "inspection"}, format="json").status_code, 200)
+        self.assertEqual(self.client.patch(f"/api/v1/workspaces/{self.ws}/jobs/{own.data['id']}/", {"status": "closed"}, format="json").status_code, 409)
+        stranger = get_user_model().objects.create_user(username="stranger", password="long-password-123")
+        another = APIClient(); another.force_authenticate(stranger)
+        self.assertEqual(another.get(f"/api/v1/workspaces/{self.ws}/jobs/").status_code, 404)
+        self.assertEqual(another.patch(f"/api/v1/workspaces/{self.ws}/jobs/{own.data['id']}/", {"status": "closed"}, format="json").status_code, 404)
+        self.assertEqual(another.get(f"/api/v1/workspaces/{self.ws}/members/").status_code, 404)
+
+    def test_job_submission_retry_is_idempotent(self):
+        path = f"/api/v1/workspaces/{self.ws}/jobs/"
+        fields = {"part_name": "Bracket", "printer": "A1", "quantity": 1}
+        first = self.client.post(path, fields, format="json", HTTP_IDEMPOTENCY_KEY="jobrequest-00000001")
+        second = self.client.post(path, fields, format="json", HTTP_IDEMPOTENCY_KEY="jobrequest-00000001")
+        self.assertEqual(first.status_code, 201)
+        self.assertEqual(second.status_code, 200)
+        self.assertEqual(first.data["id"], second.data["id"])
+        changed = self.client.post(path, {**fields, "part_name": "Other"}, format="json", HTTP_IDEMPOTENCY_KEY="jobrequest-00000001")
+        self.assertEqual(changed.status_code, 409)
+
+    def test_members_list_is_workspace_scoped(self):
+        response = self.client.get(f"/api/v1/workspaces/{self.ws}/members/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, [{"username": "owner", "role": "owner"}])
+
+    def test_starter_profiles_are_versioned_and_workspace_overrides_are_owner_only(self):
+        url = f"/api/v1/workspaces/{self.ws}/printer-profiles/"
+        starters = self.client.get(url)
+        self.assertEqual(starters.status_code, 200)
+        self.assertEqual({x["id"] for x in starters.data}, {"starter:a1", "starter:p2s"})
+        created = self.client.post(url, {"name": "Studio Printer", "version": "4", "source": "https://example.com/profile", "note": "PLA"}, format="json")
+        self.assertEqual(created.status_code, 201)
+        job = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {
+            "part_name": "Bracket", "printer": "ignored", "profile_id": created.data["id"], "quantity": 1,
+        }, format="json")
+        self.assertEqual(job.status_code, 201)
+        self.assertEqual(job.data["printer"], "Studio Printer")
+        self.assertEqual(job.data["profile_version"], "4")
+        self.assertEqual(job.data["profile_source"], "https://example.com/profile")
+        viewer = get_user_model().objects.create_user(username="profileviewer", password="long-password-123")
+        code = self.client.post(f"/api/v1/workspaces/{self.ws}/invite/", {"role": "viewer"}, format="json").data["code"]
+        read_only = APIClient(); read_only.force_authenticate(viewer)
+        read_only.post("/api/v1/workspaces/redeem/", {"code": code}, format="json")
+        denied = read_only.post(url, {"name": "Other", "version": "1", "source": "https://example.com"}, format="json")
+        self.assertEqual(denied.status_code, 403)
+
+    def test_legacy_import_is_explicit_deduplicated_and_excludes_examples_by_default(self):
+        url = f"/api/v1/workspaces/{self.ws}/legacy-inspections/"
+        rows = [
+            {"id": "legacy-1", "at": "2026-10-20T10:00:00Z", "passed": True, "sample": False},
+            {"id": "legacy-example", "at": "2026-10-20T11:00:00Z", "passed": True, "sample": True},
+        ]
+        imported = self.client.post(url, {"records": rows, "include_samples": False}, format="json")
+        self.assertEqual(imported.status_code, 201)
+        self.assertEqual(imported.data, {"imported": 1, "skipped": 1})
+        repeat = self.client.post(url, {"records": rows[:1], "include_samples": False}, format="json")
+        self.assertEqual(repeat.data, {"imported": 0, "skipped": 1})
+        data = self.client.get(url).data
+        self.assertEqual(data["count"], 1)
+        self.assertEqual(data["sample_count"], 0)
+        self.assertEqual(data["records"][0]["id"], "legacy-1")
+
+    def test_rejects_fake_image_payload(self):
+        job = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "Bracket", "printer": "A1", "quantity": 1}, format="json").data
+        self.to_inspection(job["id"])
+        upload = SimpleUploadedFile("photo.png", b"not actually a png", content_type="image/png")
+        response = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/evidence/", {"image": upload}, format="multipart")
+        self.assertEqual(response.status_code, 400)
+
+    def test_valid_image_exception_and_resolution(self):
+        job = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "Bracket", "printer": "A1", "quantity": 1}, format="json").data
+        self.to_inspection(job["id"])
+        buffer = io.BytesIO()
+        source = Image.new("RGB", (32, 24), "white")
+        ImageDraw.Draw(source).rectangle((6, 5, 25, 18), outline="black", width=2)
+        source.save(buffer, format="PNG")
+        upload = SimpleUploadedFile("part.png", buffer.getvalue(), content_type="image/png")
+        key = "a" * 64
+        result = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/evidence/", {"image": upload}, format="multipart", HTTP_IDEMPOTENCY_KEY=key)
+        self.assertEqual(result.status_code, 201)
+        preview = self.client.get(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/evidence/{result.data['id']}/preview/")
+        self.assertEqual(preview.status_code, 200)
+        self.assertEqual(preview["Content-Type"], "image/png")
+        preview_bytes = b"".join(preview.streaming_content)
+        preview_image = Image.open(io.BytesIO(preview_bytes)).convert("RGB")
+        self.assertEqual(preview_image.getpixel((0, 0)), (255, 255, 255))
+        self.assertIn((52, 120, 246), set(preview_image.getdata()))
+        original = self.client.get(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/evidence/{result.data['id']}/original/")
+        self.assertEqual(original.status_code, 200)
+        self.assertEqual(original["Content-Type"], "image/png")
+        duplicate = SimpleUploadedFile("part.png", buffer.getvalue(), content_type="image/png")
+        again = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/evidence/", {"image": duplicate}, format="multipart", HTTP_IDEMPOTENCY_KEY=key)
+        self.assertEqual(again.status_code, 200)
+        self.assertEqual(again.data["id"], result.data["id"])
+        case = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/exceptions/", {"note": "边缘需要复核"}, format="json")
+        self.assertEqual(case.status_code, 201)
+        resolved = self.client.post(f"/api/v1/workspaces/{self.ws}/exceptions/{case.data['id']}/resolve/", {"resolution": "已复核", "next_status": "closed"}, format="json")
+        self.assertEqual(resolved.status_code, 200)
+        self.assertEqual(resolved.data["job_status"], "closed")
+        self.assertEqual(self.client.get(f"/api/v1/workspaces/{self.ws}/jobs/").data[0]["inspections"][0]["verdict"], "fail")
+
+    def test_human_pass_decision_closes_job_with_audit_record(self):
+        job = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "Clip", "printer": "A1", "quantity": 1}, format="json").data
+        self.to_inspection(job["id"])
+        result = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/inspection/", {"verdict": "pass"}, format="json")
+        self.assertEqual(result.status_code, 201)
+        self.assertEqual(result.data["status"], "closed")
+        self.assertEqual(result.data["inspections"][0]["verdict"], "pass")
+
+    def test_login_issues_bearer_token(self):
+        anonymous = APIClient()
+        response = anonymous.post("/api/v1/auth/login/", {"username": "owner", "password": "long-password-123"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        anonymous.credentials(HTTP_AUTHORIZATION=f"Bearer {response.data['access']}")
+        self.assertEqual(anonymous.get("/api/v1/workspaces/").status_code, 200)

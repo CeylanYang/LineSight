@@ -625,7 +625,7 @@ class RestoreChangeDetailPage extends StatelessWidget {
         'passed' => value ? tr(context, "合格 PASS") : tr(context, "不合格 FAIL"),
         'running' => value ? tr(context, "运行中") : tr(context, "已暂停"),
         'archived' => value ? tr(context, "已归档") : tr(context, "未归档"),
-        'sample' => value ? tr(context, "示例 / 模拟") : tr(context, "非示例"),
+        'sample' => value ? tr(context, "示例记录") : tr(context, "非示例"),
         _ => display(context, value),
       };
     }

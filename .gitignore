@@ -14,6 +14,7 @@ coverage/
 __pycache__/
 *.py[cod]
 .venv/
+.venv-backend/
 venv/
 
 # Local configuration, keys, and generated runtime data
@@ -24,6 +25,8 @@ venv/
 *.key
 backend/shared/
 backend/media/
+backend/local-media/
+backend/local.sqlite3
 
 # IDE and OS
 .idea/

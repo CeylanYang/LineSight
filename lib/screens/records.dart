@@ -219,7 +219,10 @@ class _RecordsPageState extends State<RecordsPage> {
                                 }[status]!,
                                 stationId == null
                                     ? tr(context, "全部工位")
-                                    : s.station(stationId!).name,
+                                    : trWorkspaceLabel(
+                                        context,
+                                        s.station(stationId!).name,
+                                      ),
                                 if (query.isNotEmpty)
                                   tr(context, "关键词：{0}", [query]),
                                 if (range != null)
@@ -295,7 +298,7 @@ class _RecordsPageState extends State<RecordsPage> {
         if (records.isEmpty)
           EmptyState(
             title: tr(context, "没有匹配的记录"),
-            subtitle: tr(context, "试试清除筛选条件，或到工位生成模拟检测。"),
+            subtitle: tr(context, "试试清除筛选条件，或到工位开始检测。"),
             icon: Icons.manage_search_rounded,
           ),
         ...records
@@ -367,7 +370,7 @@ class RecordTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${s.station(r.stationId).name} · ${stamp(r.at)}',
+                '${trWorkspaceLabel(context, s.station(r.stationId).name)} · ${stamp(r.at)}',
                 style: const TextStyle(fontSize: 11),
               ),
               const SizedBox(height: 7),
@@ -586,7 +589,8 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
           PageHeading(
             eyebrow: 'INSPECTION / EVIDENCE',
             title: r.serial,
-            subtitle: '${s.station(r.stationId).name} · ${stamp(r.at)}',
+            subtitle:
+                '${trWorkspaceLabel(context, s.station(r.stationId).name)} · ${stamp(r.at)}',
           ),
           Wrap(
             spacing: 8,
@@ -605,7 +609,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
           PartPreview(defect: !r.passed, height: 260),
           const SizedBox(height: 12),
           Text(
-            tr(context, "画面为程序绘制的合成工件示意，不代表真实相机采集。"),
+            tr(context, "工件预览"),
             style: const TextStyle(fontSize: 11, color: Colors.blueGrey),
           ),
           SectionHeading(tr(context, "检测证据")),

@@ -13,6 +13,7 @@ import 'modules.dart';
 import 'storage_recovery.dart';
 import 'csv_export.dart';
 import '../language_selector.dart';
+import 'team_workspace.dart';
 
 export 'audit.dart' show AuditPage;
 export 'restore.dart' show RestorePreviewPage;
@@ -26,7 +27,7 @@ class SettingsPage extends StatelessWidget {
     return PageBody(
       children: [
         PageHeading(
-          eyebrow: 'PERSONAL / WORKSPACE',
+          eyebrow: tr(context, "账户设置"),
           title: tr(context, "你的工作区。"),
           subtitle: tr(context, "管理账户、数据，以及适合你的使用方式。"),
         ),
@@ -115,6 +116,13 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: [
               SettingsTile(
+                icon: Icons.groups_outlined,
+                title: tr(context, "团队协作"),
+                subtitle: tr(context, "连接团队工作区、管理共享任务与成员邀请"),
+                onTap: () => openPage(context, const TeamWorkspacePage()),
+              ),
+              const Divider(),
+              SettingsTile(
                 icon: Icons.storage_outlined,
                 title: tr(context, "数据管理"),
                 subtitle: tr(context, "导出、备份、恢复与示例数据"),
@@ -141,21 +149,6 @@ class SettingsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(
             children: [
-              SwitchListTile(
-                secondary: const Icon(Icons.dark_mode_outlined, color: blue),
-                title: Text(tr(context, "深色模式")),
-                value: s.dark,
-                onChanged: (v) =>
-                    perform(context, () => s.preference('dark', v)),
-              ),
-              SwitchListTile(
-                secondary: const Icon(Icons.blur_on_rounded, color: blue),
-                title: Text(tr(context, "通透玻璃")),
-                subtitle: Text(tr(context, "半透明面板与背景模糊")),
-                value: s.glass,
-                onChanged: (v) =>
-                    perform(context, () => s.preference('glass', v)),
-              ),
               SwitchListTile(
                 secondary: const Icon(Icons.vibration_rounded, color: blue),
                 title: Text(tr(context, "触觉反馈")),
@@ -187,8 +180,8 @@ class SettingsPage extends StatelessWidget {
           padding: EdgeInsets.zero,
           child: SettingsTile(
             icon: Icons.help_outline_rounded,
-            title: tr(context, "使用指南与关于"),
-            subtitle: tr(context, "了解操作流程和示例环境"),
+            title: tr(context, "使用说明与应用信息"),
+            subtitle: tr(context, "查看工作流程和功能说明"),
             onTap: () => openPage(context, const HelpPage()),
           ),
         ),
@@ -224,7 +217,7 @@ class SettingsPage extends StatelessWidget {
         const SizedBox(height: 26),
         Center(
           child: Text(
-            tr(context, "LineSight {0} · 离线工作区", [appVersion]),
+            tr(context, "LineSight {0} · 质量工作台", [appVersion]),
             style: const TextStyle(fontSize: 11, color: Colors.blueGrey),
           ),
         ),
@@ -410,7 +403,7 @@ class MembersPage extends StatelessWidget {
         GlassPanel(
           child: Column(
             children: [
-              InfoRow(tr(context, "操作员"), tr(context, "查看记录、运行模拟检测、启动或暂停工位")),
+              InfoRow(tr(context, "操作员"), tr(context, "查看记录、运行检测、启动或暂停工位")),
               InfoRow(tr(context, "质量工程师"), tr(context, "增加复核、归档、配方管理与导出权限")),
               InfoRow(tr(context, "管理员"), tr(context, "增加成员管理、备份恢复和数据清理权限")),
             ],
@@ -843,12 +836,12 @@ class DataPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  tr(context, "当前有 {0} 条示例 / 模拟记录。", [samples]),
+                  tr(context, "当前有 {0} 条示例记录。", [samples]),
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  tr(context, "示例用于体验流程。清理时将删除带有示例标记的检测记录，包括在工位生成的模拟记录。"),
+                  tr(context, "示例记录带有标记。清理时会移除所有标记为示例的检测记录。"),
                   style: const TextStyle(height: 1.7),
                 ),
                 const SizedBox(height: 20),
@@ -875,7 +868,7 @@ class DataPage extends StatelessWidget {
                                 tr(context, "清理所有示例记录？"),
                                 tr(
                                   context,
-                                  "将删除 {0} 条示例 / 模拟检测记录，包含已归档记录。配方、成员和操作日志会保留。",
+                                  "将删除 {0} 条示例记录，包含已归档记录。配方、成员和操作日志会保留。",
                                   [samples],
                                 ),
                                 confirmLabel: tr(context, "清理示例"),
@@ -1015,14 +1008,14 @@ class HelpPage extends StatelessWidget {
   const HelpPage({super.key});
   @override
   Widget build(BuildContext context) => DetailScaffold(
-    title: tr(context, "使用指南与关于"),
+    title: tr(context, "使用说明与应用信息"),
     children: [
       const BrandMark(size: 64),
       const SizedBox(height: 22),
       PageHeading(
-        eyebrow: 'LINESIGHT / $appVersion',
+        eyebrow: tr(context, '应用版本 · {0}', [appVersion]),
         title: tr(context, "让质量，有迹可循。"),
-        subtitle: tr(context, "面向产线检测的本机工作区。"),
+        subtitle: tr(context, "记录检测结果、生产任务与质量复核。"),
       ),
       GlassPanel(
         child: Column(
@@ -1033,10 +1026,7 @@ class HelpPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    tr(
-                      context,
-                      "在工作台选择工位，确认当前配方，启动工位后点击「模拟检测」。检测结果与配方快照会自动保存。目前所有画面与检测均为模拟。",
-                    ),
+                    tr(context, "在工作台选择工位，确认当前配方并启动工位。检测结果与配方快照会自动保存。"),
                     style: const TextStyle(height: 1.8),
                   ),
                 ),
@@ -1103,7 +1093,7 @@ class HelpPage extends StatelessWidget {
               ],
             ),
             ExpansionTile(
-              title: Text(tr(context, "06  本机数据与隐私")),
+              title: Text(tr(context, "06  数据与隐私")),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -1121,10 +1111,14 @@ class HelpPage extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 24),
-      const Text(
-        'LineSight · Production-line inspection workspace\nFlutter / Material 3\nMade for the shop floor.',
+      Text(
+        tr(context, '围绕生产任务与质量复核，记录每一次关键结果。'),
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 12, height: 1.8, color: Colors.blueGrey),
+        style: const TextStyle(
+          fontSize: 12,
+          height: 1.8,
+          color: Colors.blueGrey,
+        ),
       ),
     ],
   );

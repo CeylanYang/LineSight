@@ -1,0 +1,26 @@
+{
+	default_sni 47.111.81.94
+}
+
+https://47.111.81.94 {
+	tls {
+		issuer acme {
+			profile shortlived
+			disable_tlsalpn_challenge
+		}
+	}
+	encode zstd gzip
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "same-origin"
+		Strict-Transport-Security "max-age=86400"
+	}
+	handle_path /static/* {
+		root * /srv/linesight/static
+		file_server
+	}
+	handle {
+		reverse_proxy 127.0.0.1:8000
+	}
+}

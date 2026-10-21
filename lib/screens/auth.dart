@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ui.dart';
 import '../language_selector.dart';
+import 'team_workspace.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -49,9 +50,9 @@ class _AuthPageState extends State<AuthPage> {
                             children: [
                               const BrandMark(size: 66),
                               const SizedBox(height: 32),
-                              const Text(
-                                'Every detail.\nIn sight.',
-                                style: TextStyle(
+                              Text(
+                                tr(context, '每一处细节，尽在眼前。'),
+                                style: const TextStyle(
                                   fontSize: 54,
                                   fontWeight: FontWeight.w800,
                                   height: 1.1,
@@ -70,8 +71,8 @@ class _AuthPageState extends State<AuthPage> {
                                 spacing: 10,
                                 runSpacing: 10,
                                 children: [
-                                  Tag(tr(context, "本机存储"), color: green),
-                                  Tag(tr(context, "离线可用")),
+                                  Tag(tr(context, "本地保存"), color: green),
+                                  Tag(tr(context, "质量工作台")),
                                   Tag(tr(context, "角色权限")),
                                 ],
                               ),
@@ -94,9 +95,9 @@ class _AuthPageState extends State<AuthPage> {
                                 const BrandMark(size: 56),
                                 const SizedBox(height: 28),
                               ],
-                              const Text(
-                                'LINESIGHT / LOCAL WORKSPACE',
-                                style: TextStyle(
+                              Text(
+                                tr(context, 'LineSight · 质量工作区'),
+                                style: const TextStyle(
                                   color: blue,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
@@ -225,7 +226,7 @@ class _AuthPageState extends State<AuthPage> {
                                       setState(() => examples = v!),
                                   title: Text(tr(context, "加入示例检测数据")),
                                   subtitle: Text(
-                                    tr(context, "可体验统计与复核，之后可一键清理"),
+                                    tr(context, "为工作区加入示例记录，可随时清理"),
                                   ),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
@@ -296,6 +297,11 @@ class _AuthPageState extends State<AuthPage> {
                                 ),
                               ),
                               const SizedBox(height: 14),
+                              OutlinedButton.icon(
+                                onPressed: () => openPage(context, const TeamWorkspacePage()),
+                                icon: const Icon(Icons.groups_outlined),
+                                label: Text(tr(context, '登录或加入团队工作区')),
+                              ),
                               if (!first)
                                 Align(
                                   alignment: Alignment.center,
@@ -337,10 +343,10 @@ class _AuthPageState extends State<AuthPage> {
                                 ),
                               ),
                               const SizedBox(height: 24),
-                              const Center(
+                              Center(
                                 child: Text(
-                                  'LineSight $appVersion  ·  Made for the shop floor',
-                                  style: TextStyle(
+                                  'LineSight $appVersion  ·  ${tr(context, "为现场质量团队而设")}',
+                                  style: const TextStyle(
                                     fontSize: 10,
                                     color: Colors.blueGrey,
                                   ),

@@ -1,0 +1,27 @@
+[Unit]
+Description=LineSight collaboration API
+After=network.target
+
+[Service]
+Type=simple
+User=linesight
+Group=linesight
+WorkingDirectory=/opt/linesight/backend
+EnvironmentFile=/etc/linesight/linesight.env
+Environment=DJANGO_SETTINGS_MODULE=linesight.production_settings
+Environment=PYTHONPATH=/opt/linesight/backend
+ExecStart=/opt/linesight/venv/bin/gunicorn --bind 127.0.0.1:8000 --workers 2 --timeout 60 linesight.wsgi:application
+Restart=on-failure
+RestartSec=3
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ReadWritePaths=/var/lib/linesight /srv/linesight/static
+
+[Install]
+WantedBy=multi-user.target

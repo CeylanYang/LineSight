@@ -113,7 +113,7 @@ class _LineSightAppState extends State<LineSightApp>
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           theme: _lightTheme,
           darkTheme: _darkTheme,
-          themeMode: s.dark ? ThemeMode.dark : ThemeMode.light,
+          themeMode: ThemeMode.light,
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(
               disableAnimations:

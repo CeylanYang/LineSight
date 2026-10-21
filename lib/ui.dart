@@ -1,10 +1,9 @@
 import 'l10n.dart';
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.11';
+const appVersion = '1.1.18';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -126,13 +125,11 @@ class Backdrop extends StatelessWidget {
   const Backdrop({super.key, required this.child});
   @override
   Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: Theme.of(context).brightness == Brightness.dark
-            ? const [Color(0xFF152439), Color(0xFF0D1524), Color(0xFF132326)]
-            : const [Color(0xFFEAF1FF), Color(0xFFF7F9FC), Color(0xFFEFF8F5)],
+        colors: [Color(0xFFF5F8FF), Color(0xFFFBFCFE), Color(0xFFF3FAF8)],
       ),
     ),
     child: child,
@@ -151,19 +148,11 @@ class GlassPanel extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final glass = AppScope.of(context).glass;
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final panel = DecoratedBox(
       decoration: BoxDecoration(
-        color: (dark ? const Color(0xFF203049) : Colors.white).withValues(
-          alpha: glass ? .72 : 1,
-        ),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(
-          color: (dark ? Colors.white : const Color(0xFFBBCBE5)).withValues(
-            alpha: dark ? .08 : .3,
-          ),
-        ),
+        border: Border.all(color: const Color(0xFFDBE5F2)),
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -173,15 +162,7 @@ class GlassPanel extends StatelessWidget {
         ),
       ),
     );
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: glass
-          ? BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
-              child: panel,
-            )
-          : panel,
-    );
+    return ClipRRect(borderRadius: BorderRadius.circular(radius), child: panel);
   }
 }
 
@@ -228,6 +209,44 @@ class PageHeading extends StatelessWidget {
     required this.subtitle,
     this.trailing,
   });
+
+  String _localizedEyebrow(BuildContext context) {
+    if (Localizations.localeOf(context).languageCode == 'en') return eyebrow;
+    const labels = {
+      'TRACEABILITY / AUDIT': '质量追溯 · 操作日志',
+      'AUDIT / EVENT': '日志详情',
+      'CONFIGURATION / MODULES': '配置管理 · 配方与工位',
+      'CHANGEOVER / SETUP': '工位换型',
+      'STATION / CONFIGURATION': '工位配置',
+      'QUALITY / INBOX': '质量复核 · 待办',
+      'TRACEABILITY / RECORDS': '质量追溯 · 检测记录',
+      'INSPECTION / EVIDENCE': '检测记录 · 证据详情',
+      'ACCESS / LOCAL TEAM': '账户权限 · 成员管理',
+      'ACCESS / NEW MEMBER': '账户权限 · 添加成员',
+      'DATA / LOCAL STORAGE': '数据管理 · 存储',
+      'DATA / TIME': '数据管理 · 时间范围',
+      'LOCAL / RECOVERY': '数据恢复',
+      'RECOVERY / BACKUP': '数据恢复 · 备份',
+      'RECOVERY / CONFIRM': '数据恢复 · 确认',
+      'RECOVERY / HISTORY': '数据恢复 · 历史记录',
+      'RECOVERY / ORIGINAL': '数据恢复 · 原始文件',
+      'ANALYTICS / QUALITY': '质量统计 · 分析',
+      'DATA / CSV': '数据导出 · CSV',
+      'DATA / BACKUP': '数据管理 · 备份',
+      'DATA / VERIFY': '数据校验',
+    };
+    final mapped = labels[eyebrow];
+    if (mapped != null) return mapped;
+    if (eyebrow.startsWith('RECIPE / ')) return '配方 · ${eyebrow.substring(9)}';
+    if (eyebrow.endsWith(' / INSPECTION')) {
+      return '${eyebrow.substring(0, eyebrow.length - 13)} · 检测';
+    }
+    if (eyebrow.startsWith('LINESIGHT / ')) {
+      return 'LineSight · ${eyebrow.substring(12)}';
+    }
+    return eyebrow;
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 24),
@@ -235,13 +254,18 @@ class PageHeading extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          eyebrow,
-          style: const TextStyle(
-            color: blue,
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 2.5,
-          ),
+          _localizedEyebrow(context),
+          style:
+              const TextStyle(
+                color: blue,
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+              ).copyWith(
+                letterSpacing:
+                    Localizations.localeOf(context).languageCode == 'en'
+                    ? 2.5
+                    : 1.2,
+              ),
         ),
         const SizedBox(height: 10),
         Row(
@@ -675,7 +699,7 @@ class PartPreview extends StatelessWidget {
   const PartPreview({super.key, this.defect = false, this.height = 220});
   @override
   Widget build(BuildContext context) => Semantics(
-    label: defect ? tr(context, "合成支架示意图，右上方标记缺陷区域") : tr(context, "合成支架示意图"),
+    label: defect ? tr(context, "工件预览，右上方标记缺陷区域") : tr(context, "工件表面预览"),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: SizedBox(
@@ -688,7 +712,7 @@ class PartPreview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Tag(tr(context, "SYNTHETIC · 示例画面")),
+                Tag(tr(context, "缺陷图示")),
                 const Spacer(),
                 OverflowBar(
                   alignment: MainAxisAlignment.spaceBetween,

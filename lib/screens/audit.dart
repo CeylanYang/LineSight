@@ -7,6 +7,9 @@ import 'dashboard.dart';
 import 'modules.dart';
 import 'records.dart';
 
+String _auditLabel(String source) =>
+    source == '模拟检测' ? '检测记录' : source;
+
 class AuditPage extends StatefulWidget {
   final AuditTarget? target;
   final String? legacySerial;
@@ -31,14 +34,14 @@ class _AuditPageState extends State<AuditPage> {
     final source = target == null
         ? s.data.audits.reversed.toList()
         : s.history(target.type, target.id, legacySerial: widget.legacySerial);
-    final kinds = {'全部', ...source.map((a) => a.action)};
+    final kinds = {'全部', ...source.map((a) => _auditLabel(a.action))};
     final selectedKind = kinds.contains(kind) ? kind : '全部';
     final query = search.text.trim().toLowerCase();
     final since = localDay(DateTime.now(), 1 - days);
     final rows = source
         .where(
           (a) =>
-              (selectedKind == '全部' || a.action == selectedKind) &&
+              (selectedKind == '全部' || _auditLabel(a.action) == selectedKind) &&
               (days == 0 ||
                   (!a.at.isBefore(since) &&
                       a.at.isBefore(localDay(DateTime.now(), 1)))) &&
@@ -177,7 +180,7 @@ class AuditCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    tr(context, entry.action),
+                    tr(context, _auditLabel(entry.action)),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -277,7 +280,7 @@ class _AuditDetailPageState extends State<AuditDetailPage> {
       children: [
         PageHeading(
           eyebrow: 'AUDIT / EVENT',
-          title: tr(context, a.action),
+          title: tr(context, _auditLabel(a.action)),
           subtitle: '${a.actor} · ${stamp(a.at)}',
         ),
         GlassPanel(

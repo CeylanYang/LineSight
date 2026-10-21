@@ -62,7 +62,7 @@ void main() {
     },
   );
   testWidgets(
-    'changing theme on a pushed audit route updates inherited text colors',
+    'appearance remains bright on a pushed audit route',
     (tester) async {
       final s = _ThemeStore()
         ..ready = true
@@ -92,10 +92,7 @@ void main() {
         Theme.of(context).textTheme.bodyMedium!.color,
         Theme.of(context).colorScheme.onSurface,
       );
-      expect(
-        DefaultTextStyle.of(context).style.color!.computeLuminance(),
-        greaterThan(.5),
-      );
+      expect(Theme.of(context).brightness, Brightness.light);
       final backContext = tester.element(
         find
             .descendant(
@@ -105,8 +102,8 @@ void main() {
             .last,
       );
       expect(
-        IconTheme.of(backContext).color!.computeLuminance(),
-        greaterThan(.5),
+        IconTheme.of(backContext).color,
+        Theme.of(backContext).colorScheme.onSurface,
       );
       await tester.pumpWidget(const SizedBox.shrink());
       s.dispose();

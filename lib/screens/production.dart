@@ -18,7 +18,7 @@ class ProductionPage extends StatelessWidget {
         child: PageBody(
           children: [
             PageHeading(
-              eyebrow: 'PRODUCTION / QUALITY HANDOFF',
+              eyebrow: tr(context, '生产管理'),
               title: tr(context, '生产任务'),
               subtitle: tr(context, '把打印任务、质检决定和异常处理放在同一条流程里。'),
               trailing: IconButton.filledTonal(
@@ -34,11 +34,11 @@ class ProductionPage extends StatelessWidget {
                   const SizedBox(width: 14),
                   Expanded(
                     child: Text(
-                      tr(context, '本机工作区 · {0} 项未关闭', [active]),
+                      tr(context, '{0} 项任务处理中', [active]),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                  const Tag('LOCAL FIRST', color: green),
+                  Tag(tr(context, '生产与质检'), color: green),
                 ],
               ),
             ),

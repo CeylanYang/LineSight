@@ -28,10 +28,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(app().theme, same(light));
     expect(app().darkTheme, same(dark));
-    expect(app().themeMode, ThemeMode.dark);
+    expect(app().themeMode, ThemeMode.light);
     expect(
       Theme.of(tester.element(find.byType(StartupPage))).brightness,
-      Brightness.dark,
+      Brightness.light,
     );
     await tester.pumpWidget(const SizedBox());
   });
