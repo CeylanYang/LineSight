@@ -1,0 +1,14 @@
+{
+  "timezone": "Asia/Shanghai",
+  "filters": {
+    "updated_from": "2026-10-22T16:00:00+00:00",
+    "updated_to": "2026-10-23T16:00:00+00:00"
+  },
+  "all_tasks": 16,
+  "matching_tasks": 16,
+  "list_metrics_report_match": true,
+  "csv_scope_preserved": true,
+  "invalid_range_status": 400,
+  "anonymous_status": 401,
+  "foreign_workspace_status": 404
+}

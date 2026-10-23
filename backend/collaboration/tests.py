@@ -320,3 +320,29 @@ class QueryScopeTests(TestCase):
         self.assertEqual(self.client.get(base+'jobs/', {'first_day':'2026-10-23'}).data, [])
         for invalid in [{'first_day':'2026-02-30'}, {'inspected_from':'2026-13-01T00:00:00Z'}, {'inspected_from':'2026-10-23'}, {'inspected_from':'2026-10-24T00:00:00Z','inspected_to':'2026-10-23T00:00:00Z'}]:
             self.assertEqual(self.client.get(base+'records/', invalid).status_code, 400)
+
+
+class WorkbenchDateTests(TestCase):
+    setUp = WorkflowApiTests.setUp
+
+    def test_local_day_update_bounds_are_shared_across_lists_metrics_and_exports(self):
+        from datetime import datetime, timezone
+        base = f'/api/v1/workspaces/{self.ws}/'
+        ids = []
+        for hour in [15, 16]:
+            response = self.client.post(base+'jobs/', {'part_name': f'Day boundary {hour}', 'printer':'A1', 'quantity':1}, format='json')
+            self.assertEqual(response.status_code, 201)
+            ids.append(response.data['id'])
+            ProductionJob.objects.filter(pk=ids[-1]).update(updated_at=datetime(2026,10,22,hour,0,tzinfo=timezone.utc))
+        filters = {'updated_from':'2026-10-22T16:00:00Z', 'updated_to':'2026-10-23T16:00:00Z'}
+        self.assertEqual([j['id'] for j in self.client.get(base+'jobs/', filters).data], ids[1:])
+        self.assertEqual(self.client.get(base+'metrics/', filters).data['task_ids'], ids[1:])
+        report = self.client.get(base+'report/', filters).data
+        self.assertEqual(report['filters'], filters)
+        self.assertEqual([j['id'] for j in report['jobs']], ids[1:])
+        csv = self.client.get(base+'report/', {**filters, 'download':'csv'}).content.decode('utf-8-sig')
+        self.assertIn('updated_from', csv)
+        for bad in [{'updated_from':'2026-10-23'}, {'updated_from':filters['updated_to'],'updated_to':filters['updated_from']}]:
+            self.assertEqual(self.client.get(base+'jobs/',bad).status_code,400)
+        other = APIClient(); other.force_authenticate(get_user_model().objects.create_user(username='workbench-outsider'))
+        self.assertEqual(other.get(base+'jobs/', filters).status_code,404)

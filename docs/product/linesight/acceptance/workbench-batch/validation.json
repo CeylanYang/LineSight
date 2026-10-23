@@ -1,0 +1,35 @@
+{
+  "version": "1.1.27+8042",
+  "entry": "lib/main.dart",
+  "flutter_tests_passed": 129,
+  "django_tests_passed": 37,
+  "focused_portable_render_tests_passed": 3,
+  "flutter_analyze": "No issues found",
+  "release_build_passed": true,
+  "gradle_build_seconds": 284,
+  "build_wrapper_warning_error_corrected": true,
+  "signature_verified": true,
+  "signing": "Existing debug-compatible certificate; formal release signing pending",
+  "integration_test_plugin_absent_from_release_dex": true,
+  "emulator_started": false,
+  "normal_android_upgrade_tested": false,
+  "physical_device_ui_tested": false,
+  "screenshots": {
+    "count": 4,
+    "origin": "Flutter desktop widget test rendering",
+    "fixture": "Fixed isolated demonstration data; not live cloud data",
+    "width": 360,
+    "languages": [
+      "zh",
+      "en"
+    ]
+  },
+  "local_build_limits": {
+    "gradle_workers": 2,
+    "heap_gb": 2,
+    "metaspace_gb": 1,
+    "kotlin_strategy": "in-process",
+    "daemon": "single-use, exits after build"
+  },
+  "product_plan_complete": false
+}

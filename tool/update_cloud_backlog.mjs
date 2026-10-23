@@ -80,6 +80,13 @@ Object.assign(changes, {
   'REL-04': ['开发中', 'lib/cloud_sync_diagnostics.dart; acceptance/sync-batch/', '同步诊断检查当前团队云连接，汇总待传/回执/草稿，复制版本、平台、UTC时间、团队ID和状态码白名单；不含令牌/凭据/记录内容。服务端集中请求追踪继续'],
   'REL-03': ['开发中', 'acceptance/trace-batch/validation.json; acceptance/sync-batch/', '已更正1.1.25默认测试清理导致不能证明升级保留数据的证据；后续驱动显式keep-app-running，普通包仅install -r；本批8039→8040留证，完整旧数据库恢复/迁移仍继续'],
 });
+Object.assign(changes, {
+ 'UI-01': ['待联调', 'lib/cloud_workbench.dart; test/cloud_workbench_test.dart; acceptance/workbench-batch/', '今日待检/今日已关闭按设备日历进度更新时间计算，下钻传完全相同UTC边界；异常为当前全部未闭环。7日首次检验趋势可下钻；360宽中英文桌面组件PNG与HTTPS范围一致性通过，Android新增界面待真机'],
+ 'UI-06': ['待联调', 'lib/cloud_workbench.dart; acceptance/workbench-batch/png/', '我的待办分为待质检/待异常处理/待复检，沿用服务器指派/未指派作用域；展开可直达任务；未读计数排除已读。桌面组件留证，真机待验收'],
+ 'UI-11': ['开发中', 'test/cloud_workbench_test.dart; acceptance/workbench-batch/png/', '新增概览/待办/日期范围双语，360宽中英文组件渲染无溢出；完整任务/报告/权限流程真机审计继续'],
+ 'COL-04': ['开发中', 'lib/cloud_account.dart; test/cloud_workbench_test.dart', '写入入口仅对已登录owner/operator开放；viewer和未知角色均拒绝。团队切换隔离与服务端即时撤权已有测试，完整只读页面审计继续'],
+ 'REL-03': ['开发中', 'acceptance/sync-batch/validation.json; acceptance/workbench-batch/', '用户停用模拟器；8039至8040普通包覆盖升级、回执保留与登录恢复未执行，待真机；历史默认卸载误清理证据已更正，今后不清数据'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

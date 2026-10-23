@@ -35,6 +35,8 @@ String cloudScopeLabel(BuildContext context, Map<String, String> filters) {
     'inspected_from': '检验起始日期',
     'inspected_to': '检验结束日期',
     'first_day': '首次检验日期（UTC）',
+    'updated_from': '进度更新起始日期',
+    'updated_to': '进度更新结束日期',
   };
   return filters.entries
       .map((entry) {
@@ -52,10 +54,14 @@ String cloudScopeLabel(BuildContext context, Map<String, String> filters) {
         if (entry.key == 'from' ||
             entry.key == 'to' ||
             entry.key == 'inspected_from' ||
-            entry.key == 'inspected_to') {
+            entry.key == 'inspected_to' ||
+            entry.key == 'updated_from' ||
+            entry.key == 'updated_to') {
           var date = DateTime.tryParse(value)?.toLocal();
           if (date != null) {
-            if (entry.key == 'to' || entry.key == 'inspected_to') {
+            if (entry.key == 'to' ||
+                entry.key == 'inspected_to' ||
+                entry.key == 'updated_to') {
               date = date.subtract(const Duration(seconds: 1));
             }
             value =

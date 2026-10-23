@@ -268,7 +268,8 @@ class CloudAccount extends ChangeNotifier {
   bool get demoAccount => profile?['is_demo'] == true;
   String get displayName => '${profile?['display_name'] ?? ''}';
   bool get canEdit =>
-      activeWorkspace != null && activeWorkspace!['role'] != 'viewer';
+      signedIn &&
+      const {'owner', 'operator'}.contains(activeWorkspace?['role']);
   void _resetViews() {
     profile = null;
     activeWorkspace = null;

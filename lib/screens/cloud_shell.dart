@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_workbench.dart';
 import '../cloud_local_import.dart';
 import '../cloud_photo_recovery.dart';
 import '../cloud_trace.dart';
@@ -420,53 +421,7 @@ class _CloudShellState extends State<CloudShell> {
             child: _loginState(context),
           )
         else ...[
-          SectionHeader(
-            tr(context, '今日概览'),
-            caption: tr(context, '实时质检进度'),
-            icon: Icons.speed_outlined,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: StatCard(
-                  label: tr(context, '待质检'),
-                  value: '$pending',
-                  icon: Icons.pending_actions_outlined,
-                  color: amber,
-                  onTap: () => openPage(
-                    context,
-                    const CloudTaskListPage(status: 'inspection'),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 9),
-              Expanded(
-                child: StatCard(
-                  label: tr(context, '异常处理中'),
-                  value: '$issues',
-                  icon: Icons.warning_amber_rounded,
-                  color: red,
-                  onTap: () => openPage(
-                    context,
-                    const CloudTaskListPage(status: 'exception'),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 9),
-              Expanded(
-                child: StatCard(
-                  label: tr(context, '已关闭'),
-                  value: '$closed',
-                  icon: Icons.task_alt,
-                  color: green,
-                  onTap: () => openPage(
-                    context,
-                    const CloudTaskListPage(status: 'closed'),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          CloudWorkbenchSummary(account: account),
           SectionHeader(
             tr(context, '生产任务'),
             caption: '${account.jobs.length} ${tr(context, '个任务')}',
@@ -530,7 +485,8 @@ class _CloudShellState extends State<CloudShell> {
           if (account.notifications.isNotEmpty) ...[
             SectionHeader(
               tr(context, '待办提醒'),
-              caption: '${account.notifications.length} ${tr(context, '条未读')}',
+              caption:
+                  '${account.notifications.where((n) => n['read'] != true).length} ${tr(context, '条未读')}',
               icon: Icons.notifications_none_rounded,
               action: TextButton(
                 onPressed: () =>

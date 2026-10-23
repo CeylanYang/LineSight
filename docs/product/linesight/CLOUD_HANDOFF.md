@@ -1,3 +1,12 @@
+# 1.1.27 工作台与低资源开发批次
+
+当前仍在sync-delivery / feature/sync-delivery开发。今日数字与任务下钻使用同一设备日历更新范围，服务端支持updated_from/updated_to；全部异常不受今日限制。我的待办三分类、7日首次检验趋势下钻、未读计数修正、未知角色写入入口关闭。129客户端/37后端测试通过，真实HTTPS同范围核验通过；桌面中英文360宽4张PNG明确标记desktop-render，不能当作Android实机证据。
+
+用户要求不用虚拟机/QEMU，后续不得启动模拟器。资源配置已降为Gradle 2 workers/2GB堆、Kotlin in-process，新tool/build_workbench_release.ps1使用no-daemon且不自动安装。升级保留数据与会话恢复仍待真机，不能补写成功。当前普通包/签名结果见acceptance/workbench-batch/validation.json。
+
+下一批继续REL-02数据库/媒体/身份库隔离恢复演练、密码修改/会话与SMTP、完整角色/双语审计、正式签名和剩余逐项验收；总计划仍未完成。
+
+---
 # 1.1.26 本机导入、恢复与同步批次
 
 资源约束更新：用户要求停用虚拟机/QEMU；已关闭Android模拟器及闲置构建后台。后续不启动模拟器，使用静态检查、单元测试、云端接口及必要时真机验收。普通8040已构建，不为补截图或升级测试重启模拟器；覆盖升级/回执保留/普通包会话恢复待真机验证。

@@ -126,11 +126,11 @@ def filtered_jobs(request, member):
             raise ValidationError('检验日期无效')
         first = QualityInspection.objects.filter(job_id=OuterRef('pk')).order_by('round_no', 'created_at', 'pk').values('created_at')[:1]
         rows = rows.annotate(first_checked_at=Subquery(first)).filter(first_checked_at__date=day)
-    for key, field in [('from', 'created_at__gte'), ('to', 'created_at__lt')]:
+    for key, field in [('from', 'created_at__gte'), ('to', 'created_at__lt'), ('updated_from', 'updated_at__gte'), ('updated_to', 'updated_at__lt')]:
         if request.query_params.get(key):
             instant = query_instant(request.query_params[key])
             rows = rows.filter(**{field: instant})
-    for start, end in [('from', 'to'), ('inspected_from', 'inspected_to')]:
+    for start, end in [('from', 'to'), ('inspected_from', 'inspected_to'), ('updated_from', 'updated_to')]:
         if request.query_params.get(start) and request.query_params.get(end) and query_instant(request.query_params[start]) >= query_instant(request.query_params[end]):
             raise ValidationError('结束日期需要晚于开始日期')
     return rows.distinct()
@@ -197,7 +197,7 @@ def report(request, workspace_id):
     member = membership(request, workspace_id)
     payload = projection(request, member)
     generated = timezone.now().isoformat()
-    criteria = {key: request.query_params[key] for key in ('q', 'status', 'assignee', 'inspector', 'category', 'verdict', 'from', 'to', 'mine', 'inspected_from', 'inspected_to', 'first_day') if request.query_params.get(key)}
+    criteria = {key: request.query_params[key] for key in ('q', 'status', 'assignee', 'inspector', 'category', 'verdict', 'from', 'to', 'mine', 'inspected_from', 'inspected_to', 'first_day', 'updated_from', 'updated_to') if request.query_params.get(key)}
     source = 'cloud'
     report_id = 'LS-' + hashlib.sha256(f'{workspace_id}/{generated}/{json.dumps(criteria, sort_keys=True)}'.encode()).hexdigest()[:16].upper()
     if request.query_params.get('download') == 'csv':

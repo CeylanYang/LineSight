@@ -1366,3 +1366,15 @@
 1365|Diagnostics copied
 1366|Connection failed. Check your network or sign in again.
 1367|Uploading
+1368|Quality overview
+1369|Today by progress update time
+1370|Awaiting inspection today
+1371|Closed today
+1372|My to-dos
+1373|Issues to resolve
+1374|No to-dos
+1375|First inspections · 7 days
+1376|Passed / inspected
+1377|No inspection data
+1378|Progress updated from
+1379|Progress updated to
