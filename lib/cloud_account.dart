@@ -548,6 +548,18 @@ class CloudAccount extends ChangeNotifier {
         await _load();
       });
   Future<void> reload() => _operation(_load);
+  Future<List<Map<String, dynamic>>> reloadTemplates(String? scope) async {
+    requireAccess(scope);
+    final rows =
+        (await request('GET', 'workspaces/${activeWorkspace!['id']}/templates/')
+                as List)
+            .cast<Map<String, dynamic>>();
+    requireAccess(scope);
+    templates = rows;
+    notifyListeners();
+    return rows;
+  }
+
   Future<void> signInNfc(String cardCode) => _operation(() async {
     final epoch = ++_epoch;
     final result = await NfcClient(apiUrl: apiUrl).login(cardCode);

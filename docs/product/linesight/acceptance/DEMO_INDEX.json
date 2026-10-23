@@ -1,5 +1,5 @@
 {
-  "screenshots": 239,
+  "screenshots": 253,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2428,6 +2428,258 @@
       "height": 1280,
       "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
       "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-catalogue-en-desktop-render.png",
+      "title": "180-checklist-catalogue-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "e904f2d9ed50046f92d2ca898c41418cdca15217367a2cbc490f5cc7a2f52363",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-catalogue-zh-desktop-render.png",
+      "title": "180-checklist-catalogue-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "6b9df98898f79c5fc9088f103183ba12646d6aa42b06f1ca73625f694ddcd08f",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-conflict-en-desktop-render.png",
+      "title": "180-checklist-conflict-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9bfd369de633811c2a8f97a2df35d1d3a5b7b22ecca7ef77a8d0b674307842c9",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-conflict-zh-desktop-render.png",
+      "title": "180-checklist-conflict-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "e2407ff5ac0a894e3eb82f197c9d2697f01f1ac2ba1b1789852c5616632544e7",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-detail-en-desktop-render.png",
+      "title": "180-checklist-detail-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "03cd7b6390d11187d9645e4771fac648b198f889cb6811860056acbf66a1f8da",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-detail-zh-desktop-render.png",
+      "title": "180-checklist-detail-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "b04691938ef1af92e7345b1090a9149cadc998046c926220b3c6cc38df6bbeb4",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-editor-en-desktop-render.png",
+      "title": "180-checklist-editor-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "208929144164b915c56c23a9ad1a2852f45095116e98f1a64a62659ccffb05c8",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-editor-end-en-desktop-render.png",
+      "title": "180-checklist-editor-end-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "27c7de562082229e3c0ce68c44b69b7433691d166364f4a5acaac0a7bd696ab7",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-editor-end-zh-desktop-render.png",
+      "title": "180-checklist-editor-end-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "2703e8d5584e3e6e441db7a673fa65b1077e9a7c0444bc3f005bf0a568632f17",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-editor-zh-desktop-render.png",
+      "title": "180-checklist-editor-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "1f0606ac01b43c46f934e875aa6ca1768e3af97c1bf218bfc22aa56a71db2cec",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-receipt-en-desktop-render.png",
+      "title": "180-checklist-receipt-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "f63e46122e1bb12deb370b790b1e7400d5f4ca50601bdd0157921ebaefaaa821",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/180-checklist-receipt-zh-desktop-render.png",
+      "title": "180-checklist-receipt-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "40e24a8b93258baed39bd9e4d077ebf1a25c7df65905996c8109346f57b0e1fa",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/181-unified-login-en-desktop-render.png",
+      "title": "181-unified-login-en-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "15d8aceef3dd0576c05ca6285fe17920083ac6d5467e23cf86701fc4fa37b2f9",
+      "batch_notes": "template-batch/README.md"
+    },
+    {
+      "file": "template-batch/png/181-unified-login-zh-desktop-render.png",
+      "title": "181-unified-login-zh-desktop-render",
+      "batch": "template-batch",
+      "batch_requirement_ids": [
+        "QC-01",
+        "SEC-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "91df9ef8cbbf4aecf685633791f2cb8a1d5d4266380cab8ddeeff65af94827a4",
+      "batch_notes": "template-batch/README.md"
     },
     {
       "file": "team-batch/png/170-team-failure-en-desktop-render.png",

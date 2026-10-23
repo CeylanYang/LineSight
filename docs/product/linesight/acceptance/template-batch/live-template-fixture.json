@@ -1,0 +1,109 @@
+{
+  "workspace_id": 13,
+  "versions": [
+    {
+      "id": 6,
+      "name": "DEMO · 模板版本验证",
+      "version": 1,
+      "items": [
+        {
+          "id": "size",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "surface",
+          "label": "表面完整",
+          "required": false,
+          "allow_na": true
+        },
+        {
+          "id": "fit",
+          "label": "装配配合",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": false
+    },
+    {
+      "id": 7,
+      "name": "DEMO · 模板版本验证",
+      "version": 2,
+      "items": [
+        {
+          "id": "fit",
+          "label": "装配配合",
+          "required": true,
+          "allow_na": true
+        },
+        {
+          "id": "surface",
+          "label": "表面完整",
+          "required": false,
+          "allow_na": true
+        },
+        {
+          "id": "size",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        }
+      ],
+      "built_in": false
+    },
+    {
+      "id": 8,
+      "name": "DEMO · 模板版本验证",
+      "version": 3,
+      "items": [
+        {
+          "id": "size",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "surface",
+          "label": "表面完整",
+          "required": false,
+          "allow_na": true
+        },
+        {
+          "id": "fit",
+          "label": "装配配合",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": false
+    }
+  ],
+  "inspection_snapshot": {
+    "id": 6,
+    "name": "DEMO · 模板版本验证",
+    "version": 1,
+    "items": [
+      {
+        "id": "size",
+        "label": "关键尺寸",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "surface",
+        "label": "表面完整",
+        "required": false,
+        "allow_na": true
+      },
+      {
+        "id": "fit",
+        "label": "装配配合",
+        "required": true,
+        "allow_na": true
+      }
+    ]
+  },
+  "source": "HTTPS verification in a newly created isolated probe workspace; no existing user data changed."
+}

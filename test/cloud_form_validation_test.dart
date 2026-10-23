@@ -221,8 +221,10 @@ void main() {
   ) async {
     await open(tester, const CloudTemplateEditor());
     await tester.enterText(input('模板名称'), 'Final inspection');
-    await tester.ensureVisible(input('每行一项（3 至 6 项）'));
-    await tester.enterText(input('每行一项（3 至 6 项）'), '${'A' * 121}\nFit\nFinish');
+    await tester.ensureVisible(input('检查项 1'));
+    tester.widget<TextField>(input('检查项 1')).controller!.text = 'A' * 121;
+    await tester.enterText(input('检查项 2'), 'Fit');
+    await tester.enterText(input('检查项 3'), 'Finish');
     await tap(tester, '发布');
     expect(account.writes, 0);
     expect(find.text('每个检查项最多120个字符').hitTestable(), findsOneWidget);

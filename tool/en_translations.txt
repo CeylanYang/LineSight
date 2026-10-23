@@ -1655,3 +1655,25 @@
 1654|Next photo
 1655|Unable to display this photo. Reload it.
 1656|Choose a member role, then generate an invitation.
+1657|Built-in checklist
+1658|Team checklist
+1659|Checklist version
+1660|Latest version
+1661|Allow not applicable
+1662|Decision required
+1663|Copy checklist
+1664|Copy
+1665|Checklist published
+1666|Unpublished checklist changes will be lost.
+1667|The checklist has changed. Review the latest version.
+1668|Your edits are kept. Review the latest checks before publishing.
+1669|View latest version
+1670|Use the latest version and keep my edits
+1671|Enter a check name
+1672|Move up
+1673|Move down
+1674|Remove check
+1675|Add check
+1676|This checklist name already exists. Publish a version from its details.
+1677|This checklist name already exists. Choose another name.
+1678|Check {0}

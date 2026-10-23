@@ -36,6 +36,10 @@ def templates(request, workspace_id):
         return Response([template_json(item) for item in rows])
     if member.role != Membership.OWNER:
         raise PermissionDenied('仅团队管理员可发布模板')
+    key = request.headers.get('Idempotency-Key', '')
+    cloud = isinstance(request.auth, dict) and bool(request.auth.get('iss'))
+    if (key and not 16 <= len(key) <= 64) or (cloud and not key):
+        return Response({'detail': '请求标识无效，请重试', 'code': 'idempotency_required'}, status=400)
     name, items = str(request.data.get('name', '')).strip(), request.data.get('items')
     if not name or len(name) > 100 or not isinstance(items, list) or not 3 <= len(items) <= 6:
         raise ValidationError('请填写模板名称和3至6个检查项')
@@ -51,10 +55,32 @@ def templates(request, workspace_id):
         normalized.append({'id': item_id, 'label': label, 'required': item.get('required') is True, 'allow_na': item.get('allow_na') is True})
     with transaction.atomic():
         Workspace.objects.filter(pk=workspace_id).update(name=F('name'))
+        # The workspace write serializes template publishers on SQLite and
+        # PostgreSQL. The immutable publication event also retains the receipt.
+        fingerprint = hashlib.sha256(json.dumps({'actor': request.user.pk, 'body': request.data},
+            sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+        prior = AuditEvent.objects.filter(workspace=member.workspace, action='template.published',
+            details__publication_key=key).first() if key else None
+        if prior:
+            if prior.user_id != request.user.pk or prior.details.get('request_hash') != fingerprint:
+                return Response({'detail': '请求标识已用于其他内容', 'code': 'idempotency_conflict'}, status=409)
+            return Response(prior.details['result'], status=201)
         previous = CheckTemplate.objects.filter(workspace=member.workspace, name=name).order_by('-version').first()
+        base_id = request.data.get('base_template_id')
+        if base_id is not None:
+            if type(base_id) is not int or not previous or previous.pk != base_id:
+                return Response({'detail': '模板版本已更新，请核对最新版本', 'code': 'template_version_conflict',
+                    'current': template_json(previous) if previous else None}, status=409)
+        elif previous and cloud:
+            return Response({'detail': '同名模板已存在，请从模板详情发布新版本', 'code': 'template_name_conflict',
+                'current': template_json(previous)}, status=409)
         item = CheckTemplate.objects.create(workspace=member.workspace, name=name, version=previous.version + 1 if previous else 1, items=normalized)
-        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action='template.published', object_id=str(item.pk), version=item.version)
-    return Response(template_json(item), status=201)
+        result = template_json(item)
+        details = {'base_template_id': base_id}
+        if key:
+            details.update(publication_key=key, request_hash=fingerprint, result=result)
+        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action='template.published', object_id=str(item.pk), version=item.version, details=details)
+    return Response(result, status=201)
 
 
 def inspection_json(check):

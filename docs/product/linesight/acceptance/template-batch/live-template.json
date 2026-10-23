@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "native_pkce_provider_flow": true,
+  "new_isolated_probe_workspace": true,
+  "same_key_has_one_publication": true,
+  "changed_body_same_key_rejected": true,
+  "duplicate_name_requires_explicit_version": true,
+  "stale_version_rejected": true,
+  "first_receipt_replays_after_new_version": true,
+  "ids_flags_order_preserved": true,
+  "inspection_keeps_original_version_snapshot": true,
+  "existing_templates_unchanged": true,
+  "concurrent_publishers_one_success_one_conflict": true,
+  "new_template_versions": 3,
+  "new_demo_tasks": 1,
+  "temporary_provider_identity_deleted": true
+}
