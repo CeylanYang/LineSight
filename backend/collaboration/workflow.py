@@ -1,0 +1,193 @@
+"""Transactional lifecycle commands with immutable receipts and optimistic versions."""
+import hashlib
+import json
+from django.db import transaction
+from django.db.models import F, Q
+from django.http import Http404
+from django.utils import timezone
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .api import membership, job_json
+from .models import AuditEvent, ExceptionCase, JobMutation, Membership, ProductionJob, QualityInspection
+
+
+class AbortMutation(Exception):
+    def __init__(self, response):
+        self.response = response
+
+
+def reject(message, code='invalid_transition'):
+    return Response({'detail': message, 'code': code}, status=409)
+
+
+def event(request, job, action, object_id, **details):
+    AuditEvent.objects.create(workspace=job.workspace, user=request.user, job=job,
+        version=job.version, action=action, object_id=str(object_id), details=details)
+
+
+def mutate(request, member, job_id, command):
+    try:
+        job = ProductionJob.objects.get(pk=job_id, workspace=member.workspace)
+    except ProductionJob.DoesNotExist as exc:
+        raise Http404 from exc
+    key = request.headers.get('Idempotency-Key', '')
+    expected = request.data.get('version')
+    cloud = isinstance(request.auth, dict) and bool(request.auth.get('iss'))
+    if (key and not 16 <= len(key) <= 64) or (cloud and not key):
+        return Response({'detail': '请求标识无效，请重试', 'code': 'idempotency_required'}, status=400)
+    if (expected is not None and (type(expected) is not int or expected < 1)) or (cloud and expected is None):
+        return Response({'detail': '请刷新任务后重试', 'code': 'version_required'}, status=400)
+    fingerprint = hashlib.sha256(json.dumps({'actor': request.user.pk, 'path': request.path,
+        'body': request.data}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+    def receipt():
+        prior = JobMutation.objects.filter(job=job, key=key).first() if key else None
+        if prior:
+            return Response(prior.result, status=prior.status_code) if prior.request_hash == fingerprint else reject('请求标识已用于其他内容', 'idempotency_conflict')
+        return None
+
+    previous = receipt()
+    if previous is not None:
+        return previous
+    if expected is not None and expected != job.version:
+        return Response({'detail': '任务已更新，请刷新后重试', 'code': 'version_conflict', 'current': job_json(job)}, status=409)
+    try:
+        with transaction.atomic():
+            # First DB statement in this transaction is a conditional write, also
+            # serializing writers on SQLite where SELECT FOR UPDATE is a no-op.
+            changed = ProductionJob.objects.filter(pk=job.pk, version=job.version).update(version=F('version') + 1)
+            if not changed:
+                raise AbortMutation(None)
+            job.refresh_from_db()
+            result = command(job)
+            if result.status_code >= 400:
+                raise AbortMutation(result)
+            if key:
+                JobMutation.objects.create(job=job, key=key, request_hash=fingerprint,
+                    result=result.data, status_code=result.status_code)
+            return result
+    except AbortMutation as aborted:
+        if aborted.response is not None:
+            return aborted.response
+        previous = receipt()
+        if previous is not None:
+            return previous
+        job.refresh_from_db()
+        return Response({'detail': '任务已更新，请刷新后重试', 'code': 'version_conflict', 'current': job_json(job)}, status=409)
+
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def task(request, workspace_id, job_id):
+    member = membership(request, workspace_id, write=request.method == 'PATCH')
+    if request.method == 'GET':
+        try:
+            return Response(job_json(ProductionJob.objects.get(pk=job_id, workspace=member.workspace)))
+        except ProductionJob.DoesNotExist as exc:
+            raise Http404 from exc
+    def command(job):
+        target = request.data.get('status')
+        if target not in {'queued': {'printing'}, 'printing': {'inspection'}}.get(job.status, set()):
+            return reject('任务状态无法这样变更')
+        old = job.status
+        job.status = target
+        job.save(update_fields=['status', 'updated_at'])
+        event(request, job, 'job.status', job.pk, previous=old, status=target)
+        return Response(job_json(job))
+    return mutate(request, member, job_id, command)
+
+
+def inspection_command(request, job, *, exception_only=False):
+    if job.status != 'inspection':
+        return reject('任务当前不能登记质检结果')
+    if job.exceptions.filter(status='open').exists():
+        return reject('请先处理所有未完成异常')
+    verdict = 'fail' if exception_only else request.data.get('verdict')
+    if verdict not in ('pass', 'fail'):
+        return Response({'detail': '请选择合格或异常'}, status=400)
+    note = str(request.data.get('note', '')).strip()
+    if verdict == 'fail' and not note:
+        return Response({'detail': '请描述需要复核的问题'}, status=400)
+    if len(note) > 500:
+        return Response({'detail': '备注不能超过500个字符'}, status=400)
+    check = QualityInspection.objects.create(job=job, inspector=request.user, verdict=verdict, note=note)
+    if verdict == 'fail':
+        case = ExceptionCase.objects.create(job=job, note=note, assignee=str(request.data.get('assignee', ''))[:100])
+        event(request, job, 'exception.created', case.pk, inspection_id=check.pk)
+    job.status = 'closed' if verdict == 'pass' else 'exception'
+    job.save(update_fields=['status', 'updated_at'])
+    event(request, job, 'inspection.' + verdict, check.pk, verdict=verdict)
+    if exception_only:
+        return Response({'id': case.pk, 'status': case.status, 'note': case.note, 'assignee': case.assignee,
+                         'job_version': job.version}, status=201)
+    return Response(job_json(job), status=201)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def inspect(request, workspace_id, job_id):
+    member = membership(request, workspace_id, write=True)
+    return mutate(request, member, job_id, lambda job: inspection_command(request, job))
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def exception(request, workspace_id, job_id):
+    member = membership(request, workspace_id, write=True)
+    return mutate(request, member, job_id, lambda job: inspection_command(request, job, exception_only=True))
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def resolve(request, workspace_id, case_id):
+    member = membership(request, workspace_id, write=True)
+    try:
+        case = ExceptionCase.objects.get(pk=case_id, job__workspace=member.workspace)
+    except ExceptionCase.DoesNotExist as exc:
+        raise Http404 from exc
+    def command(job):
+        case.refresh_from_db()
+        if job.status != 'exception' or case.status != 'open':
+            return reject('异常已处理或任务状态已更新，请刷新后重试')
+        resolution = str(request.data.get('resolution', '')).strip()
+        if not resolution or len(resolution) > 500:
+            return Response({'detail': '请填写1至500字的处理结果'}, status=400)
+        target = request.data.get('next_status', 'inspection')
+        if target not in ('inspection', 'closed'):
+            return Response({'detail': '处理后任务状态无效'}, status=400)
+        disposition = request.data.get('disposition')
+        reason = str(request.data.get('closure_reason', '')).strip()
+        other_open = job.exceptions.filter(status='open').exclude(pk=case.pk).exists()
+        if target == 'closed':
+            if member.role != Membership.OWNER:
+                raise PermissionDenied('仅团队管理员可授权关闭')
+            if disposition not in ('scrapped', 'concession') or not reason or len(reason) > 500:
+                return Response({'detail': '请选择关闭处置并填写授权依据'}, status=400)
+            if other_open:
+                return reject('请先处理所有未完成异常')
+        case.status, case.resolution, case.resolved_at = 'resolved', resolution, timezone.now()
+        case.save(update_fields=['status', 'resolution', 'resolved_at'])
+        job.status = 'exception' if other_open else target
+        job.save(update_fields=['status', 'updated_at'])
+        event(request, job, 'exception.resolved', case.pk, resolution=resolution,
+            status=job.status, disposition=disposition if target == 'closed' else None,
+            closure_reason=reason if target == 'closed' else None, actor_role=member.role)
+        return Response({'status': case.status, 'job_status': job.status, 'job_version': job.version})
+    return mutate(request, member, case.job_id, command)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def history(request, workspace_id, job_id):
+    member = membership(request, workspace_id)
+    try:
+        job = member.workspace.jobs.get(pk=job_id)
+    except ProductionJob.DoesNotExist as exc:
+        raise Http404 from exc
+    rows = AuditEvent.objects.filter(workspace=member.workspace).filter(Q(job=job) |
+        Q(job__isnull=True, object_id=str(job.pk), action__startswith='job.')).select_related('user', 'user__cloud_identity').order_by('created_at', 'pk')
+    return Response([{'id': row.pk, 'action': row.action, 'object_id': row.object_id,
+        'version': row.version, 'details': row.details, 'created_at': row.created_at.isoformat(),
+        'actor': (identity.display_name if (identity := getattr(row.user, 'cloud_identity', None)) else row.user.get_full_name() or row.user.username) if row.user else ''} for row in rows])

@@ -1,4 +1,5 @@
 django==5.2.17
+PyJWT[crypto]==2.15.1
 django-allauth[headless,mfa]==65.20.0
 django-tenant-users==3.0.1
 django-tenants==4.0.0

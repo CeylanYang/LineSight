@@ -1,0 +1,16 @@
+[Unit]
+Description=LineSight Keycloak identity service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/linesight-identity
+ExecStart=/opt/linesight-identity/tools/bin/podman-compose --env-file identity.env up -d
+ExecStop=/opt/linesight-identity/tools/bin/podman-compose --env-file identity.env stop
+TimeoutStartSec=240
+TimeoutStopSec=90
+
+[Install]
+WantedBy=multi-user.target

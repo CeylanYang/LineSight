@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.20';
+const appVersion = '1.1.21';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),

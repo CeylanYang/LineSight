@@ -1,0 +1,16 @@
+{
+  "demo_api_login": true,
+  "demo_isolated": true,
+  "demo_profile_immutable": true,
+  "legacy_login_disabled": true,
+  "normal_native_pkce_login": true,
+  "authorization_code_single_use": true,
+  "personal_home_created": true,
+  "same_identity_multiple_workspaces": true,
+  "normal_account_cannot_access_demo": true,
+  "api_logout_revokes_immediately": true,
+  "probe_subject": "1b902a79-58cc-4370-a0d0-a40e83a70153",
+  "probe_home": 6,
+  "probe_team": 7,
+  "provider_probe_deleted": true
+}

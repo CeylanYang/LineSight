@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +21,8 @@ class CollaborationSession {
 class CollaborationApiException implements Exception {
   final int status;
   final String message;
-  const CollaborationApiException(this.status, this.message);
+  final Map<String, dynamic>? details;
+  const CollaborationApiException(this.status, this.message, {this.details});
   @override
   String toString() => message;
 }
@@ -84,13 +86,19 @@ class CollaborationApi {
         final message = decoded is Map
             ? '${decoded['detail'] ?? decoded.values.first}'
             : 'Request failed';
-        throw CollaborationApiException(res.statusCode, message);
+        throw CollaborationApiException(
+          res.statusCode,
+          message,
+          details: decoded is Map ? Map<String, dynamic>.from(decoded) : null,
+        );
       }
       return decoded;
     } on SocketException {
       throw const CollaborationApiException(0, '无法连接服务，请检查地址和网络后重试');
     } on HttpException {
       throw const CollaborationApiException(0, '连接中断，请重试');
+    } on TimeoutException {
+      throw const CollaborationApiException(0, '连接超时，请重试');
     } finally {
       client.close(force: true);
     }

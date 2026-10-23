@@ -1133,3 +1133,57 @@
 1132|The import exceeds 5 MB. Import a smaller batch.
 1133|An imported record has an invalid format
 1134|An imported record is missing a valid ID or timestamp
+1135|Refresh
+1136|pieces
+1137|Sign in to view tasks and inspections
+1138|There are no production tasks in this workspace.
+1139|No inspections
+1140|Completed inspections appear here.
+1141|No checklists
+1142|There are no checklists in this workspace.
+1143|Explore demo team
+1144|Sign out?
+1145|Sign out of this account?
+1146|Sign-in was not completed. Please sign in again.
+1147|Sign-in was not completed. Check your connection and retry.
+1148|Unable to connect. Check your connection and retry.
+1149|Connection timed out. Please retry.
+1150|The demo team is unavailable. Please try again later.
+1151|Your session expired. Please sign in again.
+1152|Unable to restore your session. Check your connection and retry.
+1153|Unable to load members. Please retry.
+1154|Search tasks or printers
+1155|No tasks match your filters.
+1156|Enter a part name
+1157|Printer
+1158|Enter a printer
+1159|Piece quantity
+1160|Enter a quantity from 1 to 999
+1161|Overview
+1162|Inspection
+1163|History
+1164|Send for inspection
+1165|Record inspection
+1166|Resolve issue
+1167|Round
+1168|No issues
+1169|This task has no issues.
+1170|Resolved
+1171|No events
+1172|Task activity appears here.
+1173|Task status updated
+1174|Inspection passed
+1175|Inspection failed
+1176|Issue created
+1177|Issue resolved
+1178|Task activity
+1179|Enter the resolution or describe the issue
+1180|Inspection notes
+1181|Current task status
+1182|Return and refresh task
+1183|Submit
+1184|This task has changed. Refresh it and try again.
+1185|This task is not ready for inspection.
+1186|Resolve all open issues first.
+1187|The issue or task has changed. Refresh it and try again.
+1188|Return to workbench

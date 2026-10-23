@@ -1,0 +1,13 @@
+{
+  "job_id": "bd0f0766-7ec7-4a64-8b35-f5e55f4b2ede",
+  "workspace_id": 5,
+  "demo_only": true,
+  "concurrent_writers_one_success_one_conflict": true,
+  "inspection_idempotent": true,
+  "unresolved_close_and_reinspect_rejected": true,
+  "resolution_idempotent_and_immutable": true,
+  "reinspection_preserves_both_rounds": true,
+  "closed_reopen_rejected": true,
+  "versioned_actor_history": true,
+  "customer_member_name": true
+}

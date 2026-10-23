@@ -1,0 +1,11 @@
+{
+  "flutter_tests": 113,
+  "django_tests": 30,
+  "flutter_analyze": "No issues found",
+  "android_cloud_identity": "passed",
+  "android_cloud_workflow": "passed",
+  "cloud_identity_build": 8027,
+  "cloud_workflow_build": 8026,
+  "png_count": 16,
+  "scope": "Unified SSO and basic task lifecycle; full product plan remains incomplete"
+}

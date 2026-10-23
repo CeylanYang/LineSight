@@ -1,6 +1,8 @@
 """Small-team production settings for the collaboration API."""
 
 import os
+LINESIGHT_OIDC_ISSUER = os.environ.get("LINESIGHT_OIDC_ISSUER", "")
+LINESIGHT_OIDC_CLIENT_SECRET = os.environ.get("LINESIGHT_OIDC_CLIENT_SECRET", "")
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent

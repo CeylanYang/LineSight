@@ -38,3 +38,5 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"anon": "20/minute", "user": "120/minute"},
 }
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.PBKDF2PasswordHasher"]
+LINESIGHT_OIDC_ISSUER = os.environ.get("LINESIGHT_OIDC_ISSUER", "")
+LINESIGHT_OIDC_CLIENT_SECRET = os.environ.get("LINESIGHT_OIDC_CLIENT_SECRET", "")

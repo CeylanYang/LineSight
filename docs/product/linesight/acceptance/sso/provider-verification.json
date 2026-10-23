@@ -1,0 +1,12 @@
+{
+  "issuer": "https://47.111.81.94/sso/realms/linesight",
+  "provider": "Keycloak 26.8.1",
+  "discovery_https": true,
+  "demo_login": true,
+  "rs256_signature_audience_issuer": true,
+  "demo_role": true,
+  "introspection_active": true,
+  "refresh_rotated": true,
+  "logout_revoked_access": true,
+  "logout_revoked_refresh": true
+}

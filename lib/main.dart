@@ -13,6 +13,8 @@ import 'screens/settings.dart';
 import 'screens/storage_recovery.dart';
 import 'screens/startup.dart';
 import 'startup_trace.dart';
+import 'cloud_account.dart';
+import 'screens/cloud_shell.dart';
 
 Future<void> main() async {
   final trace = startupTraceEnabled ? StartupTrace() : null;
@@ -35,6 +37,7 @@ Future<void> main() async {
     WidgetsBinding.instance.addTimingsCallback(recordFrames);
   }
   final store = AppStore();
+  final cloud = CloudAccount();
   void traceState() => trace?.mark(
     'store-state',
     stage: store.startupStage,
@@ -45,6 +48,7 @@ Future<void> main() async {
   runApp(
     LineSightApp(
       store: store,
+      cloud: cloud,
       showBrandReveal: true,
       revealStartAfter: WidgetsBinding.instance.waitUntilFirstFrameRasterized,
     ),
@@ -56,7 +60,7 @@ Future<void> main() async {
     );
   }
   try {
-    await store.init();
+    await Future.wait([store.init(), cloud.restore()]);
   } finally {
     if (trace != null) store.removeListener(traceState);
     trace?.mark(
@@ -69,11 +73,13 @@ Future<void> main() async {
 
 class LineSightApp extends StatefulWidget {
   final AppStore store;
+  final CloudAccount? cloud;
   final bool? showBrandReveal;
   final Future<void>? revealStartAfter;
   const LineSightApp({
     super.key,
     required this.store,
+    this.cloud,
     this.showBrandReveal,
     this.revealStartAfter,
   });
@@ -119,8 +125,8 @@ class _LineSightAppState extends State<LineSightApp>
       listenable: widget.store,
       builder: (context, _) {
         final s = widget.store;
-        return MaterialApp(
-          key: ValueKey(s.session),
+        final app = MaterialApp(
+          key: ValueKey(widget.cloud == null ? s.session : 'cloud'),
           title: 'LineSight',
           debugShowCheckedModeBanner: false,
           locale: s.languageCode == 'en'
@@ -153,7 +159,9 @@ class _LineSightAppState extends State<LineSightApp>
                           enabled: _revealFinished,
                           child: ExcludeFocus(
                             excluding: !_revealFinished,
-                            child: s.user == null
+                            child: widget.cloud != null
+                                ? const CloudShell()
+                                : s.user == null
                                 ? const AuthPage()
                                 : const AppShell(),
                           ),
@@ -173,6 +181,9 @@ class _LineSightAppState extends State<LineSightApp>
                   ],
                 ),
         );
+        return widget.cloud == null
+            ? app
+            : CloudScope(account: widget.cloud!, child: app);
       },
     ),
   );

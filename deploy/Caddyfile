@@ -10,6 +10,9 @@ https://47.111.81.94 {
 		}
 	}
 	encode zstd gzip
+	handle /sso/* {
+		reverse_proxy 127.0.0.1:8081
+	}
 	header {
 		X-Content-Type-Options "nosniff"
 		X-Frame-Options "DENY"

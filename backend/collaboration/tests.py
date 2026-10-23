@@ -59,7 +59,7 @@ class WorkflowApiTests(TestCase):
     def test_members_list_is_workspace_scoped(self):
         response = self.client.get(f"/api/v1/workspaces/{self.ws}/members/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, [{"username": "owner", "role": "owner"}])
+        self.assertEqual(response.data, [{"username": "owner", "display_name": "owner", "role": "owner"}])
 
     def test_starter_profiles_are_versioned_and_workspace_overrides_are_owner_only(self):
         url = f"/api/v1/workspaces/{self.ws}/printer-profiles/"
@@ -132,7 +132,7 @@ class WorkflowApiTests(TestCase):
         self.assertEqual(again.data["id"], result.data["id"])
         case = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/{job['id']}/exceptions/", {"note": "边缘需要复核"}, format="json")
         self.assertEqual(case.status_code, 201)
-        resolved = self.client.post(f"/api/v1/workspaces/{self.ws}/exceptions/{case.data['id']}/resolve/", {"resolution": "已复核", "next_status": "closed"}, format="json")
+        resolved = self.client.post(f"/api/v1/workspaces/{self.ws}/exceptions/{case.data['id']}/resolve/", {"resolution": "已复核", "next_status": "closed", "disposition": "concession", "closure_reason": "管理员复核后授权让步放行"}, format="json")
         self.assertEqual(resolved.status_code, 200)
         self.assertEqual(resolved.data["job_status"], "closed")
         self.assertEqual(self.client.get(f"/api/v1/workspaces/{self.ws}/jobs/").data[0]["inspections"][0]["verdict"], "fail")

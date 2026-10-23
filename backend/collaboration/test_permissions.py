@@ -53,9 +53,11 @@ class PermissionFoundationTests(TestCase):
         self.operator.save(update_fields=["is_active"])
         self.assertEqual(self.worker.get(f"{self.base}/jobs/").status_code, 401)
 
-    def test_downgrade_old_token_keeps_reads_but_forbids_every_write(self):
+    def test_downgrade_old_token_requires_reauth_then_viewer_cannot_write(self):
         response = self.admin.patch(f"{self.base}/members/worker/", {"role": "viewer"}, format="json")
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.worker.get(f"{self.base}/jobs/").status_code, 401)
+        self.worker = self.login(self.operator)
         self.assertEqual(self.worker.get(f"{self.base}/jobs/").status_code, 200)
         paths = [
             ("post", "/jobs/", {"part_name": "X", "printer": "A1", "quantity": 1}),
@@ -98,6 +100,7 @@ class PermissionFoundationTests(TestCase):
         self.assertEqual(self.admin.patch(f"{self.base}/members/worker/", {"role": "owner"}, format="json").status_code, 200)
         self.assertEqual(self.admin.post(f"{self.base}/leave/").status_code, 204)
         self.assertEqual(self.admin.get(f"{self.base}/jobs/").status_code, 404)
+        self.worker = self.login(self.operator)
         self.assertEqual(self.worker.post(f"{self.base}/leave/").status_code, 409)
 
     def test_foreign_workspace_and_invalid_role_cannot_change_members(self):

@@ -4,14 +4,17 @@ import hashlib
 import re
 import mimetypes
 import secrets
+import time
 from datetime import timedelta
 from PIL import Image, UnidentifiedImageError
 import cv2
 import numpy as np
 from django.contrib.auth import authenticate, get_user_model
+from django.conf import settings
 from django.core import signing
 from django.core.files.base import ContentFile
 from django.db import transaction
+from django.db.models import F
 from django.http import Http404
 from django.http import FileResponse
 from django.utils import timezone
@@ -20,7 +23,7 @@ from rest_framework.decorators import api_view, parser_classes, permission_class
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, AuthenticationFailed
 from .models import AuditEvent, ExceptionCase, Evidence, Invitation, InvitationRedemption, JobProfileMetadata, JobRequest, LegacyInspection, Membership, PrinterProfile, ProductionJob, QualityInspection, Workspace
 
 
@@ -29,6 +32,11 @@ def membership(request, workspace_id, write=False):
         member = Membership.objects.select_related("workspace").get(workspace_id=workspace_id, user=request.user)
     except Membership.DoesNotExist as exc:
         raise Http404 from exc
+    if isinstance(request.auth, dict):
+        if request.auth.get("is_demo") and member.workspace.kind != "demo":
+            raise Http404
+        if member.token_not_before and request.auth.get("iat", 0) <= member.token_not_before.timestamp():
+            raise AuthenticationFailed("成员权限已更新，请重新登录")
     if write and member.role == Membership.VIEWER:
         raise PermissionDenied("当前成员仅可查看")
     return member
@@ -37,6 +45,8 @@ def membership(request, workspace_id, write=False):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
+    if getattr(settings, "LINESIGHT_OIDC_ISSUER", ""):
+        return Response({"detail": "请使用统一登录入口"}, status=410)
     username = str(request.data.get("username", "")).strip().lower()
     password = str(request.data.get("password", ""))
     if not re.fullmatch(r"[a-z0-9_.-]{3,32}", username) or not 12 <= len(password) <= 128:
@@ -51,16 +61,20 @@ def register(request):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login(request):
+    if getattr(settings, "LINESIGHT_OIDC_ISSUER", ""):
+        return Response({"detail": "请使用统一登录入口"}, status=410)
     user = authenticate(username=request.data.get("username", ""), password=request.data.get("password", ""))
     if user is None:
         return Response({"detail": "用户名或密码错误"}, status=401)
-    token = signing.dumps({"uid": user.pk}, salt="linesight-access", compress=True)
+    token = signing.dumps({"uid": user.pk, "iat": time.time()}, salt="linesight-access", compress=True)
     return Response({"access": token, "expires_in": 3600})
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_workspace(request):
+    if isinstance(request.auth, dict) and request.auth.get("is_demo"):
+        raise PermissionDenied("演示账号仅使用演示团队")
     name = str(request.data.get("name", "")).strip()
     if not 1 <= len(name) <= 100:
         return Response({"detail": "请填写工作区名称"}, status=400)
@@ -74,15 +88,37 @@ def create_workspace(request):
 @permission_classes([IsAuthenticated])
 def workspaces(request):
     rows = Membership.objects.filter(user=request.user).select_related("workspace")
-    return Response([{"id": m.workspace_id, "name": m.workspace.name, "role": m.role} for m in rows])
+    if isinstance(request.auth, dict) and request.auth.get("is_demo"):
+        rows = rows.filter(workspace__kind="demo")
+    return Response([{"id": m.workspace_id, "name": m.workspace.name, "role": m.role, "kind": m.workspace.kind} for m in rows])
+
+
+@api_view(["GET", "PATCH"])
+@permission_classes([IsAuthenticated])
+def account(request):
+    identity = getattr(request.user, "cloud_identity", None)
+    if identity is None:
+        return Response({"detail": "请使用统一登录入口"}, status=409)
+    if request.method == "PATCH":
+        if identity.is_demo:
+            raise PermissionDenied("演示账号不可修改共享资料")
+        name = str(request.data.get("display_name", "")).strip()
+        if not 1 <= len(name) <= 100:
+            return Response({"detail": "显示名称需要1至100个字符"}, status=400)
+        identity.display_name = name
+        identity.save(update_fields=["display_name"])
+    return Response({"id": str(identity.pk), "username": request.auth.get("preferred_username", ""),
+        "display_name": identity.display_name, "is_demo": identity.is_demo,
+        "home_workspace_id": identity.home_workspace_id, "provider": "keycloak"})
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def members(request, workspace_id):
     member = membership(request, workspace_id)
-    rows = Membership.objects.filter(workspace=member.workspace).select_related("user").order_by("user__username")
-    return Response([{"username": row.user.username, "role": row.role} for row in rows])
+    rows = Membership.objects.filter(workspace=member.workspace).select_related("user", "user__cloud_identity").order_by("user__username")
+    return Response([{"username": row.user.username, "role": row.role,
+        "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username} for row in rows])
 
 
 @api_view(["PATCH", "DELETE"])
@@ -115,7 +151,8 @@ def manage_member(request, workspace_id, username):
             action = "member.removed"
         else:
             target.role = role
-            target.save(update_fields=["role"])
+            target.token_not_before = timezone.now()
+            target.save(update_fields=["role", "token_not_before"])
             action = "member.role"
         AuditEvent.objects.create(workspace=member.workspace, user=request.user,
             action=action, object_id=str(target.user_id))
@@ -126,6 +163,8 @@ def manage_member(request, workspace_id, username):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def leave_workspace(request, workspace_id):
+    if isinstance(request.auth, dict) and request.auth.get("is_demo"):
+        raise PermissionDenied("演示账号仅使用演示团队")
     with transaction.atomic():
         member = membership(request, workspace_id)
         Workspace.objects.select_for_update().get(pk=workspace_id)
@@ -228,6 +267,8 @@ def invite(request, workspace_id):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def redeem(request):
+    if isinstance(request.auth, dict) and request.auth.get("is_demo"):
+        raise PermissionDenied("演示账号仅使用演示团队")
     token = request.data.get("code", "")
     with transaction.atomic():
         try:
@@ -259,7 +300,7 @@ def jobs(request, workspace_id):
         return Response([job_json(x) for x in member.workspace.jobs.order_by("-created_at")])
     d = request.data
     part, printer, quantity = str(d.get("part_name", "")).strip(), str(d.get("printer", "")).strip(), d.get("quantity")
-    if not part or len(part) > 100 or not printer or len(printer) > 80 or not isinstance(quantity, int) or not 1 <= quantity <= 999:
+    if not part or len(part) > 100 or not printer or len(printer) > 80 or type(quantity) is not int or not 1 <= quantity <= 999:
         return Response({"detail": "任务名称、设备和数量不符合要求"}, status=400)
     profile_id = str(d.get("profile_id", ""))
     profile = None
@@ -290,19 +331,27 @@ def jobs(request, workspace_id):
                 return Response({"detail": "任务请求标识已用于其他内容"}, status=409)
             return Response(job_json(prior.job), status=200)
     with transaction.atomic():
+        Workspace.objects.filter(pk=member.workspace_id).update(name=F("name"))
+        if request_id:
+            prior = JobRequest.objects.filter(workspace=member.workspace, request_id=request_id).select_related("job").first()
+            if prior:
+                if prior.request_hash != payload_hash:
+                    return Response({"detail": "任务请求标识已用于其他内容"}, status=409)
+                return Response(job_json(prior.job), status=200)
         job = ProductionJob.objects.create(workspace=member.workspace, part_name=part, printer=printer,
                                            quantity=quantity, note=note)
         if profile:
             JobProfileMetadata.objects.create(job=job, version=profile["version"], source_url=profile["source"])
         if request_id:
             JobRequest.objects.create(workspace=member.workspace, request_id=request_id, request_hash=payload_hash, job=job)
-        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action="job.created", object_id=str(job.pk))
+        AuditEvent.objects.create(workspace=member.workspace, user=request.user, job=job, version=job.version,
+            action="job.created", object_id=str(job.pk), details={"status": "queued"})
     return Response(job_json(job), status=201)
 
 
 def job_json(job):
     profile = getattr(job, "profile_metadata", None)
-    return {"id": str(job.pk), "part_name": job.part_name, "printer": job.printer, "quantity": job.quantity,
+    return {"id": str(job.pk), "version": job.version, "part_name": job.part_name, "printer": job.printer, "quantity": job.quantity,
             "note": job.note, "status": job.status, "created_at": job.created_at.isoformat(),
             "profile_version": profile.version if profile else "", "profile_source": profile.source_url if profile else "",
             "exceptions": [{"id": x.pk, "note": x.note, "status": x.status, "assignee": x.assignee,
@@ -312,53 +361,8 @@ def job_json(job):
             "evidence": [{"id": x.pk, "created_at": x.created_at.isoformat()} for x in job.evidence.order_by("-created_at")]}
 
 
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def quality_decision(request, workspace_id, job_id):
-    member = membership(request, workspace_id, write=True)
-    try:
-        job = member.workspace.jobs.get(pk=job_id)
-    except ProductionJob.DoesNotExist as exc:
-        raise Http404 from exc
-    if job.status != "inspection":
-        return Response({"detail": "任务当前不能登记质检结果"}, status=409)
-    verdict = request.data.get("verdict")
-    if verdict not in ("pass", "fail"):
-        return Response({"detail": "请选择合格或异常"}, status=400)
-    note = str(request.data.get("note", "")).strip()[:500]
-    assignee = str(request.data.get("assignee", "")).strip()[:100]
-    if verdict == "fail" and not note:
-        return Response({"detail": "请描述需要复核的问题"}, status=400)
-    with transaction.atomic():
-        check = QualityInspection.objects.create(job=job, inspector=request.user, verdict=verdict, note=note)
-        if verdict == "pass":
-            job.status = "closed"
-        else:
-            issue = ExceptionCase.objects.create(job=job, note=note, assignee=assignee)
-            job.status = "exception"
-        job.save(update_fields=["status", "updated_at"])
-        AuditEvent.objects.create(workspace=member.workspace, user=request.user,
-                                  action=f"inspection.{verdict}", object_id=str(check.pk))
-    return Response(job_json(job), status=201)
 
 
-@api_view(["PATCH"])
-@permission_classes([IsAuthenticated])
-def update_job(request, workspace_id, job_id):
-    member = membership(request, workspace_id, write=True)
-    try:
-        job = member.workspace.jobs.get(pk=job_id)
-    except ProductionJob.DoesNotExist as exc:
-        raise Http404 from exc
-    next_status = request.data.get("status")
-    transitions = {"queued": {"printing"}, "printing": {"inspection"}, "inspection": set(),
-                   "exception": {"inspection", "closed"}, "closed": set()}
-    if next_status not in transitions[job.status]:
-        return Response({"detail": "任务状态无法这样变更"}, status=409)
-    job.status = next_status
-    job.save(update_fields=["status", "updated_at"])
-    AuditEvent.objects.create(workspace=member.workspace, user=request.user, action="job.status", object_id=str(job.pk))
-    return Response(job_json(job))
 
 
 @api_view(["POST"])
@@ -438,48 +442,3 @@ def evidence_original(request, workspace_id, job_id, evidence_id):
         raise Http404 from exc
     content_type = mimetypes.guess_type(evidence.image.name)[0] or "application/octet-stream"
     return FileResponse(evidence.image.open("rb"), content_type=content_type)
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def create_exception(request, workspace_id, job_id):
-    member = membership(request, workspace_id, write=True)
-    try:
-        job = member.workspace.jobs.get(pk=job_id)
-    except ProductionJob.DoesNotExist as exc:
-        raise Http404 from exc
-    if job.status != "inspection":
-        return Response({"detail": "任务进入质检后才能提交异常"}, status=409)
-    note = str(request.data.get("note", "")).strip()
-    if not note:
-        return Response({"detail": "请描述需要复核的问题"}, status=400)
-    with transaction.atomic():
-        check = QualityInspection.objects.create(job=job, inspector=request.user, verdict="fail", note=note[:500])
-        case = ExceptionCase.objects.create(job=job, note=note[:500], assignee=str(request.data.get("assignee", ""))[:100])
-        job.status = "exception"
-        job.save(update_fields=["status", "updated_at"])
-        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action="exception.created", object_id=str(case.pk))
-        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action="inspection.fail", object_id=str(check.pk))
-    return Response({"id": case.pk, "status": case.status, "note": case.note, "assignee": case.assignee}, status=201)
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def resolve_exception(request, workspace_id, case_id):
-    member = membership(request, workspace_id, write=True)
-    try:
-        case = ExceptionCase.objects.select_related("job").get(pk=case_id, job__workspace=member.workspace)
-    except ExceptionCase.DoesNotExist as exc:
-        raise Http404 from exc
-    resolution = str(request.data.get("resolution", "")).strip()
-    if not resolution:
-        return Response({"detail": "请填写处理结果"}, status=400)
-    next_status = request.data.get("next_status", "inspection")
-    if next_status not in ("inspection", "closed"):
-        return Response({"detail": "处理后任务状态无效"}, status=400)
-    case.status, case.resolution, case.resolved_at = "resolved", resolution[:500], timezone.now()
-    case.save(update_fields=["status", "resolution", "resolved_at"])
-    case.job.status = next_status
-    case.job.save(update_fields=["status", "updated_at"])
-    AuditEvent.objects.create(workspace=member.workspace, user=request.user, action="exception.resolved", object_id=str(case.pk))
-    return Response({"status": case.status, "job_status": case.job.status})

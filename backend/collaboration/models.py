@@ -16,6 +16,7 @@ def preview_upload_path(instance, filename):
 
 class Workspace(models.Model):
     name = models.CharField(max_length=100)
+    kind = models.CharField(max_length=12, default="team", choices=[("personal", "Personal"), ("team", "Team"), ("demo", "Demo")])
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -27,9 +28,23 @@ class Membership(models.Model):
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="memberships")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role = models.CharField(max_length=12, choices=ROLES)
+    token_not_before = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["workspace", "user"], name="one_workspace_membership")]
+
+
+class CloudIdentity(models.Model):
+    issuer = models.CharField(max_length=300)
+    subject = models.CharField(max_length=200)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="cloud_identity")
+    is_demo = models.BooleanField(default=False)
+    home_workspace = models.ForeignKey(Workspace, on_delete=models.SET_NULL, null=True)
+    display_name = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["issuer", "subject"], name="unique_oidc_identity")]
 
 
 class Invitation(models.Model):
@@ -53,6 +68,7 @@ class InvitationRedemption(models.Model):
         constraints = [models.UniqueConstraint(fields=["invitation", "user"], name="unique_invitation_redeemer")]
 
 class ProductionJob(models.Model):
+    version = models.PositiveIntegerField(default=1)
     STATUSES = [(s, s) for s in ("queued", "printing", "inspection", "exception", "closed")]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="jobs")
@@ -132,8 +148,23 @@ class Evidence(models.Model):
 
 
 class AuditEvent(models.Model):
+    job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, null=True, blank=True, related_name="events")
+    version = models.PositiveIntegerField(null=True, blank=True)
+    details = models.JSONField(default=dict, blank=True)
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     action = models.CharField(max_length=60)
     object_id = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class JobMutation(models.Model):
+    job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, related_name="mutations")
+    key = models.CharField(max_length=64)
+    request_hash = models.CharField(max_length=64)
+    result = models.JSONField()
+    status_code = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["job", "key"], name="unique_job_mutation_key")]

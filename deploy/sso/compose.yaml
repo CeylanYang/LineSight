@@ -1,7 +1,7 @@
 name: linesight-identity
 services:
   postgres:
-    image: postgres:17-alpine
+    image: docker.io/library/postgres:17-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: keycloak
@@ -41,7 +41,7 @@ services:
     ports:
       - 127.0.0.1:8081:8080
     volumes:
-      - ./realm:/opt/keycloak/data/import:ro
+      - ./realm:/opt/keycloak/data/import:ro,Z
     mem_limit: 768m
 
 volumes:

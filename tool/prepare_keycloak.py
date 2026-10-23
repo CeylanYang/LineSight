@@ -12,7 +12,7 @@ import shutil
 from urllib.parse import urlsplit
 
 
-def realm_document(demo_password):
+def realm_document(demo_password, api_secret=None):
     audience = {
         "name": "linesight-api-audience", "protocol": "openid-connect",
         "protocolMapper": "oidc-audience-mapper", "consentRequired": False,
@@ -32,6 +32,11 @@ def realm_document(demo_password):
         "supportedLocales": ["en", "zh-CN"], "defaultLocale": "zh-CN",
         "roles": {"realm": [{"name": "demo"}]},
         "clients": [
+            {"clientId": "linesight-api", "name": "LineSight API",
+             "protocol": "openid-connect", "publicClient": False,
+             "secret": api_secret or secrets.token_urlsafe(36),
+             "standardFlowEnabled": False, "directAccessGrantsEnabled": False,
+             "serviceAccountsEnabled": False},
             {"clientId": "linesight-android", "name": "LineSight",
              "protocol": "openid-connect", "publicClient": True,
              "standardFlowEnabled": True, "directAccessGrantsEnabled": False,
@@ -70,12 +75,14 @@ def main():
     os.chmod(output, 0o700)
     (output / "realm").mkdir()
     password = "LineSightDemo-" + secrets.token_urlsafe(18)
+    api_secret = secrets.token_urlsafe(36)
     env = {"KEYCLOAK_PUBLIC_URL": args.public_url,
            "KEYCLOAK_DB_PASSWORD": secrets.token_urlsafe(36),
            "KEYCLOAK_ADMIN_USERNAME": "identity-admin",
-           "KEYCLOAK_ADMIN_PASSWORD": secrets.token_urlsafe(36)}
+           "KEYCLOAK_ADMIN_PASSWORD": secrets.token_urlsafe(36),
+           "LINESIGHT_OIDC_CLIENT_SECRET": api_secret}
     (output / "identity.env").write_text("".join(f"{k}={v}\n" for k, v in env.items()), encoding="utf-8")
-    (output / "realm/linesight-realm.json").write_text(json.dumps(realm_document(password), ensure_ascii=False, indent=2), encoding="utf-8")
+    (output / "realm/linesight-realm.json").write_text(json.dumps(realm_document(password, api_secret), ensure_ascii=False, indent=2), encoding="utf-8")
     (output / "demo-build.json").write_text(json.dumps({
         "LINESIGHT_API_BASE_URL": "https://47.111.81.94/api/v1/",
         "LINESIGHT_OIDC_ISSUER": args.public_url + "/realms/linesight",
