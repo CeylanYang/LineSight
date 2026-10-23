@@ -1649,3 +1649,8 @@
 1648|Disposition
 1649|Task changed
 1650|No records to import
+1651|Reset zoom
+1652|Pinch to zoom. Double-tap to zoom or reset.
+1653|Previous photo
+1654|Next photo
+1655|Unable to display this photo. Reload it.

@@ -1651,4 +1651,9 @@ const englishMessages = <String, String>{
   "处置决定": "Disposition",
   "状态冲突": "Task changed",
   "没有可导入的记录": "No records to import",
+  "重置缩放": "Reset zoom",
+  "双指缩放，双击放大或复位": "Pinch to zoom. Double-tap to zoom or reset.",
+  "上一张": "Previous photo",
+  "下一张": "Next photo",
+  "图片无法显示，请重新加载": "Unable to display this photo. Reload it.",
 };

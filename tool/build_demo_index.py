@@ -25,6 +25,7 @@ groups = {
     'conflict-batch': ['OFF-03','UI-11','UI-12','SSO-04'],
     'reauth-batch': ['SEC-02','UI-08','UI-11','UI-12','SSO-04','COL-02'],
     'forms-batch': ['UI-08','UI-11','QC-01','QC-02','QC-03','DAT-05','OFF-01'],
+    'evidence-batch': ['UI-07','QC-07','UI-11','UI-12','QA-04'],
     'import-batch': ['SEC-01','DAT-04','UI-08','UI-12'],
     'notification-batch': ['COL-03','UI-06','UI-08','UI-09'],
     'read-state-batch': ['UI-08','UI-11','UI-12','QA-04'],

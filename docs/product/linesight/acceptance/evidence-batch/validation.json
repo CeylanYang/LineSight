@@ -1,0 +1,20 @@
+{
+  "version": "1.1.43+8067",
+  "flutter_full_tests_passed": 307,
+  "targeted_tests_passed": 29,
+  "new_viewer_tests": 19,
+  "analysis_clean": true,
+  "live_https_evidence_verified": true,
+  "desktop_png_count": 10,
+  "downloaded_reference_png_count": 4,
+  "late_download_cannot_replace_selection": true,
+  "mode_and_photo_changes_reset_zoom": true,
+  "corrupt_image_recovery_verified": true,
+  "small_large_text_and_tablet_verified": true,
+  "business_writes": 0,
+  "backend_source_unchanged": true,
+  "native_final_apk_validated": false,
+  "phone_installs": 0,
+  "app_data_cleared": false,
+  "product_plan_complete": false
+}

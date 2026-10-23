@@ -205,6 +205,7 @@ class _ComparisonSideState extends State<_ComparisonSide> {
                   CloudEvidencePage(
                     jobId: widget.jobId,
                     photo: widget.photos[selected],
+                    gallery: widget.photos,
                   ),
                 ),
                 child: ClipRRect(

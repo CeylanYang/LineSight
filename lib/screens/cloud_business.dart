@@ -20,6 +20,8 @@ import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../ui.dart';
 import 'cloud_shell.dart';
+import 'cloud_evidence_viewer.dart';
+export 'cloud_evidence_viewer.dart' show CloudEvidencePage;
 import 'cloud_tasks.dart';
 
 Future<Map<int, Uint8List>> cloudReportImages(
@@ -445,6 +447,13 @@ class CloudReportSnapshotPage extends StatelessWidget {
                                 context,
                                 CloudEvidencePage(
                                   jobId: '${task['id']}',
+                                  gallery: (task['evidence'] as List)
+                                      .map(
+                                        (row) => Map<String, dynamic>.from(
+                                          row as Map,
+                                        ),
+                                      )
+                                      .toList(),
                                   photo: Map<String, dynamic>.from(
                                     photo as Map,
                                   ),
@@ -1771,6 +1780,9 @@ class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
                     CloudEvidencePage(
                       jobId: '${record['task_id']}',
                       photo: Map<String, dynamic>.from(evidence[i] as Map),
+                      gallery: evidence
+                          .map((row) => Map<String, dynamic>.from(row as Map))
+                          .toList(),
                     ),
                   ),
                   child: Container(
@@ -1845,163 +1857,6 @@ class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
     'resolution' => tr(context, '处理阶段'),
     _ => tr(context, '现场'),
   };
-}
-
-class CloudEvidencePage extends StatefulWidget {
-  final String jobId;
-  final Map<String, dynamic> photo;
-  const CloudEvidencePage({
-    super.key,
-    required this.jobId,
-    required this.photo,
-  });
-  @override
-  State<CloudEvidencePage> createState() => _CloudEvidencePageState();
-}
-
-class _CloudEvidencePageState extends State<CloudEvidencePage> {
-  Uint8List? bytes;
-  bool edge = false, loading = false;
-  Object? error;
-  String? binding;
-  bool bound = false;
-  int generation = 0;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final account = CloudScope.of(context);
-    if (!bound) {
-      binding = account.accessScope;
-      bound = true;
-    }
-    if (!account.retainsAccess(binding)) {
-      bytes = null;
-      error = null;
-      generation++;
-      return;
-    }
-    if (bytes == null && !loading && error == null) load();
-  }
-
-  Future<void> load() async {
-    final account = CloudScope.of(context);
-    if (!account.retainsAccess(binding)) return;
-    final ticket = ++generation;
-    setState(() {
-      loading = true;
-      error = null;
-    });
-    try {
-      final result = await account.download(
-        'workspaces/${account.activeWorkspace!['id']}/jobs/${widget.jobId}/evidence/${widget.photo['id']}/${edge ? 'preview' : 'original'}/',
-      );
-      if (mounted && ticket == generation && account.retainsAccess(binding)) {
-        setState(() {
-          bytes = Uint8List.fromList(result);
-          error = null;
-        });
-      }
-    } catch (failure) {
-      if (mounted && ticket == generation && account.retainsAccess(binding)) {
-        setState(() => error = failure);
-      }
-    } finally {
-      if (mounted && ticket == generation && account.retainsAccess(binding)) {
-        setState(() => loading = false);
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!CloudScope.of(context).signedIn) {
-      return cloudAccessRequired(context);
-    }
-    if (!CloudScope.of(context).retainsAccess(binding)) {
-      return cloudScopeChanged(context);
-    }
-    const hint = TextStyle(fontSize: 11.5, height: 1.5, color: muted);
-    return DetailScaffold(
-      title: tr(context, '图片证据'),
-      children: [
-        GlassPanel(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: SegmentedButton<bool>(
-                  showSelectedIcon: false,
-                  segments: [
-                    ButtonSegment(
-                      value: false,
-                      icon: const Icon(Icons.photo_outlined, size: 17),
-                      label: Text(tr(context, '原图')),
-                    ),
-                    ButtonSegment(
-                      value: true,
-                      icon: const Icon(Icons.gradient_outlined, size: 17),
-                      label: Text(tr(context, '边缘参考')),
-                    ),
-                  ],
-                  selected: {edge},
-                  onSelectionChanged: loading
-                      ? null
-                      : (value) {
-                          setState(() {
-                            edge = value.first;
-                            bytes = null;
-                          });
-                          load();
-                        },
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Icon(Icons.pinch_outlined, size: 15, color: muted),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(tr(context, '支持双指缩放与拖动查看细节'), style: hint),
-                  ),
-                  Text(
-                    '${tr(context, '证据')} #${widget.photo['id']}',
-                    style: hint,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 14),
-        if (loading) const CloudLoadingPanel(),
-        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
-        if (bytes != null)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: Container(
-              height: MediaQuery.sizeOf(context).height * .62,
-              color: const Color(0xFF0B1422),
-              child: InteractiveViewer(
-                minScale: .5,
-                maxScale: 8,
-                child: Center(child: Image.memory(bytes!, fit: BoxFit.contain)),
-              ),
-            ),
-          ),
-        if (bytes != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              '${widget.photo['stage'] ?? ''} · ${cloudTimestamp(widget.photo['created_at'])}',
-              textAlign: TextAlign.center,
-              style: hint,
-            ),
-          ),
-      ],
-    );
-  }
 }
 
 Future<int?> cloudPickPhoto(

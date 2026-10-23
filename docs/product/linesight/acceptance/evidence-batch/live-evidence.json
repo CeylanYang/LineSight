@@ -1,0 +1,32 @@
+{
+  "demo_only": true,
+  "business_writes": 0,
+  "original_and_contour_downloads": 4,
+  "task_unchanged": true,
+  "files": [
+    {
+      "photo_id": 11,
+      "mode": "original",
+      "file": "photo-11-source.png",
+      "sha256": "be84ccc6e93104eae6c4c19c07e3b9debef6461f3663a266c5d759af82777dd1"
+    },
+    {
+      "photo_id": 11,
+      "mode": "preview",
+      "file": "photo-11-processed.png",
+      "sha256": "cd56080dd6702abdc0705cca2c625ee61a25d41efb142ad62deb59e36a2bd67a"
+    },
+    {
+      "photo_id": 12,
+      "mode": "original",
+      "file": "photo-12-source.png",
+      "sha256": "d47557c14df4bf4acf1448033f3021a36ca9cac4fb6b2c85fa56d64154a5ef23"
+    },
+    {
+      "photo_id": 12,
+      "mode": "preview",
+      "file": "photo-12-processed.png",
+      "sha256": "5bf086eca2dce8b38fa65161676eb427f8d4e83dd96a46ccb7b0fa65462fd98c"
+    }
+  ]
+}

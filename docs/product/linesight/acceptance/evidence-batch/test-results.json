@@ -1,0 +1,9 @@
+{
+  "full_flutter_tests": 307,
+  "targeted_tests": 29,
+  "new_viewer_tests": 19,
+  "analysis": "No issues found",
+  "component_png_visually_reviewed": true,
+  "subsequent_source_changes": "Removed an unnecessary import in test code only",
+  "backend_source_changed": false
+}

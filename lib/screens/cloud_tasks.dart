@@ -1857,6 +1857,15 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                             CloudEvidencePage(
                               jobId: '${job['id']}',
                               photo: Map<String, dynamic>.from(photo as Map),
+                              gallery: evidence
+                                  .where(
+                                    (row) => row['issue_id'] == issue['id'],
+                                  )
+                                  .map(
+                                    (row) =>
+                                        Map<String, dynamic>.from(row as Map),
+                                  )
+                                  .toList(),
                             ),
                           ),
                         ),
