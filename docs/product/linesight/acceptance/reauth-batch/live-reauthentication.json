@@ -1,0 +1,271 @@
+{
+  "demo_only": true,
+  "original_jobs_modified": false,
+  "before": {
+    "id": "eb1b970c-28a3-4f68-907b-84d4851dbaf2",
+    "version": 3,
+    "part_name": "DEMO · 会话恢复检验",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "inspection",
+    "created_at": "2026-10-23T18:50:43.404764+00:00",
+    "updated_at": "2026-10-23T18:50:43.667832+00:00",
+    "batch_code": "DEMO-REAUTH-6bee2104",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "template": {
+    "id": 2,
+    "name": "尺寸与装配检查",
+    "version": 1,
+    "items": [
+      {
+        "id": "item-1",
+        "label": "关键尺寸",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-2",
+        "label": "孔位与配合",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-3",
+        "label": "装配适配",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-4",
+        "label": "紧固与稳定性",
+        "required": true,
+        "allow_na": true
+      }
+    ],
+    "built_in": true
+  },
+  "target_session_revoked": true,
+  "other_sessions_revoked": false,
+  "no_automatic_submission_after_login": true,
+  "after_recovered": {
+    "id": "eb1b970c-28a3-4f68-907b-84d4851dbaf2",
+    "version": 3,
+    "part_name": "DEMO · 会话恢复检验",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "inspection",
+    "created_at": "2026-10-23T18:50:43.404764+00:00",
+    "updated_at": "2026-10-23T18:50:43.667832+00:00",
+    "batch_code": "DEMO-REAUTH-6bee2104",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "manual_submission_single_inspection": true,
+  "after_submitted": {
+    "id": "eb1b970c-28a3-4f68-907b-84d4851dbaf2",
+    "version": 4,
+    "part_name": "DEMO · 会话恢复检验",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-23T18:50:43.404764+00:00",
+    "updated_at": "2026-10-23T19:01:12.964347+00:00",
+    "batch_code": "DEMO-REAUTH-6bee2104",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [
+      {
+        "id": 24,
+        "task_id": "eb1b970c-28a3-4f68-907b-84d4851dbaf2",
+        "part_name": "DEMO · 会话恢复检验",
+        "batch_code": "DEMO-REAUTH-6bee2104",
+        "round_no": 1,
+        "verdict": "pass",
+        "note": "Measured 12.05 mm",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-23T19:01:12.963537+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  }
+}

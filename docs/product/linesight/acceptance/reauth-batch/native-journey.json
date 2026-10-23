@@ -1,0 +1,45 @@
+{
+  "version": "1.1.37+8061",
+  "login_required_after_revocation": true,
+  "same_note_restored": true,
+  "restored_note": "Measured 12.05 mm",
+  "four_checklist_answers_restored": true,
+  "parent_refreshed_after_manual_submission": true,
+  "workbench_after_return": {
+    "inspection": 11,
+    "exceptions": 2,
+    "closed": 12
+  },
+  "original_display_restored": true,
+  "restored_display": {
+    "override_size": "1080x1920",
+    "physical_density": 420
+  },
+  "emulator_stopped_after_acceptance": true,
+  "screenshots": [
+    {
+      "file": "png/108-draft-before-session-revocation-emulator.png",
+      "sha256": "ab8a1b9d75bc722fc4c03332989c4af99f25d07acf4bf124dcaf1b15fe9a5316"
+    },
+    {
+      "file": "png/109-session-login-required-emulator.png",
+      "sha256": "716c22f4313333c1ffeb17914c3eaf67078829b2435b8a627b90cb000c470c50"
+    },
+    {
+      "file": "png/110-unified-secondary-login-emulator.png",
+      "sha256": "d7d7725a8b023325869f40d743812e377d35577b65b8f13b16699194a8ff979e"
+    },
+    {
+      "file": "png/111-restored-inspection-draft-emulator.png",
+      "sha256": "0e6d44d55971ad045988d13a67aba8d6e32bd0edb556d8805bfa0cd5d4ea8240"
+    },
+    {
+      "file": "png/112-refreshed-task-parent-emulator.png",
+      "sha256": "f2b200b561399b3f9a56d553d6c7d0bde616f89846863d356e0961f14d33f0d3"
+    },
+    {
+      "file": "png/113-return-workbench-emulator.png",
+      "sha256": "353f9935b463913c66e0e4cbde413945f8c604aadb1cf6ac80a926b3ef4a085a"
+    }
+  ]
+}

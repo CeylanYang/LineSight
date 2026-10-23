@@ -1627,3 +1627,6 @@
 1626|After submitting, view the result and add photos from task history.
 1627|Not selected
 1628|Status
+1629|Sign in to your workspace
+1630|Continue with your account
+1631|View production tasks, inspections and quality reports, and pick up where you left off.

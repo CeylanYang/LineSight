@@ -1629,4 +1629,7 @@ const englishMessages = <String, String>{
   "提交后可在任务历史中查看结果并补充照片。": "After submitting, view the result and add photos from task history.",
   "未选择": "Not selected",
   "状态": "Status",
+  "登录工作区": "Sign in to your workspace",
+  "使用账号继续": "Continue with your account",
+  "查看生产任务、检验记录与质量报告，继续未完成的工作。": "View production tasks, inspections and quality reports, and pick up where you left off.",
 };

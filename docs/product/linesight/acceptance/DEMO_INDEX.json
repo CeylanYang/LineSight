@@ -1,5 +1,5 @@
 {
-  "screenshots": 154,
+  "screenshots": 162,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2113,6 +2113,150 @@
       "height": 1600,
       "sha256": "0ff166394b449cbdbaad24dc3cb40cfac83bce737d88c880faa4a72d78629382",
       "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/107-unified-login-en-desktop-render.png",
+      "title": "107-unified-login-en-desktop-render",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "70fd3bc25d1adc4db4b861deca708831969f6ca04f3b7dc0e8a1cd218997014e",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/107-unified-login-zh-desktop-render.png",
+      "title": "107-unified-login-zh-desktop-render",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "26a5250b0b1ccf7758ec0884a62208febab96f6d529da0c1b05ea23de5ff8f62",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/108-draft-before-session-revocation-emulator.png",
+      "title": "108-draft-before-session-revocation-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "ab8a1b9d75bc722fc4c03332989c4af99f25d07acf4bf124dcaf1b15fe9a5316",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/109-session-login-required-emulator.png",
+      "title": "109-session-login-required-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "716c22f4313333c1ffeb17914c3eaf67078829b2435b8a627b90cb000c470c50",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/110-unified-secondary-login-emulator.png",
+      "title": "110-unified-secondary-login-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "d7d7725a8b023325869f40d743812e377d35577b65b8f13b16699194a8ff979e",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/111-restored-inspection-draft-emulator.png",
+      "title": "111-restored-inspection-draft-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "0e6d44d55971ad045988d13a67aba8d6e32bd0edb556d8805bfa0cd5d4ea8240",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/112-refreshed-task-parent-emulator.png",
+      "title": "112-refreshed-task-parent-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "f2b200b561399b3f9a56d553d6c7d0bde616f89846863d356e0961f14d33f0d3",
+      "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "reauth-batch/png/113-return-workbench-emulator.png",
+      "title": "113-return-workbench-emulator",
+      "batch": "reauth-batch",
+      "batch_requirement_ids": [
+        "SEC-02",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "SSO-04",
+        "COL-02"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "353f9935b463913c66e0e4cbde413945f8c604aadb1cf6ac80a926b3ef4a085a",
+      "batch_notes": "reauth-batch/README.md"
     },
     {
       "file": "release-batch/png/81-login-card-en-desktop-render.png",

@@ -16,7 +16,7 @@ import '../models.dart' show uid;
 import '../ui.dart';
 import '../time.dart' show zonedStamp;
 import 'cloud_business.dart';
-import 'cloud_shell.dart' show CloudLoginPage;
+import 'cloud_shell.dart' show CloudLoginPage, cloudReauthenticate;
 
 String cloudTimestamp(Object? value) {
   final parsed = DateTime.tryParse('$value');
@@ -172,15 +172,63 @@ class CloudTaskConflictComparison extends StatelessWidget {
   }
 }
 
-Widget cloudAccessRequired(BuildContext context) => DetailScaffold(
-  title: tr(context, '登录'),
+Widget cloudAccessRequired(BuildContext context, {VoidCallback? onLogin}) =>
+    DetailScaffold(
+      title: tr(context, '登录'),
+      children: [
+        Text(tr(context, '登录后查看任务与检验记录')),
+        const SizedBox(height: 16),
+        FilledButton(
+          onPressed: onLogin ?? () => openPage(context, const CloudLoginPage()),
+          child: Text(tr(context, '登录')),
+        ),
+        TextButton(
+          onPressed: () =>
+              Navigator.of(context).popUntil((route) => route.isFirst),
+          child: Text(tr(context, '返回工作台')),
+        ),
+      ],
+    );
+
+Future<String> cloudRestoreDraftAccess(
+  CloudAccount account,
+  Object? ownerId,
+  int workspaceId, {
+  bool write = true,
+}) async {
+  if (!account.signedIn ||
+      ownerId == null ||
+      account.profile?['id'] != ownerId) {
+    throw const CollaborationApiException(403, '账户或团队已切换，请重新打开页面');
+  }
+  if (account.activeWorkspace?['id'] != workspaceId) {
+    final matches = account.workspaces.where((w) => w['id'] == workspaceId);
+    if (matches.isEmpty) {
+      throw const CollaborationApiException(403, '当前账户没有访问权限');
+    }
+    await account.selectWorkspace(matches.first);
+    if (account.error != null) {
+      throw const CollaborationApiException(503, '无法恢复草稿，请重试');
+    }
+  }
+  if (account.profile?['id'] != ownerId ||
+      account.activeWorkspace?['id'] != workspaceId ||
+      (write && !account.canEdit)) {
+    throw const CollaborationApiException(403, '当前账户没有访问权限');
+  }
+  final captured = account.accessScope;
+  account.requireAccess(captured, write: write);
+  return captured!;
+}
+
+Widget cloudDraftRecoveryFailure(
+  BuildContext context,
+  Object failure,
+  Future<void> Function() retry,
+) => DetailScaffold(
+  title: tr(context, '恢复草稿'),
   children: [
-    Text(tr(context, '登录后查看任务与检验记录')),
-    const SizedBox(height: 16),
-    FilledButton(
-      onPressed: () => openPage(context, const CloudLoginPage()),
-      child: Text(tr(context, '登录')),
-    ),
+    CloudFailurePanel(failure: failure, onRetry: retry),
     TextButton(
       onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
       child: Text(tr(context, '返回工作台')),
@@ -639,6 +687,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   bool busy = false;
   String? error;
   String? draftStorageKey, accessBinding;
+  Object? draftOwner, recoveryFailure;
+  int? draftWorkspace;
+  bool recovering = false;
   bool draftLoaded = false;
   @override
   void didChangeDependencies() {
@@ -647,9 +698,38 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       draftLoaded = true;
       final account = CloudScope.of(context);
       accessBinding = account.accessScope;
+      draftOwner = account.profile?['id'];
+      draftWorkspace = account.activeWorkspace?['id'] as int?;
       draftStorageKey = account.draftKey('create');
       loadMembers(account);
       if (draftStorageKey != null) restoreDraft(account);
+    }
+  }
+
+  Future<void> recoverLogin() async {
+    if (await cloudReauthenticate(context) && mounted) await reopenDraft();
+  }
+
+  Future<void> reopenDraft() async {
+    final account = CloudScope.of(context);
+    setState(() {
+      recovering = true;
+      recoveryFailure = null;
+    });
+    try {
+      final captured = await cloudRestoreDraftAccess(
+        account,
+        draftOwner,
+        draftWorkspace!,
+      );
+      if (!mounted) return;
+      account.requireAccess(captured, write: true);
+      setState(() => accessBinding = captured);
+      await loadMembers(account);
+    } catch (failure) {
+      if (mounted) setState(() => recoveryFailure = failure);
+    } finally {
+      if (mounted) setState(() => recovering = false);
     }
   }
 
@@ -791,12 +871,21 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    if (!account.signedIn ||
+    if (!account.signedIn) {
+      return cloudAccessRequired(context, onLogin: recoverLogin);
+    }
+    if (recovering) {
+      return DetailScaffold(
+        title: tr(context, '恢复草稿'),
+        children: const [CloudLoadingPanel()],
+      );
+    }
+    if (recoveryFailure != null) {
+      return cloudDraftRecoveryFailure(context, recoveryFailure!, reopenDraft);
+    }
+    if (!account.retainsAccess(accessBinding) ||
         (draftStorageKey != null &&
             draftStorageKey != account.draftKey('create'))) {
-      return cloudAccessRequired(context);
-    }
-    if (!account.retainsAccess(accessBinding)) {
       return cloudScopeChanged(context);
     }
     InputDecoration field(String label, IconData icon) => InputDecoration(
@@ -1073,23 +1162,73 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
   late Map<String, dynamic> job = widget.job;
   List<Map<String, dynamic>> history = [];
   int tab = 0;
-  bool busy = false, loaded = false;
+  bool busy = false, loaded = false, wasCurrent = false;
   Object? error;
   String? binding;
+  Object? pageOwner, recoveryFailure;
+  bool recovering = false;
   String get base => 'workspaces/${widget.workspaceId}/jobs/${job['id']}/';
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final current = ModalRoute.of(context)?.isCurrent ?? true;
+    final account = CloudScope.of(context);
     if (!loaded) {
       loaded = true;
-      binding = CloudScope.of(context).accessScope;
+      binding = account.accessScope;
+      pageOwner = account.profile?['id'];
       load();
+    } else if (current &&
+        !wasCurrent &&
+        !recovering &&
+        (account.retainsAccess(binding) ||
+            (pageOwner != null && account.profile?['id'] == pageOwner)) &&
+        account.activeWorkspace?['id'] == widget.workspaceId) {
+      binding = account.accessScope;
+      load();
+    }
+    wasCurrent = current;
+  }
+
+  Future<void> recoverLogin() async {
+    setState(() => recovering = true);
+    try {
+      if (await cloudReauthenticate(context) && mounted) await reopenPage();
+    } finally {
+      if (mounted) setState(() => recovering = false);
+    }
+  }
+
+  Future<void> reopenPage() async {
+    final account = CloudScope.of(context);
+    setState(() {
+      recovering = true;
+      recoveryFailure = null;
+    });
+    try {
+      final captured = await cloudRestoreDraftAccess(
+        account,
+        pageOwner,
+        widget.workspaceId,
+        write: false,
+      );
+      if (!mounted) return;
+      account.requireAccess(captured);
+      setState(() {
+        binding = captured;
+        wasCurrent = true;
+      });
+      await load();
+    } catch (failure) {
+      if (mounted) setState(() => recoveryFailure = failure);
+    } finally {
+      if (mounted) setState(() => recovering = false);
     }
   }
 
   Future<void> load() async {
-    final account = CloudScope.of(context);
-    if (!account.retainsAccess(binding)) return;
+    final account = CloudScope.of(context), captured = binding;
+    if (!account.retainsAccess(captured)) return;
     setState(() {
       busy = true;
       error = null;
@@ -1100,22 +1239,22 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
       );
       final events = (await account.request('GET', '${base}history/') as List)
           .cast<Map<String, dynamic>>();
-      if (mounted && account.retainsAccess(binding)) {
+      if (mounted && captured == binding && account.retainsAccess(captured)) {
         setState(() {
           job = latest;
           history = events;
         });
       }
     } on CollaborationApiException catch (failure) {
-      if (mounted && account.retainsAccess(binding)) {
+      if (mounted && captured == binding && account.retainsAccess(captured)) {
         setState(() => error = failure);
       }
     } catch (failure) {
-      if (mounted && account.retainsAccess(binding)) {
+      if (mounted && captured == binding && account.retainsAccess(captured)) {
         setState(() => error = failure);
       }
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted && captured == binding) setState(() => busy = false);
     }
   }
 
@@ -1131,15 +1270,25 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
         ),
       ),
     );
-    if (mounted) await load();
   }
 
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    if (!account.signedIn ||
-        account.activeWorkspace?['id'] != widget.workspaceId) {
-      return cloudAccessRequired(context);
+    if (!account.signedIn) {
+      return cloudAccessRequired(context, onLogin: recoverLogin);
+    }
+    if (recovering) {
+      return DetailScaffold(
+        title: tr(context, '正在加载'),
+        children: const [CloudLoadingPanel()],
+      );
+    }
+    if (recoveryFailure != null) {
+      return cloudDraftRecoveryFailure(context, recoveryFailure!, reopenPage);
+    }
+    if (account.activeWorkspace?['id'] != widget.workspaceId) {
+      return cloudScopeChanged(context);
     }
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     final canEdit =
@@ -1792,6 +1941,8 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
       failed = TextEditingController(text: '0'),
       scrapped = TextEditingController(text: '0');
   String? accessBinding;
+  Object? draftOwner, recoveryFailure;
+  bool recovering = false;
   bool initialized = false;
   @override
   void didChangeDependencies() {
@@ -1801,6 +1952,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
       comparisonBase = cloudTaskSnapshot(widget.job);
       final account = CloudScope.of(context);
       accessBinding = account.accessScope;
+      draftOwner = account.profile?['id'];
       template =
           widget.job['template'] as Map<String, dynamic>? ??
           (account.templates.isEmpty ? null : account.templates.first);
@@ -1832,6 +1984,49 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   }
 
   CloudAccount? draftAccount;
+  Future<void> recoverLogin() async {
+    if (await cloudReauthenticate(context) && mounted) await reopenDraft();
+  }
+
+  Future<void> reopenDraft() async {
+    final account = CloudScope.of(context);
+    setState(() {
+      recovering = true;
+      recoveryFailure = null;
+    });
+    try {
+      final captured = await cloudRestoreDraftAccess(
+        account,
+        draftOwner,
+        widget.workspaceId,
+      );
+      final latest = Map<String, dynamic>.from(
+        await account.request(
+              'GET',
+              'workspaces/${widget.workspaceId}/jobs/${widget.job['id']}/',
+            )
+            as Map,
+      );
+      if (!mounted) return;
+      account.requireAccess(captured, write: true);
+      setState(() {
+        accessBinding = captured;
+        savedVersion ??=
+            acceptedJob?['version'] as int? ?? widget.job['version'] as int?;
+        if (latest['version'] != savedVersion) {
+          conflict = latest;
+          error = '任务已更新，请核对当前任务后处理草稿';
+        } else {
+          acceptedJob = latest;
+        }
+      });
+    } catch (failure) {
+      if (mounted) setState(() => recoveryFailure = failure);
+    } finally {
+      if (mounted) setState(() => recovering = false);
+    }
+  }
+
   String? draftStorageKey, draftError;
   bool draftReady = false, draftFinished = false, restoreFailed = false;
   int? savedVersion;
@@ -2100,13 +2295,22 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    if (!account.signedIn ||
-        (draftStorageKey != null &&
-            draftStorageKey !=
-                account.draftKey('${widget.action}-${widget.job['id']}'))) {
-      return cloudAccessRequired(context);
+    if (!account.signedIn) {
+      return cloudAccessRequired(context, onLogin: recoverLogin);
+    }
+    if (recovering) {
+      return DetailScaffold(
+        title: tr(context, '恢复草稿'),
+        children: const [CloudLoadingPanel()],
+      );
+    }
+    if (recoveryFailure != null) {
+      return cloudDraftRecoveryFailure(context, recoveryFailure!, reopenDraft);
     }
     if (!account.retainsAccess(accessBinding) ||
+        (draftStorageKey != null &&
+            draftStorageKey !=
+                account.draftKey('${widget.action}-${widget.job['id']}')) ||
         account.activeWorkspace?['id'] != widget.workspaceId) {
       return cloudScopeChanged(context);
     }

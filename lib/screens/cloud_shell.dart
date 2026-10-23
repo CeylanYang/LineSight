@@ -750,14 +750,30 @@ class _CloudShellState extends State<CloudShell> {
   }
 }
 
+Future<bool> cloudReauthenticate(BuildContext context) async {
+  var accepted = false;
+  await Navigator.of(context).push(
+    appPageRoute<void>(
+      context,
+      CloudLoginPage(onAuthenticated: () => accepted = true),
+    ),
+  );
+  return accepted;
+}
+
 class CloudLoginPage extends StatelessWidget {
-  const CloudLoginPage({super.key});
+  final VoidCallback? onAuthenticated;
+  const CloudLoginPage({super.key, this.onAuthenticated});
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
     Future<void> login(bool demo) async {
       await account.signIn(demo: demo);
-      if (context.mounted && account.signedIn && account.profile != null) {
+      if (context.mounted &&
+          account.signedIn &&
+          account.profile != null &&
+          account.error == null) {
+        onAuthenticated?.call();
         Navigator.pop(context);
       }
     }
@@ -767,9 +783,9 @@ class CloudLoginPage extends StatelessWidget {
       children: [
         const SizedBox(height: 8),
         HeroBanner(
-          eyebrow: 'LINESIGHT · TEAM CLOUD',
-          title: tr(context, '登录团队工作区'),
-          subtitle: tr(context, '同步生产任务、检验记录与质量报告，离线操作也会安全保留。'),
+          eyebrow: 'LINESIGHT · ACCOUNT',
+          title: tr(context, '登录工作区'),
+          subtitle: tr(context, '查看生产任务、检验记录与质量报告，继续未完成的工作。'),
           trailing: Container(
             width: 40,
             height: 40,
@@ -792,7 +808,7 @@ class CloudLoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                tr(context, '使用团队账号继续'),
+                tr(context, '使用账号继续'),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
@@ -842,7 +858,9 @@ class CloudLoginPage extends StatelessWidget {
                         await account.signInNfc(card.code);
                         if (context.mounted &&
                             account.signedIn &&
-                            account.profile != null) {
+                            account.profile != null &&
+                            account.error == null) {
+                          onAuthenticated?.call();
                           Navigator.pop(context);
                         }
                       },

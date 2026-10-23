@@ -3,7 +3,7 @@ import 'cloud_account.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'l10n_catalog.dart';
-import 'screens/cloud_shell.dart' show CloudLoginPage;
+import 'screens/cloud_shell.dart' show cloudReauthenticate;
 import 'ui.dart';
 import 'store.dart';
 
@@ -136,7 +136,10 @@ class _CloudFailurePanelState extends State<CloudFailurePanel> {
                                   context,
                                 ).popUntil((route) => route.isFirst);
                               } else if (status == 401) {
-                                openPage(context, const CloudLoginPage());
+                                if (await cloudReauthenticate(context) &&
+                                    mounted) {
+                                  await widget.onRetry();
+                                }
                               } else if (status == 403) {
                                 final account = CloudScope.of(context);
                                 await account.reload();
