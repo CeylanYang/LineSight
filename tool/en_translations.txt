@@ -1613,3 +1613,8 @@
 1612|Issue record
 1613|No photos uploaded yet
 1614|View original and contours
+1615|Task created
+1616|Issue submitted
+1617|Inspection submitted
+1618|Resolution submitted
+1619|Task status updated

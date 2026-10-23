@@ -1,0 +1,10 @@
+{
+  "source": "Captured Flutter SystemChannels.platform calls in a test messenger",
+  "effects": [
+    "HapticFeedbackType.selectionClick",
+    "HapticFeedbackType.lightImpact",
+    "HapticFeedbackType.heavyImpact"
+  ],
+  "haptics_disabled_additional_calls": 0,
+  "physical_vibration_verified": false
+}

@@ -110,8 +110,9 @@ Future<void> openCloudCode(BuildContext context, String value) async {
     return;
   }
   await Navigator.of(context).push(
-    MaterialPageRoute<void>(
-      builder: (_) => trace != null
+    appPageRoute<void>(
+      context,
+      trace != null
           ? CloudTracePage(link: trace.link)
           : CloudBatchTracePage(trace: batch!),
     ),
@@ -332,8 +333,9 @@ class _CloudScanPageState extends State<CloudScanPage> {
       }
       captured = true;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute<void>(
-          builder: (_) => trace != null
+        appPageRoute<void>(
+          context,
+          trace != null
               ? CloudTracePage(link: trace.link)
               : CloudBatchTracePage(trace: batch!),
         ),

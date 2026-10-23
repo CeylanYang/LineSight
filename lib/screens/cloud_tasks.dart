@@ -8,6 +8,7 @@ import '../cloud_history.dart';
 import '../cloud_lifecycle.dart';
 import 'cloud_evidence_compare.dart';
 import '../cloud_feedback.dart';
+import '../store.dart' show AppFeedback;
 import '../cloud_trace.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
@@ -269,7 +270,10 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
                   style: FilledButton.styleFrom(
                     minimumSize: const Size(0, 36),
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    textStyle: const TextStyle(
+                    textStyle: TextStyle(
+                      fontFamily: Theme.of(
+                        context,
+                      ).textTheme.labelLarge?.fontFamily,
                       fontSize: 11.5,
                       fontWeight: FontWeight.w800,
                     ),
@@ -635,9 +639,15 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       );
       if (draftStorageKey != null) await account.deleteDraft(draftStorageKey!);
       await account.reload();
-      if (mounted) Navigator.pop(context);
+      if (mounted && account.retainsAccess(accessBinding)) {
+        cloudOutcome(context, '任务已创建');
+        Navigator.pop(context);
+      }
     } on CollaborationApiException catch (failure) {
-      if (mounted) setState(() => error = failure.message);
+      if (mounted && account.retainsAccess(accessBinding)) {
+        AppScope.of(context).feedback(kind: AppFeedback.warning);
+        setState(() => error = failure.message);
+      }
     } finally {
       if (mounted) setState(() => busy = false);
     }
@@ -854,7 +864,10 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(0, 48),
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
+                    fontFamily: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.fontFamily,
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                   ),
@@ -877,7 +890,10 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
               child: FilledButton.icon(
                 style: FilledButton.styleFrom(
                   minimumSize: const Size(0, 48),
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
+                    fontFamily: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.fontFamily,
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
                   ),
@@ -970,8 +986,9 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
 
   Future<void> command(String action, {Map<String, dynamic>? issue}) async {
     await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => CloudTaskCommandPage(
+      appPageRoute<void>(
+        context,
+        CloudTaskCommandPage(
           job: job,
           workspaceId: widget.workspaceId,
           action: action,
@@ -1135,7 +1152,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size(0, 44),
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
+                          fontFamily: Theme.of(
+                            context,
+                          ).textTheme.labelLarge?.fontFamily,
                           fontSize: 12,
                           fontWeight: FontWeight.w800,
                         ),
@@ -1157,7 +1177,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                       child: FilledButton.icon(
                         style: FilledButton.styleFrom(
                           minimumSize: const Size(0, 44),
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
+                            fontFamily: Theme.of(
+                              context,
+                            ).textTheme.labelLarge?.fontFamily,
                             fontSize: 12,
                             fontWeight: FontWeight.w800,
                           ),
@@ -1439,7 +1462,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 10,
                                   ),
-                                  textStyle: const TextStyle(
+                                  textStyle: TextStyle(
+                                    fontFamily: Theme.of(
+                                      context,
+                                    ).textTheme.labelLarge?.fontFamily,
                                     fontSize: 10.5,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -1493,7 +1519,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(0, 36),
                             alignment: Alignment.centerLeft,
-                            textStyle: const TextStyle(
+                            textStyle: TextStyle(
+                              fontFamily: Theme.of(
+                                context,
+                              ).textTheme.labelLarge?.fontFamily,
                               fontSize: 10.5,
                               fontWeight: FontWeight.w700,
                             ),
@@ -1523,7 +1552,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                         child: FilledButton.icon(
                           style: FilledButton.styleFrom(
                             minimumSize: const Size(0, 40),
-                            textStyle: const TextStyle(
+                            textStyle: TextStyle(
+                              fontFamily: Theme.of(
+                                context,
+                              ).textTheme.labelLarge?.fontFamily,
                               fontSize: 11.5,
                               fontWeight: FontWeight.w800,
                             ),
@@ -1787,6 +1819,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     if ((action == 'resolve' || (action == 'inspect' && verdict == 'fail')) &&
         note.text.trim().isEmpty) {
       edit(() => error = '请填写处理或异常说明');
+      AppScope.of(context).feedback(kind: AppFeedback.warning);
       return;
     }
     edit(() {
@@ -1886,16 +1919,31 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
         );
       }
       await account.reload();
-      if (mounted) Navigator.pop(context);
+      if (mounted && account.retainsAccess(accessBinding)) {
+        cloudOutcome(
+          context,
+          action == 'inspect'
+              ? (verdict == 'fail' ? '异常已提交' : '检验已提交')
+              : action == 'resolve'
+              ? '处理结果已提交'
+              : '任务状态已更新',
+          warning: action == 'inspect' && verdict == 'fail',
+        );
+        Navigator.pop(context);
+      }
     } on CollaborationApiException catch (failure) {
-      if (mounted) {
+      if (mounted && account.retainsAccess(accessBinding)) {
+        AppScope.of(context).feedback(kind: AppFeedback.warning);
         edit(() {
           error = failure.message;
           conflict = failure.details?['current'] as Map<String, dynamic>?;
         });
       }
     } catch (_) {
-      if (mounted) edit(() => error = '网络连接失败，草稿已保留，请重试');
+      if (mounted && account.retainsAccess(accessBinding)) {
+        AppScope.of(context).feedback(kind: AppFeedback.warning);
+        edit(() => error = '网络连接失败，草稿已保留，请重试');
+      }
     } finally {
       if (mounted) edit(() => busy = false);
     }
@@ -2085,9 +2133,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                           await persistDraft();
                           if (!context.mounted) return;
                           await Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => const CloudSyncPage(),
-                            ),
+                            appPageRoute<void>(context, const CloudSyncPage()),
                           );
                           if (mounted) edit(() {});
                         },
@@ -2448,36 +2494,41 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  FilledButton.tonalIcon(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size(0, 40),
-                      textStyle: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w800,
+                  Flexible(
+                    child: FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size(0, 40),
+                        textStyle: TextStyle(
+                          fontFamily: Theme.of(
+                            context,
+                          ).textTheme.labelLarge?.fontFamily,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
+                      icon: const Icon(Icons.add_a_photo_outlined, size: 17),
+                      label: Text(tr(context, '添加检验照片')),
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              edit(() => busy = true);
+                              try {
+                                final id = await cloudPickPhoto(
+                                  context,
+                                  widget.job,
+                                );
+                                if (id != null && mounted) {
+                                  edit(() => evidence.add(id));
+                                }
+                              } catch (failure) {
+                                if (mounted) {
+                                  edit(() => error = '$failure');
+                                }
+                              } finally {
+                                if (mounted) edit(() => busy = false);
+                              }
+                            },
                     ),
-                    icon: const Icon(Icons.add_a_photo_outlined, size: 17),
-                    label: Text(tr(context, '添加检验照片')),
-                    onPressed: busy
-                        ? null
-                        : () async {
-                            edit(() => busy = true);
-                            try {
-                              final id = await cloudPickPhoto(
-                                context,
-                                widget.job,
-                              );
-                              if (id != null && mounted) {
-                                edit(() => evidence.add(id));
-                              }
-                            } catch (failure) {
-                              if (mounted) {
-                                edit(() => error = '$failure');
-                              }
-                            } finally {
-                              if (mounted) edit(() => busy = false);
-                            }
-                          },
                   ),
                 ],
               ),
@@ -2700,7 +2751,8 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           child: FilledButton.icon(
             style: FilledButton.styleFrom(
               minimumSize: const Size(0, 52),
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
+                fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily,
                 fontSize: 14,
                 fontWeight: FontWeight.w800,
               ),

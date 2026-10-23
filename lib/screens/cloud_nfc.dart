@@ -172,7 +172,7 @@ class _CloudNfcCardsPageState extends State<CloudNfcCardsPage> {
   Future<void> bind() async {
     final account = CloudScope.of(context);
     final card = await Navigator.of(context).push<NfcCardRead>(
-      MaterialPageRoute(builder: (_) => const CloudNfcScanPage(binding: true)),
+      appPageRoute<NfcCardRead>(context, const CloudNfcScanPage(binding: true)),
     );
     if (!mounted || card == null || !current(account)) return;
     setState(() {

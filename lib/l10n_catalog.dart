@@ -1615,4 +1615,9 @@ const englishMessages = <String, String>{
   "异常记录": "Issue record",
   "尚未上传照片": "No photos uploaded yet",
   "查看原图与边缘参考": "View original and contours",
+  "任务已创建": "Task created",
+  "异常已提交": "Issue submitted",
+  "检验已提交": "Inspection submitted",
+  "处理结果已提交": "Resolution submitted",
+  "任务状态已更新": "Task status updated",
 };

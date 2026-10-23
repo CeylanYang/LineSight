@@ -2,7 +2,7 @@ import 'l10n.dart';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.33';
+const appVersion = '1.1.34';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -1093,10 +1093,14 @@ Future<bool> perform(
 }) async {
   try {
     await action();
-    if (context.mounted && success != null) toast(context, success);
+    if (context.mounted && success != null) {
+      AppScope.of(context).feedback(kind: AppFeedback.success);
+      toast(context, success);
+    }
     return true;
   } catch (e) {
     if (context.mounted) {
+      AppScope.of(context).feedback(kind: AppFeedback.warning);
       toast(
         context,
         e is StateError
@@ -1117,30 +1121,33 @@ void openPage(BuildContext context, Widget page) {
   final s = AppScope.of(context);
   s.feedback();
   ScaffoldMessenger.maybeOf(context)?.clearSnackBars();
+  Navigator.of(context).push(appPageRoute<void>(context, page));
+}
+
+PageRoute<T> appPageRoute<T>(BuildContext context, Widget page) {
+  final s = AppScope.of(context);
   final reduced = s.reduceMotion || MediaQuery.of(context).disableAnimations;
-  Navigator.of(context).push(
-    PageRouteBuilder<void>(
-      pageBuilder: (_, animation, secondaryAnimation) => page,
-      transitionDuration: Duration(milliseconds: reduced ? 0 : 240),
-      reverseTransitionDuration: Duration(milliseconds: reduced ? 0 : 180),
-      transitionsBuilder: (_, animation, secondaryAnimation, child) =>
-          FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(.025, .015),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    ),
+  return PageRouteBuilder<T>(
+    pageBuilder: (_, animation, secondaryAnimation) => page,
+    transitionDuration: Duration(milliseconds: reduced ? 0 : 240),
+    reverseTransitionDuration: Duration(milliseconds: reduced ? 0 : 180),
+    transitionsBuilder: (_, animation, secondaryAnimation, child) =>
+        FadeTransition(
+          opacity: animation,
+          child: SlideTransition(
+            position:
+                Tween<Offset>(
+                  begin: const Offset(.025, .015),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
                   ),
-              child: child,
-            ),
+                ),
+            child: child,
           ),
-    ),
+        ),
   );
 }
 

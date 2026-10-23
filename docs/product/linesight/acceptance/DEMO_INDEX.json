@@ -1,5 +1,5 @@
 {
-  "screenshots": 118,
+  "screenshots": 124,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1825,6 +1825,102 @@
       "height": 1600,
       "sha256": "51c4f1f0eba1908f4e633f8a00c440027d52a9ce2b63f6bc698085e7c3e17d33",
       "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/79-issue-en-desktop-render.png",
+      "title": "79-issue-en-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "89331b9a7bfa4b71f8cac92e0d8a286bbccbaee47eebadb23dd72cf0271b46f9",
+      "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/79-issue-zh-desktop-render.png",
+      "title": "79-issue-zh-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "f401f498dab3355d8d34dfcea41a428660bc0d7741e18435ca103d86fecafd3b",
+      "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/79-pass-en-desktop-render.png",
+      "title": "79-pass-en-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "d64342d7af03aaed4ac903ac822cbe6ea39dd5c6dd95bd8847102e202fff4089",
+      "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/79-pass-zh-desktop-render.png",
+      "title": "79-pass-zh-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "4a74a30aa23238ebb9fdbf15ac815f89486bc9eb293ae589fdafdfadb3e387e9",
+      "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/80-login-card-en-desktop-render.png",
+      "title": "80-login-card-en-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "0ea689cb5244c16410c50c5829addce0baa015722da748530c083ef2633738bc",
+      "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "access2-batch/png/80-login-card-zh-desktop-render.png",
+      "title": "80-login-card-zh-desktop-render",
+      "batch": "access2-batch",
+      "batch_requirement_ids": [
+        "SEC-05",
+        "SEC-06",
+        "UI-10",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "2ea38e85ecde815759bdfa6c08c7ab48eb78817494008e167dc329b96a1504a4",
+      "batch_notes": "access2-batch/README.md"
     }
   ],
   "product_plan_complete": false

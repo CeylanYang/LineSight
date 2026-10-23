@@ -822,8 +822,9 @@ class CloudLoginPage extends StatelessWidget {
                     : () async {
                         final card = await Navigator.of(context)
                             .push<NfcCardRead>(
-                              MaterialPageRoute(
-                                builder: (_) => const CloudNfcScanPage(),
+                              appPageRoute<NfcCardRead>(
+                                context,
+                                const CloudNfcScanPage(),
                               ),
                             );
                         if (card == null || !context.mounted) return;

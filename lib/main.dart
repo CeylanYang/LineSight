@@ -115,8 +115,9 @@ class _LineSightAppState extends State<LineSightApp>
       final link = _pendingTrace!;
       _pendingTrace = null;
       _cloudNavigator.currentState!.push(
-        MaterialPageRoute<void>(
-          builder: (_) => BatchTrace.parse(link) != null
+        appPageRoute<void>(
+          _cloudNavigator.currentContext!,
+          BatchTrace.parse(link) != null
               ? CloudBatchTracePage(trace: BatchTrace.parse(link)!)
               : CloudTracePage(link: link),
         ),

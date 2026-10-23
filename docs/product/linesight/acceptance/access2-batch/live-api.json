@@ -1,0 +1,74 @@
+{
+  "authorized_original_sha256": "d47557c14df4bf4acf1448033f3021a36ca9cac4fb6b2c85fa56d64154a5ef23",
+  "anonymous_photo_status": 401,
+  "foreign_task_and_issue_writes_rejected": true,
+  "same_workspace_wrong_job_photo_rejected": true,
+  "export_query_cannot_expand_workspace_scope": true,
+  "ordinary_pkce_identity": true,
+  "cross_workspace_reads": [
+    {
+      "operation": "GET",
+      "resource": "jobs",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "records",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "metrics",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "report",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "report",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "templates",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "members",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "notifications",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "jobs",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "jobs",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "jobs",
+      "status": 404
+    },
+    {
+      "operation": "GET",
+      "resource": "jobs",
+      "status": 404
+    }
+  ],
+  "foreign_demo_task_unchanged": true,
+  "production_or_demo_passwords_changed": false,
+  "physical_device_test": false,
+  "provider_probe_deleted": true
+}

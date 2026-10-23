@@ -1996,8 +1996,9 @@ Future<int?> cloudPickPhoto(
   Map<String, dynamic>? item;
   if (choice == 'live') {
     final bytes = await Navigator.of(context).push<Uint8List>(
-      MaterialPageRoute(
-        builder: (_) => const CloudLiveInspectionPage(returnCapture: true),
+      appPageRoute<Uint8List>(
+        context,
+        const CloudLiveInspectionPage(returnCapture: true),
       ),
     );
     account.requireAccess(binding, write: true);
@@ -3477,8 +3478,9 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
                     onTap: () async {
                       if (drafts[i]['job_id'] == null) {
                         await Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const CloudCreateTaskPage(),
+                          appPageRoute<void>(
+                            context,
+                            const CloudCreateTaskPage(),
                           ),
                         );
                       } else {
@@ -3494,8 +3496,9 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
                           final matches = (job['exceptions'] as List? ?? [])
                               .where((e) => e['id'] == drafts[i]['issue_id']);
                           await Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (_) => CloudTaskCommandPage(
+                            appPageRoute<void>(
+                              context,
+                              CloudTaskCommandPage(
                                 job: job,
                                 workspaceId:
                                     account.activeWorkspace!['id'] as int,

@@ -5,6 +5,18 @@ import 'l10n.dart';
 import 'l10n_catalog.dart';
 import 'screens/cloud_shell.dart' show CloudLoginPage;
 import 'ui.dart';
+import 'store.dart';
+
+void cloudOutcome(
+  BuildContext context,
+  String message, {
+  bool warning = false,
+}) {
+  AppScope.of(
+    context,
+  ).feedback(kind: warning ? AppFeedback.warning : AppFeedback.success);
+  toast(context, message);
+}
 
 /// Read recovery only: callers supply a GET reload, never a write command.
 class CloudFailurePanel extends StatefulWidget {

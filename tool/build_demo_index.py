@@ -21,6 +21,7 @@ groups = {
     'vision-batch': ['VISION-01','VISION-02','SCAN-01'],
     'nfc-batch': ['NFC-01','NFC-02'],
     'closure-batch': ['UI-04','QC-07','COL-02'],
+    'access2-batch': ['SEC-05','SEC-06','UI-10','UI-11'],
 }
 items = []
 for group, ids in groups.items():

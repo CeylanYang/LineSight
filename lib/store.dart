@@ -14,6 +14,8 @@ import 'record_csv.dart';
 import 'record_review.dart';
 import 'local_state.dart';
 
+enum AppFeedback { selection, success, warning }
+
 Future<String> _derivePassword(List<String> input) async {
   final kdf = Pbkdf2(
     macAlgorithm: Hmac.sha256(),
@@ -213,8 +215,14 @@ class AppStore extends ChangeNotifier {
     }
   }
 
-  void feedback() {
-    if (haptics) HapticFeedback.selectionClick();
+  void feedback({AppFeedback kind = AppFeedback.selection}) {
+    if (!haptics) return;
+    final effect = switch (kind) {
+      AppFeedback.selection => HapticFeedback.selectionClick(),
+      AppFeedback.success => HapticFeedback.lightImpact(),
+      AppFeedback.warning => HapticFeedback.heavyImpact(),
+    };
+    unawaited(effect.catchError((Object _) {}));
   }
 
   void lock({String? reason}) {

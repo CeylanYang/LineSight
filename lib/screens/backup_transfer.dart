@@ -271,9 +271,9 @@ class _BackupImportPageState extends State<BackupImportPage> {
       requireAccess();
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute<void>(
-          builder: (_) =>
-              widget.previewBuilder?.call(document) ??
+        appPageRoute<void>(
+          context,
+          widget.previewBuilder?.call(document) ??
               RestorePreviewPage(
                 incoming: document.workspace,
                 document: document,
