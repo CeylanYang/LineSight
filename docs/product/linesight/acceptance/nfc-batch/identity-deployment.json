@@ -1,0 +1,9 @@
+{
+  "backup": "/var/backups/linesight/identity/nfc-20261023T151614Z",
+  "provider": "Keycloak 26.8.1 Authenticator SPI",
+  "flow": "linesight-nfc-device",
+  "confidential_client": "linesight-nfc",
+  "password_without_assertion_rejected": true,
+  "discovery_ready": true,
+  "normal_native_client_unchanged": true
+}

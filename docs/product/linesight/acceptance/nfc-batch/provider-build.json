@@ -1,0 +1,7 @@
+{
+  "keycloak_version": "26.8.1",
+  "java_release": 21,
+  "sha256": "211eb6ff2be421a475e8a03a62d9a37793718f6016469ab577e32c7c09852935",
+  "build_tool": "tool/build_nfc_provider.py",
+  "local_container_or_vm_started": false
+}

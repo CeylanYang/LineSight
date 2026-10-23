@@ -1,5 +1,5 @@
 {
-  "screenshots": 98,
+  "screenshots": 106,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1533,6 +1533,118 @@
       "height": 410,
       "sha256": "350756124571340edeeaa7616a14d48e518c487e70f434daaa70f2a585144be2",
       "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/70-my-cards-en-desktop-render.png",
+      "title": "70-my-cards-en-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "2dfd2b2f9b8bceeb66d5717c0fcdf2b60b47d7accf9570d4c89b0d0cf74346ac",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/70-my-cards-zh-desktop-render.png",
+      "title": "70-my-cards-zh-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "7d89e9b48284f8fd58ee5ef0909ce2efc5ba276a003569d162b49eb43a0b1d8f",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/71-bind-card-en-desktop-render.png",
+      "title": "71-bind-card-en-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "e54a9e8c337c69bbb76e11d679da5ba12a8a5a4c414007fb509766a276d732db",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/71-bind-card-zh-desktop-render.png",
+      "title": "71-bind-card-zh-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "cc9d43f10b4e12a3aed959cda2c525bf0ff07d75069b72404fbc300d5602d257",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/72-account-en-desktop-render.png",
+      "title": "72-account-en-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "fa24681a99dc664dbc4a8e5db09674f70ebe321b50f16f9fc6adb716eaf09ac8",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/72-account-zh-desktop-render.png",
+      "title": "72-account-zh-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "de6dfa28973a4447b95f49cc0fd9ae7482da8862bce79bddfc7bab270dd8a0e4",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/73-login-card-en-desktop-render.png",
+      "title": "73-login-card-en-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "e49fb4f857a01f7479d87ea1387f61dc8822007972b8ba48da5bf3e1273917a8",
+      "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "nfc-batch/png/73-login-card-zh-desktop-render.png",
+      "title": "73-login-card-zh-desktop-render",
+      "batch": "nfc-batch",
+      "batch_requirement_ids": [
+        "NFC-01",
+        "NFC-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "2d132165c0e738e45dc45f4d288d6aa5cb98ce95d6b3e7ef3388568a2b5d9a92",
+      "batch_notes": "nfc-batch/README.md"
     }
   ],
   "product_plan_complete": false

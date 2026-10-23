@@ -1557,3 +1557,37 @@
 1556|Scan a task QR code, batch barcode or piece SN
 1557|Contour reference
 1558|Awaiting inspection
+1559|My cards
+1560|Sign in with card
+1561|Bind a card
+1562|Card binding and sign-in
+1563|Hold your card near the back of your phone
+1564|The card will be linked to your current account.
+1565|Scan a linked card to sign in to your workspace.
+1566|Initialize an empty NDEF card
+1567|Write only to empty cards. Existing card content is kept.
+1568|Reading card
+1569|Start scanning
+1570|Tap to enter your workspace
+1571|After linking a card, use it to sign in on this phone.
+1572|Sign in again with your account
+1573|No linked cards
+1574|Link a card to sign in to this account quickly.
+1575|Linked to this account
+1576|Unlink card
+1577|Unlink this card?
+1578|Card sign-in and its sessions will be revoked.
+1579|Sign in with your account and link this card in My cards.
+1580|Scan your card to sign in again
+1581|Use an Android phone with NFC
+1582|Enable NFC in your phone settings
+1583|This phone does not support NFC
+1584|Unable to read this card. Try again.
+1585|Card scan timed out. Scan again.
+1586|Sign in again with your account to link a card.
+1587|Sign in and link this card first.
+1588|Card verification expired. Scan again.
+1589|Card verification failed. Try again.
+1590|This card is no longer linked.
+1591|This card is linked to another account on this phone.
+1592|Card sign-in has expired. Sign in again.

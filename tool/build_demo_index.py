@@ -19,6 +19,7 @@ groups = {
     'history-batch': ['DAT-06','UI-05','QC-03'],
     'feedback-batch': ['UI-08','SEC-02','UI-11','REL-04'],
     'vision-batch': ['VISION-01','VISION-02','SCAN-01'],
+    'nfc-batch': ['NFC-01','NFC-02'],
 }
 items = []
 for group, ids in groups.items():

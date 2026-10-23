@@ -221,3 +221,36 @@ class NotificationReceipt(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['user', 'job'], name='unique_user_job_notice')]
+
+
+class NfcCredential(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    card_hash = models.CharField(max_length=64)
+    public_key = models.CharField(max_length=64)
+    label = models.CharField(max_length=80, default='NFC')
+    technology = models.CharField(max_length=160, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    revoked_at = models.DateTimeField(null=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['card_hash','public_key'], name='unique_nfc_device_card')]
+
+
+class NfcChallenge(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    credential = models.ForeignKey(NfcCredential, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    nonce = models.CharField(max_length=64)
+    action = models.CharField(max_length=12)
+    payload = models.JSONField(default=dict)
+    expires_at = models.DateTimeField()
+    consumed_at = models.DateTimeField(null=True)
+
+
+class NfcSession(models.Model):
+    credential = models.ForeignKey(NfcCredential, on_delete=models.CASCADE)
+    sid = models.CharField(max_length=200, unique=True)
+    refresh_hash = models.CharField(max_length=64, unique=True)
+    revoked_at = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

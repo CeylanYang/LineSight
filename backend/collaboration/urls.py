@@ -1,7 +1,11 @@
 from django.urls import path
-from . import api, workflow, product, vision
+from . import api, workflow, product, vision, nfc
 
 urlpatterns = [
+    path('auth/nfc/credentials/',nfc.credentials),
+    path('auth/nfc/credentials/<uuid:credential_id>/',nfc.credentials),
+    path('auth/nfc/challenges/',nfc.challenge),
+    path('auth/nfc/complete/',nfc.complete),
     path('workspaces/<int:workspace_id>/vision/frame/',vision.frame),
     path('workspaces/<int:workspace_id>/trace/lookup/',vision.lookup),
     path("auth/register/", api.register), path("auth/login/", api.login),

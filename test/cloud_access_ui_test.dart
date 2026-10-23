@@ -243,7 +243,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/access-batch/png/62-account-$locale-desktop-render.png',
+            '../docs/product/linesight/acceptance/nfc-batch/png/72-account-$locale-desktop-render.png',
           ),
         );
         await tester.pumpWidget(const SizedBox.shrink());

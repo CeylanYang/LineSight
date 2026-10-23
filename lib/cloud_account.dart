@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'collaboration_api.dart';
+import 'nfc_client.dart';
 
 const cloudIssuer = String.fromEnvironment(
   'LINESIGHT_OIDC_ISSUER',
@@ -16,6 +17,7 @@ const _scopes = ['openid', 'profile', 'email'];
 class CloudTokens {
   final String access, refresh, clientId;
   final String? idToken;
+  final String? nfcCredential;
   final DateTime expiresAt;
   const CloudTokens(
     this.access,
@@ -23,6 +25,7 @@ class CloudTokens {
     this.clientId,
     this.expiresAt, {
     this.idToken,
+    this.nfcCredential,
   });
   Map<String, dynamic> toJson() => {
     'access': access,
@@ -30,6 +33,7 @@ class CloudTokens {
     'client': clientId,
     'expires': expiresAt.toUtc().toIso8601String(),
     'idToken': idToken,
+    'nfcCredential': nfcCredential,
   };
   factory CloudTokens.fromJson(Map<String, dynamic> value) => CloudTokens(
     value['access'] as String,
@@ -37,7 +41,17 @@ class CloudTokens {
     value['client'] as String,
     DateTime.parse(value['expires'] as String),
     idToken: value['idToken'] as String?,
+    nfcCredential: value['nfcCredential'] as String?,
   );
+  factory CloudTokens.fromNfc(Map<String, dynamic> value, String credential) =>
+      CloudTokens(
+        value['access_token'] as String,
+        value['refresh_token'] as String,
+        'linesight-nfc',
+        DateTime.now().add(Duration(seconds: value['expires_in'] as int)),
+        idToken: value['id_token'] as String?,
+        nfcCredential: credential,
+      );
 }
 
 abstract interface class CloudTokenVault {
@@ -92,7 +106,11 @@ abstract interface class CloudIdentityGateway {
 
 class KeycloakIdentityGateway implements CloudIdentityGateway {
   final FlutterAppAuth appAuth;
-  KeycloakIdentityGateway({this.appAuth = const FlutterAppAuth()});
+  final NfcClient nfcClient;
+  KeycloakIdentityGateway({
+    this.appAuth = const FlutterAppAuth(),
+    NfcClient? nfcClient,
+  }) : nfcClient = nfcClient ?? NfcClient();
   CloudTokens _tokens(
     TokenResponse response,
     String client, {
@@ -122,9 +140,10 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
           _redirect,
           issuer: cloudIssuer,
           scopes: _scopes,
-          additionalParameters: changePassword
-              ? {'kc_action': 'UPDATE_PASSWORD'}
-              : null,
+          additionalParameters: {
+            'max_age': '240',
+            if (changePassword) 'kc_action': 'UPDATE_PASSWORD',
+          },
         ),
       );
       return _tokens(response, 'linesight-android');
@@ -197,6 +216,19 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
 
   @override
   Future<CloudTokens> refresh(CloudTokens previous) async {
+    if (previous.clientId == 'linesight-nfc') {
+      if (previous.nfcCredential == null) {
+        throw const CollaborationApiException(401, '请重新刷卡登录');
+      }
+      return CloudTokens.fromNfc(
+        await nfcClient.session(
+          'refresh',
+          previous.nfcCredential!,
+          previous.refresh,
+        ),
+        previous.nfcCredential!,
+      );
+    }
     try {
       final response = await appAuth.token(
         TokenRequest(
@@ -221,6 +253,21 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
 
   @override
   Future<bool> signOut(CloudTokens previous) async {
+    if (previous.clientId == 'linesight-nfc') {
+      if (previous.nfcCredential == null) {
+        throw const CollaborationApiException(401, '请重新刷卡登录');
+      }
+      try {
+        await nfcClient.session(
+          'logout',
+          previous.nfcCredential!,
+          previous.refresh,
+        );
+      } on CollaborationApiException catch (failure) {
+        if (failure.status != 401) rethrow;
+      }
+      return true;
+    }
     if (previous.clientId == 'linesight-demo') {
       await _form('logout', {
         'client_id': previous.clientId,
@@ -252,7 +299,9 @@ class CloudAccount extends ChangeNotifier {
     CloudIdentityGateway? identity,
     this.apiUrl = defaultCollaborationApi,
   }) : vault = vault ?? SecureCloudTokenVault(),
-       identity = identity ?? KeycloakIdentityGateway();
+       identity =
+           identity ??
+           KeycloakIdentityGateway(nfcClient: NfcClient(apiUrl: apiUrl));
   CloudTokens? _tokens;
   Map<String, dynamic>? profile, activeWorkspace;
   List<Map<String, dynamic>> workspaces = [], jobs = [];
@@ -413,6 +462,15 @@ class CloudAccount extends ChangeNotifier {
         await _load();
       });
   Future<void> reload() => _operation(_load);
+  Future<void> signInNfc(String cardCode) => _operation(() async {
+    final epoch = ++_epoch;
+    final result = await NfcClient(apiUrl: apiUrl).login(cardCode);
+    if (epoch != _epoch) return;
+    _resetViews();
+    _tokens = CloudTokens.fromNfc(result, result['credential_id'] as String);
+    await _persist(epoch);
+    await _load();
+  });
   Future<void> _load() async {
     profile = Map<String, dynamic>.from(
       await request('GET', 'auth/me/') as Map,

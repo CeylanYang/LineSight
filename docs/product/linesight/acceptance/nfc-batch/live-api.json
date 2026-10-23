@@ -1,0 +1,15 @@
+{
+  "fixture": "Generated random card code and Ed25519 device key; no physical phone/card",
+  "native_pkce_enrollment": true,
+  "server_keycloak_login": true,
+  "proof_replay_rejected": true,
+  "copied_card_without_device_key_rejected": true,
+  "refresh_rotation": true,
+  "old_refresh_rejected": true,
+  "single_nfc_session_logout": true,
+  "other_nfc_session_preserved": true,
+  "unbind_access_and_refresh_rejected": true,
+  "password_session_preserved": true,
+  "normal_native_password_grant_unchanged": true,
+  "provider_probe_deleted": true
+}

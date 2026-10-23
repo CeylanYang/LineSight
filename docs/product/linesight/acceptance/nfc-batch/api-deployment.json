@@ -1,0 +1,8 @@
+{
+  "backup": "/var/backups/linesight/identity/api-20261023T153022Z",
+  "old_tables_preserved": 31,
+  "all_original_rows_preserved": true,
+  "foreign_keys_valid": true,
+  "api_health": true,
+  "oidc_enabled": true
+}

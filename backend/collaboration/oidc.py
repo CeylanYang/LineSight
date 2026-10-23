@@ -1,6 +1,7 @@
 """Keycloak OIDC verification through maintained PyJWT and provider introspection."""
 import hashlib
 import json
+import uuid
 from functools import lru_cache
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -25,14 +26,14 @@ def jwks_client(uri):
     return jwt.PyJWKClient(uri, cache_jwk_set=True, lifespan=300, timeout=5)
 
 
-def verify_access_token(token):
+def verify_access_token(token, *, require_nfc_session=True):
     issuer = settings.LINESIGHT_OIDC_ISSUER.rstrip("/")
     try:
         key = jwks_client(getattr(settings, "LINESIGHT_OIDC_JWKS_URL", issuer + "/protocol/openid-connect/certs")).get_signing_key_from_jwt(token)
         claims = jwt.decode(token, key.key, algorithms=["RS256"], issuer=issuer,
             audience="linesight-api", leeway=5,
             options={"require": ["exp", "iat", "iss", "aud", "sub"]})
-        if claims.get("azp") not in ("linesight-android", "linesight-demo"):
+        if claims.get("azp") not in ("linesight-android", "linesight-demo", "linesight-nfc"):
             raise jwt.InvalidTokenError("Unexpected authorized party")
         realm_access = claims.get("realm_access", {})
         if not isinstance(realm_access, dict) or not isinstance(realm_access.get("roles", []), list):
@@ -61,6 +62,16 @@ def verify_access_token(token):
     if active.get("active") is not True or active.get("sub") != claims["sub"]:
         raise AuthenticationFailed("登录状态无效或已过期")
     claims["is_demo"] = is_demo
+    if claims['azp']=='linesight-nfc' and require_nfc_session:
+        from .models import NfcSession
+        try:
+            binding=uuid.UUID(str(claims.get('nfc_binding')))
+            allowed=NfcSession.objects.filter(sid=claims.get('sid'),credential_id=binding,
+                credential__user__cloud_identity__subject=claims['sub'],credential__revoked_at__isnull=True,
+                credential__user__is_active=True,revoked_at__isnull=True).exists()
+        except (ValueError,TypeError):
+            allowed=False
+        if not allowed:raise AuthenticationFailed('卡片登录已失效，请重新登录')
     return claims
 
 

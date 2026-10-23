@@ -11,6 +11,8 @@ import '../ui.dart';
 import '../language_selector.dart';
 import 'cloud_tasks.dart';
 import 'cloud_business.dart';
+import 'cloud_nfc.dart';
+import '../nfc_reader.dart';
 
 class CloudShell extends StatefulWidget {
   const CloudShell({super.key});
@@ -814,6 +816,28 @@ class CloudLoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               OutlinedButton.icon(
+                onPressed: account.busy
+                    ? null
+                    : () async {
+                        final card = await Navigator.of(context)
+                            .push<NfcCardRead>(
+                              MaterialPageRoute(
+                                builder: (_) => const CloudNfcScanPage(),
+                              ),
+                            );
+                        if (card == null || !context.mounted) return;
+                        await account.signInNfc(card.code);
+                        if (context.mounted &&
+                            account.signedIn &&
+                            account.profile != null) {
+                          Navigator.pop(context);
+                        }
+                      },
+                icon: const Icon(Icons.nfc),
+                label: Text(tr(context, '刷卡登录')),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
                 onPressed: account.busy ? null : () => login(true),
                 icon: const Icon(Icons.explore_outlined, size: 19),
                 label: Text(tr(context, '进入演示团队')),
@@ -1008,6 +1032,17 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
               ),
             ),
           ],
+          const SizedBox(height: 12),
+          GlassPanel(
+            padding: EdgeInsets.zero,
+            child: MenuTile(
+              title: tr(context, '我的卡片'),
+              subtitle: tr(context, '绑定卡片与刷卡登录'),
+              icon: Icons.nfc,
+              color: blue,
+              onTap: () => openPage(context, const CloudNfcCardsPage()),
+            ),
+          ),
           if (account.busy) ...[
             const SizedBox(height: 12),
             const LinearProgressIndicator(),
