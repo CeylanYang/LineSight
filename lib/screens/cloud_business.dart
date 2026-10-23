@@ -12,6 +12,7 @@ import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
 import '../cloud_history.dart';
+import '../cloud_feedback.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../ui.dart';
@@ -1814,7 +1815,8 @@ class CloudEvidencePage extends StatefulWidget {
 class _CloudEvidencePageState extends State<CloudEvidencePage> {
   Uint8List? bytes;
   bool edge = false, loading = false;
-  String? error, binding;
+  Object? error;
+  String? binding;
   bool bound = false;
   int generation = 0;
   @override
@@ -1838,7 +1840,10 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
     final account = CloudScope.of(context);
     if (!account.retainsAccess(binding)) return;
     final ticket = ++generation;
-    loading = true;
+    setState(() {
+      loading = true;
+      error = null;
+    });
     try {
       final result = await account.download(
         'workspaces/${account.activeWorkspace!['id']}/jobs/${widget.jobId}/evidence/${widget.photo['id']}/${edge ? 'preview' : 'original'}/',
@@ -1851,7 +1856,7 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
       }
     } catch (failure) {
       if (mounted && ticket == generation && account.retainsAccess(binding)) {
-        setState(() => error = '$failure');
+        setState(() => error = failure);
       }
     } finally {
       if (mounted && ticket == generation && account.retainsAccess(binding)) {
@@ -1923,40 +1928,8 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
           ),
         ),
         const SizedBox(height: 14),
-        if (loading)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: LinearProgressIndicator(),
-          ),
-        if (error != null)
-          GlassPanel(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.cloud_off_outlined, color: red, size: 18),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        trMessage(context, error!),
-                        style: const TextStyle(fontSize: 12, color: red),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton(
-                  onPressed: () {
-                    setState(() => error = null);
-                    load();
-                  },
-                  child: Text(tr(context, '重新加载')),
-                ),
-              ],
-            ),
-          ),
+        if (loading) const CloudLoadingPanel(),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
         if (bytes != null)
           ClipRRect(
             borderRadius: BorderRadius.circular(22),
@@ -2038,7 +2011,7 @@ class CloudReportPage extends StatefulWidget {
 
 class _CloudReportPageState extends State<CloudReportPage> {
   bool busy = false;
-  String? error;
+  Object? error;
   Map<String, dynamic>? scopedMetrics;
   bool loaded = false;
   Map<String, String> filters = {};
@@ -2085,7 +2058,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
         setState(() => scopedMetrics = Map<String, dynamic>.from(data));
       }
     } catch (failure) {
-      if (mounted && ticket == generation) setState(() => error = '$failure');
+      if (mounted && ticket == generation) setState(() => error = failure);
     } finally {
       if (mounted && ticket == generation) setState(() => busy = false);
     }
@@ -2132,7 +2105,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
           bytes: Uint8List.fromList(bytes),
         );
       } catch (failure) {
-        if (mounted) setState(() => error = '$failure');
+        if (mounted) setState(() => error = failure);
       } finally {
         if (mounted) setState(() => busy = false);
       }
@@ -2154,7 +2127,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
           );
         }
       } catch (failure) {
-        if (mounted) setState(() => error = '$failure');
+        if (mounted) setState(() => error = failure);
       } finally {
         if (mounted) setState(() => busy = false);
       }
@@ -2245,7 +2218,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
         );
         await Printing.layoutPdf(onLayout: (_) => document.save());
       } catch (failure) {
-        if (mounted) setState(() => error = '$failure');
+        if (mounted) setState(() => error = failure);
       } finally {
         if (mounted) setState(() => busy = false);
       }
@@ -2293,404 +2266,394 @@ class _CloudReportPageState extends State<CloudReportPage> {
             ),
           ],
         ),
-        if (busy)
-          const Padding(
-            padding: EdgeInsets.only(top: 14),
-            child: LinearProgressIndicator(),
+        if (busy) const CloudLoadingPanel(),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
+        if (scopedMetrics != null && error == null) ...[
+          SectionHeader(
+            tr(context, '核心指标'),
+            icon: Icons.insights_outlined,
+            caption: tr(context, '按当前筛选范围统计'),
           ),
-        if (error != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 14),
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Row(
+          LayoutBuilder(
+            builder: (context, c) {
+              final columns = c.maxWidth >= 720 ? 3 : 2;
+              final width = (c.maxWidth - (columns - 1) * 10) / columns;
+              Widget cell(Widget child) => SizedBox(width: width, child: child);
+              return Wrap(
+                spacing: 10,
+                runSpacing: 10,
                 children: [
-                  const Icon(Icons.cloud_off_outlined, color: red, size: 18),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      trMessage(context, error!),
-                      style: const TextStyle(fontSize: 12, color: red),
+                  cell(
+                    StatCard(
+                      label: tr(context, '首次通过率'),
+                      value: rate(metrics['first_pass_rate']),
+                      icon: Icons.verified_outlined,
+                      color: green,
                     ),
                   ),
-                  TextButton(onPressed: load, child: Text(tr(context, '重试'))),
+                  cell(
+                    StatCard(
+                      label: tr(context, '最终放行率'),
+                      value: rate(metrics['final_release_rate']),
+                      icon: Icons.task_alt,
+                      color: blue,
+                    ),
+                  ),
+                  cell(
+                    StatCard(
+                      label: tr(context, '首次送检工件'),
+                      value: '${metrics['first_inspected_pieces'] ?? 0}',
+                      icon: Icons.inventory_2_outlined,
+                      color: blue,
+                    ),
+                  ),
+                  cell(
+                    StatCard(
+                      label: tr(context, '最终放行工件'),
+                      value: '${metrics['final_released_pieces'] ?? 0}',
+                      icon: Icons.outbox_outlined,
+                      color: green,
+                    ),
+                  ),
+                  cell(
+                    StatCard(
+                      label: tr(context, '异常工件'),
+                      value: '${metrics['latest_fail_pieces'] ?? 0}',
+                      icon: Icons.report_gmailerrorred_outlined,
+                      color: red,
+                    ),
+                  ),
+                  cell(
+                    StatCard(
+                      label: tr(context, '报废工件'),
+                      value: '${metrics['latest_scrap_pieces'] ?? 0}',
+                      icon: Icons.delete_outline,
+                      color: amber,
+                    ),
+                  ),
                 ],
-              ),
-            ),
+              );
+            },
           ),
-        SectionHeader(
-          tr(context, '核心指标'),
-          icon: Icons.insights_outlined,
-          caption: tr(context, '按当前筛选范围统计'),
-        ),
-        LayoutBuilder(
-          builder: (context, c) {
-            final columns = c.maxWidth >= 720 ? 3 : 2;
-            final width = (c.maxWidth - (columns - 1) * 10) / columns;
-            Widget cell(Widget child) => SizedBox(width: width, child: child);
-            return Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                cell(
-                  StatCard(
-                    label: tr(context, '首次通过率'),
-                    value: rate(metrics['first_pass_rate']),
-                    icon: Icons.verified_outlined,
-                    color: green,
-                  ),
-                ),
-                cell(
-                  StatCard(
-                    label: tr(context, '最终放行率'),
-                    value: rate(metrics['final_release_rate']),
-                    icon: Icons.task_alt,
-                    color: blue,
-                  ),
-                ),
-                cell(
-                  StatCard(
-                    label: tr(context, '首次送检工件'),
-                    value: '${metrics['first_inspected_pieces'] ?? 0}',
-                    icon: Icons.inventory_2_outlined,
-                    color: blue,
-                  ),
-                ),
-                cell(
-                  StatCard(
-                    label: tr(context, '最终放行工件'),
-                    value: '${metrics['final_released_pieces'] ?? 0}',
-                    icon: Icons.outbox_outlined,
-                    color: green,
-                  ),
-                ),
-                cell(
-                  StatCard(
-                    label: tr(context, '异常工件'),
-                    value: '${metrics['latest_fail_pieces'] ?? 0}',
-                    icon: Icons.report_gmailerrorred_outlined,
-                    color: red,
-                  ),
-                ),
-                cell(
-                  StatCard(
-                    label: tr(context, '报废工件'),
-                    value: '${metrics['latest_scrap_pieces'] ?? 0}',
-                    icon: Icons.delete_outline,
-                    color: amber,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-        SectionHeader(
-          tr(context, '最近 7 天'),
-          icon: Icons.timeline,
-          caption: tr(context, '点击日期查看当日任务'),
-        ),
-        GlassPanel(
-          padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
-          child: trend.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(tr(context, '当前范围内暂无检验数据'), style: hint),
-                )
-              : Column(
-                  children: [
-                    for (var i = 0; i < trend.length; i++) ...[
-                      if (i > 0) const Divider(height: 1),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => openPage(
-                            context,
-                            CloudTaskListPage(
-                              filters: {
-                                ...filters,
-                                'first_day': '${trend[i]['day']}',
-                              },
+          SectionHeader(
+            tr(context, '最近 7 天'),
+            icon: Icons.timeline,
+            caption: tr(context, '点击日期查看当日任务'),
+          ),
+          GlassPanel(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
+            child: trend.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(tr(context, '当前范围内暂无检验数据'), style: hint),
+                  )
+                : Column(
+                    children: [
+                      for (var i = 0; i < trend.length; i++) ...[
+                        if (i > 0) const Divider(height: 1),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => openPage(
+                              context,
+                              CloudTaskListPage(
+                                filters: {
+                                  ...filters,
+                                  'first_day': '${trend[i]['day']}',
+                                },
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 78,
-                                  child: Text(
-                                    '${trend[i]['day']}'.substring(
-                                      '${trend[i]['day']}'.length > 5 ? 5 : 0,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 78,
+                                    child: Text(
+                                      '${trend[i]['day']}'.substring(
+                                        '${trend[i]['day']}'.length > 5 ? 5 : 0,
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: ink,
+                                      ),
                                     ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                          child: SizedBox(
+                                            height: 8,
+                                            child: Stack(
+                                              fit: StackFit.expand,
+                                              children: [
+                                                const ColoredBox(
+                                                  color: Color(0xFFFFD9D2),
+                                                ),
+                                                FractionallySizedBox(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  widthFactor:
+                                                      (trend[i]['inspected']
+                                                                  as num? ??
+                                                              0) ==
+                                                          0
+                                                      ? 0.0
+                                                      : ((trend[i]['passed']
+                                                                        as num? ??
+                                                                    0) /
+                                                                (trend[i]['inspected']
+                                                                    as num))
+                                                            .clamp(0.0, 1.0)
+                                                            .toDouble(),
+                                                  child: const ColoredBox(
+                                                    color: green,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          '${tr(context, '合格')} ${trend[i]['passed'] ?? 0} · ${tr(context, '异常')} ${(trend[i]['inspected'] as num? ?? 0) - (trend[i]['passed'] as num? ?? 0)}',
+                                          style: hint,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    '${trend[i]['passed'] ?? 0}/${trend[i]['inspected'] ?? 0}',
                                     style: const TextStyle(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       color: ink,
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: SizedBox(
-                                          height: 8,
-                                          child: Stack(
-                                            fit: StackFit.expand,
-                                            children: [
-                                              const ColoredBox(
-                                                color: Color(0xFFFFD9D2),
-                                              ),
-                                              FractionallySizedBox(
-                                                alignment: Alignment.centerLeft,
-                                                widthFactor:
-                                                    (trend[i]['inspected']
-                                                                as num? ??
-                                                            0) ==
-                                                        0
-                                                    ? 0.0
-                                                    : ((trend[i]['passed']
-                                                                      as num? ??
-                                                                  0) /
-                                                              (trend[i]['inspected']
-                                                                  as num))
-                                                          .clamp(0.0, 1.0)
-                                                          .toDouble(),
-                                                child: const ColoredBox(
-                                                  color: green,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        '${tr(context, '合格')} ${trend[i]['passed'] ?? 0} · ${tr(context, '异常')} ${(trend[i]['inspected'] as num? ?? 0) - (trend[i]['passed'] as num? ?? 0)}',
-                                        style: hint,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  '${trend[i]['passed'] ?? 0}/${trend[i]['inspected'] ?? 0}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w800,
-                                    color: ink,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
-        ),
-        SectionHeader(
-          tr(context, '异常类别'),
-          icon: Icons.category_outlined,
-          caption: categories.isEmpty ? null : tr(context, '按任务数量排序'),
-        ),
-        GlassPanel(
-          padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
-          child: categories.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle_outline, color: green),
-                      const SizedBox(width: 10),
-                      Text(tr(context, '当前范围内没有登记异常'), style: hint),
+                      ],
                     ],
                   ),
-                )
-              : Column(
-                  children: [
-                    for (var i = 0; i < categories.length; i++) ...[
-                      if (i > 0) const Divider(height: 1),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => openPage(
-                            context,
-                            CloudTaskListPage(
-                              filters: {
-                                ...filters,
-                                'category': '${categories.keys.elementAt(i)}',
-                              },
+          ),
+          SectionHeader(
+            tr(context, '异常类别'),
+            icon: Icons.category_outlined,
+            caption: categories.isEmpty ? null : tr(context, '按任务数量排序'),
+          ),
+          GlassPanel(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 12),
+            child: categories.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.check_circle_outline, color: green),
+                        const SizedBox(width: 10),
+                        Text(tr(context, '当前范围内没有登记异常'), style: hint),
+                      ],
+                    ),
+                  )
+                : Column(
+                    children: [
+                      for (var i = 0; i < categories.length; i++) ...[
+                        if (i > 0) const Divider(height: 1),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => openPage(
+                              context,
+                              CloudTaskListPage(
+                                filters: {
+                                  ...filters,
+                                  'category': '${categories.keys.elementAt(i)}',
+                                },
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Text(
-                                        tr(
-                                          context,
-                                          cloudCategories[categories.keys
-                                                  .elementAt(i)] ??
-                                              '${categories.keys.elementAt(i)}',
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w700,
-                                          color: ink,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: LinearProgressIndicator(
-                                          minHeight: 6,
-                                          value: categoryMax == 0
-                                              ? 0
-                                              : (categories.values.elementAt(i)
-                                                        as num) /
-                                                    categoryMax,
-                                          backgroundColor: const Color(
-                                            0xFFEEF3FA,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Text(
+                                          tr(
+                                            context,
+                                            cloudCategories[categories.keys
+                                                    .elementAt(i)] ??
+                                                '${categories.keys.elementAt(i)}',
                                           ),
-                                          color: red.withValues(alpha: .75),
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700,
+                                            color: ink,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 6),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                          child: LinearProgressIndicator(
+                                            minHeight: 6,
+                                            value: categoryMax == 0
+                                                ? 0
+                                                : (categories.values.elementAt(
+                                                            i,
+                                                          )
+                                                          as num) /
+                                                      categoryMax,
+                                            backgroundColor: const Color(
+                                              0xFFEEF3FA,
+                                            ),
+                                            color: red.withValues(alpha: .75),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 14),
-                                Text(
-                                  '${categories.values.elementAt(i)}',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: red,
+                                  const SizedBox(width: 14),
+                                  Text(
+                                    '${categories.values.elementAt(i)}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: red,
+                                    ),
                                   ),
-                                ),
-                                const Icon(
-                                  Icons.chevron_right,
-                                  size: 19,
-                                  color: muted,
-                                ),
-                              ],
+                                  const Icon(
+                                    Icons.chevron_right,
+                                    size: 19,
+                                    color: muted,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
+          ),
+          const SizedBox(height: 12),
+          GlassPanel(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: blue.withValues(alpha: .09),
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: const Icon(
+                    Icons.timer_outlined,
+                    color: blue,
+                    size: 20,
+                  ),
                 ),
-        ),
-        const SizedBox(height: 12),
-        GlassPanel(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: blue.withValues(alpha: .09),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: const Icon(Icons.timer_outlined, color: blue, size: 20),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tr(context, '平均异常处理时长'),
-                      style: const TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w700,
-                        color: ink,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        tr(context, '平均异常处理时长'),
+                        style: const TextStyle(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                          color: ink,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(tr(context, '从登记到关闭的平均用时'), style: hint),
-                  ],
+                      const SizedBox(height: 2),
+                      Text(tr(context, '从登记到关闭的平均用时'), style: hint),
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                metrics['average_issue_seconds'] == null
-                    ? '—'
-                    : '${((metrics['average_issue_seconds'] as num) / 3600).toStringAsFixed(1)} h',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: ink,
+                Text(
+                  metrics['average_issue_seconds'] == null
+                      ? '—'
+                      : '${((metrics['average_issue_seconds'] as num) / 3600).toStringAsFixed(1)} h',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: ink,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        SectionHeader(tr(context, '导出与报告'), icon: Icons.description_outlined),
-        GlassPanel(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            children: [
-              MenuTile(
-                title: tr(context, '查看范围内任务'),
-                subtitle: tr(context, '跳转到与当前筛选一致的任务列表'),
-                icon: Icons.list_alt,
-                onTap: () => openPage(
-                  context,
-                  CloudTaskListPage(filters: Map.of(filters)),
+          SectionHeader(tr(context, '导出与报告'), icon: Icons.description_outlined),
+          GlassPanel(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: [
+                MenuTile(
+                  title: tr(context, '查看范围内任务'),
+                  subtitle: tr(context, '跳转到与当前筛选一致的任务列表'),
+                  icon: Icons.list_alt,
+                  onTap: () => openPage(
+                    context,
+                    CloudTaskListPage(filters: Map.of(filters)),
+                  ),
                 ),
-              ),
-              const Divider(height: 1),
-              MenuTile(
-                title: tr(context, '导出 CSV'),
-                subtitle: tr(context, '下载当前范围的明细数据'),
-                icon: Icons.table_view_outlined,
-                color: green,
-                trailing: const Icon(
-                  Icons.download_outlined,
-                  size: 19,
-                  color: muted,
+                const Divider(height: 1),
+                MenuTile(
+                  title: tr(context, '导出 CSV'),
+                  subtitle: tr(context, '下载当前范围的明细数据'),
+                  icon: Icons.table_view_outlined,
+                  color: green,
+                  trailing: const Icon(
+                    Icons.download_outlined,
+                    size: 19,
+                    color: muted,
+                  ),
+                  onTap: busy ? null : exportCsv,
                 ),
-                onTap: busy ? null : exportCsv,
-              ),
-              const Divider(height: 1),
-              MenuTile(
-                title: tr(context, '报告预览'),
-                subtitle: tr(context, '在应用内查看带照片的报告快照'),
-                icon: Icons.preview_outlined,
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  size: 19,
-                  color: muted,
+                const Divider(height: 1),
+                MenuTile(
+                  title: tr(context, '报告预览'),
+                  subtitle: tr(context, '在应用内查看带照片的报告快照'),
+                  icon: Icons.preview_outlined,
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    size: 19,
+                    color: muted,
+                  ),
+                  onTap: busy ? null : preview,
                 ),
-                onTap: busy ? null : preview,
-              ),
-              const Divider(height: 1),
-              MenuTile(
-                title: tr(context, '打印质量报告'),
-                subtitle: tr(context, '使用系统打印服务生成 PDF'),
-                icon: Icons.print_outlined,
-                color: amber,
-                trailing: const Icon(
-                  Icons.chevron_right,
-                  size: 19,
-                  color: muted,
+                const Divider(height: 1),
+                MenuTile(
+                  title: tr(context, '打印质量报告'),
+                  subtitle: tr(context, '使用系统打印服务生成 PDF'),
+                  icon: Icons.print_outlined,
+                  color: amber,
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    size: 19,
+                    color: muted,
+                  ),
+                  onTap: busy ? null : printReport,
                 ),
-                onTap: busy ? null : printReport,
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -2743,7 +2706,8 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
   final search = TextEditingController();
   Map<String, String> filters = {};
   List<Map<String, dynamic>> rows = [];
-  String? scope, error;
+  String? scope;
+  Object? error;
   String sourceVersion = '';
   bool busy = false;
   int generation = 0;
@@ -2794,7 +2758,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
         setState(() => rows = data.cast<Map<String, dynamic>>());
       }
     } catch (failure) {
-      if (mounted && ticket == generation) setState(() => error = '$failure');
+      if (mounted && ticket == generation) setState(() => error = failure);
     } finally {
       if (mounted && ticket == generation) setState(() => busy = false);
     }
@@ -2952,16 +2916,9 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
               ),
             ),
           const SizedBox(height: 10),
-          if (busy) const LinearProgressIndicator(),
-          if (error != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                trMessage(context, error!),
-                style: const TextStyle(color: red, fontSize: 12),
-              ),
-            ),
-          if (!busy && rows.isEmpty)
+          if (busy) const CloudLoadingPanel(),
+          if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
+          if (!busy && error == null && rows.isEmpty)
             EmptyState(
               title: tr(context, '暂无检验记录'),
               subtitle: tr(context, '没有符合条件的记录。'),

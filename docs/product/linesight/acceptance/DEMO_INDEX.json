@@ -1,5 +1,5 @@
 {
-  "screenshots": 81,
+  "screenshots": 85,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1274,6 +1274,70 @@
       "height": 1700,
       "sha256": "cad95ae02bc54366a42710937178e16dcd2c2862615ab22be9f9a38a052700fa",
       "batch_notes": "history-batch/README.md"
+    },
+    {
+      "file": "feedback-batch/png/66-recovery-states-en-desktop-render.png",
+      "title": "66-recovery-states-en-desktop-render",
+      "batch": "feedback-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "SEC-02",
+        "UI-11",
+        "REL-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "33093bfb2297af071d685554637d2166c3afe63c9b447f62ef42f3fa59c6bb28",
+      "batch_notes": "feedback-batch/README.md"
+    },
+    {
+      "file": "feedback-batch/png/66-recovery-states-zh-desktop-render.png",
+      "title": "66-recovery-states-zh-desktop-render",
+      "batch": "feedback-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "SEC-02",
+        "UI-11",
+        "REL-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "59821deec1156d8c8b01c67f50de2ffa05aa3704f9d8f4c3c9029cd9c6287f6c",
+      "batch_notes": "feedback-batch/README.md"
+    },
+    {
+      "file": "feedback-batch/png/67-task-retry-en-desktop-render.png",
+      "title": "67-task-retry-en-desktop-render",
+      "batch": "feedback-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "SEC-02",
+        "UI-11",
+        "REL-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "03f9cd95ac3564a28240eeec1d099455606f0bc2479d313f9d15f0c283c96ddb",
+      "batch_notes": "feedback-batch/README.md"
+    },
+    {
+      "file": "feedback-batch/png/67-task-retry-zh-desktop-render.png",
+      "title": "67-task-retry-zh-desktop-render",
+      "batch": "feedback-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "SEC-02",
+        "UI-11",
+        "REL-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "38e66411d0935a352ee37fd9287207ebed1a9ea57e68c607f7cdd0731309a9fb",
+      "batch_notes": "feedback-batch/README.md"
     }
   ],
   "product_plan_complete": false

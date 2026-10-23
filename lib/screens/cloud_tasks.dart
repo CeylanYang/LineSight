@@ -5,6 +5,7 @@ import '../cloud_account.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
 import '../cloud_history.dart';
+import '../cloud_feedback.dart';
 import '../cloud_trace.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
@@ -12,6 +13,7 @@ import '../models.dart' show uid;
 import '../ui.dart';
 import '../time.dart' show zonedStamp;
 import 'cloud_business.dart';
+import 'cloud_shell.dart' show CloudLoginPage;
 
 String cloudTimestamp(Object? value) {
   final parsed = DateTime.tryParse('$value');
@@ -38,6 +40,10 @@ Widget cloudAccessRequired(BuildContext context) => DetailScaffold(
     Text(tr(context, '登录后查看任务与检验记录')),
     const SizedBox(height: 16),
     FilledButton(
+      onPressed: () => openPage(context, const CloudLoginPage()),
+      child: Text(tr(context, '登录')),
+    ),
+    TextButton(
       onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
       child: Text(tr(context, '返回工作台')),
     ),
@@ -68,7 +74,8 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
   final search = TextEditingController();
   Map<String, String> filters = {};
   List<Map<String, dynamic>>? rows;
-  String? scope, error;
+  String? scope;
+  Object? error;
   String sourceVersion = '';
   bool busy = false;
   int serial = 0;
@@ -124,7 +131,7 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
         setState(() => rows = data.cast<Map<String, dynamic>>());
       }
     } catch (failure) {
-      if (mounted && ticket == serial) setState(() => error = '$failure');
+      if (mounted && ticket == serial) setState(() => error = failure);
     } finally {
       if (mounted && ticket == serial) setState(() => busy = false);
     }
@@ -244,7 +251,7 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '${jobs.length} ${tr(context, '个任务')}',
+                '${busy || error != null ? '—' : jobs.length} ${tr(context, '个任务')}',
                 style: const TextStyle(
                   fontSize: 10.5,
                   fontWeight: FontWeight.w800,
@@ -289,16 +296,9 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
           ],
         ),
         const SizedBox(height: 10),
-        if (busy) const LinearProgressIndicator(),
-        if (error != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              trMessage(context, error!),
-              style: const TextStyle(color: red, fontSize: 12),
-            ),
-          ),
-        if (!busy && jobs.isEmpty)
+        if (busy) const CloudLoadingPanel(),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
+        if (!busy && error == null && jobs.isEmpty)
           EmptyState(
             title: tr(context, '暂无生产任务'),
             subtitle: tr(context, '没有符合条件的任务。'),
@@ -921,19 +921,22 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
   List<Map<String, dynamic>> history = [];
   int tab = 0;
   bool busy = false, loaded = false;
-  String? error;
+  Object? error;
+  String? binding;
   String get base => 'workspaces/${widget.workspaceId}/jobs/${job['id']}/';
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!loaded) {
       loaded = true;
+      binding = CloudScope.of(context).accessScope;
       load();
     }
   }
 
   Future<void> load() async {
     final account = CloudScope.of(context);
+    if (!account.retainsAccess(binding)) return;
     setState(() {
       busy = true;
       error = null;
@@ -944,14 +947,20 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
       );
       final events = (await account.request('GET', '${base}history/') as List)
           .cast<Map<String, dynamic>>();
-      if (mounted) {
+      if (mounted && account.retainsAccess(binding)) {
         setState(() {
           job = latest;
           history = events;
         });
       }
     } on CollaborationApiException catch (failure) {
-      if (mounted) setState(() => error = failure.message);
+      if (mounted && account.retainsAccess(binding)) {
+        setState(() => error = failure);
+      }
+    } catch (failure) {
+      if (mounted && account.retainsAccess(binding)) {
+        setState(() => error = failure);
+      }
     } finally {
       if (mounted) setState(() => busy = false);
     }
@@ -978,6 +987,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
         account.activeWorkspace?['id'] != widget.workspaceId) {
       return cloudAccessRequired(context);
     }
+    if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     final canEdit =
         account.canEdit && account.activeWorkspace?['id'] == widget.workspaceId;
     final status = '${job['status']}',
@@ -1177,15 +1187,8 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
           ),
         ),
         const SizedBox(height: 14),
-        if (busy) const LinearProgressIndicator(),
-        if (error != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              trMessage(context, error!),
-              style: const TextStyle(color: red, fontSize: 12),
-            ),
-          ),
+        if (busy) const CloudLoadingPanel(),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
         if (tab == 0) ...[
           Row(
             children: [
@@ -1453,7 +1456,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                                     if (mounted) await load();
                                   } catch (failure) {
                                     if (mounted) {
-                                      setState(() => error = '$failure');
+                                      setState(() => error = failure);
                                     }
                                   }
                                 },

@@ -100,6 +100,17 @@ messages.update({
 messages.update({'表面划痕、装配间隙、关键尺寸、标识与批次':'Surface scratches, assembly fit, key dimensions, labels and batch'})
 messages.update({'上传照片':'Photo uploaded','未记录操作者':'Actor not recorded','任务版本':'Task version','记录编号':'Record ID','照片阶段':'Photo stage','检验照片':'Inspection photo','送检数':'Inspected','合格数':'Passed','异常数':'Failed','报废数':'Scrapped'})
 messages.update({'逐件检验结果':'Per-piece inspection results'})
+messages.update({
+ '请重新登录':'Sign in again','登录后继续，未提交内容会保留。':'Sign in to continue. Unsubmitted work is kept.',
+ '当前账户没有访问权限':'Access unavailable for this account','刷新团队权限，或返回工作台选择其他工作区。':'Refresh team access, or return to the workbench to choose another workspace.',
+ '刷新权限':'Refresh access','记录暂不可访问':'Record unavailable','记录可能已移除，或不在当前工作区。':'This record may have been removed or belong to another workspace.',
+ '任务已更新':'Task updated','刷新当前状态后核对内容，再决定是否提交。':'Refresh the current status and review your changes before submitting.',
+ '刷新当前状态':'Refresh current status','照片文件过大':'Photo too large','返回拍照页面，压缩照片后重新上传。':'Return to the photo page and compress the photo before uploading again.',
+ '服务暂不可用':'Service temporarily unavailable','稍后重试，或在同步页面查看连接状态。':'Retry later, or check the connection on the sync page.',
+ '请核对填写内容':'Check your entries','检查必填项与数量后重新提交。':'Check required fields and quantities before submitting again.',
+ '连接未完成':'Connection interrupted','检查网络连接后重试，当前筛选条件会保留。':'Check your connection and retry. Your filters are kept.',
+ '正在加载':'Loading',
+})
 path = Path('tool/l10n_source.json')
 source = json.loads(path.read_text(encoding='utf-8'))
 existing = set(source.values())

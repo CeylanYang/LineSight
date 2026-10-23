@@ -1,0 +1,35 @@
+{
+  "version": "1.1.30+8048",
+  "entry": "lib/main.dart",
+  "flutter_tests_passed": 149,
+  "new_feedback_and_http_tests_passed": 9,
+  "focused_tests_rechecked_after_png_font_update": 9,
+  "flutter_analyze": "No issues found",
+  "backend_changed": false,
+  "previous_backend_baseline_tests_passed": 38,
+  "release_build_passed": true,
+  "release_build_duration": "2m 58s",
+  "signature_verified": true,
+  "integration_test_plugin_absent_from_release_dex": true,
+  "sha256": "cf346f89045618c918fd3a3b34dfdde40888a12f735405bab468b9ad6ff2c120",
+  "emulator_started": false,
+  "normal_android_upgrade_tested": false,
+  "physical_device_ui_tested": false,
+  "production_service_faults_injected": false,
+  "live_cloud_failure_recovery_tested": false,
+  "http_error_fixture": "Local HttpServer returned empty JSON 403 and HTML 502; status preserved",
+  "screenshots": {
+    "count": 4,
+    "origin": "Flutter desktop widget test rendering",
+    "data": "Controlled error fixtures; task screenshot uses a viewer role",
+    "width": 360,
+    "height": 1600,
+    "languages": [
+      "zh",
+      "en"
+    ]
+  },
+  "gallery_screenshots": 85,
+  "signing": "Existing debug-compatible certificate; formal signing pending",
+  "product_plan_complete": false
+}

@@ -83,7 +83,7 @@ class CollaborationApi {
         }
       }
       if (res.statusCode < 200 || res.statusCode >= 300) {
-        final message = decoded is Map
+        final message = decoded is Map && decoded.isNotEmpty
             ? '${decoded['detail'] ?? decoded.values.first}'
             : 'Request failed';
         throw CollaborationApiException(

@@ -1519,3 +1519,22 @@
 1518|Failed
 1519|Scrapped
 1520|Per-piece inspection results
+1521|Sign in again
+1522|Sign in to continue. Unsubmitted work is kept.
+1523|Access unavailable for this account
+1524|Refresh team access, or return to the workbench to choose another workspace.
+1525|Refresh access
+1526|Record unavailable
+1527|This record may have been removed or belong to another workspace.
+1528|Task updated
+1529|Refresh the current status and review your changes before submitting.
+1530|Refresh current status
+1531|Photo too large
+1532|Return to the photo page and compress the photo before uploading again.
+1533|Service temporarily unavailable
+1534|Retry later, or check the connection on the sync page.
+1535|Check your entries
+1536|Check required fields and quantities before submitting again.
+1537|Connection interrupted
+1538|Check your connection and retry. Your filters are kept.
+1539|Loading

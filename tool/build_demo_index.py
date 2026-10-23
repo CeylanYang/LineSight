@@ -17,6 +17,7 @@ groups = {
     'workbench-batch': ['UI-01','UI-06','UI-11'],
     'access-batch': ['COL-04','UI-11','COL-02'],
     'history-batch': ['DAT-06','UI-05','QC-03'],
+    'feedback-batch': ['UI-08','SEC-02','UI-11','REL-04'],
 }
 items = []
 for group, ids in groups.items():
