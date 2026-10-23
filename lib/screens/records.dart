@@ -616,6 +616,16 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
             tr(context, "工件预览"),
             style: const TextStyle(fontSize: 11, color: Colors.blueGrey),
           ),
+          SectionHeading(tr(context, '轮廓参考')),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              partArtAsset(r.recipeName, edge: true),
+              height: 260,
+              width: double.infinity,
+              fit: BoxFit.contain,
+            ),
+          ),
           SectionHeading(tr(context, "检测证据")),
           GlassPanel(
             child: Column(

@@ -1028,6 +1028,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
             CloudTraceCodePage(
               trace: TaskTrace(widget.workspaceId, '${job['id']}'),
               partName: partName,
+              batchCode: '${job['batch_code'] ?? ''}',
             ),
           ),
         ),

@@ -1,0 +1,109 @@
+{
+  "code": "DEMO-HISTORY-a86a7fcd5b-01",
+  "jobs": [
+    {
+      "id": "5327299a-6201-4fdf-abba-f2037fc89712",
+      "version": 6,
+      "part_name": "DEMO · SN inspection history",
+      "printer": "A1",
+      "quantity": 2,
+      "note": "",
+      "status": "closed",
+      "created_at": "2026-10-23T14:08:34.576083+00:00",
+      "updated_at": "2026-10-23T14:08:35.532032+00:00",
+      "batch_code": "DEMO-HISTORY-a86a7fcd5b",
+      "tracking_mode": "serial",
+      "serial_numbers": [
+        "DEMO-HISTORY-a86a7fcd5b-01",
+        "DEMO-HISTORY-a86a7fcd5b-02"
+      ],
+      "assignee_id": null,
+      "assignee": "",
+      "template": null,
+      "profile_version": "",
+      "profile_source": "",
+      "exceptions": [
+        {
+          "id": 8,
+          "note": "DEMO · surface mark on second piece",
+          "status": "resolved",
+          "assignee": "LineSight Demo",
+          "resolution": "DEMO · reprinted and checked surface",
+          "category": "other",
+          "severity": "major",
+          "inspection_id": 17,
+          "creator": "LineSight Demo",
+          "created_at": "2026-10-23T14:08:35.138598+00:00",
+          "resolved_at": "2026-10-23T14:08:35.409786+00:00"
+        }
+      ],
+      "inspections": [
+        {
+          "id": 18,
+          "task_id": "5327299a-6201-4fdf-abba-f2037fc89712",
+          "part_name": "DEMO · SN inspection history",
+          "batch_code": "DEMO-HISTORY-a86a7fcd5b",
+          "round_no": 2,
+          "verdict": "pass",
+          "note": "",
+          "inspector": "LineSight Demo",
+          "created_at": "2026-10-23T14:08:35.531105+00:00",
+          "inspector_id": 9,
+          "inspected_qty": 2,
+          "pass_qty": 2,
+          "fail_qty": 0,
+          "scrap_qty": 0,
+          "template_snapshot": {},
+          "answers": [],
+          "serial_results": {
+            "DEMO-HISTORY-a86a7fcd5b-01": "pass",
+            "DEMO-HISTORY-a86a7fcd5b-02": "pass"
+          },
+          "evidence": []
+        },
+        {
+          "id": 17,
+          "task_id": "5327299a-6201-4fdf-abba-f2037fc89712",
+          "part_name": "DEMO · SN inspection history",
+          "batch_code": "DEMO-HISTORY-a86a7fcd5b",
+          "round_no": 1,
+          "verdict": "fail",
+          "note": "DEMO · surface mark on second piece",
+          "inspector": "LineSight Demo",
+          "created_at": "2026-10-23T14:08:35.136845+00:00",
+          "inspector_id": 9,
+          "inspected_qty": 2,
+          "pass_qty": 1,
+          "fail_qty": 1,
+          "scrap_qty": 0,
+          "template_snapshot": {},
+          "answers": [],
+          "serial_results": {
+            "DEMO-HISTORY-a86a7fcd5b-01": "pass",
+            "DEMO-HISTORY-a86a7fcd5b-02": "fail"
+          },
+          "evidence": [
+            {
+              "id": 10,
+              "stage": "inspection",
+              "issue_id": null
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": 10,
+          "created_at": "2026-10-23T14:08:35.019507+00:00",
+          "stage": "inspection",
+          "inspection_id": 17,
+          "issue_id": null
+        }
+      ],
+      "matched_serial": "DEMO-HISTORY-a86a7fcd5b-01",
+      "piece_verdict": "pass",
+      "piece_round": 2
+    }
+  ],
+  "truncated": false
+}

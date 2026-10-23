@@ -1538,3 +1538,22 @@
 1537|Connection interrupted
 1538|Check your connection and retry. Your filters are kept.
 1539|Loading
+1540|Live inspection
+1541|Current frame
+1542|Live contours
+1543|Open phone camera
+1544|Place the part in view to see its contours.
+1545|Open camera
+1546|Camera unavailable. Check camera access and retry.
+1547|Resume contours
+1548|Pause contours
+1549|Use this frame
+1550|Enter task ID, batch or piece SN
+1551|Batch QR code
+1552|Piece and batch traceability
+1553|No matching piece or batch
+1554|Check the code, then scan or enter it again.
+1555|More than 100 results. Search by piece SN.
+1556|Scan a task QR code, batch barcode or piece SN
+1557|Contour reference
+1558|Awaiting inspection

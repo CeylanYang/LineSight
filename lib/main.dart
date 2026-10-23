@@ -115,7 +115,11 @@ class _LineSightAppState extends State<LineSightApp>
       final link = _pendingTrace!;
       _pendingTrace = null;
       _cloudNavigator.currentState!.push(
-        MaterialPageRoute<void>(builder: (_) => CloudTracePage(link: link)),
+        MaterialPageRoute<void>(
+          builder: (_) => BatchTrace.parse(link) != null
+              ? CloudBatchTracePage(trace: BatchTrace.parse(link)!)
+              : CloudTracePage(link: link),
+        ),
       );
     });
     WidgetsBinding.instance.ensureVisualUpdate();
@@ -126,7 +130,10 @@ class _LineSightAppState extends State<LineSightApp>
     RouteInformation routeInformation,
   ) async {
     final link = routeInformation.uri.toString();
-    if (widget.cloud == null || !TaskTrace.isLink(link)) return false;
+    if (widget.cloud == null ||
+        (!TaskTrace.isLink(link) && !BatchTrace.isLink(link))) {
+      return false;
+    }
     _pendingTrace = link;
     _openPendingTrace();
     return true;
@@ -143,7 +150,9 @@ class _LineSightAppState extends State<LineSightApp>
     _revealFinished = !(widget.showBrandReveal ?? !widget.store.ready);
     final initialLink =
         WidgetsBinding.instance.platformDispatcher.defaultRouteName;
-    if (TaskTrace.isLink(initialLink)) _pendingTrace = initialLink;
+    if (TaskTrace.isLink(initialLink) || BatchTrace.isLink(initialLink)) {
+      _pendingTrace = initialLink;
+    }
     WidgetsBinding.instance.addObserver(this);
   }
 

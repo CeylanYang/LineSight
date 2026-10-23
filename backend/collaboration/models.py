@@ -165,6 +165,7 @@ class Evidence(models.Model):
     job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, related_name="evidence")
     image = models.ImageField(upload_to=evidence_upload_path)
     edge_preview = models.ImageField(upload_to=preview_upload_path)
+    preview_algorithm = models.CharField(max_length=48, blank=True, default='')
     idempotency_key = models.CharField(max_length=64, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -442,14 +442,8 @@ def upload_evidence(request, workspace_id, job_id):
         scale = min(1.0, 2048 / max(width, height))
         if scale < 1:
             decoded = cv2.resize(decoded, (round(width * scale), round(height * scale)), interpolation=cv2.INTER_AREA)
-        blurred = cv2.GaussianBlur(decoded, (5, 5), 0)
-        edges = cv2.Canny(blurred, 50, 150)
-        # Keep the reference legible in the app's bright visual system.
-        preview = np.full((*edges.shape, 3), 255, dtype=np.uint8)
-        preview[edges > 0] = (52, 120, 246)
-        ok, encoded = cv2.imencode(".png", cv2.cvtColor(preview, cv2.COLOR_RGB2BGR))
-        if not ok:
-            raise ValueError("preview failed")
+        from .vision import edge_image, ALGORITHM
+        encoded, _ = edge_image(decoded)
     except (UnidentifiedImageError, OSError, ValueError):
         return Response({"detail": "图片内容无法识别，请重新选择 PNG 或 JPEG 文件"}, status=400)
     original_name = 'photo.png' if image.format == 'PNG' else 'photo.jpg'
@@ -469,9 +463,9 @@ def upload_evidence(request, workspace_id, job_id):
                     return Response({'detail': '请选择当前任务的未处理异常'}, status=400)
                 inspection = issue.inspection
             evidence = Evidence(job=job, idempotency_key=idempotency_key or None, stage=stage, issue=issue,
-                inspection=inspection, uploader=request.user, content_hash=digest)
+                inspection=inspection, uploader=request.user, content_hash=digest, preview_algorithm=ALGORITHM)
             evidence.image.save(original_name, ContentFile(raw), save=False)
-            evidence.edge_preview.save('edge.png', ContentFile(encoded.tobytes()), save=False)
+            evidence.edge_preview.save('edge.png', ContentFile(encoded), save=False)
             evidence.save()
             AuditEvent.objects.create(workspace=member.workspace, user=request.user, job=job, version=job.version,
                 action='evidence.uploaded', object_id=str(evidence.pk), details={'stage': stage, 'inspection_id': evidence.inspection_id, 'issue_id': evidence.issue_id})
@@ -494,6 +488,17 @@ def evidence_preview(request, workspace_id, job_id, evidence_id):
         )
     except Evidence.DoesNotExist as exc:
         raise Http404 from exc
+    from .vision import edge_image, ALGORITHM
+    if evidence.preview_algorithm != ALGORITHM:
+        with transaction.atomic():
+            evidence = Evidence.objects.select_for_update().get(pk=evidence.pk)
+            if evidence.preview_algorithm != ALGORITHM:
+                with evidence.image.open('rb') as original:
+                    decoded = cv2.imdecode(np.frombuffer(original.read(), dtype=np.uint8), cv2.IMREAD_COLOR)
+                png, _ = edge_image(decoded)
+                evidence.edge_preview.save('edge-v1.png', ContentFile(png), save=False)
+                evidence.preview_algorithm = ALGORITHM
+                evidence.save(update_fields=['edge_preview', 'preview_algorithm'])
     return FileResponse(evidence.edge_preview.open("rb"), content_type="image/png")
 
 

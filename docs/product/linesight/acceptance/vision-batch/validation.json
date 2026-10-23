@@ -1,0 +1,27 @@
+{
+  "version": "1.1.31+8050",
+  "entry": "lib/main.dart",
+  "flutter_tests_passed": 155,
+  "focused_vision_tests_after_final_render": 6,
+  "backend_tests_passed": 42,
+  "flutter_analyze": "No issues found",
+  "backend_changed": true,
+  "release_build_passed": true,
+  "signature_verified": true,
+  "integration_test_plugin_absent_from_release_dex": true,
+  "sha256": "0a65841530d91debd190bbbc93df478fd8f0f3748af2bdbe69ce8cf3c4e72194",
+  "emulator_started": false,
+  "physical_camera_tested": false,
+  "physical_barcode_tested": false,
+  "nfc_login_delivered": false,
+  "gallery_png": 98,
+  "gallery_source_types": [
+    "Android screenshots from earlier batches",
+    "desktop component rendering",
+    "reference source images",
+    "algorithm outputs",
+    "generated trace codes"
+  ],
+  "signing": "Existing debug-compatible certificate; formal signing pending",
+  "product_plan_complete": false
+}

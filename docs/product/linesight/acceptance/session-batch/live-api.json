@@ -1,0 +1,16 @@
+{
+  "reset_password_enabled": true,
+  "smtp_configured": false,
+  "native_pkce_two_independent_sessions": true,
+  "hosted_password_change_revoked_old_session": true,
+  "old_password_rejected": true,
+  "new_password_native_login": true,
+  "cross_user_session_id_cannot_revoke": true,
+  "cross_user_session_response_status": 401,
+  "specific_session_access_and_refresh_revoked": true,
+  "logout_other_sessions_keeps_current": true,
+  "current_logout_revokes_access_and_refresh": true,
+  "provider_probe_deleted": true,
+  "production_or_demo_passwords_changed": false,
+  "normal_client_password_grant_enabled": false
+}

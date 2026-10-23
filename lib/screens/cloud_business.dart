@@ -12,6 +12,7 @@ import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
 import '../cloud_history.dart';
+import '../cloud_vision.dart';
 import '../cloud_feedback.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
@@ -1963,35 +1964,59 @@ Future<int?> cloudPickPhoto(
   Map<String, dynamic>? issue,
   String stage = 'inspection',
 }) async {
-  final source = await showModalBottomSheet<ImageSource>(
+  final account = CloudScope.of(context),
+      binding = CloudScope.of(context).accessScope;
+  final choice = await showModalBottomSheet<String>(
     context: context,
     builder: (context) => SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
+            leading: const Icon(Icons.videocam_outlined),
+            title: Text(tr(context, '在线质检')),
+            onTap: () => Navigator.pop(context, 'live'),
+          ),
+          ListTile(
             leading: const Icon(Icons.camera_alt),
             title: Text(tr(context, '拍照')),
-            onTap: () => Navigator.pop(context, ImageSource.camera),
+            onTap: () => Navigator.pop(context, 'camera'),
           ),
           ListTile(
             leading: const Icon(Icons.photo_library),
             title: Text(tr(context, '从相册选择')),
-            onTap: () => Navigator.pop(context, ImageSource.gallery),
+            onTap: () => Navigator.pop(context, 'gallery'),
           ),
         ],
       ),
     ),
   );
-  if (source == null || !context.mounted) return null;
-  final account = CloudScope.of(context);
-  final item = await CloudPhotoRecovery.instance.pick(
-    account,
-    '${job['id']}',
-    source,
-    stage: stage,
-    issueId: issue?['id'] as int?,
-  );
+  if (choice == null || !context.mounted) return null;
+  account.requireAccess(binding, write: true);
+  Map<String, dynamic>? item;
+  if (choice == 'live') {
+    final bytes = await Navigator.of(context).push<Uint8List>(
+      MaterialPageRoute(
+        builder: (_) => const CloudLiveInspectionPage(returnCapture: true),
+      ),
+    );
+    account.requireAccess(binding, write: true);
+    if (bytes == null) return null;
+    item = await CloudOutbox(account).enqueue(
+      '${job['id']}',
+      bytes,
+      stage: stage,
+      issueId: issue?['id'] as int?,
+    );
+  } else {
+    item = await CloudPhotoRecovery.instance.pick(
+      account,
+      '${job['id']}',
+      choice == 'camera' ? ImageSource.camera : ImageSource.gallery,
+      stage: stage,
+      issueId: issue?['id'] as int?,
+    );
+  }
   if (item == null) return null;
   final outbox = CloudOutbox(account);
   try {

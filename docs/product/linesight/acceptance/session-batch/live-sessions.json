@@ -1,0 +1,36 @@
+{
+  "origin": "Actual HTTPS sessions for disposable acceptance user; IPs and identifiers omitted",
+  "sessions": [
+    {
+      "started": 1792766519,
+      "lastAccess": 1792766519,
+      "expires": 1792795319,
+      "clients": [
+        {
+          "clientId": "linesight-android",
+          "clientName": "LineSight",
+          "userConsentRequired": false,
+          "inUse": false,
+          "offlineAccess": false
+        }
+      ],
+      "browser": "Python-urllib/3.12"
+    },
+    {
+      "started": 1792766520,
+      "lastAccess": 1792766520,
+      "expires": 1792795320,
+      "clients": [
+        {
+          "clientId": "linesight-android",
+          "clientName": "LineSight",
+          "userConsentRequired": false,
+          "inUse": false,
+          "offlineAccess": false
+        }
+      ],
+      "browser": "Python-urllib/3.12",
+      "current": true
+    }
+  ]
+}

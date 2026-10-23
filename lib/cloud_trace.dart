@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'cloud_account.dart';
+import 'cloud_feedback.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'ui.dart';
@@ -50,28 +51,82 @@ class TaskTrace {
 }
 
 Future<void> openCloudTraceInput(BuildContext context) async {
-  final value = await cloudTextPrompt(context, '输入任务ID或追溯链接');
+  final value = await cloudTextPrompt(context, '输入任务ID、批次号或工件SN');
   if (value == null || !context.mounted) return;
+  await openCloudCode(context, value);
+}
+
+class BatchTrace {
+  final int workspaceId;
+  final String code;
+  const BatchTrace(this.workspaceId, this.code);
+  String get link =>
+      'linesight://batch/$workspaceId/${Uri.encodeComponent(code)}';
+  static bool isLink(String value) {
+    final uri = Uri.tryParse(value);
+    return uri?.scheme == 'linesight' && uri?.host == 'batch';
+  }
+
+  static BatchTrace? parse(String raw, {int? workspaceId}) {
+    var code = raw.trim();
+    var workspace = workspaceId;
+    final uri = Uri.tryParse(code);
+    if (uri?.scheme == 'linesight') {
+      if (uri!.host != 'batch' ||
+          uri.pathSegments.length != 2 ||
+          uri.hasQuery ||
+          uri.hasFragment ||
+          uri.userInfo.isNotEmpty ||
+          uri.hasPort) {
+        return null;
+      }
+      workspace = int.tryParse(uri.pathSegments[0]);
+      code = uri.pathSegments[1];
+    } else if (uri?.hasScheme == true) {
+      return null;
+    }
+    if (workspace == null ||
+        workspace <= 0 ||
+        code.isEmpty ||
+        code.length > 160 ||
+        code.contains(RegExp(r'[\x00-\x1f\x7f]'))) {
+      return null;
+    }
+    return BatchTrace(workspace, code);
+  }
+}
+
+Future<void> openCloudCode(BuildContext context, String value) async {
   final trace = TaskTrace.parse(
     value,
     workspaceId: CloudScope.of(context).activeWorkspace?['id'] as int?,
   );
-  if (trace == null) {
+  final batch = BatchTrace.parse(
+    value,
+    workspaceId: CloudScope.of(context).activeWorkspace?['id'] as int?,
+  );
+  if (trace == null && batch == null) {
     toast(context, '追溯号无效，请检查后重试');
     return;
   }
   await Navigator.of(context).push(
-    MaterialPageRoute<void>(builder: (_) => CloudTracePage(link: trace.link)),
+    MaterialPageRoute<void>(
+      builder: (_) => trace != null
+          ? CloudTracePage(link: trace.link)
+          : CloudBatchTracePage(trace: batch!),
+    ),
   );
 }
 
 class CloudTraceCodePage extends StatelessWidget {
   final TaskTrace trace;
   final String partName;
+  final String? batchCode;
   const CloudTraceCodePage({
     super.key,
     required this.trace,
     required this.partName,
+    this.batchCode,
   });
   @override
   Widget build(BuildContext context) {
@@ -85,6 +140,18 @@ class CloudTraceCodePage extends StatelessWidget {
       children: [
         Text(partName, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 16),
+        if (batchCode?.isNotEmpty == true) ...[
+          SectionHeader(tr(context, '批次二维码'), icon: Icons.qr_code_2),
+          Center(
+            child: QrImageView(
+              data: BatchTrace(trace.workspaceId, batchCode!).link,
+              size: 220,
+              backgroundColor: Colors.white,
+            ),
+          ),
+          Center(child: SelectableText(batchCode!)),
+          const SizedBox(height: 16),
+        ],
         Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 320),
@@ -255,14 +322,20 @@ class _CloudScanPageState extends State<CloudScanPage> {
         value,
         workspaceId: CloudScope.of(context).activeWorkspace?['id'] as int?,
       );
-      if (trace == null) {
-        setState(() => error = '请扫描LineSight任务二维码');
+      final batch = BatchTrace.parse(
+        value,
+        workspaceId: CloudScope.of(context).activeWorkspace?['id'] as int?,
+      );
+      if (trace == null && batch == null) {
+        setState(() => error = '请扫描任务二维码、批次条码或工件SN');
         continue;
       }
       captured = true;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
-          builder: (_) => CloudTracePage(link: trace.link),
+          builder: (_) => trace != null
+              ? CloudTracePage(link: trace.link)
+              : CloudBatchTracePage(trace: batch!),
         ),
       );
       return;
@@ -290,7 +363,7 @@ class _CloudScanPageState extends State<CloudScanPage> {
       if (error != null) Text(trMessage(context, error!)),
       OutlinedButton.icon(
         icon: const Icon(Icons.keyboard),
-        label: Text(tr(context, '输入任务ID或追溯链接')),
+        label: Text(tr(context, '输入任务ID、批次号或工件SN')),
         onPressed: () async {
           setState(() => captured = true);
           await openCloudTraceInput(context);
@@ -299,4 +372,121 @@ class _CloudScanPageState extends State<CloudScanPage> {
       ),
     ],
   );
+}
+
+class CloudBatchTracePage extends StatefulWidget {
+  final BatchTrace trace;
+  const CloudBatchTracePage({super.key, required this.trace});
+  @override
+  State<CloudBatchTracePage> createState() => _CloudBatchTracePageState();
+}
+
+class _CloudBatchTracePageState extends State<CloudBatchTracePage> {
+  bool bound = false, busy = false;
+  String? binding;
+  Object? error;
+  List<Map<String, dynamic>> rows = [];
+  bool truncated = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!bound || (binding == null && CloudScope.of(context).signedIn)) {
+      bound = true;
+      binding = CloudScope.of(context).accessScope;
+      if (binding != null) load();
+    }
+  }
+
+  Future<void> load() async {
+    final account = CloudScope.of(context);
+    if (!account.retainsAccess(binding)) return;
+    setState(() {
+      busy = true;
+      error = null;
+      rows = [];
+    });
+    try {
+      final data =
+          await account.request(
+                'GET',
+                'workspaces/${widget.trace.workspaceId}/trace/lookup/?${Uri(queryParameters: {'code': widget.trace.code}).query}',
+              )
+              as Map;
+      if (mounted && account.retainsAccess(binding)) {
+        setState(() {
+          rows = (data['jobs'] as List).cast<Map<String, dynamic>>();
+          truncated = data['truncated'] == true;
+        });
+      }
+    } catch (failure) {
+      if (mounted && account.retainsAccess(binding)) {
+        setState(() => error = failure);
+      }
+    } finally {
+      if (mounted) setState(() => busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.signedIn) return cloudAccessRequired(context);
+    if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
+    return DetailScaffold(
+      title: tr(context, '工件与批次追溯'),
+      actions: [
+        IconButton(
+          onPressed: busy ? null : load,
+          icon: const Icon(Icons.refresh),
+          tooltip: tr(context, '刷新'),
+        ),
+      ],
+      children: [
+        SelectableText(
+          widget.trace.code,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 16),
+        if (busy) const CloudLoadingPanel(),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
+        if (!busy && error == null && rows.isEmpty)
+          EmptyState(
+            title: tr(context, '没有匹配的工件或批次'),
+            subtitle: tr(context, '核对编号后重新扫码或输入。'),
+          ),
+        for (final job in rows)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: GlassPanel(
+              child: ListTile(
+                title: Text('${job['part_name']}'),
+                subtitle: Text(
+                  '${job['batch_code']} · ${job['quantity']} ${tr(context, '件')}'
+                  '${job['matched_serial'] == null ? '' : '\n${job['matched_serial']} · ${tr(context, switch (job['piece_verdict']) {
+                          'pass' => '合格',
+                          'fail' => '异常',
+                          'scrap' => '报废',
+                          _ => '待检验',
+                        })}'}',
+                ),
+                trailing: Tag(
+                  tr(context, taskStatusLabels[job['status']] ?? '待打印'),
+                  color: taskColor('${job['status']}'),
+                ),
+                onTap: () => openPage(
+                  context,
+                  CloudTracePage(
+                    link: TaskTrace(
+                      widget.trace.workspaceId,
+                      '${job['id']}',
+                    ).link,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        if (truncated) Text(tr(context, '结果超过100条，请按工件SN继续查询')),
+      ],
+    );
+  }
 }

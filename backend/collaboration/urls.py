@@ -1,7 +1,9 @@
 from django.urls import path
-from . import api, workflow, product
+from . import api, workflow, product, vision
 
 urlpatterns = [
+    path('workspaces/<int:workspace_id>/vision/frame/',vision.frame),
+    path('workspaces/<int:workspace_id>/trace/lookup/',vision.lookup),
     path("auth/register/", api.register), path("auth/login/", api.login),
     path("auth/me/", api.account),
     path("workspaces/", api.workspaces), path("workspaces/create/", api.create_workspace),

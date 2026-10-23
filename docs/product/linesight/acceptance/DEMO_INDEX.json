@@ -1,5 +1,5 @@
 {
-  "screenshots": 85,
+  "screenshots": 98,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1338,6 +1338,201 @@
       "height": 1600,
       "sha256": "38e66411d0935a352ee37fd9287207ebed1a9ea57e68c607f7cdd0731309a9fb",
       "batch_notes": "feedback-batch/README.md"
+    },
+    {
+      "file": "vision-batch/batch-barcode-generated.png",
+      "title": "batch-barcode-generated",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "generated-trace-code",
+      "width": 1033,
+      "height": 262,
+      "sha256": "1c16eb2108472bba76a42bdab21e41fa115aa8ea8f2ef8c6f48436930077cf33",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/batch-qr-generated.png",
+      "title": "batch-qr-generated",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "generated-trace-code",
+      "width": 330,
+      "height": 330,
+      "sha256": "276c9fb0e9923a500fe32db5dad1e67332eeed47e58cc5100125da95b355d6bb",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/cloud-frame-contour-processed.png",
+      "title": "cloud-frame-contour-processed",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "processed-reference-image",
+      "width": 320,
+      "height": 240,
+      "sha256": "24073d4ada3b917c743ee579e11b0e6b169479d16405774b9f1d31db4c74b92d",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/cloud-frame-original-source.png",
+      "title": "cloud-frame-original-source",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "reference-source-image",
+      "width": 320,
+      "height": 240,
+      "sha256": "cfa4657b6397d8c2656c8b951b26c1fa792d3ca1b1ddf5960c055fc31abfffcb",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/piece-barcode-generated.png",
+      "title": "piece-barcode-generated",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "generated-trace-code",
+      "width": 1137,
+      "height": 262,
+      "sha256": "eec2900541b979c2f23128a5e652651ac334a8de641d1f2416644d874ccc2453",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/piece-qr-generated.png",
+      "title": "piece-qr-generated",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "generated-trace-code",
+      "width": 330,
+      "height": 330,
+      "sha256": "311a292f65c8ef19cf15d7ae4886f42e31da02d7796b8ee5378f5a2cfc5d4ca3",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/png/68-live-contours-en-desktop-render.png",
+      "title": "68-live-contours-en-desktop-render",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "1801868aaa154e5544277e6d7e7922279c53172760630f015a641c0082e377f4",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/png/68-live-contours-zh-desktop-render.png",
+      "title": "68-live-contours-zh-desktop-render",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "c8aec12e06dd74fb23560792ffe225c3ea8fad87bfc6538c217ccf5b3ae3f7cd",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/png/69-piece-lookup-en-desktop-render.png",
+      "title": "69-piece-lookup-en-desktop-render",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "4244ea2f227208173e813f63e5ee7e4f2d3c67a5b2db15618e68816237cf1df1",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/png/69-piece-lookup-zh-desktop-render.png",
+      "title": "69-piece-lookup-zh-desktop-render",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "11a8eadd47359263e18b9954dba9df75780f205296e7b95a5cd7bd9f1744b6cb",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/reference-contour-processed.png",
+      "title": "reference-contour-processed",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "processed-reference-image",
+      "width": 1280,
+      "height": 853,
+      "sha256": "33473578d9c1d25d1e373e1ee489ddbe915228a797401990c7411a6470fb37ad",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/reference-original-source.png",
+      "title": "reference-original-source",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "reference-source-image",
+      "width": 1400,
+      "height": 933,
+      "sha256": "10b10f9878ddad5b1f463463967c83554f937ea24678a2b8ba9c8de3349e9f18",
+      "batch_notes": "vision-batch/README.md"
+    },
+    {
+      "file": "vision-batch/task-qr-generated.png",
+      "title": "task-qr-generated",
+      "batch": "vision-batch",
+      "batch_requirement_ids": [
+        "VISION-01",
+        "VISION-02",
+        "SCAN-01"
+      ],
+      "origin": "generated-trace-code",
+      "width": 410,
+      "height": 410,
+      "sha256": "350756124571340edeeaa7616a14d48e518c487e70f434daaa70f2a585144be2",
+      "batch_notes": "vision-batch/README.md"
     }
   ],
   "product_plan_complete": false

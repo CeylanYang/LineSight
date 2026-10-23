@@ -1,0 +1,71 @@
+{
+  "algorithm": "mean-shift-canny-zhang-suen-v1",
+  "reference_assets": [
+    {
+      "source": "assets/parts/part-adapter.webp",
+      "output": "assets/parts/part-adapter-edge.webp",
+      "sha256": "6cbc6c551ba07deca383386c642961ac53a614c6e1aa1f15a58fd9ea6f597737"
+    },
+    {
+      "source": "assets/parts/part-clamp.webp",
+      "output": "assets/parts/part-clamp-edge.webp",
+      "sha256": "215e42d7a53eecd7dbe55b90e116ad6b0e81ff1e0165ca4812e137dbefc7f2e6"
+    },
+    {
+      "source": "assets/parts/part-clip.webp",
+      "output": "assets/parts/part-clip-edge.webp",
+      "sha256": "4ccffc1e89aed6baa000141531827bc1e82d05c6a4864dc495f00e1451b47f58"
+    },
+    {
+      "source": "assets/parts/part-cover.webp",
+      "output": "assets/parts/part-cover-edge.webp",
+      "sha256": "3a2ed1a35d61f3d4e121d668bb2d038a0fa61f3deccb500577008e93857dfac7"
+    },
+    {
+      "source": "assets/parts/part-gear.webp",
+      "output": "assets/parts/part-gear-edge.webp",
+      "sha256": "9f4edc6b05c25ec53d5641c0f10a3f580e27063d7e5f54f8db56d334a2eb9f9e"
+    },
+    {
+      "source": "assets/parts/part-hinge.webp",
+      "output": "assets/parts/part-hinge-edge.webp",
+      "sha256": "09b39009988819890889617641c5bb534e4510dc9828b3623bfd0d459ad08676"
+    },
+    {
+      "source": "assets/parts/part-housing.webp",
+      "output": "assets/parts/part-housing-edge.webp",
+      "sha256": "57a7cbd88ae755f3965c3bb8da48555bdb38869c80f4db79f89883847a879e86"
+    },
+    {
+      "source": "assets/parts/part-jig.webp",
+      "output": "assets/parts/part-jig-edge.webp",
+      "sha256": "13e9870b0778b8eb91ddbc6c304a6a86ff5fa62b3bfea7ee891902d925271d2c"
+    },
+    {
+      "source": "assets/parts/part-knob.webp",
+      "output": "assets/parts/part-knob-edge.webp",
+      "sha256": "54f3261eca04af0d10a553738caec44d5257650dded7fb5107bb704999b165f3"
+    },
+    {
+      "source": "assets/parts/part-mount.webp",
+      "output": "assets/parts/part-mount-edge.webp",
+      "sha256": "01eed1daadf99934f78d121f2c3f355a869f95a95b60ada9f4f2bd8b618eaab5"
+    },
+    {
+      "source": "assets/parts/part-pulley.webp",
+      "output": "assets/parts/part-pulley-edge.webp",
+      "sha256": "5d3675763548e86f313c660758ef7c8c9cf82921f04f546691d235eef6aad7fd"
+    },
+    {
+      "source": "assets/parts/part-spacer.webp",
+      "output": "assets/parts/part-spacer-edge.webp",
+      "sha256": "c40ee79817a007ab6b502f42a900f729acc80fbea9e996594ca36e6a868a2fb7"
+    }
+  ],
+  "codes": {
+    "task": "linesight://task/5/5327299a-6201-4fdf-abba-f2037fc89712",
+    "batch": "DEMO-HISTORY-a86a7fcd5b",
+    "piece": "DEMO-HISTORY-a86a7fcd5b-01"
+  },
+  "demo_only": true
+}

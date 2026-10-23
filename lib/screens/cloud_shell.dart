@@ -4,6 +4,7 @@ import '../cloud_workbench.dart';
 import '../cloud_local_import.dart';
 import '../cloud_photo_recovery.dart';
 import '../cloud_trace.dart';
+import '../cloud_vision.dart';
 import '../l10n.dart';
 import '../liquid_glass_bar.dart';
 import '../ui.dart';
@@ -389,6 +390,12 @@ class _CloudShellState extends State<CloudShell> {
               : null,
           actions: account.signedIn
               ? [
+                  HeroAction(
+                    label: tr(context, '在线质检'),
+                    icon: Icons.videocam_outlined,
+                    onPressed: () =>
+                        openPage(context, const CloudLiveInspectionPage()),
+                  ),
                   HeroAction(
                     label: tr(context, '扫码追溯'),
                     icon: Icons.qr_code_scanner,

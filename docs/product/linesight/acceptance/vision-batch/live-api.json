@@ -1,0 +1,13 @@
+{
+  "batch_lookup": true,
+  "piece_lookup": true,
+  "https_frame": true,
+  "frame_source": "existing reference photo converted to BGRA; no physical camera",
+  "processing_ms": 268,
+  "algorithm": "mean-shift-canny-zhang-suen-v1",
+  "frame_not_cached": true,
+  "anonymous_frame_status": 401,
+  "foreign_frame_status": 404,
+  "foreign_lookup_status": 404,
+  "existing_evidence_preview": true
+}
