@@ -8,7 +8,7 @@
   "release_build_passed": true,
   "signature_verified": true,
   "integration_test_plugin_absent_from_release_dex": true,
-  "sha256": "17069927ec8258a8f2e8754577541ba1bccae14874df1ff5737d03d70443dde2",
+  "sha256": "c87379f5c85e6cf514fbe36cf88a450ec013c89d0117d5ce2726254f8bad26f8",
   "official_keycloak_account_sessions": true,
   "five_stage_lifecycle": true,
   "issue_scoped_before_after_comparison": true,

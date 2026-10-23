@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import zipfile
 
 root=Path(__file__).resolve().parents[1]
 logs=root/'.artifact-work/sso'
@@ -15,6 +16,12 @@ assert re.search(r'\+178: All tests passed!',(logs/'closure-full-flutter-tests.l
 assert re.search(r'Ran 50 tests[\s\S]*\nOK',(logs/'closure-full-backend-tests.log').read_text(encoding='utf-8'))
 assert 'BUILD SUCCESSFUL' in (logs/'closure-release-build.log').read_text(encoding='utf-8')
 assert apk.stat().st_mtime>max(file.stat().st_mtime for file in (root/'lib').rglob('*.dart'))
+assert apk.stat().st_mtime>max((root/name).stat().st_mtime for name in ['android/app/build.gradle.kts','pubspec.yaml'])
+with zipfile.ZipFile(apk) as archive:
+    abis={name.split('/')[1] for name in archive.namelist() if name.startswith('lib/') and name.endswith('.so')}
+    assert abis=={'arm64-v8a','x86_64'},abis
+    for abi in abis:
+        assert f'lib/{abi}/libapp.so' in archive.namelist() and f'lib/{abi}/libflutter.so' in archive.namelist()
 index=json.loads((gallery/'DEMO_INDEX.json').read_text(encoding='utf-8'))
 assert index['screenshots']==118
 for row in index['items']:

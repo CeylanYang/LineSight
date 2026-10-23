@@ -23,6 +23,12 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Match the Flutter engine/app ABIs; camera and scanner dependencies
+        // also ship 32-bit libraries that cannot run without a 32-bit engine.
+        ndk {
+            abiFilters.clear()
+            abiFilters += setOf("arm64-v8a", "x86_64")
+        }
         manifestPlaceholders["appAuthRedirectScheme"] = "com.linesight.app"
     }
 
