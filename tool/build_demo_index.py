@@ -33,6 +33,9 @@ groups = {
     'read-state-batch': ['UI-08','UI-11','UI-12','QA-04'],
     'navigation-batch': ['UI-08','UI-09','UI-11','UI-12'],
     'release-batch': ['REL-01','REL-03','UI-11'],
+    'profile-batch': ['QC-01','UI-08','UI-11','QA-04'],
+    'profile-management-batch': ['QC-01','SEC-04','UI-08','UI-11','QA-04'],
+    'native-final-batch': ['SSO-04','QC-01','UI-08','UI-11','QA-04'],
 }
 items = []
 for group, ids in groups.items():

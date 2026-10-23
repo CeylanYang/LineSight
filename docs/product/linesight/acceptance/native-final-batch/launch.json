@@ -1,0 +1,22 @@
+{
+  "serial": "emulator-5554",
+  "settleSeconds": 0,
+  "rendererRequest": "default",
+  "launches": [
+    {
+      "run": 1,
+      "seconds": 4.062000000005355,
+      "exitCode": 0,
+      "coldWaitPassed": true,
+      "androidDisplayObserved": true
+    }
+  ],
+  "dartTimings": [],
+  "androidMilestones": [
+    "10-23 23:31:43.897   520   762 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.example.linesight_flutter/.MainActivity} with LAUNCH_SINGLE_TOP from uid 2000 (BAL_ALLOW_PERMISSION) result code=0",
+    "10-23 23:31:44.265   520   929 I ActivityManager: Start proc 3275:com.example.linesight_flutter/u0a192 for next-top-activity {com.example.linesight_flutter/com.example.linesight_flutter.MainActivity}",
+    "10-23 23:31:45.194  3275  3334 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).",
+    "10-23 23:31:48.351   520   540 I ActivityTaskManager: Displayed com.example.linesight_flutter/.MainActivity for user 0: +3s854ms",
+    "10-23 23:31:48.370   520   540 I ActivityTaskManager: Fully drawn com.example.linesight_flutter/.MainActivity: +3s854ms"
+  ]
+}

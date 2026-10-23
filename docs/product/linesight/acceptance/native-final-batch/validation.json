@@ -1,0 +1,109 @@
+{
+  "version": "1.1.47+8071",
+  "apk_source_commit": "f8b95d7d635fe6c03b330a0e9cc715c7f50b3974",
+  "apk_sha256": "8cace2f9b0e05c1c008bd467d9dcf6e96120eb33645a27356d3d7368c9db2a37",
+  "apk_rebuilt_this_batch": false,
+  "new_isolated_api34_x86_64_emulator": true,
+  "first_install_not_upgrade_evidence": true,
+  "cold_launch_passed": true,
+  "android_display_ms": 3854,
+  "demo_secondary_login_verified": true,
+  "profile_picker_roundtrip_verified": true,
+  "profile_source_back_route_verified": true,
+  "local_auth_gate_verified": true,
+  "checklist_create_task_and_draft_profile_verified": true,
+  "owner_profile_editor_native_verified": false,
+  "full_native_acceptance_complete": false,
+  "emulator_process_exited_unexpectedly_after_capture": true,
+  "exit_cause_confirmed": false,
+  "business_writes_performed": false,
+  "app_data_cleared": false,
+  "phones_installed": 0,
+  "two_physical_phones_verified": false,
+  "physical_nfc_camera_haptics_verified": false,
+  "ten_external_users_verified": false,
+  "smtp_password_reset_verified": false,
+  "backend_negative_test_evidence": {
+    "unauthenticated_expired_identity": "backend/collaboration/test_permissions.py",
+    "viewer_403_removed_member_old_bearer": "backend/collaboration/test_permissions.py",
+    "foreign_object_ids_and_evidence_binding": "backend/collaboration/test_object_scope.py",
+    "illegal_close_reopen_duplicate_stale_version": "backend/collaboration/test_workflow.py",
+    "concurrent_writers_one_success_one_conflict": "docs/product/linesight/acceptance/sso/live-workflow-verification.json"
+  },
+  "previous_backend_test_run_passed": 78,
+  "screenshots": [
+    {
+      "file": "png/278-signed-out-workbench-emulator.png",
+      "sha256": "44abeb823368f60b55742ec3647b16327c64929dc29ab25deeae27dfc523c3aa",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/279-secondary-login-emulator.png",
+      "sha256": "1f493bb1a3a91ee10274f32d20128189204b677177090c2948f9adaa4152441b",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/280-demo-workbench-emulator.png",
+      "sha256": "5a47efb9a9aee3d6bc95f96e0053d56de71979d726be92280ec7dfaf3f19b7f1",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/281-configuration-hub-emulator.png",
+      "sha256": "28fa68444c1f16a069ec1b0bf651b5d8f175b8ee8f031fda458d2b7b7d0caa6f",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/282-profile-catalog-emulator.png",
+      "sha256": "d90b46a588f5642766284e71d5b2484bdca26920ad88a4bce3aba8e9c76f52ca",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/283-profile-detail-emulator.png",
+      "sha256": "fd519f2dd53f8694729c1f9a8efb0a5b66ea5171dd2fbd30d2c1474f7996f0e5",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/284-task-prefilled-profile-emulator.png",
+      "sha256": "5bf2e79c94bad1e02309fd3259034bdd749911dd7f7f3483d50522b0fee5c00c",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/285-task-picker-roundtrip-emulator.png",
+      "sha256": "dccd14e5281f2d42393b4cb9108ac3246fa9d07291352236ddac847f9f253aa3",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    },
+    {
+      "file": "png/286-local-auth-gate-emulator.png",
+      "sha256": "be87bcbaaeafe211a2b8795134ff77132e28a38beffe5a259a7f8aacdff2c201",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/287-checklist-catalog-emulator.png",
+      "sha256": "b55f40b387a456333f91fbfa3bbdaba6140be88f66202f1002183dc03e13f9e2",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/288-checklist-detail-emulator.png",
+      "sha256": "2225a9a81a1628d2bb774d3ddeaea34114f2cc971847837a10c45defee4e13bb",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/289-task-from-checklist-emulator.png",
+      "sha256": "7d330bfc1003e7a282b455654970e2e4d753ebcb5026cabb134e9c7f9b8c87ad",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    }
+  ],
+  "product_plan_complete": false
+}
