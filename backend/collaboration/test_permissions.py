@@ -36,6 +36,12 @@ class PermissionFoundationTests(TestCase):
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {response.data['access']}")
         return client
 
+    def test_member_self_flag_uses_authenticated_user_not_display_name(self):
+        rows = self.admin.get(f"{self.base}/members/").data
+        self.assertEqual([row['id'] for row in rows if row['is_self']], [self.owner.pk])
+        rows = self.worker.get(f"{self.base}/members/").data
+        self.assertEqual([row['id'] for row in rows if row['is_self']], [self.operator.pk])
+
     def test_missing_invalid_expired_or_inactive_identity_is_401(self):
         for token in (None, "not-a-signed-token"):
             client = APIClient()

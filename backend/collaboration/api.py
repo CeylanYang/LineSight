@@ -117,7 +117,7 @@ def account(request):
 def members(request, workspace_id):
     member = membership(request, workspace_id)
     rows = Membership.objects.filter(workspace=member.workspace).select_related("user", "user__cloud_identity").order_by("user__username")
-    return Response([{"id": row.user_id, "username": row.user.username, "role": row.role,
+    return Response([{"id": row.user_id, "username": row.user.username, "role": row.role, "is_self": row.user_id == request.user.pk,
         "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username} for row in rows])
 
 

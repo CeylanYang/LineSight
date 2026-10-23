@@ -1,5 +1,5 @@
 {
-  "screenshots": 227,
+  "screenshots": 239,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2428,6 +2428,210 @@
       "height": 1280,
       "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
       "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-failure-en-desktop-render.png",
+      "title": "170-team-failure-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "82f04292a685b67230178ced7ee4a5a634e03010e980f5f241f6359f35e1daad",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-failure-zh-desktop-render.png",
+      "title": "170-team-failure-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "125219b808d115f6100ea25745f6f478453f451cb0e33579b23de59700f19822",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-invitation-en-desktop-render.png",
+      "title": "170-team-invitation-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "3b5b1af4a8c826866249529f9f0cb3842aed8c12f741bb572110966cfe8b681c",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-invitation-zh-desktop-render.png",
+      "title": "170-team-invitation-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "91141d9fe1c0b5eafd6fd4e26638a04be345c75b8bdb133f2956e8f0211788df",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-pending-en-desktop-render.png",
+      "title": "170-team-pending-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "ac4725a569bb15496d778913182780fda2bc600331c16c349213700ec2488e1e",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-pending-zh-desktop-render.png",
+      "title": "170-team-pending-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "7e49db258994db7243ac9febbd8e1179cc525aa9b6b6e338c07602b6d6c48d34",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-ready-en-desktop-render.png",
+      "title": "170-team-ready-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "27994ab9596e0a7261758691c349cc8baffd25533f4d95652c303dfd5c3a714b",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/170-team-ready-zh-desktop-render.png",
+      "title": "170-team-ready-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9b5c80cd23a71f0203f1626d0a66ad8607e345263b8d06548d97e12177d13d6c",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/171-unified-login-en-desktop-render.png",
+      "title": "171-unified-login-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "f5567efed9cf08ffeb5f0d2535b1e3ca62897b0a0e24c623b7b45544dcb97e04",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/171-unified-login-zh-desktop-render.png",
+      "title": "171-unified-login-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "8b5d379cda7a02ff08bcd79e0bf7d01fe70c03f17d2f1327395ad2fcf677a930",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/172-viewer-team-en-desktop-render.png",
+      "title": "172-viewer-team-en-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "243225a6ae30c033e1d4c9c6d13b98270c2d9f3597803a03008c860a15f53ff1",
+      "batch_notes": "team-batch/README.md"
+    },
+    {
+      "file": "team-batch/png/172-viewer-team-zh-desktop-render.png",
+      "title": "172-viewer-team-zh-desktop-render",
+      "batch": "team-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-04",
+        "SEC-05",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9912e3e58e301c97c9b59784b12adc0855882207798d1f2b5a90374d26107c15",
+      "batch_notes": "team-batch/README.md"
     },
     {
       "file": "evidence-batch/photo-11-processed.png",

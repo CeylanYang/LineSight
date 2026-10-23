@@ -261,7 +261,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/access-batch/png/63-viewer-team-$locale-desktop-render.png',
+            '../docs/product/linesight/acceptance/team-batch/png/172-viewer-team-$locale-desktop-render.png',
           ),
         );
       },

@@ -1084,8 +1084,10 @@ class CloudTeamPage extends StatefulWidget {
 
 class _CloudTeamPageState extends State<CloudTeamPage> {
   List<Map<String, dynamic>> members = [];
-  bool busy = false;
-  String? error, invitation, binding;
+  bool busy = false, membersLoaded = false;
+  Object? error;
+  String? invitation, binding;
+  String inviteRole = 'operator';
   int generation = 0;
   @override
   void didChangeDependencies() {
@@ -1094,6 +1096,8 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     if (next != binding) {
       binding = next;
       members = [];
+      membersLoaded = false;
+      inviteRole = 'operator';
       invitation = null;
       error = null;
       busy = false;
@@ -1102,7 +1106,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     }
   }
 
-  Future<void> action(
+  Future<bool> action(
     Future<void> Function(CloudAccount account) work, {
     String? expectedScope,
     bool identityOnly = false,
@@ -1112,17 +1116,19 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     bool current() => identityOnly
         ? identity != null && account.identityScope == identity
         : account.retainsAccess(captured);
-    if (!current() || busy) return;
+    if (!current() || busy) return false;
     setState(() {
       busy = true;
       error = null;
     });
     try {
       await work(account);
+      return mounted && account.identityScope == identity;
     } catch (failure) {
       if (mounted && current()) {
-        setState(() => error = '$failure');
+        setState(() => error = failure);
       }
+      return false;
     } finally {
       if (mounted && current()) {
         setState(() => busy = false);
@@ -1135,7 +1141,12 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
         captured = binding,
         ticket = ++generation;
     if (!account.retainsAccess(captured)) return;
-    busy = true;
+    setState(() {
+      busy = true;
+      membersLoaded = false;
+      members = [];
+      error = null;
+    });
     try {
       final rows =
           (await account.request(
@@ -1145,17 +1156,25 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                   as List)
               .cast<Map<String, dynamic>>();
       if (mounted && ticket == generation && account.retainsAccess(captured)) {
-        setState(() => members = rows);
+        setState(() {
+          members = rows;
+          membersLoaded = true;
+        });
       }
     } catch (failure) {
       if (mounted && ticket == generation && account.retainsAccess(captured)) {
-        setState(() => error = '$failure');
+        setState(() => error = failure);
       }
     } finally {
       if (mounted && ticket == generation && account.retainsAccess(captured)) {
         setState(() => busy = false);
       }
     }
+  }
+
+  String memberName(Map<String, dynamic> member) {
+    final name = '${member['display_name'] ?? ''}'.trim();
+    return name.isEmpty ? '?' : name;
   }
 
   String roleLabel(BuildContext context, Object? role) =>
@@ -1177,14 +1196,19 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
         workspace = CloudScope.of(context).activeWorkspace;
     if (!account.signedIn) return cloudAccessRequired(context);
     final capturedScope = account.accessScope;
-    Future<void> run(Future<void> Function(CloudAccount) work) =>
+    final capturedIdentity = account.identityScope;
+    Future<bool> run(Future<void> Function(CloudAccount) work) =>
         action(work, expectedScope: capturedScope);
     final owner = workspace?['role'] == 'owner' && !account.demoAccount;
     const hint = TextStyle(fontSize: 11.5, height: 1.5, color: muted);
     Future<void> createTeam() async {
       final name = await cloudTextPrompt(context, '创建团队');
-      if (name == null || name.isEmpty) return;
-      await action((account) async {
+      if (name == null ||
+          name.isEmpty ||
+          account.identityScope != capturedIdentity) {
+        return;
+      }
+      final succeeded = await action((account) async {
         final result = await account.request(
           'POST',
           'workspaces/create/',
@@ -1195,13 +1219,17 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
           account.workspaces.firstWhere((w) => w['id'] == result['id']),
         );
       }, identityOnly: true);
-      if (mounted) await load();
+      if (mounted && succeeded) await load();
     }
 
     Future<void> joinTeam() async {
       final code = await cloudTextPrompt(context, '输入邀请码');
-      if (code == null || code.isEmpty) return;
-      await action((account) async {
+      if (code == null ||
+          code.isEmpty ||
+          account.identityScope != capturedIdentity) {
+        return;
+      }
+      final succeeded = await action((account) async {
         final result = await account.request(
           'POST',
           'workspaces/redeem/',
@@ -1212,14 +1240,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
           account.workspaces.firstWhere((w) => w['id'] == result['id']),
         );
       }, identityOnly: true);
-      if (mounted) await load();
+      if (mounted && succeeded) await load();
     }
 
-    Future<void> invite(String role) => run((account) async {
+    Future<bool> invite() => run((account) async {
       final result = await account.request(
         'POST',
         'workspaces/${workspace!['id']}/invite/',
-        body: {'role': role},
+        body: {'role': inviteRole},
       );
       if (mounted && account.retainsAccess(capturedScope)) {
         setState(() => invitation = '${result['code']}');
@@ -1233,7 +1261,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
           eyebrow: 'ACCESS / TEAM',
           title: '${workspace?['name'] ?? ''}',
           subtitle:
-              '${workspace?['kind'] == 'team' ? tr(context, '协作团队') : tr(context, '个人工作区')} · ${members.length} ${tr(context, '名成员')}',
+              '${workspace?['kind'] == 'team' ? tr(context, '协作团队') : tr(context, '个人工作区')}${membersLoaded ? ' · ${members.length} ${tr(context, '名成员')}' : ''}',
           actions: [
             if (!account.demoAccount) ...[
               HeroAction(
@@ -1256,25 +1284,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
             padding: EdgeInsets.only(top: 14),
             child: LinearProgressIndicator(),
           ),
-        if (error != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 14),
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  const Icon(Icons.error_outline, size: 18, color: red),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      trMessage(context, error!),
-                      style: const TextStyle(fontSize: 12, color: red),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
         if (owner) ...[
           SectionHeader(
             tr(context, '邀请成员'),
@@ -1286,47 +1296,46 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        initialValue: 'operator',
-                        isDense: true,
-                        decoration: InputDecoration(
-                          labelText: tr(context, '邀请成员权限'),
-                        ),
-                        items: [
-                          DropdownMenuItem(
-                            value: 'operator',
-                            child: Text(tr(context, '操作成员')),
-                          ),
-                          DropdownMenuItem(
-                            value: 'viewer',
-                            child: Text(tr(context, '只读成员')),
-                          ),
-                        ],
-                        onChanged: busy
-                            ? null
-                            : (role) => invite(role ?? 'operator'),
+                    DropdownButtonFormField<String>(
+                      initialValue: inviteRole,
+                      key: ValueKey('$binding/$inviteRole'),
+                      isDense: true,
+                      decoration: InputDecoration(
+                        labelText: tr(context, '邀请成员权限'),
                       ),
+                      items: [
+                        DropdownMenuItem(
+                          value: 'operator',
+                          child: Text(tr(context, '操作成员')),
+                        ),
+                        DropdownMenuItem(
+                          value: 'viewer',
+                          child: Text(tr(context, '只读成员')),
+                        ),
+                      ],
+                      onChanged: busy
+                          ? null
+                          : (role) => setState(() {
+                              inviteRole = role ?? 'operator';
+                              invitation = null;
+                            }),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(height: 10),
                     FilledButton.tonalIcon(
                       style: FilledButton.styleFrom(
                         minimumSize: const Size(0, 44),
-                        textStyle: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                        ),
                       ),
-                      onPressed: busy ? null : () => invite('operator'),
+                      onPressed: busy ? null : invite,
                       icon: const Icon(Icons.vpn_key_outlined, size: 17),
                       label: Text(tr(context, '生成邀请码')),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
-                Text(tr(context, '切换权限会立即生成新的邀请码'), style: hint),
+                Text(tr(context, '选择成员权限后生成邀请码'), style: hint),
                 if (invitation != null) ...[
                   const SizedBox(height: 12),
                   Container(
@@ -1369,120 +1378,123 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
         SectionHeader(
           tr(context, '团队成员'),
           icon: Icons.groups_2_outlined,
-          caption: '${members.length} ${tr(context, '人')}',
+          caption: membersLoaded
+              ? '${members.length} ${tr(context, '人')}'
+              : null,
         ),
-        GlassPanel(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            children: [
-              for (var i = 0; i < members.length; i++) ...[
-                if (i > 0) const Divider(height: 1, indent: 66),
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 2,
-                  ),
-                  leading: Container(
-                    width: 38,
-                    height: 38,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          roleColor(members[i]['role']).withValues(alpha: .75),
-                          roleColor(members[i]['role']),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+        if (membersLoaded)
+          GlassPanel(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              children: [
+                for (var i = 0; i < members.length; i++) ...[
+                  if (i > 0) const Divider(height: 1, indent: 66),
+                  ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 2,
                     ),
-                    child: Text(
-                      '${members[i]['display_name'] ?? members[i]['username'] ?? '?'}'
-                          .substring(0, 1)
-                          .toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    '${members[i]['display_name'] ?? members[i]['username']}',
-                    style: const TextStyle(
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w800,
-                      color: ink,
-                    ),
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: Row(
-                      children: [
-                        Tag(
-                          roleLabel(context, members[i]['role']),
-                          color: roleColor(members[i]['role']),
-                        ),
-                        if ('${members[i]['username']}' !=
-                            '${members[i]['display_name']}') ...[
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: Text(
-                              '${members[i]['username']}',
-                              overflow: TextOverflow.ellipsis,
-                              style: hint,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  trailing: owner && members[i]['role'] != 'owner'
-                      ? PopupMenuButton<String>(
-                          icon: const Icon(
-                            Icons.more_horiz,
-                            size: 20,
-                            color: muted,
-                          ),
-                          onSelected: (value) async {
-                            if (!await confirm(
-                              context,
-                              tr(context, '更新成员权限'),
-                              '${members[i]['display_name'] ?? members[i]['username']}',
-                            )) {
-                              return;
-                            }
-                            await run((account) async {
-                              final path =
-                                  'workspaces/${workspace!['id']}/members/${Uri.encodeComponent('${members[i]['username']}')}/';
-                              await account.request(
-                                value == 'remove' ? 'DELETE' : 'PATCH',
-                                path,
-                                body: value == 'remove'
-                                    ? null
-                                    : {'role': value},
-                              );
-                            });
-                            if (mounted) await load();
-                          },
-                          itemBuilder: (_) => [
-                            for (final e in {
-                              'owner': '团队管理员',
-                              'operator': '操作成员',
-                              'viewer': '只读成员',
-                              'remove': '移除成员',
-                            }.entries)
-                              PopupMenuItem(
-                                value: e.key,
-                                child: Text(tr(context, e.value)),
-                              ),
+                    leading: Container(
+                      width: 38,
+                      height: 38,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            roleColor(
+                              members[i]['role'],
+                            ).withValues(alpha: .75),
+                            roleColor(members[i]['role']),
                           ],
-                        )
-                      : null,
-                ),
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        memberName(members[i]).characters.first.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      memberName(members[i]),
+                      style: const TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w800,
+                        color: ink,
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 3),
+                      child: Row(
+                        children: [
+                          Tag(
+                            roleLabel(context, members[i]['role']),
+                            color: roleColor(members[i]['role']),
+                          ),
+                        ],
+                      ),
+                    ),
+                    trailing: owner && !busy && members[i]['is_self'] == false
+                        ? PopupMenuButton<String>(
+                            icon: const Icon(
+                              Icons.more_horiz,
+                              size: 20,
+                              color: muted,
+                            ),
+                            onSelected: (value) async {
+                              if (!account.retainsAccess(capturedScope)) return;
+                              final member = Map<String, dynamic>.from(
+                                members[i],
+                              );
+                              if (!await confirm(
+                                context,
+                                tr(
+                                  context,
+                                  value == 'remove' ? '移除成员' : '更新成员权限',
+                                ),
+                                '${member['display_name'] ?? member['username']}${value == 'remove' ? '' : ' · ${roleLabel(context, value)}'}',
+                              )) {
+                                return;
+                              }
+                              final succeeded = await run((account) async {
+                                final path =
+                                    'workspaces/${workspace!['id']}/members/${Uri.encodeComponent('${member['username']}')}/';
+                                await account.request(
+                                  value == 'remove' ? 'DELETE' : 'PATCH',
+                                  path,
+                                  body: value == 'remove'
+                                      ? null
+                                      : {'role': value},
+                                );
+                              });
+                              if (mounted &&
+                                  succeeded &&
+                                  account.retainsAccess(capturedScope)) {
+                                await load();
+                              }
+                            },
+                            itemBuilder: (_) => [
+                              for (final e in {
+                                'owner': '团队管理员',
+                                'operator': '操作成员',
+                                'viewer': '只读成员',
+                                'remove': '移除成员',
+                              }.entries)
+                                PopupMenuItem(
+                                  value: e.key,
+                                  child: Text(tr(context, e.value)),
+                                ),
+                            ],
+                          )
+                        : null,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
-        ),
         if (!account.demoAccount && workspace?['kind'] == 'team') ...[
           const SizedBox(height: 18),
           OutlinedButton.icon(
@@ -1503,14 +1515,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                     )) {
                       return;
                     }
-                    await run((account) async {
+                    final succeeded = await run((account) async {
                       await account.request(
                         'POST',
                         'workspaces/${workspace['id']}/leave/',
                       );
                       await account.reload();
                     });
-                    if (context.mounted && error == null) {
+                    if (context.mounted && succeeded) {
                       Navigator.pop(context);
                     }
                   },

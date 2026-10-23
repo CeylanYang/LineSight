@@ -1,0 +1,23 @@
+{
+  "version": "1.1.44+8068",
+  "flutter_full_tests_passed": 328,
+  "new_team_tests": 21,
+  "backend_tests_passed": 60,
+  "analysis_clean": true,
+  "live_https_team_verified": true,
+  "desktop_png_count": 12,
+  "invitation_selection_does_not_write": true,
+  "repeated_invitation_preserves_role": true,
+  "authenticated_self_flag_verified": true,
+  "other_owner_management_supported": true,
+  "scope_change_during_confirmation_prevents_write": true,
+  "account_change_during_prompt_prevents_write": true,
+  "failed_write_recovery_is_get_only": true,
+  "leave_pops_only_after_success": true,
+  "small_large_text_layout_verified": true,
+  "live_business_writes": 0,
+  "native_final_apk_validated": false,
+  "phone_installs": 0,
+  "app_data_cleared": false,
+  "product_plan_complete": false
+}

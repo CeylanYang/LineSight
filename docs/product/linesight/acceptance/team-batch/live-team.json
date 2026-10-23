@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "https_reads": 3,
+  "demo_workspace_only": true,
+  "exactly_one_authenticated_self": true,
+  "independent_issuer_subject_bridge_match": true,
+  "all_members_have_boolean_self_flag": true,
+  "business_writes": 0
+}

@@ -1656,4 +1656,5 @@ const englishMessages = <String, String>{
   "上一张": "Previous photo",
   "下一张": "Next photo",
   "图片无法显示，请重新加载": "Unable to display this photo. Reload it.",
+  "选择成员权限后生成邀请码": "Choose a member role, then generate an invitation.",
 };

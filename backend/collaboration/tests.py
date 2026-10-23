@@ -61,7 +61,7 @@ class WorkflowApiTests(TestCase):
     def test_members_list_is_workspace_scoped(self):
         response = self.client.get(f"/api/v1/workspaces/{self.ws}/members/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, [{"id": self.owner.pk, "username": "owner", "display_name": "owner", "role": "owner"}])
+        self.assertEqual(response.data, [{"id": self.owner.pk, "username": "owner", "display_name": "owner", "role": "owner", "is_self": True}])
 
     def test_starter_profiles_are_versioned_and_workspace_overrides_are_owner_only(self):
         url = f"/api/v1/workspaces/{self.ws}/printer-profiles/"

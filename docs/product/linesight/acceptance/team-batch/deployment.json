@@ -1,0 +1,9 @@
+{
+  "deployed": true,
+  "before_sha256": "b0e235052d3501b54218f00da9184bf6312948c4f5cc77eb6adb5857f3d48d5a",
+  "after_sha256": "9c92d3b7b0042d49cddf8815e5f295c803a01aff30a8aa77ffc07774b87257cf",
+  "backup": "/var/backups/linesight/team/20261023T220047Z",
+  "api_health": true,
+  "database_schema_changed": false,
+  "identity_configuration_changed": false
+}
