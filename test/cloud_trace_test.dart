@@ -6,6 +6,7 @@ import 'package:linesight_flutter/collaboration_api.dart';
 import 'package:linesight_flutter/main.dart';
 import 'package:linesight_flutter/screens/cloud_tasks.dart';
 import 'package:linesight_flutter/store.dart';
+import 'package:linesight_flutter/liquid_glass_bar.dart';
 
 const taskId = 'af04e1fb-168c-465e-b77a-fec1d1854653';
 
@@ -108,11 +109,25 @@ void main() {
       ..denied = true;
     await tester.pumpWidget(LineSightApp(store: store, cloud: account));
     await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.person_outline_rounded).last);
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<LiquidGlassBar>(find.byType(LiquidGlassBar)).selectedIndex,
+      3,
+    );
     await tester.binding.handlePushRoute('linesight://task/1/$taskId');
     await tester.pumpAndSettle();
-    expect(find.text('当前账户无法访问该任务'), findsOneWidget);
+    expect(find.text('记录暂不可访问'), findsOneWidget);
     expect(find.byType(CloudTaskPage), findsNothing);
     expect(find.text('Trace part'), findsNothing);
+    expect(find.text('Not found'), findsNothing);
+    await tester.tap(find.text('返回工作台'));
+    await tester.pumpAndSettle();
+    expect(find.byType(CloudTracePage), findsNothing);
+    expect(
+      tester.widget<LiquidGlassBar>(find.byType(LiquidGlassBar)).selectedIndex,
+      0,
+    );
     await tester.pumpWidget(const SizedBox.shrink());
     account.dispose();
     store.dispose();

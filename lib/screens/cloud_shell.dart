@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_navigation.dart';
 import '../cloud_workbench.dart';
 import '../cloud_local_import.dart';
 import '../cloud_photo_recovery.dart';
@@ -64,6 +65,8 @@ class _CloudShellState extends State<CloudShell> {
       Icons.person_outline_rounded,
     ];
     final wide = MediaQuery.sizeOf(context).width >= 900;
+    final navigation = CloudNavigationScope.maybeOf(context);
+    final selectedTab = navigation?.value ?? _tab;
     final pages = [
       _workbench(context, account),
       const CloudRecordsPage(),
@@ -72,84 +75,97 @@ class _CloudShellState extends State<CloudShell> {
     ];
     void select(int tab) {
       local.feedback();
-      setState(() => _tab = tab);
+      if (navigation != null) {
+        navigation.value = tab;
+      } else {
+        setState(() => _tab = tab);
+      }
     }
 
-    return Scaffold(
-      extendBody: !wide,
-      body: Backdrop(
-        child: SafeArea(
-          bottom: false,
-          child: Row(
-            children: [
-              if (wide)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-                  child: GlassPanel(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: NavigationRail(
-                      selectedIndex: _tab,
-                      onDestinationSelected: select,
-                      labelType: NavigationRailLabelType.all,
-                      backgroundColor: Colors.transparent,
-                      scrollable: true,
-                      leading: const Padding(
-                        padding: EdgeInsets.only(bottom: 30),
-                        child: BrandMark(size: 44),
-                      ),
-                      destinations: List.generate(
-                        4,
-                        (i) => NavigationRailDestination(
-                          icon: Icon(icons[i]),
-                          label: Text(labels[i]),
+    return PopScope(
+      canPop: selectedTab == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && selectedTab != 0) select(0);
+      },
+      child: Scaffold(
+        extendBody: !wide,
+        body: Backdrop(
+          child: SafeArea(
+            bottom: false,
+            child: Row(
+              children: [
+                if (wide)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                    child: GlassPanel(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: NavigationRail(
+                        selectedIndex: selectedTab,
+                        onDestinationSelected: select,
+                        labelType: NavigationRailLabelType.all,
+                        backgroundColor: Colors.transparent,
+                        scrollable: true,
+                        leading: const Padding(
+                          padding: EdgeInsets.only(bottom: 30),
+                          child: BrandMark(size: 44),
+                        ),
+                        destinations: List.generate(
+                          4,
+                          (i) => NavigationRailDestination(
+                            icon: Icon(icons[i]),
+                            label: Text(labels[i]),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              Expanded(
-                child: Column(
-                  children: [
-                    if (account.busy || account.restoring)
-                      const LinearProgressIndicator(),
-                    if (account.error != null)
-                      MaterialBanner(
-                        content: Text(trMessage(context, account.error!)),
-                        actions: [
-                          TextButton(
-                            onPressed: account.busy
-                                ? null
-                                : () => account.signedIn
-                                      ? account.reload()
-                                      : openPage(
-                                          context,
-                                          const CloudLoginPage(),
-                                        ),
-                            child: Text(
-                              tr(context, account.signedIn ? '重试' : '登录'),
+                Expanded(
+                  child: Column(
+                    children: [
+                      if (account.busy || account.restoring)
+                        const LinearProgressIndicator(),
+                      if (account.error != null)
+                        MaterialBanner(
+                          content: Text(trMessage(context, account.error!)),
+                          actions: [
+                            TextButton(
+                              onPressed: account.busy
+                                  ? null
+                                  : () => account.signedIn
+                                        ? account.reload()
+                                        : openPage(
+                                            context,
+                                            const CloudLoginPage(),
+                                          ),
+                              child: Text(
+                                tr(context, account.signedIn ? '重试' : '登录'),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      Expanded(
+                        child: IndexedStack(
+                          index: selectedTab,
+                          children: pages,
+                        ),
                       ),
-                    Expanded(
-                      child: IndexedStack(index: _tab, children: pages),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: wide
+            ? null
+            : LiquidGlassBar(
+                labels: labels,
+                icons: icons,
+                selectedIndex: selectedTab,
+                onSelected: select,
+                glass: local.glass,
+              ),
       ),
-      bottomNavigationBar: wide
-          ? null
-          : LiquidGlassBar(
-              labels: labels,
-              icons: icons,
-              selectedIndex: _tab,
-              onSelected: select,
-              glass: local.glass,
-            ),
     );
   }
 

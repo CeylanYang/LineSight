@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../cloud_account.dart';
+import '../cloud_navigation.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
 import '../cloud_form.dart';
@@ -184,8 +185,7 @@ Widget cloudAccessRequired(BuildContext context, {VoidCallback? onLogin}) =>
           child: Text(tr(context, '登录')),
         ),
         TextButton(
-          onPressed: () =>
-              Navigator.of(context).popUntil((route) => route.isFirst),
+          onPressed: () => returnToCloudWorkbench(context),
           child: Text(tr(context, '返回工作台')),
         ),
       ],
@@ -231,7 +231,7 @@ Widget cloudDraftRecoveryFailure(
   children: [
     CloudFailurePanel(failure: failure, onRetry: retry),
     TextButton(
-      onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+      onPressed: () => returnToCloudWorkbench(context),
       child: Text(tr(context, '返回工作台')),
     ),
   ],
@@ -243,7 +243,7 @@ Widget cloudScopeChanged(BuildContext context) => DetailScaffold(
     Text(tr(context, '返回工作台后重新打开页面')),
     const SizedBox(height: 16),
     FilledButton(
-      onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+      onPressed: () => returnToCloudWorkbench(context),
       child: Text(tr(context, '返回工作台')),
     ),
   ],

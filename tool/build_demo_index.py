@@ -25,6 +25,7 @@ groups = {
     'conflict-batch': ['OFF-03','UI-11','UI-12','SSO-04'],
     'reauth-batch': ['SEC-02','UI-08','UI-11','UI-12','SSO-04','COL-02'],
     'forms-batch': ['UI-08','UI-11','QC-01','QC-02','QC-03','DAT-05','OFF-01'],
+    'navigation-batch': ['UI-08','UI-09','UI-11','UI-12'],
     'release-batch': ['REL-01','REL-03','UI-11'],
 }
 items = []

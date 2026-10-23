@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cloud_account.dart';
+import 'cloud_navigation.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'l10n_catalog.dart';
@@ -132,9 +133,7 @@ class _CloudFailurePanelState extends State<CloudFailurePanel> {
                             setState(() => busy = true);
                             try {
                               if (status == 404 || status == 413) {
-                                Navigator.of(
-                                  context,
-                                ).popUntil((route) => route.isFirst);
+                                returnToCloudWorkbench(context);
                               } else if (status == 401) {
                                 if (await cloudReauthenticate(context) &&
                                     mounted) {
@@ -165,9 +164,7 @@ class _CloudFailurePanelState extends State<CloudFailurePanel> {
                     TextButton(
                       onPressed: busy
                           ? null
-                          : () => Navigator.of(
-                              context,
-                            ).popUntil((route) => route.isFirst),
+                          : () => returnToCloudWorkbench(context),
                       child: Text(tr(context, '返回工作台')),
                     ),
                 ],

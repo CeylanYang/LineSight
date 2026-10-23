@@ -201,7 +201,8 @@ class CloudTracePage extends StatefulWidget {
 }
 
 class _CloudTracePageState extends State<CloudTracePage> {
-  String? identity, error;
+  String? identity;
+  Object? error;
   bool busy = false;
   Map<String, dynamic>? job;
   int generation = 0;
@@ -254,17 +255,9 @@ class _CloudTracePageState extends State<CloudTracePage> {
       if (mounted && ticket == generation && captured == identityOf(account)) {
         setState(() => job = data);
       }
-    } on CollaborationApiException catch (failure) {
-      if (mounted && ticket == generation) {
-        setState(
-          () => error = failure.status == 403 || failure.status == 404
-              ? '当前账户无法访问该任务'
-              : failure.message,
-        );
-      }
-    } catch (_) {
-      if (mounted && ticket == generation) {
-        setState(() => error = '无法打开任务，请检查网络后重试');
+    } catch (failure) {
+      if (mounted && ticket == generation && captured == identityOf(account)) {
+        setState(() => error = failure);
       }
     } finally {
       if (mounted && ticket == generation) setState(() => busy = false);
@@ -292,12 +285,8 @@ class _CloudTracePageState extends State<CloudTracePage> {
           ),
         ] else ...[
           if (busy || account.restoring) const LinearProgressIndicator(),
-          if (error != null)
-            Text(
-              trMessage(context, error!),
-              style: const TextStyle(color: red),
-            ),
-          if (!busy)
+          if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
+          if (!busy && error == null)
             FilledButton(onPressed: load, child: Text(tr(context, '重试'))),
         ],
       ],

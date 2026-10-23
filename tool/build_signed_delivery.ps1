@@ -12,6 +12,8 @@ $taskVersionMatch = [regex]::Match((Get-Content pubspec.yaml -Raw), '(?m)^versio
 if (-not $taskVersionMatch.Success) { throw 'Expected a semantic version plus numeric Android build number in pubspec.yaml' }
 $taskVersion = $taskVersionMatch.Groups[1].Value
 $taskBuildNumber = $taskVersionMatch.Groups[2].Value
+$displayVersionMatch = [regex]::Match((Get-Content lib/ui.dart -Raw), "const appVersion = '([^']+)';")
+if (-not $displayVersionMatch.Success -or $displayVersionMatch.Groups[1].Value -ne $taskVersion) { throw 'Displayed app version must match pubspec.yaml before building' }
 $ErrorActionPreference = 'Continue'
 & 'C:\Users\29668\flutter\bin\flutter.bat' build apk --release --config-only --no-pub --target lib/main.dart --target-platform android-arm64,android-x64 --build-number $taskBuildNumber --dart-define-from-file=.artifact-work/sso/demo-build.json *> ".artifact-work/sso/$EvidenceBatch-$Track-config.log"
 $configurationExitCode = $LASTEXITCODE

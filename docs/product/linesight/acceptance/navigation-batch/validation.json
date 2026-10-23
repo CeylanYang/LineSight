@@ -1,0 +1,68 @@
+{
+  "version": "1.1.39+8063",
+  "flutter_tests_passed": 240,
+  "new_navigation_tests": 20,
+  "flutter_analyze": "No issues found",
+  "backend_source_unchanged": true,
+  "preview_upgrade_verified": true,
+  "production_signature_verified": true,
+  "native_secondary_back_preserves_profile": true,
+  "native_system_back_selects_workbench": true,
+  "native_unavailable_trace_explicit_workbench_zh_en": true,
+  "native_selected_destinations_verified": true,
+  "emulator_stopped_after_acceptance": true,
+  "live_missing_task_trace_used": true,
+  "cloud_business_writes_performed": false,
+  "nested_explicit_exit_matrix_widget_tests": 18,
+  "storage_files_preserved": 12,
+  "databases_preserved": 1,
+  "keystore_aliases_and_sentinel_preserved": true,
+  "app_data_cleared": false,
+  "main_app_uninstalled": false,
+  "final_reinstall_storage_verified": true,
+  "first_upgrade_existing_login_restored": false,
+  "demo_sign_in_completed_after_first_upgrade": true,
+  "first_audit_launch_required_force_restart": true,
+  "final_reinstall_demo_session_reloaded_after_network_retry": true,
+  "known_issue_initial_workbench_read_failure_displays_zero_counts": true,
+  "phone_installs": 0,
+  "production_upgrade_retested_this_batch": false,
+  "screenshots": [
+    {
+      "file": "png/120-account-secondary-emulator.png",
+      "sha256": "bf4143be21f7218c54020d93850136ddf5c777a5982c072671aac146c506bf18"
+    },
+    {
+      "file": "png/121-back-to-profile-emulator.png",
+      "sha256": "6c139b49b50424218a05f31e5b1d0f2298a8f124a034dc4ff0525a2268c99fbf"
+    },
+    {
+      "file": "png/122-system-back-workbench-emulator.png",
+      "sha256": "27cc54107b0a45652ae9a2695ce02ac8a0f3bd09457a8927ee6229c534b3b5bf"
+    },
+    {
+      "file": "png/123-trace-unavailable-zh-emulator.png",
+      "sha256": "ea4b9e7993a2da4fecd3e8287d3fa2d580490aa39544a9e3b42a24e82e61fd1f"
+    },
+    {
+      "file": "png/124-explicit-workbench-zh-emulator.png",
+      "sha256": "2f25f49d6e24d2a051a6b958a4a5914cebbda498923335168b09ba6d05b3905d"
+    },
+    {
+      "file": "png/125-trace-unavailable-en-emulator.png",
+      "sha256": "2170f65c7d5670cab606b73b94c61b4abdbbad50e88b9dfd29aaba4e680bfe62"
+    },
+    {
+      "file": "png/126-explicit-workbench-en-emulator.png",
+      "sha256": "5afbe35d29c6a0776df7628d5d21c7901e5b1c0bc12bae019bc4b013f04d1380"
+    },
+    {
+      "file": "png/127-version-footer-emulator.png",
+      "sha256": "aff45d2ae7eeae81c2660fd97a7ae62c0d37b918627eabd500b1d9987b7c774d"
+    }
+  ],
+  "physical_nfc_verified": false,
+  "two_physical_phones_verified": false,
+  "ten_external_users_verified": false,
+  "product_plan_complete": false
+}

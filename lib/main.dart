@@ -14,6 +14,7 @@ import 'screens/storage_recovery.dart';
 import 'screens/startup.dart';
 import 'startup_trace.dart';
 import 'cloud_account.dart';
+import 'cloud_navigation.dart';
 import 'cloud_trace.dart';
 import 'screens/cloud_shell.dart';
 
@@ -96,6 +97,7 @@ class _LineSightAppState extends State<LineSightApp>
   late final ThemeData _darkTheme = appTheme(true);
   late bool _revealFinished;
   final _cloudNavigator = GlobalKey<NavigatorState>();
+  final _cloudTabs = ValueNotifier<int>(0);
   String? _pendingTrace;
 
   void _openPendingTrace() {
@@ -160,6 +162,7 @@ class _LineSightAppState extends State<LineSightApp>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _cloudTabs.dispose();
     super.dispose();
   }
 
@@ -240,7 +243,10 @@ class _LineSightAppState extends State<LineSightApp>
         );
         return widget.cloud == null
             ? app
-            : CloudScope(account: widget.cloud!, child: app);
+            : CloudNavigationScope(
+                controller: _cloudTabs,
+                child: CloudScope(account: widget.cloud!, child: app),
+              );
       },
     ),
   );

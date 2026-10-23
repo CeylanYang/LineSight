@@ -1,5 +1,5 @@
 {
-  "screenshots": 171,
+  "screenshots": 179,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2428,6 +2428,134 @@
       "height": 1280,
       "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
       "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/120-account-secondary-emulator.png",
+      "title": "120-account-secondary-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "bf4143be21f7218c54020d93850136ddf5c777a5982c072671aac146c506bf18",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/121-back-to-profile-emulator.png",
+      "title": "121-back-to-profile-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "6c139b49b50424218a05f31e5b1d0f2298a8f124a034dc4ff0525a2268c99fbf",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/122-system-back-workbench-emulator.png",
+      "title": "122-system-back-workbench-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "27cc54107b0a45652ae9a2695ce02ac8a0f3bd09457a8927ee6229c534b3b5bf",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/123-trace-unavailable-zh-emulator.png",
+      "title": "123-trace-unavailable-zh-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "ea4b9e7993a2da4fecd3e8287d3fa2d580490aa39544a9e3b42a24e82e61fd1f",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/124-explicit-workbench-zh-emulator.png",
+      "title": "124-explicit-workbench-zh-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2f25f49d6e24d2a051a6b958a4a5914cebbda498923335168b09ba6d05b3905d",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/125-trace-unavailable-en-emulator.png",
+      "title": "125-trace-unavailable-en-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2170f65c7d5670cab606b73b94c61b4abdbbad50e88b9dfd29aaba4e680bfe62",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/126-explicit-workbench-en-emulator.png",
+      "title": "126-explicit-workbench-en-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "5afbe35d29c6a0776df7628d5d21c7901e5b1c0bc12bae019bc4b013f04d1380",
+      "batch_notes": "navigation-batch/README.md"
+    },
+    {
+      "file": "navigation-batch/png/127-version-footer-emulator.png",
+      "title": "127-version-footer-emulator",
+      "batch": "navigation-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-09",
+        "UI-11",
+        "UI-12"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "aff45d2ae7eeae81c2660fd97a7ae62c0d37b918627eabd500b1d9987b7c774d",
+      "batch_notes": "navigation-batch/README.md"
     },
     {
       "file": "release-batch/png/81-login-card-en-desktop-render.png",
