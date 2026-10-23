@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from .api import membership
-from .models import AuditEvent, CheckTemplate, Membership, QualityInspection, Workspace
+from .models import AuditEvent, CheckTemplate, Membership, QualityInspection, Workspace, NotificationReceipt
 
 
 def person(user):
@@ -156,6 +156,29 @@ def report(request, workspace_id):
 def notifications(request, workspace_id):
     member = membership(request, workspace_id)
     rows = member.workspace.jobs.filter(Q(assignee=request.user) | Q(assignee__isnull=True)).filter(status__in=['inspection', 'exception']).order_by('-updated_at')
-    return Response([{'id': str(job.pk), 'task_id': str(job.pk), 'part_name': job.part_name,
+    seen = dict(NotificationReceipt.objects.filter(user=request.user, job__workspace=member.workspace).values_list('job_id', 'version'))
+    return Response([{'id': str(job.pk), 'task_id': str(job.pk), 'version': job.version, 'read': seen.get(job.pk, 0) >= job.version, 'part_name': job.part_name,
         'status': job.status, 'updated_at': job.updated_at.isoformat(),
         'reinspection': job.status == 'inspection' and job.quality_inspections.exists()} for job in rows])
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def read_notification(request, workspace_id, job_id):
+    from django.http import Http404
+    member = membership(request, workspace_id)
+    with transaction.atomic():
+        Workspace.objects.filter(pk=workspace_id).update(name=F('name'))
+        job = member.workspace.jobs.filter(pk=job_id).filter(Q(assignee=request.user) | Q(assignee__isnull=True)).first()
+        if job is None:
+            raise Http404
+        version = request.data.get('version')
+        if type(version) is not int or not 1 <= version <= job.version:
+            raise ValidationError('请刷新通知后重试')
+        receipt = NotificationReceipt.objects.filter(user=request.user, job=job).first()
+        if receipt is None:
+            receipt = NotificationReceipt.objects.create(user=request.user, job=job, version=version)
+        elif version > receipt.version:
+            receipt.version = version
+            receipt.save(update_fields=['version', 'read_at'])
+    return Response({'task_id': str(job.pk), 'read': receipt.version >= job.version, 'version': receipt.version})

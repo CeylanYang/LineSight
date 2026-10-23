@@ -17,6 +17,7 @@ urlpatterns = [
     path('workspaces/<int:workspace_id>/metrics/', product.metrics),
     path('workspaces/<int:workspace_id>/report/', product.report),
     path('workspaces/<int:workspace_id>/notifications/', product.notifications),
+    path('workspaces/<int:workspace_id>/notifications/<uuid:job_id>/read/', product.read_notification),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/", workflow.task),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/history/", workflow.history),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/inspection/", workflow.inspect),

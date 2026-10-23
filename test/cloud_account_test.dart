@@ -55,6 +55,21 @@ void main() {
       request.response.headers.contentType = ContentType.json;
       request.response.statusCode = status;
       final path = request.uri.path;
+      if (path.endsWith('evidence/')) {
+        final received = await request.fold<List<int>>(
+          [],
+          (all, part) => all..addAll(part),
+        );
+        expect(request.headers.contentLength, received.length);
+        expect(request.headers.chunkedTransferEncoding, false);
+        final body = utf8.decode(received);
+        expect(body, contains('name="image"; filename="photo.jpg"'));
+        expect(body, contains('name="stage"\r\n\r\ninspection'));
+        expect(body, contains('attachment-content'));
+        request.response.write('{"id":42}');
+        await request.response.close();
+        return;
+      }
       final Object body = status != 200
           ? {'detail': 'server rejection'}
           : path.endsWith('metrics/')
@@ -84,6 +99,20 @@ void main() {
     account.dispose();
     await server.close(force: true);
   });
+
+  test(
+    'photo multipart declares its complete length for the cloud WSGI server',
+    () async {
+      await account.signIn();
+      final receipt = await account.uploadPhoto(
+        'workspaces/1/jobs/task/evidence/',
+        utf8.encode('attachment-content'),
+        'stable-key',
+        {'stage': 'inspection'},
+      );
+      expect(receipt['id'], 42);
+    },
+  );
 
   test(
     'sign in and workspace switch load only selected workspace jobs',

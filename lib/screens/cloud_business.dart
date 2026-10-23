@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:crypto/crypto.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../cloud_account.dart';
+import '../cloud_outbox.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../ui.dart';
@@ -624,17 +623,18 @@ Future<int?> cloudPickPhoto(
       workspace != account.activeWorkspace?['id']) {
     throw const CollaborationApiException(401, '请先登录');
   }
-  final key = sha256.convert([
-    ...utf8.encode('$workspace/${job['id']}/$stage/${issue?['id']}/'),
-    ...bytes,
-  ]).toString();
-  final result = await account.uploadPhoto(
-    'workspaces/$workspace/jobs/${job['id']}/evidence/',
+  final outbox = CloudOutbox(account);
+  final item = await outbox.enqueue(
+    '${job['id']}',
     bytes,
-    key,
-    {'stage': stage, if (issue != null) 'issue_id': '${issue['id']}'},
+    stage: stage,
+    issueId: issue?['id'] as int?,
   );
-  return result['id'] as int;
+  try {
+    return await outbox.retry(item['key'] as String);
+  } catch (_) {
+    throw const CollaborationApiException(503, '图片已保存，请在同步页面重试上传');
+  }
 }
 
 class CloudReportPage extends StatefulWidget {
@@ -946,6 +946,276 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
             ),
           ),
         ],
+      ],
+    );
+  }
+}
+
+class CloudSyncPage extends StatefulWidget {
+  const CloudSyncPage({super.key});
+  @override
+  State<CloudSyncPage> createState() => _CloudSyncPageState();
+}
+
+class _CloudSyncPageState extends State<CloudSyncPage> {
+  CloudOutbox? outbox;
+  List<Map<String, dynamic>> photos = [], drafts = [];
+  bool busy = false;
+  String? error;
+  String? scope;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final account = CloudScope.of(context),
+        next = CloudScope.of(context).draftKey('outbox');
+    if (next != scope) {
+      scope = next;
+      photos = [];
+      drafts = [];
+      if (next != null) {
+        outbox = CloudOutbox(account);
+        load();
+      }
+    }
+  }
+
+  Future<void> load() async {
+    final account = CloudScope.of(context);
+    final captured = scope;
+    try {
+      final items = await outbox!.list(), forms = await account.listDrafts();
+      if (mounted && captured == scope) {
+        setState(() {
+          photos = items;
+          drafts = forms;
+          error = null;
+        });
+      }
+    } catch (failure) {
+      if (mounted && captured == scope) setState(() => error = '无法读取待同步内容，请重试');
+    }
+  }
+
+  Future<void> retry(String key) async {
+    setState(() {
+      busy = true;
+      error = null;
+    });
+    try {
+      await outbox!.retry(key);
+      await load();
+    } catch (failure) {
+      if (mounted) {
+        setState(
+          () => error = failure is CollaborationApiException
+              ? failure.message
+              : '上传失败，请重试',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.signedIn) return cloudAccessRequired(context);
+    return DetailScaffold(
+      title: tr(context, '同步与草稿'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: busy ? null : load,
+        ),
+      ],
+      children: [
+        Text(
+          '${account.activeWorkspace?['name']}',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        if (busy) const LinearProgressIndicator(),
+        if (error != null)
+          Text(trMessage(context, error!), style: const TextStyle(color: red)),
+        SectionHeading(tr(context, '图片上传')),
+        if (photos.isEmpty) Text(tr(context, '没有待上传图片')),
+        ...photos.map(
+          (item) => GlassPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${item['job_id']}'),
+                Text(
+                  '${tr(context, item['state'] == 'uploaded' ? (item['stage'] == 'inspection' ? '已上传，待关联检验' : '已上传') : '等待上传')} · ${((item['bytes'] as num) / 1024).round()} KB',
+                ),
+                if (item['error'] != null)
+                  Text(trMessage(context, '${item['error']}')),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    if (item['state'] != 'uploaded')
+                      TextButton(
+                        onPressed: busy ? null : () => retry('${item['key']}'),
+                        child: Text(tr(context, '重试上传')),
+                      ),
+                    TextButton(
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              if (!await confirm(
+                                context,
+                                tr(context, '移除图片'),
+                                tr(context, '确认从待同步列表中移除此图片？'),
+                              )) {
+                                return;
+                              }
+                              await outbox!.remove('${item['key']}');
+                              await load();
+                            },
+                      child: Text(tr(context, '移除')),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        SectionHeading(tr(context, '本机草稿')),
+        if (drafts.isEmpty) Text(tr(context, '没有未提交草稿')),
+        ...drafts.map(
+          (draft) => GlassPanel(
+            child: ListTile(
+              title: Text(
+                '${draft['part_name'] ?? draft['name'] ?? tr(context, '新建任务')}',
+              ),
+              subtitle: Text(
+                tr(
+                  context,
+                  draft['action'] == 'inspect'
+                      ? '检验草稿'
+                      : draft['action'] == 'resolve'
+                      ? '处置草稿'
+                      : '任务草稿',
+                ),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                if (draft['job_id'] == null) {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const CloudCreateTaskPage(),
+                    ),
+                  );
+                } else {
+                  try {
+                    final job = Map<String, dynamic>.from(
+                      await account.request(
+                            'GET',
+                            'workspaces/${account.activeWorkspace!['id']}/jobs/${draft['job_id']}/',
+                          )
+                          as Map,
+                    );
+                    if (!context.mounted) return;
+                    final matches = (job['exceptions'] as List? ?? []).where(
+                      (e) => e['id'] == draft['issue_id'],
+                    );
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => CloudTaskCommandPage(
+                          job: job,
+                          workspaceId: account.activeWorkspace!['id'] as int,
+                          action: '${draft['action']}',
+                          issue: matches.isEmpty
+                              ? null
+                              : Map<String, dynamic>.from(matches.first as Map),
+                        ),
+                      ),
+                    );
+                  } catch (failure) {
+                    if (mounted) setState(() => error = '无法打开草稿，请检查任务权限后重试');
+                  }
+                }
+                if (mounted) await load();
+              },
+            ),
+          ),
+        ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.sync),
+          label: Text(tr(context, '刷新云端数据')),
+          onPressed: busy
+              ? null
+              : () async {
+                  await account.reload();
+                  if (mounted) await load();
+                },
+        ),
+      ],
+    );
+  }
+}
+
+class CloudNotificationsPage extends StatelessWidget {
+  const CloudNotificationsPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.signedIn) return cloudAccessRequired(context);
+    return DetailScaffold(
+      title: tr(context, '待办与通知'),
+      children: [
+        if (account.notifications.isEmpty) Text(tr(context, '没有待办通知')),
+        ...account.notifications.map(
+          (notice) => GlassPanel(
+            child: ListTile(
+              leading: Icon(
+                notice['read'] == true
+                    ? Icons.mark_email_read_outlined
+                    : Icons.mark_email_unread_outlined,
+              ),
+              title: Text('${notice['part_name']}'),
+              subtitle: Text(
+                tr(
+                  context,
+                  notice['reinspection'] == true
+                      ? '待复检'
+                      : taskStatusLabels[notice['status']] ?? '待处理',
+                ),
+              ),
+              trailing: notice['read'] == true
+                  ? Text(tr(context, '已读'))
+                  : TextButton(
+                      child: Text(tr(context, '标为已读')),
+                      onPressed: () async {
+                        try {
+                          await account.request(
+                            'POST',
+                            'workspaces/${account.activeWorkspace!['id']}/notifications/${notice['task_id']}/read/',
+                            body: {'version': notice['version']},
+                          );
+                          await account.reload();
+                        } catch (_) {
+                          if (context.mounted) toast(context, '更新通知失败，请重试');
+                        }
+                      },
+                    ),
+              onTap: () {
+                final matches = account.jobs.where(
+                  (j) => '${j['id']}' == '${notice['task_id']}',
+                );
+                if (matches.isNotEmpty) {
+                  openPage(
+                    context,
+                    CloudTaskPage(
+                      job: matches.first,
+                      workspaceId: account.activeWorkspace!['id'] as int,
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

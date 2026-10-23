@@ -10,6 +10,8 @@ from .models import Membership, ProductionJob
 
 class WorkflowApiTests(TestCase):
     def setUp(self):
+        from django.core.cache import cache
+        cache.clear()  # Rate counters must not leak between independent test users reusing a database PK.
         self.owner = get_user_model().objects.create_user(username="owner", password="long-password-123")
         self.client = APIClient()
         self.client.force_authenticate(self.owner)
@@ -209,3 +211,26 @@ class ProductBatchTests(TestCase):
         self.assertEqual(upload(stage='after').status_code, 409)
         changed = io.BytesIO(); Image.new('RGB', (20,20), 'red').save(changed, format='PNG')
         self.assertEqual(upload(changed.getvalue()).status_code, 409)
+
+
+class NotificationTests(TestCase):
+    setUp = WorkflowApiTests.setUp
+    to_inspection = WorkflowApiTests.to_inspection
+
+    def test_read_is_per_user_versioned_and_workspace_scoped(self):
+        base = f'/api/v1/workspaces/{self.ws}/'
+        job = self.client.post(base + 'jobs/', {'part_name': 'Notice', 'printer': 'A1', 'quantity': 1}, format='json').data['id']
+        self.to_inspection(job)
+        notice = self.client.get(base + 'notifications/').data[0]
+        self.assertFalse(notice['read'])
+        url = base + f'notifications/{job}/read/'
+        self.assertEqual(self.client.post(url, {'version': notice['version']}, format='json').status_code, 200)
+        self.assertTrue(self.client.get(base + 'notifications/').data[0]['read'])
+        ProductionJob.objects.filter(pk=job).update(version=notice['version'] + 1)
+        self.assertFalse(self.client.get(base + 'notifications/').data[0]['read'])
+        self.client.post(url, {'version': 1}, format='json')
+        from .models import NotificationReceipt
+        self.assertEqual(NotificationReceipt.objects.get(job_id=job).version, notice['version'])
+        other = APIClient(); other.force_authenticate(get_user_model().objects.create_user(username='other-notice'))
+        self.assertEqual(other.post(url, {'version': 1}, format='json').status_code, 404)
+        self.assertEqual(self.client.post(url, {'version': True}, format='json').status_code, 400)

@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../cloud_account.dart';
+import '../cloud_outbox.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
@@ -165,7 +167,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   int? templateId, assigneeId;
   List<Map<String, dynamic>> teamMembers = [];
   bool serialMode = false;
-  final key = 'cloud-${uid()}';
+  String key = 'cloud-${uid()}';
   bool busy = false;
   String? error;
   String? draftStorageKey;
@@ -192,7 +194,14 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                   )
                   as List)
               .cast<Map<String, dynamic>>();
-      if (mounted) setState(() => teamMembers = rows);
+      if (mounted) {
+        setState(() {
+          teamMembers = rows;
+          if (assigneeId != null && !rows.any((m) => m['id'] == assigneeId)) {
+            assigneeId = null;
+          }
+        });
+      }
     } catch (_) {}
   }
 
@@ -201,6 +210,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       final data = await account.readDraft(draftStorageKey!);
       if (!mounted || data == null) return;
       setState(() {
+        key = data['request_key'] as String? ?? key;
         name.text = '${data['name'] ?? ''}';
         printer.text = '${data['printer'] ?? ''}';
         quantity.text = '${data['quantity'] ?? '1'}';
@@ -209,6 +219,12 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         serials.text = '${data['serials'] ?? ''}';
         serialMode = data['serialMode'] == true;
         templateId = data['templateId'] as int?;
+        final savedAssignee = data['assignee_id'] as int?;
+        assigneeId =
+            teamMembers.isEmpty ||
+                teamMembers.any((m) => m['id'] == savedAssignee)
+            ? savedAssignee
+            : null;
       });
     } catch (failure) {
       if (mounted) setState(() => error = '无法恢复草稿，请重试');
@@ -223,6 +239,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     }
     try {
       await account.saveDraft(draftStorageKey!, {
+        'request_key': key,
         'name': name.text,
         'printer': printer.text,
         'quantity': quantity.text,
@@ -231,6 +248,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         'serials': serials.text,
         'serialMode': serialMode,
         'templateId': templateId,
+        'assignee_id': assigneeId,
       });
     } catch (failure) {
       if (mounted) setState(() => error = '草稿保存失败，请重试');
@@ -249,7 +267,11 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     if (!form.currentState!.validate()) return;
     final account = CloudScope.of(context),
         workspace = CloudScope.of(context).activeWorkspace;
-    if (workspace == null) return;
+    if (workspace == null ||
+        (draftStorageKey != null &&
+            draftStorageKey != account.draftKey('create'))) {
+      return;
+    }
     setState(() {
       busy = true;
       error = null;
@@ -288,7 +310,10 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   }
 
   @override
-  Widget build(BuildContext context) => !CloudScope.of(context).signedIn
+  Widget build(BuildContext context) =>
+      !CloudScope.of(context).signedIn ||
+          (draftStorageKey != null &&
+              draftStorageKey != CloudScope.of(context).draftKey('create'))
       ? cloudAccessRequired(context)
       : DetailScaffold(
           title: tr(context, '新建任务'),
@@ -500,7 +525,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    if (!account.signedIn) return cloudAccessRequired(context);
+    if (!account.signedIn ||
+        account.activeWorkspace?['id'] != widget.workspaceId) {
+      return cloudAccessRequired(context);
+    }
     final canEdit =
         account.canEdit && account.activeWorkspace?['id'] == widget.workspaceId;
     final status = '${job['status']}',
@@ -821,8 +849,9 @@ class CloudTaskCommandPage extends StatefulWidget {
 }
 
 class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
-  final note = TextEditingController();
-  final key = 'cloud-${uid()}';
+  final note = TextEditingController(), closureReason = TextEditingController();
+  String nextStatus = 'inspection', disposition = 'scrapped';
+  String key = 'cloud-${uid()}';
   String verdict = 'pass', category = 'other', severity = 'major';
   Map<String, dynamic>? template;
   final Map<String, String> answers = {}, answerNotes = {}, serialResults = {};
@@ -841,9 +870,132 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           widget.job['template'] as Map<String, dynamic>? ??
           (account.templates.isEmpty ? null : account.templates.first);
       passed.text = '${widget.job['quantity']}';
+      draftAccount = account;
+      if (widget.action == 'inspect' || widget.action == 'resolve') {
+        draftStorageKey = account.draftKey(
+          '${widget.action}-${widget.job['id']}',
+        );
+      }
       for (final sn in widget.job['serial_numbers'] as List? ?? []) {
         serialResults['$sn'] = 'pass';
       }
+      for (final controller in [
+        note,
+        passed,
+        failed,
+        scrapped,
+        closureReason,
+      ]) {
+        controller.addListener(changedText);
+      }
+      if (draftStorageKey != null) {
+        unawaited(restoreDraft());
+      } else {
+        draftReady = true;
+      }
+    }
+  }
+
+  CloudAccount? draftAccount;
+  String? draftStorageKey, draftError;
+  bool draftReady = false, draftFinished = false, restoreFailed = false;
+  int? savedVersion;
+  void changedText() {
+    if (draftReady && !draftFinished) unawaited(persistDraft());
+  }
+
+  void edit(VoidCallback change) {
+    setState(change);
+    changedText();
+  }
+
+  Future<void> restoreDraft() async {
+    try {
+      final data = await draftAccount!.readDraft(draftStorageKey!);
+      if (!mounted) return;
+      if (data != null) {
+        note.text = '${data['note'] ?? ''}';
+        nextStatus = '${data['next_status'] ?? 'inspection'}';
+        disposition = '${data['disposition'] ?? 'scrapped'}';
+        closureReason.text = '${data['closure_reason'] ?? ''}';
+        key = data['request_key'] as String? ?? key;
+        verdict = '${data['verdict'] ?? 'pass'}';
+        category = '${data['category'] ?? 'other'}';
+        severity = '${data['severity'] ?? 'major'}';
+        passed.text = '${data['passed'] ?? widget.job['quantity']}';
+        failed.text = '${data['failed'] ?? 0}';
+        scrapped.text = '${data['scrapped'] ?? 0}';
+        answers.addAll(Map<String, String>.from(data['answers'] as Map? ?? {}));
+        answerNotes.addAll(
+          Map<String, String>.from(data['answer_notes'] as Map? ?? {}),
+        );
+        serialResults.addAll(
+          Map<String, String>.from(data['serial_results'] as Map? ?? {}),
+        );
+        evidence.addAll((data['evidence'] as List? ?? []).cast<int>());
+        if (data['template'] is Map) {
+          template = Map<String, dynamic>.from(data['template'] as Map);
+        }
+        savedVersion = data['version'] as int?;
+        if (savedVersion != null && savedVersion != widget.job['version']) {
+          conflict = widget.job;
+          error = '任务已更新，请核对当前任务后处理草稿';
+        }
+      }
+      setState(() {
+        draftReady = true;
+        restoreFailed = false;
+        draftError = null;
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          draftReady = true;
+          restoreFailed = true;
+          draftError = '无法恢复草稿，请重试';
+        });
+      }
+    }
+  }
+
+  Future<void> persistDraft() async {
+    final account = draftAccount;
+    if (restoreFailed ||
+        !draftReady ||
+        draftFinished ||
+        draftStorageKey == null ||
+        account == null ||
+        draftStorageKey !=
+            account.draftKey('${widget.action}-${widget.job['id']}')) {
+      return;
+    }
+    try {
+      await account.saveDraft(draftStorageKey!, {
+        'request_key': key,
+        'job_id': widget.job['id'],
+        'part_name': widget.job['part_name'],
+        'action': widget.action,
+        'issue_id': widget.issue?['id'],
+        'version': savedVersion ?? widget.job['version'],
+        'note': note.text,
+        'next_status': nextStatus,
+        'disposition': disposition,
+        'closure_reason': closureReason.text,
+        'verdict': verdict,
+        'category': category,
+        'severity': severity,
+        'passed': passed.text,
+        'failed': failed.text,
+        'scrapped': scrapped.text,
+        'answers': answers,
+        'answer_notes': answerNotes,
+        'serial_results': serialResults,
+        'evidence': evidence,
+        'template': template,
+      });
+      if (mounted && draftError != null) setState(() => draftError = null);
+    } catch (_) {
+      if (mounted) setState(() => draftError = '草稿保存失败，请重试');
     }
   }
 
@@ -853,6 +1005,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   @override
   void dispose() {
     note.dispose();
+    closureReason.dispose();
     passed.dispose();
     failed.dispose();
     scrapped.dispose();
@@ -863,14 +1016,49 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     final account = CloudScope.of(context), action = widget.action;
     if ((action == 'resolve' || (action == 'inspect' && verdict == 'fail')) &&
         note.text.trim().isEmpty) {
-      setState(() => error = '请填写处理或异常说明');
+      edit(() => error = '请填写处理或异常说明');
       return;
     }
-    setState(() {
+    edit(() {
       busy = true;
       error = null;
     });
     try {
+      await persistDraft();
+      if (draftError != null) throw CollaborationApiException(503, draftError!);
+      CloudOutbox? outbox;
+      List<Map<String, dynamic>> uploads = [];
+      if (draftStorageKey != null) {
+        outbox = CloudOutbox(account);
+        uploads = (await outbox.list())
+            .where((r) => r['job_id'] == '${widget.job['id']}')
+            .toList();
+        if (uploads.any((r) => r['state'] != 'uploaded')) {
+          throw const CollaborationApiException(409, '还有图片待上传，请先在同步页面完成上传');
+        }
+        if (action == 'inspect' && uploads.isNotEmpty) {
+          final latest =
+              await account.request(
+                    'GET',
+                    'workspaces/${widget.workspaceId}/jobs/${widget.job['id']}/',
+                  )
+                  as Map;
+          final unbound = (latest['evidence'] as List? ?? [])
+              .where((p) => p['inspection_id'] == null)
+              .map((p) => p['id'])
+              .toSet();
+          for (final row in uploads.where(
+            (r) =>
+                r['stage'] == 'inspection' &&
+                unbound.contains(r['evidence_id']),
+          )) {
+            if (!evidence.contains(row['evidence_id'])) {
+              evidence.add(row['evidence_id'] as int);
+            }
+          }
+          await persistDraft();
+        }
+      }
       final base = 'workspaces/${widget.workspaceId}';
       final path = action == 'resolve'
           ? '$base/exceptions/${widget.issue!['id']}/resolve/'
@@ -880,7 +1068,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
         path,
         idempotencyKey: key,
         body: {
-          'version': widget.job['version'],
+          'version': savedVersion ?? widget.job['version'],
           if (action == 'inspect') ...{
             'verdict': verdict,
             'note': note.text.trim(),
@@ -907,28 +1095,56 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           },
           if (action == 'resolve') ...{
             'resolution': note.text.trim(),
-            'next_status': 'inspection',
+            'next_status': nextStatus,
+            if (nextStatus == 'closed') ...{
+              'disposition': disposition,
+              'closure_reason': closureReason.text.trim(),
+            },
           },
           if (action != 'resolve' && action != 'inspect') 'status': action,
         },
       );
+      draftFinished = true;
+      if (draftStorageKey != null) await account.deleteDraft(draftStorageKey!);
+      if (outbox != null) {
+        await outbox.consume(
+          '${widget.job['id']}',
+          action == 'inspect'
+              ? evidence
+              : uploads.map((r) => r['evidence_id'] as int).toList(),
+        );
+      }
       await account.reload();
       if (mounted) Navigator.pop(context);
     } on CollaborationApiException catch (failure) {
       if (mounted) {
-        setState(() {
+        edit(() {
           error = failure.message;
           conflict = failure.details?['current'] as Map<String, dynamic>?;
         });
       }
+    } catch (_) {
+      if (mounted) edit(() => error = '网络连接失败，草稿已保留，请重试');
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted) edit(() => busy = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!CloudScope.of(context).signedIn) return cloudAccessRequired(context);
+    final account = CloudScope.of(context);
+    if (!account.signedIn ||
+        (draftStorageKey != null &&
+            draftStorageKey !=
+                account.draftKey('${widget.action}-${widget.job['id']}'))) {
+      return cloudAccessRequired(context);
+    }
+    if (!draftReady) {
+      return DetailScaffold(
+        title: tr(context, '恢复草稿'),
+        children: const [LinearProgressIndicator()],
+      );
+    }
     final title = switch (widget.action) {
       'inspect' => '登记检验',
       'resolve' => '处理异常',
@@ -938,6 +1154,33 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     return DetailScaffold(
       title: tr(context, title),
       children: [
+        if (draftStorageKey != null)
+          OutlinedButton.icon(
+            icon: const Icon(Icons.sync),
+            label: Text(tr(context, '同步与草稿')),
+            onPressed: busy
+                ? null
+                : () async {
+                    await persistDraft();
+                    if (!context.mounted) return;
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const CloudSyncPage(),
+                      ),
+                    );
+                    if (mounted) edit(() {});
+                  },
+          ),
+        if (restoreFailed)
+          TextButton(
+            onPressed: restoreDraft,
+            child: Text(tr(context, '重试恢复草稿')),
+          ),
+        if (draftError != null)
+          Text(
+            trMessage(context, draftError!),
+            style: const TextStyle(color: red),
+          ),
         Text(
           '${widget.job['part_name']}',
           style: Theme.of(context).textTheme.headlineSmall,
@@ -962,7 +1205,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
             selected: {verdict},
             onSelectionChanged: busy
                 ? null
-                : (value) => setState(() {
+                : (value) => edit(() {
                     verdict = value.first;
                     if (serialResults.isEmpty) {
                       passed.text = verdict == 'pass'
@@ -995,7 +1238,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                           selected: answers['${item['id']}'] == result.key,
                           onSelected: busy
                               ? null
-                              : (_) => setState(() {
+                              : (_) => edit(() {
                                   answers['${item['id']}'] = result.key;
                                   if (result.key == 'fail') verdict = 'fail';
                                 }),
@@ -1003,12 +1246,15 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                     ],
                   ),
                   if (answers['${item['id']}'] == 'fail')
-                    TextField(
+                    TextFormField(
+                      initialValue: answerNotes['${item['id']}'] ?? '',
                       decoration: InputDecoration(
                         labelText: tr(context, '问题说明'),
                       ),
-                      onChanged: (value) =>
-                          answerNotes['${item['id']}'] = value,
+                      onChanged: (value) {
+                        answerNotes['${item['id']}'] = value;
+                        changedText();
+                      },
                     ),
                 ],
               ),
@@ -1041,7 +1287,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
               ],
               onChanged: busy
                   ? null
-                  : (value) => setState(() {
+                  : (value) => edit(() {
                       serialResults[sn] = value!;
                       passed.text =
                           '${serialResults.values.where((v) => v == 'pass').length}';
@@ -1098,19 +1344,66 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
             onPressed: busy
                 ? null
                 : () async {
-                    setState(() => busy = true);
+                    edit(() => busy = true);
                     try {
                       final id = await cloudPickPhoto(context, widget.job);
                       if (id != null && mounted) {
-                        setState(() => evidence.add(id));
+                        edit(() => evidence.add(id));
                       }
                     } catch (failure) {
-                      if (mounted) setState(() => error = '$failure');
+                      if (mounted) edit(() => error = '$failure');
                     } finally {
-                      if (mounted) setState(() => busy = false);
+                      if (mounted) edit(() => busy = false);
                     }
                   },
           ),
+        ],
+        if (widget.action == 'resolve' &&
+            account.activeWorkspace?['role'] == 'owner') ...[
+          DropdownButtonFormField<String>(
+            initialValue: nextStatus,
+            decoration: InputDecoration(labelText: tr(context, '处置后操作')),
+            items: [
+              DropdownMenuItem(
+                value: 'inspection',
+                child: Text(tr(context, '送交复检')),
+              ),
+              DropdownMenuItem(
+                value: 'closed',
+                child: Text(tr(context, '授权关闭')),
+              ),
+            ],
+            onChanged: busy || conflict != null
+                ? null
+                : (value) => edit(() => nextStatus = value!),
+          ),
+          if (nextStatus == 'closed') ...[
+            DropdownButtonFormField<String>(
+              initialValue: disposition,
+              decoration: InputDecoration(labelText: tr(context, '关闭处置')),
+              items: [
+                DropdownMenuItem(
+                  value: 'scrapped',
+                  child: Text(tr(context, '报废关闭')),
+                ),
+                DropdownMenuItem(
+                  value: 'concession',
+                  child: Text(tr(context, '让步接收')),
+                ),
+              ],
+              onChanged: busy || conflict != null
+                  ? null
+                  : (value) => edit(() => disposition = value!),
+            ),
+            TextField(
+              controller: closureReason,
+              enabled: !busy && conflict == null,
+              minLines: 2,
+              maxLines: 4,
+              maxLength: 500,
+              decoration: InputDecoration(labelText: tr(context, '授权依据')),
+            ),
+          ],
         ],
         if (widget.action == 'inspect' || widget.action == 'resolve')
           TextField(
@@ -1140,6 +1433,54 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
               '${tr(context, '当前任务状态')}：${tr(context, taskStatusLabels[conflict!['status']] ?? '')}',
             ),
           ),
+          if ((widget.action == 'inspect' &&
+                  conflict!['status'] == 'inspection') ||
+              (widget.action == 'resolve' &&
+                  conflict!['status'] == 'exception' &&
+                  (conflict!['exceptions'] as List? ?? []).any(
+                    (i) =>
+                        i['id'] == widget.issue?['id'] && i['status'] == 'open',
+                  )))
+            OutlinedButton(
+              onPressed: () async {
+                if (!await confirm(
+                  context,
+                  tr(context, '按当前任务继续'),
+                  tr(context, '保留草稿内容继续编辑，已归档照片不会带入新检验。'),
+                )) {
+                  return;
+                }
+                if (!mounted) return;
+                edit(() {
+                  savedVersion = conflict!['version'] as int;
+                  final archived = (conflict!['evidence'] as List? ?? [])
+                      .where((p) => p['inspection_id'] != null)
+                      .map((p) => p['id'])
+                      .toSet();
+                  evidence.removeWhere(archived.contains);
+                  key = 'cloud-${uid()}';
+                  conflict = null;
+                  error = null;
+                });
+              },
+              child: Text(tr(context, '按当前任务继续')),
+            ),
+          if (draftStorageKey != null)
+            OutlinedButton(
+              onPressed: () async {
+                if (!await confirm(
+                  context,
+                  tr(context, '放弃草稿'),
+                  tr(context, '确认放弃这份未提交的草稿？'),
+                )) {
+                  return;
+                }
+                draftFinished = true;
+                await account.deleteDraft(draftStorageKey!);
+                if (context.mounted) Navigator.pop(context);
+              },
+              child: Text(tr(context, '放弃草稿并刷新')),
+            ),
           OutlinedButton(
             onPressed: () => Navigator.pop(context),
             child: Text(tr(context, '返回并刷新任务')),

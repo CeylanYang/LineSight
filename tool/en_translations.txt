@@ -1253,3 +1253,47 @@
 1252|Unable to save draft. Retry.
 1253|Copy trace ID
 1254|Search parts, batches or inspectors
+1255|Sync and drafts
+1256|Photo uploads
+1257|No photos to upload
+1258|Uploaded, awaiting inspection
+1259|Waiting to upload
+1260|Uploaded
+1261|Remove photo
+1262|Remove this photo from the sync queue?
+1263|Device drafts
+1264|No unsubmitted drafts
+1265|Inspection draft
+1266|Resolution draft
+1267|Task draft
+1268|Refresh cloud data
+1269|To do and notifications
+1270|No pending notifications
+1271|Read
+1272|Mark read
+1273|Unable to update notification. Retry.
+1274|Switch back to the original workspace and retry.
+1275|The photo queue has changed. Refresh it.
+1276|Invalid photo identifier.
+1277|Connection failed. Retry.
+1278|Photo saved. Retry its upload on the Sync page.
+1279|Unable to load sync items. Retry.
+1280|Upload failed. Retry.
+1281|Unable to open this draft. Check task access and retry.
+1282|Upload the remaining photos on the Sync page first.
+1283|Connection failed. Your draft was kept. Retry.
+1284|The task has changed. Review its current state before continuing this draft.
+1285|Restore draft
+1286|Retry restoring draft
+1287|Discard draft
+1288|Discard this unsubmitted draft?
+1289|Discard draft and refresh
+1290|Next action
+1291|Send for reinspection
+1292|Authorized closure
+1293|Disposition
+1294|Close as scrapped
+1295|Accept by concession
+1296|Authorization reason
+1297|Continue with current task
+1298|Keep editing this draft with the current task. Archived photos will not be added to a new inspection.

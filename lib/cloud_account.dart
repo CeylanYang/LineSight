@@ -456,9 +456,36 @@ class CloudAccount extends ChangeNotifier {
         : Map<String, dynamic>.from(jsonDecode(raw) as Map);
   }
 
-  Future<void> saveDraft(String key, Map<String, dynamic> value) =>
-      cloudSecureStorage.write(key: key, value: jsonEncode(value));
-  Future<void> deleteDraft(String key) => cloudSecureStorage.delete(key: key);
+  Future<void> _draftWrites = Future<void>.value();
+  Future<void> saveDraft(String key, Map<String, dynamic> value) {
+    final encoded = jsonEncode(value);
+    return _draftWrites = _draftWrites
+        .catchError((_) {})
+        .then((_) => cloudSecureStorage.write(key: key, value: encoded));
+  }
+
+  Future<void> deleteDraft(String key) => _draftWrites = _draftWrites
+      .catchError((_) {})
+      .then((_) => cloudSecureStorage.delete(key: key));
+  Future<List<Map<String, dynamic>>> listDrafts() async {
+    final prefix = draftKey('');
+    if (prefix == null) return [];
+    final all = await cloudSecureStorage.readAll();
+    if (prefix != draftKey('')) {
+      throw const CollaborationApiException(401, '请切回原工作区后重试');
+    }
+    return [
+      for (final entry in all.entries)
+        if (entry.key.startsWith(prefix) &&
+            (entry.key.endsWith('.create') ||
+                entry.key.contains('.inspect-') ||
+                entry.key.contains('.resolve-')))
+          {
+            ...Map<String, dynamic>.from(jsonDecode(entry.value) as Map),
+            '_key': entry.key,
+          },
+    ];
+  }
 
   Future<List<int>> download(String path) async {
     final epoch = _epoch;
@@ -489,6 +516,10 @@ class CloudAccount extends ChangeNotifier {
           .timeout(const Duration(seconds: 30));
       if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
       return data;
+    } on SocketException {
+      throw const CollaborationApiException(503, '网络连接失败，请重试');
+    } on TimeoutException {
+      throw const CollaborationApiException(503, '连接超时，请重试');
     } finally {
       client.close(force: true);
     }
@@ -521,20 +552,28 @@ class CloudAccount extends ChangeNotifier {
         HttpHeaders.contentTypeHeader,
         'multipart/form-data; boundary=$boundary',
       );
+      final parts = <List<int>>[];
       for (final entry in fields.entries) {
-        req.add(
+        parts.add(
           utf8.encode(
             '--$boundary\r\nContent-Disposition: form-data; name="${entry.key}"\r\n\r\n${entry.value}\r\n',
           ),
         );
       }
-      req.add(
+      parts.add(
         utf8.encode(
           '--$boundary\r\nContent-Disposition: form-data; name="image"; filename="photo.jpg"\r\nContent-Type: image/jpeg\r\n\r\n',
         ),
       );
-      req.add(bytes);
-      req.add(utf8.encode('\r\n--$boundary--\r\n'));
+      parts.add(bytes);
+      parts.add(utf8.encode('\r\n--$boundary--\r\n'));
+      req.contentLength = parts.fold<int>(
+        0,
+        (total, part) => total + part.length,
+      );
+      for (final part in parts) {
+        req.add(part);
+      }
       final response = await req.close().timeout(const Duration(seconds: 60));
       final body = Map<String, dynamic>.from(
         jsonDecode(await utf8.decoder.bind(response).join()) as Map,
@@ -548,6 +587,10 @@ class CloudAccount extends ChangeNotifier {
       }
       if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
       return body;
+    } on SocketException {
+      throw const CollaborationApiException(503, '网络连接失败，请重试');
+    } on TimeoutException {
+      throw const CollaborationApiException(503, '连接超时，请重试');
     } finally {
       client.close(force: true);
     }

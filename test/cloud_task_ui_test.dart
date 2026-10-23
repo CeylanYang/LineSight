@@ -13,6 +13,7 @@ class TaskAccount extends CloudAccount {
   Map<String, dynamic>? submitted;
   String? submittedKey;
   bool conflict = false;
+  Map<String, dynamic>? conflictCurrent;
   final task = <String, dynamic>{
     'id': 'task-1',
     'version': 2,
@@ -45,7 +46,8 @@ class TaskAccount extends CloudAccount {
         '任务已更新，请刷新后重试',
         details: {
           'code': 'version_conflict',
-          'current': {...task, 'version': 3, 'status': 'closed'},
+          'current':
+              conflictCurrent ?? {...task, 'version': 3, 'status': 'closed'},
         },
       );
     }
@@ -54,6 +56,24 @@ class TaskAccount extends CloudAccount {
 
   @override
   Future<void> reload() async {}
+}
+
+class DraftTaskAccount extends TaskAccount {
+  final saved = <String, Map<String, dynamic>>{};
+  DraftTaskAccount() {
+    profile = {'id': 'draft-owner'};
+  }
+  @override
+  Future<Map<String, dynamic>?> readDraft(String key) async => saved[key];
+  @override
+  Future<void> saveDraft(String key, Map<String, dynamic> value) async {
+    saved[key] = Map<String, dynamic>.from(value);
+  }
+
+  @override
+  Future<void> deleteDraft(String key) async {
+    saved.remove(key);
+  }
 }
 
 void main() {
@@ -182,4 +202,112 @@ void main() {
       await tester.pumpAndSettle();
     }
   });
+  testWidgets(
+    'inspection draft recovers notes quantities and request identity, then rejects a changed identity',
+    (tester) async {
+      account.dispose();
+      account = DraftTaskAccount();
+      final drafts = account as DraftTaskAccount;
+      await tester.binding.setSurfaceSize(const Size(800, 1800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final draftKey = drafts.draftKey('inspect-task-1')!;
+      drafts.saved[draftKey] = {
+        'request_key': 'cloud-recovered-00000001',
+        'version': 2,
+        'note': 'Recovered inspector notes',
+        'verdict': 'pass',
+        'passed': '10',
+        'failed': '0',
+        'scrapped': '0',
+        'answers': <String, String>{},
+        'answer_notes': <String, String>{},
+        'serial_results': <String, String>{},
+        'evidence': <int>[],
+      };
+      await open(
+        tester,
+        CloudTaskCommandPage(
+          job: drafts.task,
+          workspaceId: 1,
+          action: 'inspect',
+        ),
+      );
+      expect(find.text('Recovered inspector notes'), findsOneWidget);
+      await tester.ensureVisible(find.text('确认提交'));
+      await tester.tap(find.text('确认提交'));
+      await tester.pumpAndSettle();
+      expect(drafts.submittedKey, 'cloud-recovered-00000001');
+      expect(drafts.submitted?['note'], 'Recovered inspector notes');
+      expect(drafts.saved.containsKey(draftKey), false);
+      await open(
+        tester,
+        CloudTaskCommandPage(
+          job: drafts.task,
+          workspaceId: 1,
+          action: 'inspect',
+        ),
+      );
+      drafts.profile = {'id': 'another-person'};
+      drafts.notifyListeners();
+      await tester.pumpAndSettle();
+      expect(find.text('Bracket'), findsNothing);
+      expect(find.text('返回工作台'), findsOneWidget);
+    },
+  );
+  testWidgets(
+    'explicit conflict continuation preserves notes, advances version and excludes archived evidence',
+    (tester) async {
+      account.dispose();
+      account = DraftTaskAccount();
+      final drafts = account as DraftTaskAccount;
+      drafts.conflict = true;
+      drafts.conflictCurrent = {
+        ...drafts.task,
+        'version': 3,
+        'status': 'inspection',
+        'evidence': [
+          {'id': 7, 'inspection_id': 2},
+        ],
+      };
+      drafts.saved[drafts.draftKey('inspect-task-1')!] = {
+        'request_key': 'cloud-original-00000001',
+        'version': 2,
+        'note': 'Keep these notes',
+        'verdict': 'pass',
+        'passed': '10',
+        'failed': '0',
+        'scrapped': '0',
+        'evidence': [7],
+      };
+      await tester.binding.setSurfaceSize(const Size(800, 2400));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await open(
+        tester,
+        CloudTaskCommandPage(
+          job: drafts.task,
+          workspaceId: 1,
+          action: 'inspect',
+        ),
+      );
+      await tester.ensureVisible(find.text('确认提交'));
+      await tester.tap(find.text('确认提交'));
+      await tester.pumpAndSettle();
+      final oldKey = drafts.submittedKey;
+      expect(drafts.submitted?['version'], 2);
+      expect(drafts.submitted?['evidence_ids'], [7]);
+      await tester.ensureVisible(find.text('按当前任务继续'));
+      await tester.tap(find.text('按当前任务继续'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('确认'));
+      await tester.pumpAndSettle();
+      drafts.conflict = false;
+      await tester.ensureVisible(find.text('确认提交'));
+      await tester.tap(find.text('确认提交'));
+      await tester.pumpAndSettle();
+      expect(drafts.submitted?['version'], 3);
+      expect(drafts.submitted?['evidence_ids'], isEmpty);
+      expect(drafts.submitted?['note'], 'Keep these notes');
+      expect(drafts.submittedKey, isNot(oldKey));
+    },
+  );
 }

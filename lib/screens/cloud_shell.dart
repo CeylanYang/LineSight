@@ -201,6 +201,11 @@ class _CloudShellState extends State<CloudShell> {
             child: Column(
               children: [
                 SectionHeading(tr(context, '待办提醒')),
+                TextButton(
+                  onPressed: () =>
+                      openPage(context, const CloudNotificationsPage()),
+                  child: Text(tr(context, '查看全部')),
+                ),
                 ...account.notifications
                     .take(5)
                     .map(
@@ -316,6 +321,24 @@ class _CloudShellState extends State<CloudShell> {
             onTap: account.activeWorkspace == null
                 ? null
                 : () => openPage(context, const CloudTeamPage()),
+          ),
+        ),
+      ],
+      if (account.signedIn) ...[
+        GlassPanel(
+          child: ListTile(
+            leading: const Icon(Icons.sync),
+            title: Text(tr(context, '同步与草稿')),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => openPage(context, const CloudSyncPage()),
+          ),
+        ),
+        GlassPanel(
+          child: ListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(tr(context, '待办与通知')),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => openPage(context, const CloudNotificationsPage()),
           ),
         ),
       ],

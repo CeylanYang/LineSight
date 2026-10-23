@@ -1,0 +1,22 @@
+{
+  "version": "1.1.23+8034",
+  "flutter_full_suite": 116,
+  "flutter_targeted_after_upload_fix": 14,
+  "flutter_unique_tests": 117,
+  "backend_tests": 33,
+  "analyze": "passed",
+  "android_offline_journey": "passed",
+  "android_features": [
+    "inspection draft restore",
+    "encrypted pending photo",
+    "upload retry with server acknowledgement",
+    "inspection evidence association",
+    "original and edge viewing",
+    "versioned notification read"
+  ],
+  "attachment_fixture": "Generated demonstration image sent through actual Android/cloud upload",
+  "normal_main_upgrade": "passed",
+  "process_recovery": "passed: session, encrypted queue and inspection note restored after force-stop",
+  "product_plan_complete": false,
+  "signature_verification": "passed; existing upgrade-compatible certificate"
+}

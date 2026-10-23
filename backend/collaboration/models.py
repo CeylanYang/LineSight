@@ -210,3 +210,13 @@ class PieceSerial(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['workspace', 'serial'], name='unique_workspace_piece_serial')]
+
+
+class NotificationReceipt(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE)
+    version = models.PositiveIntegerField()
+    read_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['user', 'job'], name='unique_user_job_notice')]

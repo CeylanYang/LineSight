@@ -50,6 +50,14 @@ Object.assign(changes, {
   'REL-03': ['开发中', 'acceptance/product-batch/deployment.json; tool/deploy_cloud_identity.py', '0004/0005已上线，备份后迁移并核对25张原表旧行、外键完整；Android覆盖安装留证继续'],
   'SSO-04': ['开发中', 'lib/screens/cloud_business.dart; lib/cloud_account.dart; acceptance/sso/', '普通和团队共享身份与二级登录；创建/加入/成员管理已接；任务草稿身份隔离，检验草稿继续'],
 });
+Object.assign(changes, {
+  'OFF-01': ['待验收', 'lib/screens/cloud_tasks.dart; test/cloud_task_ui_test.dart; acceptance/offline-batch/', '创建/检验/整改草稿按身份及工作区隔离，保存清单、数量、说明、照片ID与请求键；恢复与身份变化测试通过'],
+  'OFF-02': ['待验收', 'lib/cloud_outbox.dart; test/cloud_outbox_test.dart; acceptance/offline-batch/', '照片AES-GCM加密落盘，稳定内容键防重，服务器回执后才标记上传；同步页支持重试/移除与草稿恢复，Android实际重试/回执/检验关联已通过并截图'],
+  'OFF-03': ['待验收', 'lib/screens/cloud_tasks.dart; test/cloud_task_ui_test.dart', '版本冲突保留填写内容，显式确认后采用当前版本与新请求键并移除已归档照片；冲突续填测试通过'],
+  'COL-03': ['待验收', 'backend/collaboration/product.py; backend/collaboration/migrations/0006_notificationreceipt.py; lib/screens/cloud_business.dart', '统一云身份下任务通知持久已读，按用户+任务版本隔离，旧版本已读不会掩盖新更新；后端33项测试通过'],
+  'QC-08': ['待联调', 'lib/screens/cloud_tasks.dart; backend/collaboration/test_workflow.py', '整改可送复检；管理员授权关闭需处置方式及依据，服务端仍验证角色和生命周期'],
+  'REL-03': ['开发中', 'tool/deploy_cloud_identity.py; acceptance/offline-batch/', '0006已上线，备份api-20261023T111325Z，27张原表旧行保留，外键与健康检查通过；恢复演练继续'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;
