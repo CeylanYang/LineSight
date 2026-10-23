@@ -133,6 +133,11 @@ class _CloudLiveInspectionPageState extends State<CloudLiveInspectionPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // The Android permission dialog temporarily makes the app inactive while
+    // initialize() is still waiting. Keep that request alive until it returns.
+    if (state == AppLifecycleState.inactive && starting && camera == null) {
+      return;
+    }
     if (state != AppLifecycleState.resumed) {
       generation++;
       release();

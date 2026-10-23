@@ -1,0 +1,50 @@
+{
+  "version_name": "1.1.35",
+  "version_code": 8058,
+  "package": "com.example.linesight_flutter",
+  "probe_exists": true,
+  "probe_sha256": "6294349ba8c47397754b03928328ccdf83a61986c3ba45208a1ebc835e2621e6",
+  "persisted_files": {
+    "files/profileInstalled": {
+      "bytes": 24,
+      "sha256": "fa45d575ed37dadf30b33faa621013b4d643849da0c68484e9e8339da6243a96"
+    },
+    "files/linesight_upgrade_acceptance_probe.bin": {
+      "bytes": 128,
+      "sha256": "6294349ba8c47397754b03928328ccdf83a61986c3ba45208a1ebc835e2621e6"
+    },
+    "app_flutter/flutter_assets/kernel_blob.bin": {
+      "bytes": 98490096,
+      "sha256": "c0744b8dd8f67f40d88165d05187cbc36fc46771332fe5465a0bfd0586f21e2f"
+    },
+    "app_flutter/flutter_assets/vm_snapshot_data": {
+      "bytes": 13646,
+      "sha256": "d0f254c29f65c8031ff67e0ca451f29dfb7d77aab2fa98a650ecac399fa4f0b2"
+    },
+    "app_flutter/flutter_assets/isolate_snapshot_data": {
+      "bytes": 11093091,
+      "sha256": "139981dabb754003d034f584ece39ce20296eb2913452cd185f662d95b2b5c1c"
+    },
+    "app_flutter/res_timestamp-8039-1792761188411": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "shared_prefs/linesight_cloud_v1.xml": {
+      "bytes": 8224,
+      "sha256": "8415a9b5e89ff339aa1c3a1a1a7bdf62be98974dec80c96abdeb0fe072ca23b0"
+    },
+    "shared_prefs/FlutterSecureStorageConfiguration:linesight_cloud_v1.xml": {
+      "bytes": 240,
+      "sha256": "38b2d14a7345ba516a5538da698343c99d33603a484cd8682378b6d8f7258241"
+    },
+    "shared_prefs/FlutterSecureKeyStorage:linesight_cloud_v1.xml": {
+      "bytes": 536,
+      "sha256": "4b1f2dbc2603005f96348daa1638017a37e9cb6c90ecaf557451280a80c40dd7"
+    }
+  },
+  "databases": {},
+  "keystore_alias_hashes": [
+    "653f7a5522dd88468a282dba391b98fb9266b0f808b5576e43cc926d3b3d7eb6",
+    "8a49db82142cd2ab71d8882dad28ba0cc993b830a44708695415535e6f687f3d"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2",
+  "key_algorithm": "RSA-3072",
+  "alias": "linesight-release",
+  "debug_certificate": false,
+  "private_key_in_repository": false,
+  "private_backup": "Local user-profile backup; off-host backup remains pending",
+  "existing_debug_install_can_upgrade_to_this_certificate": false
+}

@@ -1,5 +1,5 @@
 {
-  "screenshots": 124,
+  "screenshots": 142,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1921,6 +1921,276 @@
       "height": 1600,
       "sha256": "2ea38e85ecde815759bdfa6c08c7ab48eb78817494008e167dc329b96a1504a4",
       "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/81-login-card-en-desktop-render.png",
+      "title": "81-login-card-en-desktop-render",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "5726661c5d1a241d08f691bf478ae737966cc3e1dc145649d7344a05ee9e9091",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/81-login-card-zh-desktop-render.png",
+      "title": "81-login-card-zh-desktop-render",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "c247f562e39d1c4d6384c644cf5622b7b970ae02242dcc7c9064eb02ed4e000b",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/82-before-upgrade-sync-emulator.png",
+      "title": "82-before-upgrade-sync-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "b3abf9b88775bb42f0a5b4130a466f7294d17dec2d5e056732a06d52944794bb",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/83-after-upgrade-workbench-emulator.png",
+      "title": "83-after-upgrade-workbench-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "93df8e4ad2cc9916672f64e6a3b94692943f05509e4ddc8b65efef1c31f16518",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/84-after-upgrade-sync-emulator.png",
+      "title": "84-after-upgrade-sync-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "aa47d125dc158fc23f3b2ce6f207ea133d92bc7a1e13c0125951952ec07cbb21",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/85-after-upgrade-retained-receipts-emulator.png",
+      "title": "85-after-upgrade-retained-receipts-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "63bc8b61b068a5cf20f4ac4241cc0dda3cef524f6d36db0400619cf88f5da54d",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/86-task-filter-emulator.png",
+      "title": "86-task-filter-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "78032e7ec47e28ec2535aee519b98a8ddc0e1c03c9834441c97372408482896e",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/87-task-detail-emulator.png",
+      "title": "87-task-detail-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "d55cdc081a588278fec1622f6a585c93de0abdd4e982116f64d7990d1ce7748e",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/88-inspection-entry-emulator.png",
+      "title": "88-inspection-entry-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "cda2e6bb6f0cb83b5f0534b4f0a62c3b85fb768241c1c67c8cc5a1a048215d70",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/89-task-report-scope-emulator.png",
+      "title": "89-task-report-scope-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "0f8d5cf86e7d6ffc8a8e4e660d86ebca0edafe2afa7c7030a4caaff2a3b03a60",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/90-task-trace-code-emulator.png",
+      "title": "90-task-trace-code-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "ba3813cd59257f3ea4971c25a1ceb6e6876d9d6f771a1b31002a7d32dd8df049",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/91-online-camera-contours-emulator.png",
+      "title": "91-online-camera-contours-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "88dc40356cfd7e50889dee154d64106db3098fb4ee3ea7419d10d3a852052bec",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/92-camera-permission-dialog-emulator.png",
+      "title": "92-camera-permission-dialog-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "9f0fa9c758326a8dda205af077658771410a53a917ee89dc4d266470f8f63ff9",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/93-camera-first-grant-preview-emulator.png",
+      "title": "93-camera-first-grant-preview-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "1546f72ebe0344c59c780ba0a3c6607d25f53235f5f8a2d67920213439bcec92",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/94-camera-first-grant-contours-emulator.png",
+      "title": "94-camera-first-grant-contours-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "6576c9ffd5a62e11cfd262906f6d9288fa74eaab45e3f1e84a6e478bf292f6d3",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/95-formal-upgrade-restored-login-emulator.png",
+      "title": "95-formal-upgrade-restored-login-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "2ad8e2ac3eab5d28898a6755cffe0929838b690f1bb4e32b8198ebb8ab46d5ad",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/96-final-preview-restored-login-emulator.png",
+      "title": "96-final-preview-restored-login-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "fe11eb0afcfcf2d76a8480e1ca906b2b5a9c7d9939b2c75b88fa6ae41bd2ca52",
+      "batch_notes": "release-batch/README.md"
+    },
+    {
+      "file": "release-batch/png/97-final-preview-retained-receipts-emulator.png",
+      "title": "97-final-preview-retained-receipts-emulator",
+      "batch": "release-batch",
+      "batch_requirement_ids": [
+        "REL-01",
+        "REL-03",
+        "UI-11"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "e237faf6a96210e283bf6ef482020771857e8774f663d5710d4a8a605f840918",
+      "batch_notes": "release-batch/README.md"
     }
   ],
   "product_plan_complete": false

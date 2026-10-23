@@ -1,0 +1,16 @@
+{
+  "package": "com.example.linesight_flutter",
+  "version_code": 8059,
+  "emulator": true,
+  "permission_revoked_only": true,
+  "app_data_cleared": false,
+  "open_camera_taps": 1,
+  "native_permission_dialog_seen": true,
+  "allow_while_using_taps": 1,
+  "preview_opened_without_second_tap": true,
+  "cloud_contour_result_seen": true,
+  "back_returns_to_workbench": true,
+  "seconds_from_grant_to_result": 21.81,
+  "camera_source": "Android emulator synthetic camera; no physical camera acceptance",
+  "ui_frame_latency_label": "/ 262 ms"
+}

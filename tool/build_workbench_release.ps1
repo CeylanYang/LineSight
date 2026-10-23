@@ -12,7 +12,7 @@ $registration = [regex]::Replace($registration, '(?s)    try \{\s*flutterEngine\
 $cloudConfig = Get-Content .artifact-work/sso/demo-build.json -Raw | ConvertFrom-Json
 $cloudDefines = ($cloudConfig.PSObject.Properties | ForEach-Object { [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($_.Name + '=' + $_.Value)) }) -join ','
 $ErrorActionPreference = 'Continue' # Windows PowerShell wraps native stderr warnings as ErrorRecords.
-& .\android\gradlew.bat -p android -I ../tool/gradle_mirrors.init.gradle '-Dhttp.proxyHost=' '-Dhttps.proxyHost=' '-Ptarget-platform=android-arm64,android-x64' '-Ptarget=lib/main.dart' "-Pdart-defines=$cloudDefines" --no-daemon --max-workers=2 assembleRelease *> .artifact-work/sso/workbench-release-build.log
+& .\android\gradlew.bat -p android -I ../tool/gradle_mirrors.init.gradle '-Dhttp.proxyHost=' '-Dhttps.proxyHost=' '-Ptarget-platform=android-arm64,android-x64' '-Ptarget=lib/main.dart' "-Pdart-defines=$cloudDefines" '-PlinesightPreviewSigning=true' --no-daemon --max-workers=2 assembleRelease *> .artifact-work/sso/workbench-release-build.log
 $buildExitCode = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
 if ($buildExitCode -ne 0) { throw 'Release build failed' }

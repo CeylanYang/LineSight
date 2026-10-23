@@ -3,7 +3,7 @@
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#18243d;font-family:system-ui,sans-serif}header{padding:24px;position:sticky;top:0;background:#fffefbf5;border-bottom:1px solid #dde4ef;z-index:1}h1{font-size:23px;margin:0 0 12px}header p{font-size:13px;color:#59667b}input,select{padding:12px;border:1px solid #bbc9dd;border-radius:8px;max-width:100%;font-size:15px}input{width:440px}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:18px;padding:24px}article{background:white;border:1px solid #dce4f0;border-radius:14px;overflow:hidden;padding:12px}article[hidden]{display:none}img{width:100%;height:330px;object-fit:contain;background:#eaf0f8;border-radius:7px}h2{font-size:14px;overflow-wrap:anywhere}article p{font-size:12px;color:#59667b;overflow-wrap:anywhere}.path{user-select:all}a:focus{outline:3px solid #246bfd}</style>
 <header><h1>LineSight 功能演示素材</h1><p>点击图片打开原始 PNG。桌面组件渲染与 Android 截图分别标注；需求编号用于查找批次，逐项验收以开发台账及批次记录为准。</p>
 <input id="search" type="search" aria-label="搜索素材" placeholder="搜索功能、编号或文件名，如 QC-03 / report / login">
-<select id="origin" aria-label="素材来源"><option value="">全部来源</option><option value="android-screenshot">Android 截图</option><option value="desktop-component-render">桌面组件渲染</option><option value="generated-trace-code">生成的追溯码</option><option value="processed-reference-image">算法处理图</option><option value="reference-source-image">参考原图</option></select><p id="count"></p></header><main><article data-search="01-cloud-visitor-workbench sso SSO-01 SSO-02 SSO-04 Android 截图" data-origin="android-screenshot">
+<select id="origin" aria-label="素材来源"><option value="">全部来源</option><option value="android-screenshot">Android 截图</option><option value="android-emulator-screenshot">Android 模拟器截图</option><option value="desktop-component-render">桌面组件渲染</option><option value="generated-trace-code">生成的追溯码</option><option value="processed-reference-image">算法处理图</option><option value="reference-source-image">参考原图</option></select><p id="count"></p></header><main><article data-search="01-cloud-visitor-workbench sso SSO-01 SSO-02 SSO-04 Android 截图" data-origin="android-screenshot">
 <a href="sso/png/01-cloud-visitor-workbench.png" target="_blank"><img loading="lazy" src="sso/png/01-cloud-visitor-workbench.png" alt="01-cloud-visitor-workbench"></a>
 <h2>01-cloud-visitor-workbench</h2><p>Android 截图 · 1080×1920</p>
 <p>sso</p><p class="path">sso/png/01-cloud-visitor-workbench.png</p></article><article data-search="02-unified-secondary-login sso SSO-01 SSO-02 SSO-04 Android 截图" data-origin="android-screenshot">
@@ -375,5 +375,59 @@
 <p>access2-batch</p><p class="path">access2-batch/png/80-login-card-en-desktop-render.png</p></article><article data-search="80-login-card-zh-desktop-render access2-batch SEC-05 SEC-06 UI-10 UI-11 桌面组件渲染" data-origin="desktop-component-render">
 <a href="access2-batch/png/80-login-card-zh-desktop-render.png" target="_blank"><img loading="lazy" src="access2-batch/png/80-login-card-zh-desktop-render.png" alt="80-login-card-zh-desktop-render"></a>
 <h2>80-login-card-zh-desktop-render</h2><p>桌面组件渲染 · 360×1600</p>
-<p>access2-batch</p><p class="path">access2-batch/png/80-login-card-zh-desktop-render.png</p></article></main><script>
+<p>access2-batch</p><p class="path">access2-batch/png/80-login-card-zh-desktop-render.png</p></article><article data-search="81-login-card-en-desktop-render release-batch REL-01 REL-03 UI-11 桌面组件渲染" data-origin="desktop-component-render">
+<a href="release-batch/png/81-login-card-en-desktop-render.png" target="_blank"><img loading="lazy" src="release-batch/png/81-login-card-en-desktop-render.png" alt="81-login-card-en-desktop-render"></a>
+<h2>81-login-card-en-desktop-render</h2><p>桌面组件渲染 · 360×1600</p>
+<p>release-batch</p><p class="path">release-batch/png/81-login-card-en-desktop-render.png</p></article><article data-search="81-login-card-zh-desktop-render release-batch REL-01 REL-03 UI-11 桌面组件渲染" data-origin="desktop-component-render">
+<a href="release-batch/png/81-login-card-zh-desktop-render.png" target="_blank"><img loading="lazy" src="release-batch/png/81-login-card-zh-desktop-render.png" alt="81-login-card-zh-desktop-render"></a>
+<h2>81-login-card-zh-desktop-render</h2><p>桌面组件渲染 · 360×1600</p>
+<p>release-batch</p><p class="path">release-batch/png/81-login-card-zh-desktop-render.png</p></article><article data-search="82-before-upgrade-sync-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/82-before-upgrade-sync-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/82-before-upgrade-sync-emulator.png" alt="82-before-upgrade-sync-emulator"></a>
+<h2>82-before-upgrade-sync-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/82-before-upgrade-sync-emulator.png</p></article><article data-search="83-after-upgrade-workbench-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/83-after-upgrade-workbench-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/83-after-upgrade-workbench-emulator.png" alt="83-after-upgrade-workbench-emulator"></a>
+<h2>83-after-upgrade-workbench-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/83-after-upgrade-workbench-emulator.png</p></article><article data-search="84-after-upgrade-sync-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/84-after-upgrade-sync-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/84-after-upgrade-sync-emulator.png" alt="84-after-upgrade-sync-emulator"></a>
+<h2>84-after-upgrade-sync-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/84-after-upgrade-sync-emulator.png</p></article><article data-search="85-after-upgrade-retained-receipts-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/85-after-upgrade-retained-receipts-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/85-after-upgrade-retained-receipts-emulator.png" alt="85-after-upgrade-retained-receipts-emulator"></a>
+<h2>85-after-upgrade-retained-receipts-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/85-after-upgrade-retained-receipts-emulator.png</p></article><article data-search="86-task-filter-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/86-task-filter-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/86-task-filter-emulator.png" alt="86-task-filter-emulator"></a>
+<h2>86-task-filter-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/86-task-filter-emulator.png</p></article><article data-search="87-task-detail-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/87-task-detail-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/87-task-detail-emulator.png" alt="87-task-detail-emulator"></a>
+<h2>87-task-detail-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/87-task-detail-emulator.png</p></article><article data-search="88-inspection-entry-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/88-inspection-entry-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/88-inspection-entry-emulator.png" alt="88-inspection-entry-emulator"></a>
+<h2>88-inspection-entry-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/88-inspection-entry-emulator.png</p></article><article data-search="89-task-report-scope-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/89-task-report-scope-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/89-task-report-scope-emulator.png" alt="89-task-report-scope-emulator"></a>
+<h2>89-task-report-scope-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/89-task-report-scope-emulator.png</p></article><article data-search="90-task-trace-code-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/90-task-trace-code-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/90-task-trace-code-emulator.png" alt="90-task-trace-code-emulator"></a>
+<h2>90-task-trace-code-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/90-task-trace-code-emulator.png</p></article><article data-search="91-online-camera-contours-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/91-online-camera-contours-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/91-online-camera-contours-emulator.png" alt="91-online-camera-contours-emulator"></a>
+<h2>91-online-camera-contours-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/91-online-camera-contours-emulator.png</p></article><article data-search="92-camera-permission-dialog-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/92-camera-permission-dialog-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/92-camera-permission-dialog-emulator.png" alt="92-camera-permission-dialog-emulator"></a>
+<h2>92-camera-permission-dialog-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/92-camera-permission-dialog-emulator.png</p></article><article data-search="93-camera-first-grant-preview-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/93-camera-first-grant-preview-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/93-camera-first-grant-preview-emulator.png" alt="93-camera-first-grant-preview-emulator"></a>
+<h2>93-camera-first-grant-preview-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/93-camera-first-grant-preview-emulator.png</p></article><article data-search="94-camera-first-grant-contours-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/94-camera-first-grant-contours-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/94-camera-first-grant-contours-emulator.png" alt="94-camera-first-grant-contours-emulator"></a>
+<h2>94-camera-first-grant-contours-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/94-camera-first-grant-contours-emulator.png</p></article><article data-search="95-formal-upgrade-restored-login-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/95-formal-upgrade-restored-login-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/95-formal-upgrade-restored-login-emulator.png" alt="95-formal-upgrade-restored-login-emulator"></a>
+<h2>95-formal-upgrade-restored-login-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/95-formal-upgrade-restored-login-emulator.png</p></article><article data-search="96-final-preview-restored-login-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/96-final-preview-restored-login-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/96-final-preview-restored-login-emulator.png" alt="96-final-preview-restored-login-emulator"></a>
+<h2>96-final-preview-restored-login-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/96-final-preview-restored-login-emulator.png</p></article><article data-search="97-final-preview-retained-receipts-emulator release-batch REL-01 REL-03 UI-11 Android 模拟器截图" data-origin="android-emulator-screenshot">
+<a href="release-batch/png/97-final-preview-retained-receipts-emulator.png" target="_blank"><img loading="lazy" src="release-batch/png/97-final-preview-retained-receipts-emulator.png" alt="97-final-preview-retained-receipts-emulator"></a>
+<h2>97-final-preview-retained-receipts-emulator</h2><p>Android 模拟器截图 · 720×1280</p>
+<p>release-batch</p><p class="path">release-batch/png/97-final-preview-retained-receipts-emulator.png</p></article></main><script>
 const search=document.querySelector('#search'),origin=document.querySelector('#origin'),cards=[...document.querySelectorAll('article')];function filter(){let shown=0;const query=search.value.trim().toLowerCase();for(const card of cards){card.hidden=!(card.dataset.search.toLowerCase().includes(query)&&(!origin.value||card.dataset.origin===origin.value));if(!card.hidden)shown++}document.querySelector('#count').textContent=`${shown} / ${cards.length} 张 PNG`}search.addEventListener('input',filter);origin.addEventListener('change',filter);filter();</script></html>

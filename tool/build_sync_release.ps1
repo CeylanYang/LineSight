@@ -11,7 +11,7 @@ $registration = [regex]::Replace($registration, '(?s)    try \{\s*flutterEngine\
 [IO.File]::WriteAllText((Join-Path (Get-Location) $registrant), $registration, [Text.UTF8Encoding]::new($false))
 $cloudConfig = Get-Content .artifact-work/sso/demo-build.json -Raw | ConvertFrom-Json
 $cloudDefines = ($cloudConfig.PSObject.Properties | ForEach-Object { [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($_.Name + '=' + $_.Value)) }) -join ','
-& .\android\gradlew.bat -p android -I ../tool/gradle_mirrors.init.gradle '-Dhttp.proxyHost=' '-Dhttps.proxyHost=' '-Ptarget-platform=android-arm64,android-x64' '-Ptarget=lib/main.dart' "-Pdart-defines=$cloudDefines" assembleRelease *> .artifact-work/sso/sync-release-build.log
+& .\android\gradlew.bat -p android -I ../tool/gradle_mirrors.init.gradle '-Dhttp.proxyHost=' '-Dhttps.proxyHost=' '-Ptarget-platform=android-arm64,android-x64' '-Ptarget=lib/main.dart' "-Pdart-defines=$cloudDefines" '-PlinesightPreviewSigning=true' assembleRelease *> .artifact-work/sso/sync-release-build.log
 if ($LASTEXITCODE -ne 0) { throw 'Release build failed' }
 $archive = [IO.Compression.ZipFile]::OpenRead((Join-Path (Get-Location) 'build/app/outputs/apk/release/app-release.apk'))
 try {

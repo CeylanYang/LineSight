@@ -1,0 +1,97 @@
+{
+  "version_name": "1.1.35",
+  "version_code": 8059,
+  "package": "com.example.linesight_flutter",
+  "probe_exists": true,
+  "probe_sha256": "6294349ba8c47397754b03928328ccdf83a61986c3ba45208a1ebc835e2621e6",
+  "persisted_files": {
+    "files/profileInstalled": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "files/linesight_upgrade_acceptance_probe.bin": {
+      "bytes": 128,
+      "sha256": "6294349ba8c47397754b03928328ccdf83a61986c3ba45208a1ebc835e2621e6"
+    },
+    "files/profileinstaller_profileWrittenFor_lastUpdateTime.dat": {
+      "bytes": 8,
+      "sha256": "8324695612ebb1c22357a712ac37f3938bb3cb6cb0fc77f51ae9bd8f19a93b59"
+    },
+    "app_flutter/flutter_assets/kernel_blob.bin": {
+      "bytes": 98490096,
+      "sha256": "c0744b8dd8f67f40d88165d05187cbc36fc46771332fe5465a0bfd0586f21e2f"
+    },
+    "app_flutter/flutter_assets/vm_snapshot_data": {
+      "bytes": 13646,
+      "sha256": "d0f254c29f65c8031ff67e0ca451f29dfb7d77aab2fa98a650ecac399fa4f0b2"
+    },
+    "app_flutter/flutter_assets/isolate_snapshot_data": {
+      "bytes": 11093091,
+      "sha256": "139981dabb754003d034f584ece39ce20296eb2913452cd185f662d95b2b5c1c"
+    },
+    "app_flutter/res_timestamp-8039-1792761188411": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "shared_prefs/linesight_cloud_v1.xml": {
+      "bytes": 8248,
+      "sha256": "44121de36c462c740989d52008796ce47c61bc638d6efa8b5abb8a450f5a1daf"
+    },
+    "shared_prefs/FlutterSecureStorageConfiguration:linesight_cloud_v1.xml": {
+      "bytes": 240,
+      "sha256": "38b2d14a7345ba516a5538da698343c99d33603a484cd8682378b6d8f7258241"
+    },
+    "shared_prefs/FlutterSecureKeyStorage:linesight_cloud_v1.xml": {
+      "bytes": 536,
+      "sha256": "4b1f2dbc2603005f96348daa1638017a37e9cb6c90ecaf557451280a80c40dd7"
+    },
+    "databases/linesight_local_v1.db": {
+      "bytes": 65536,
+      "sha256": "24d1529d42e53378eedf0ec0d953efcc47e1f227d6f319dc211b0bb41be95957"
+    },
+    "databases/linesight_local_v1.db-journal": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "databases": {
+    "linesight_local_v1.db": {
+      "user_version": 3,
+      "integrity": "ok",
+      "tables": {
+        "accounts": {
+          "rows": 0,
+          "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "android_metadata": {
+          "rows": 1,
+          "content_sha256": "6f08c4ab1d085d1c689c7d3d692227c2b5c04385c82d0910ffb6971db1ed4216"
+        },
+        "recovery_chunks": {
+          "rows": 0,
+          "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "recovery_snapshots": {
+          "rows": 0,
+          "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "recovery_state": {
+          "rows": 0,
+          "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "state": {
+          "rows": 1,
+          "content_sha256": "46efad505b0afc103c4fcae89fe4fc53b575ccd88f0404d21421d5d3bc7c403e"
+        },
+        "state_chunks": {
+          "rows": 0,
+          "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  },
+  "keystore_alias_hashes": [
+    "653f7a5522dd88468a282dba391b98fb9266b0f808b5576e43cc926d3b3d7eb6",
+    "8a49db82142cd2ab71d8882dad28ba0cc993b830a44708695415535e6f687f3d"
+  ]
+}
