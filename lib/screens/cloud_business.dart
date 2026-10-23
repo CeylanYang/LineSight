@@ -11,6 +11,7 @@ import '../cloud_outbox.dart';
 import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
+import '../cloud_form.dart';
 import '../cloud_history.dart';
 import '../cloud_vision.dart';
 import '../cloud_feedback.dart';
@@ -796,6 +797,7 @@ class CloudTemplateEditor extends StatefulWidget {
 }
 
 class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
+  final form = GlobalKey<FormState>();
   final name = TextEditingController(), items = TextEditingController();
   String? binding;
   bool bound = false;
@@ -841,186 +843,218 @@ class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
       : DetailScaffold(
           title: tr(context, '发布检查模板'),
           children: [
-            GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: blue.withValues(alpha: .09),
-                      borderRadius: BorderRadius.circular(13),
-                    ),
-                    child: const Icon(
-                      Icons.rule_folder_outlined,
-                      color: blue,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          tr(context, '新版本将覆盖当前默认检查项'),
-                          style: const TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w800,
-                            color: ink,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          tr(context, '历史检验记录保留原模板快照'),
-                          style: const TextStyle(fontSize: 11, color: muted),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SectionHeader(tr(context, '模板信息'), icon: Icons.badge_outlined),
-            GlassPanel(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: name,
-                maxLength: 100,
-                decoration: InputDecoration(
-                  labelText: tr(context, '模板名称'),
-                  hintText: tr(context, '例如：外观与尺寸终检'),
-                ),
-              ),
-            ),
-            SectionHeader(
-              tr(context, '检查项'),
-              icon: Icons.checklist_rtl,
-              caption: '$count ${tr(context, '项')}',
-            ),
-            GlassPanel(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: items,
-                    minLines: 5,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      labelText: tr(context, '每行一项（3 至 6 项）'),
-                      hintText: tr(context, '表面划痕、装配间隙、关键尺寸、标识与批次'),
-                      alignLabelWithHint: true,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
+            CloudForm(
+              formKey: form,
+              children: [
+                GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
                     children: [
-                      Icon(
-                        count >= 3 && count <= 6
-                            ? Icons.check_circle_outline
-                            : Icons.info_outline,
-                        size: 16,
-                        color: count >= 3 && count <= 6 ? green : amber,
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: blue.withValues(alpha: .09),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: const Icon(
+                          Icons.rule_folder_outlined,
+                          color: blue,
+                          size: 20,
+                        ),
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 12),
                       Expanded(
-                        child: Text(
-                          count >= 3 && count <= 6
-                              ? tr(context, '检查项数量符合发布要求')
-                              : tr(context, '请填写 3 至 6 个检查项'),
-                          style: TextStyle(
-                            fontSize: 11.5,
-                            color: count >= 3 && count <= 6 ? muted : amber,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tr(context, '新版本将覆盖当前默认检查项'),
+                              style: const TextStyle(
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w800,
+                                color: ink,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              tr(context, '历史检验记录保留原模板快照'),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: muted,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            if (error != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 14),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFF4F1),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(color: const Color(0xFFFFDCD2)),
-                  ),
-                  child: Text(
-                    trMessage(context, error!),
-                    style: const TextStyle(fontSize: 12, color: red),
+                ),
+                SectionHeader(tr(context, '模板信息'), icon: Icons.badge_outlined),
+                GlassPanel(
+                  padding: const EdgeInsets.all(16),
+                  child: TextFormField(
+                    controller: name,
+                    enabled: !busy,
+                    validator: (value) => (value ?? '').trim().isEmpty
+                        ? tr(context, '请填写模板名称和3至6个检查项')
+                        : null,
+                    maxLength: 100,
+                    decoration: InputDecoration(
+                      labelText: tr(context, '模板名称'),
+                      hintText: tr(context, '例如：外观与尺寸终检'),
+                    ),
                   ),
                 ),
-              ),
-            const SizedBox(height: 18),
-            if (busy)
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: LinearProgressIndicator(),
-              ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(0, 50),
-                  textStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
+                SectionHeader(
+                  tr(context, '检查项'),
+                  icon: Icons.checklist_rtl,
+                  caption: '$count ${tr(context, '项')}',
+                ),
+                GlassPanel(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextFormField(
+                        controller: items,
+                        enabled: !busy,
+                        validator: (value) {
+                          if (count < 3 || count > 6) {
+                            return tr(context, '请填写 3 至 6 个检查项');
+                          }
+                          if ((value ?? '')
+                              .split('\n')
+                              .any((s) => s.trim().length > 120)) {
+                            return tr(context, '每个检查项最多120个字符');
+                          }
+                          return null;
+                        },
+                        minLines: 5,
+                        maxLines: 10,
+                        decoration: InputDecoration(
+                          labelText: tr(context, '每行一项（3 至 6 项）'),
+                          errorMaxLines: 3,
+                          hintText: tr(context, '表面划痕、装配间隙、关键尺寸、标识与批次'),
+                          alignLabelWithHint: true,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(
+                            count >= 3 && count <= 6
+                                ? Icons.check_circle_outline
+                                : Icons.info_outline,
+                            size: 16,
+                            color: count >= 3 && count <= 6 ? green : amber,
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              count >= 3 && count <= 6
+                                  ? tr(context, '检查项数量符合发布要求')
+                                  : tr(context, '请填写 3 至 6 个检查项'),
+                              style: TextStyle(
+                                fontSize: 11.5,
+                                color: count >= 3 && count <= 6 ? muted : amber,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                onPressed:
-                    busy ||
-                        CloudScope.of(context).activeWorkspace?['role'] !=
-                            'owner'
-                    ? null
-                    : () async {
-                        final account = CloudScope.of(context),
-                            rows = items.text
-                                .split('\n')
-                                .where((s) => s.trim().isNotEmpty)
-                                .toList();
-                        setState(() {
-                          busy = true;
-                          error = null;
-                        });
-                        try {
-                          account.requireAccess(
-                            binding,
-                            write: true,
-                            owner: true,
-                          );
-                          await account.request(
-                            'POST',
-                            'workspaces/${account.activeWorkspace!['id']}/templates/',
-                            body: {
-                              'name': name.text.trim(),
-                              'items': [
-                                for (var i = 0; i < rows.length; i++)
-                                  {
-                                    'id': 'item-${i + 1}',
-                                    'label': rows[i].trim(),
-                                    'required': true,
-                                    'allow_na': true,
-                                  },
-                              ],
-                            },
-                          );
-                          await account.reload();
-                          if (context.mounted) Navigator.pop(context);
-                        } catch (failure) {
-                          if (mounted) setState(() => error = '$failure');
-                        } finally {
-                          if (mounted) setState(() => busy = false);
-                        }
-                      },
-                icon: const Icon(Icons.publish_outlined, size: 19),
-                label: Text(tr(context, '发布')),
-              ),
+                if (error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF4F1),
+                        borderRadius: BorderRadius.circular(13),
+                        border: Border.all(color: const Color(0xFFFFDCD2)),
+                      ),
+                      child: Text(
+                        trMessage(context, error!),
+                        style: const TextStyle(fontSize: 12, color: red),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 18),
+                if (busy)
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: LinearProgressIndicator(),
+                  ),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(0, 50),
+                      textStyle: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    onPressed:
+                        busy ||
+                            CloudScope.of(context).activeWorkspace?['role'] !=
+                                'owner'
+                        ? null
+                        : () async {
+                            if (!CloudScope.of(
+                              context,
+                            ).retainsAccess(binding)) {
+                              setState(() {});
+                              return;
+                            }
+                            if (!validateCloudForm(form)) return;
+                            final account = CloudScope.of(context),
+                                rows = items.text
+                                    .split('\n')
+                                    .where((s) => s.trim().isNotEmpty)
+                                    .toList();
+                            setState(() {
+                              busy = true;
+                              error = null;
+                            });
+                            try {
+                              account.requireAccess(
+                                binding,
+                                write: true,
+                                owner: true,
+                              );
+                              await account.request(
+                                'POST',
+                                'workspaces/${account.activeWorkspace!['id']}/templates/',
+                                body: {
+                                  'name': name.text.trim(),
+                                  'items': [
+                                    for (var i = 0; i < rows.length; i++)
+                                      {
+                                        'id': 'item-${i + 1}',
+                                        'label': rows[i].trim(),
+                                        'required': true,
+                                        'allow_na': true,
+                                      },
+                                  ],
+                                },
+                              );
+                              await account.reload();
+                              if (context.mounted) Navigator.pop(context);
+                            } catch (failure) {
+                              if (mounted) setState(() => error = '$failure');
+                            } finally {
+                              if (mounted) setState(() => busy = false);
+                            }
+                          },
+                    icon: const Icon(Icons.publish_outlined, size: 19),
+                    label: Text(tr(context, '发布')),
+                  ),
+                ),
+              ],
             ),
           ],
         );

@@ -8,7 +8,7 @@ import re
 
 root = Path(__file__).resolve().parents[1]
 known = set(json.loads((root / 'tool/l10n_source.json').read_text(encoding='utf-8')).values())
-pattern = re.compile(r"\btr\(\s*context,\s*'((?:\\.|[^'\\])*)'")
+pattern = re.compile(r"(?:\btr\(\s*context,\s*|\b(?:group|field)\(\s*)'((?:\\.|[^'\\])*)'")
 checked, missing, interpolated = set(), [], []
 for name in ['cloud_shell', 'cloud_business', 'cloud_tasks']:
     path = root / 'lib/screens' / (name + '.dart')
@@ -19,7 +19,7 @@ for name in ['cloud_shell', 'cloud_business', 'cloud_tasks']:
             interpolated.append({'module':name,'text':text})
         elif text not in known:
             missing.append({'module':name,'text':text})
-report = {'scope':'Literal tr(context, text) calls in cloud_shell/cloud_business/cloud_tasks',
+report = {'scope':'Literal tr(context, text), group(text) and field(text) calls in cloud_shell/cloud_business/cloud_tasks',
           'unique_literals_checked':len(checked), 'missing':missing, 'runtime_interpolation':interpolated,
           'dynamic_messages_and_user_content_audited':False}
 print(json.dumps(report,ensure_ascii=False,indent=2))

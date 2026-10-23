@@ -1,0 +1,60 @@
+{
+  "version": "1.1.38+8062",
+  "flutter_tests_passed": 220,
+  "new_form_tests": 9,
+  "flutter_analyze": "No issues found",
+  "backend_source_unchanged": true,
+  "previous_backend_tests_passed": 57,
+  "preview_upgrade_verified": true,
+  "production_signature_verified": true,
+  "native_forms_verified": true,
+  "invalid_inspection_not_submitted": true,
+  "template_count_unchanged": true,
+  "invalid_template_locally_rejected_in_widget_tests": true,
+  "template_publish_native_verified": false,
+  "upgrade_baseline_source": "reauth-batch/final-runtime-storage.json",
+  "storage_files_preserved": 12,
+  "databases_preserved": 1,
+  "keystore_and_sentinel_preserved": true,
+  "app_data_cleared": false,
+  "main_app_uninstalled": false,
+  "phone_installs": 0,
+  "native_journey": {
+    "version": "1.1.38+8062",
+    "first_missing_task_field_visible": true,
+    "template_details_native_verified": true,
+    "template_publish_native_verified": false,
+    "required_checklist_feedback_visible": true,
+    "inconsistent_counts_feedback_visible": true,
+    "returned_to_workbench": true,
+    "original_display_restored": true,
+    "emulator_stopped_after_acceptance": true,
+    "screenshots": [
+      {
+        "file": "png/116-create-required-fields-emulator.png",
+        "sha256": "34cb0724fda823ae507d1ec102f0bc820978e2d933fb6ab2af5b76af553c75ad"
+      },
+      {
+        "file": "png/117-template-details-emulator.png",
+        "sha256": "55574378b68ff6c73173b4e9e3c78f71b58e6895dfca553964ab948cda7b3e97"
+      },
+      {
+        "file": "png/118-inspection-required-checks-emulator.png",
+        "sha256": "e5d5fd11ee62937b9d536436f08496b9db16103182734a7c30fdcc2411c38cee"
+      },
+      {
+        "file": "png/119-inconsistent-counts-emulator.png",
+        "sha256": "bb775284d5cf79fa6c79d06113ed1467fb061c7b61b9daf3bcc91e5fcae75015"
+      },
+      {
+        "file": "png/120-return-workbench-emulator.png",
+        "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8"
+      }
+    ]
+  },
+  "physical_nfc_verified": false,
+  "two_physical_phones_verified": false,
+  "ten_external_users_verified": false,
+  "production_upgrade_retested_this_batch": false,
+  "product_plan_complete": false
+}

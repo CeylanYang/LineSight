@@ -1,0 +1,113 @@
+{
+  "demo_only": true,
+  "original_jobs_modified": false,
+  "before": {
+    "id": "8a6cae28-28a0-47e9-95c3-d070b5b6c432",
+    "version": 3,
+    "part_name": "DEMO · 表单校验",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "inspection",
+    "created_at": "2026-10-23T19:17:51.422891+00:00",
+    "updated_at": "2026-10-23T19:17:51.844183+00:00",
+    "batch_code": "DEMO-FORMS-bf4a6e55",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "templates_before": 3,
+  "after": {
+    "id": "8a6cae28-28a0-47e9-95c3-d070b5b6c432",
+    "version": 3,
+    "part_name": "DEMO · 表单校验",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "inspection",
+    "created_at": "2026-10-23T19:17:51.422891+00:00",
+    "updated_at": "2026-10-23T19:17:51.844183+00:00",
+    "batch_code": "DEMO-FORMS-bf4a6e55",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "invalid_inspection_not_submitted": true,
+  "template_count_unchanged": true
+}

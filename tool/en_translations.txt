@@ -1630,3 +1630,21 @@
 1629|Sign in to your workspace
 1630|Continue with your account
 1631|View production tasks, inspections and quality reports, and pick up where you left off.
+1632|Select a checklist result
+1633|Describe the issue
+1634|Enter non-negative whole numbers
+1635|Each checklist item can contain up to 120 characters
+1636|Enter one unique serial number per planned piece
+1637|Inspected quantity must equal passed, failed and scrapped quantities and cannot exceed the plan
+1638|Match the inspection result to the piece counts
+1639|Describe each failed item and select the failed inspection result
+1640|Select an inspection result for every serial number
+1641|Select a disposition and enter the closure authorization
+1642|Enter a template name and 3–6 checklist items
+1643|Notes
+1644|Inspection result
+1645|Piece counts
+1646|Piece traceability
+1647|Issue details
+1648|Disposition
+1649|Task changed

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
+import '../cloud_form.dart';
 import '../cloud_history.dart';
 import '../cloud_lifecycle.dart';
 import 'cloud_evidence_compare.dart';
@@ -815,7 +816,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   }
 
   Future<void> submit() async {
-    if (!form.currentState!.validate()) return;
+    if (!validateCloudForm(form)) return;
     final account = CloudScope.of(context),
         workspace = CloudScope.of(context).activeWorkspace;
     if (!account.retainsAccess(accessBinding) ||
@@ -890,6 +891,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     }
     InputDecoration field(String label, IconData icon) => InputDecoration(
       labelText: tr(context, label),
+      errorMaxLines: 3,
       prefixIcon: Icon(icon, size: 19),
     );
     return DetailScaffold(
@@ -1006,26 +1008,36 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                             .toList(),
                         onChanged: busy
                             ? null
-                            : (value) => setState(() => templateId = value),
+                            : (value) {
+                                setState(() => templateId = value);
+                                saveDraft();
+                              },
                       ),
                     if (teamMembers.isNotEmpty)
                       DropdownButtonFormField<int>(
                         initialValue: assigneeId,
                         isExpanded: true,
                         decoration: field('负责人', Icons.person_outline),
-                        items: teamMembers
-                            .map(
-                              (m) => DropdownMenuItem<int>(
-                                value: m['id'] as int,
-                                child: Text(
-                                  '${m['display_name'] ?? m['username']}',
-                                ),
+                        items: [
+                          DropdownMenuItem<int>(
+                            value: null,
+                            child: Text(tr(context, '未指派')),
+                          ),
+                          ...teamMembers.map(
+                            (m) => DropdownMenuItem<int>(
+                              value: m['id'] as int,
+                              child: Text(
+                                '${m['display_name'] ?? m['username']}',
                               ),
-                            )
-                            .toList(),
+                            ),
+                          ),
+                        ],
                         onChanged: busy
                             ? null
-                            : (value) => setState(() => assigneeId = value),
+                            : (value) {
+                                setState(() => assigneeId = value);
+                                saveDraft();
+                              },
                       ),
                   ],
                 ),
@@ -1052,16 +1064,32 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                       value: serialMode,
                       onChanged: busy
                           ? null
-                          : (value) => setState(() => serialMode = value),
+                          : (value) {
+                              setState(() => serialMode = value);
+                              saveDraft();
+                            },
                     ),
                     if (serialMode)
                       Padding(
                         padding: const EdgeInsets.only(top: 6),
                         child: TextFormField(
                           controller: serials,
+                          enabled: !busy,
                           minLines: 2,
                           maxLines: 5,
                           decoration: field('SN，每行一个', Icons.list_alt),
+                          validator: (value) {
+                            final rows = (value ?? '')
+                                .split(RegExp(r'[\s,，]+'))
+                                .where((s) => s.isNotEmpty)
+                                .toList();
+                            if (rows.length != int.tryParse(quantity.text) ||
+                                rows.toSet().length != rows.length ||
+                                rows.any((s) => s.length > 100)) {
+                              return tr(context, 'SN需要与工件数量一致且不能重复');
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     Padding(
@@ -1928,6 +1956,7 @@ class CloudTaskCommandPage extends StatefulWidget {
 }
 
 class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
+  final form = GlobalKey<FormState>();
   Map<String, dynamic>? acceptedJob;
   late Map<String, dynamic> comparisonBase;
   final note = TextEditingController(), closureReason = TextEditingController();
@@ -2159,9 +2188,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
         account.activeWorkspace?['id'] != widget.workspaceId) {
       return;
     }
-    if ((action == 'resolve' || (action == 'inspect' && verdict == 'fail')) &&
-        note.text.trim().isEmpty) {
-      edit(() => error = '请填写处理或异常说明');
+    if (!validateCloudForm(form)) {
       AppScope.of(context).feedback(kind: AppFeedback.warning);
       return;
     }
@@ -2340,6 +2367,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
       IconData? icon,
       String? caption,
       Widget? action,
+      String? Function()? validate,
       required Widget child,
     }) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2350,848 +2378,931 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           caption: caption,
           action: action,
         ),
-        child,
+        if (validate == null)
+          child
+        else
+          CloudValidation(validate: validate, child: child),
       ],
     );
 
     return DetailScaffold(
       title: tr(context, title),
       children: [
-        PartArt(
-          partName: partName,
-          defect: failing || widget.action == 'resolve',
-          height: 172,
-          caption: widget.action == 'resolve'
-              ? tr(context, '异常工件')
-              : tr(context, '待检工件'),
-        ),
-        const SizedBox(height: 14),
-        GlassPanel(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          partName,
-                          style: const TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w800,
-                            color: ink,
-                            letterSpacing: -.4,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          '${job['id']} · ${tr(context, '数量')} ${job['quantity']} ${tr(context, '件')}',
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: muted,
-                            letterSpacing: .2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tag(
-                    tr(context, taskStatusLabels[status] ?? status),
-                    color: taskColor(status),
-                  ),
-                ],
-              ),
-              if (widget.issue != null) ...[
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFF7F4),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(color: const Color(0xFFFFE0D6)),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.report_gmailerrorred_outlined,
-                        size: 18,
-                        color: red,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          '${widget.issue!['note'] ?? ''}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            height: 1.5,
-                            color: ink,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
-        if (draftStorageKey != null) ...[
-          const SizedBox(height: 12),
-          GlassPanel(
-            padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
-            child: Row(
-              children: [
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: blue.withValues(alpha: .09),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.cloud_done_outlined,
-                    size: 19,
-                    color: blue,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tr(context, '离线草稿'),
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: ink,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(tr(context, '输入内容会自动保存在本机'), style: hint),
-                    ],
-                  ),
-                ),
-                TextButton(
-                  onPressed: busy
-                      ? null
-                      : () async {
-                          await persistDraft();
-                          if (!context.mounted) return;
-                          await Navigator.of(context).push(
-                            appPageRoute<void>(context, const CloudSyncPage()),
-                          );
-                          if (mounted) edit(() {});
-                        },
-                  child: Text(tr(context, '同步与草稿')),
-                ),
-              ],
+        CloudForm(
+          formKey: form,
+          children: [
+            PartArt(
+              partName: partName,
+              defect: failing || widget.action == 'resolve',
+              height: 172,
+              caption: widget.action == 'resolve'
+                  ? tr(context, '异常工件')
+                  : tr(context, '待检工件'),
             ),
-          ),
-        ],
-        if (restoreFailed)
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton(
-                onPressed: restoreDraft,
-                child: Text(tr(context, '重试恢复草稿')),
-              ),
-            ),
-          ),
-        if (draftError != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              trMessage(context, draftError!),
-              style: const TextStyle(color: red, fontSize: 12),
-            ),
-          ),
-        if (checklistChanged)
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: Text(
-              tr(context, '检查模板已更新，请重新逐项核对。'),
-              style: const TextStyle(color: amber),
-            ),
-          ),
-        if (inspect) ...[
-          group(
-            '检验结论',
-            icon: Icons.fact_check_outlined,
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
+            const SizedBox(height: 14),
+            GlassPanel(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: SegmentedButton<String>(
-                      showSelectedIcon: false,
-                      segments: [
-                        ButtonSegment(
-                          value: 'pass',
-                          icon: const Icon(
-                            Icons.check_circle_outline,
-                            size: 18,
-                          ),
-                          label: Text(tr(context, '合格')),
-                        ),
-                        ButtonSegment(
-                          value: 'fail',
-                          icon: const Icon(Icons.warning_amber, size: 18),
-                          label: Text(tr(context, '异常')),
-                        ),
-                      ],
-                      selected: {verdict},
-                      onSelectionChanged: busy
-                          ? null
-                          : (value) => edit(() {
-                              verdict = value.first;
-                              if (serialResults.isEmpty) {
-                                passed.text = verdict == 'pass'
-                                    ? '${job['quantity']}'
-                                    : '0';
-                                failed.text = verdict == 'fail'
-                                    ? '${job['quantity']}'
-                                    : '0';
-                                scrapped.text = '0';
-                              }
-                            }),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    failing
-                        ? tr(context, '发现异常时将生成异常单，请补充类别与说明。')
-                        : tr(context, '逐项核对检查项，并确认合格与异常数量。'),
-                    style: hint,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (items.isNotEmpty)
-            group(
-              '检查项',
-              icon: Icons.checklist_rtl,
-              caption: '${items.length} ${tr(context, '项')}',
-              child: GlassPanel(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    for (var i = 0; i < items.length; i++) ...[
-                      if (i > 0) const Divider(height: 1),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 13),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 22,
-                                  height: 22,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: blue.withValues(alpha: .09),
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Text(
-                                    '${i + 1}',
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w800,
-                                      color: blue,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 9),
-                                Expanded(
-                                  child: Text(
-                                    '${items[i]['label']}',
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: ink,
-                                    ),
-                                  ),
-                                ),
-                                if (items[i]['required'] == true)
-                                  Tag(tr(context, '必填'), color: amber),
-                              ],
-                            ),
-                            const SizedBox(height: 9),
-                            Wrap(
-                              spacing: 6,
-                              runSpacing: 6,
-                              children: [
-                                for (final result in {
-                                  'pass': '合格',
-                                  'fail': '异常',
-                                  if (items[i]['allow_na'] == true) 'na': '不适用',
-                                }.entries)
-                                  ChoiceChip(
-                                    visualDensity: VisualDensity.compact,
-                                    label: Text(tr(context, result.value)),
-                                    selected:
-                                        answers['${items[i]['id']}'] ==
-                                        result.key,
-                                    onSelected: busy
-                                        ? null
-                                        : (_) => edit(() {
-                                            answers['${items[i]['id']}'] =
-                                                result.key;
-                                            if (result.key == 'fail') {
-                                              verdict = 'fail';
-                                            }
-                                          }),
-                                  ),
-                              ],
-                            ),
-                            if (answers['${items[i]['id']}'] == 'fail')
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: TextFormField(
-                                  key: ValueKey(
-                                    'check-note-${template?['id']}-${template?['version']}-${items[i]['id']}',
-                                  ),
-                                  initialValue:
-                                      answerNotes['${items[i]['id']}'] ?? '',
-                                  decoration: InputDecoration(
-                                    labelText: tr(context, '问题说明'),
-                                    isDense: true,
-                                  ),
-                                  onChanged: (value) {
-                                    answerNotes['${items[i]['id']}'] = value;
-                                    changedText();
-                                  },
-                                ),
+                            Text(
+                              partName,
+                              style: const TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w800,
+                                color: ink,
+                                letterSpacing: -.4,
                               ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '${job['id']} · ${tr(context, '数量')} ${job['quantity']} ${tr(context, '件')}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: muted,
+                                letterSpacing: .2,
+                              ),
+                            ),
                           ],
                         ),
                       ),
+                      const SizedBox(width: 8),
+                      Tag(
+                        tr(context, taskStatusLabels[status] ?? status),
+                        color: taskColor(status),
+                      ),
                     ],
-                  ],
-                ),
-              ),
-            ),
-          group(
-            '数量核对',
-            icon: Icons.inventory_2_outlined,
-            caption: serialResults.isEmpty ? null : tr(context, '已按 SN 自动统计'),
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  for (final field in <TextEditingController, String>{
-                    passed: '合格数量',
-                    failed: '异常数量',
-                    scrapped: '报废数量',
-                  }.entries) ...[
-                    Expanded(
-                      child: TextField(
-                        controller: field.key,
-                        enabled: !busy && serialResults.isEmpty,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                        ),
-                        decoration: InputDecoration(
-                          isDense: true,
-                          labelText: tr(context, field.value),
-                        ),
+                  ),
+                  if (widget.issue != null) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF7F4),
+                        borderRadius: BorderRadius.circular(13),
+                        border: Border.all(color: const Color(0xFFFFE0D6)),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.report_gmailerrorred_outlined,
+                            size: 18,
+                            color: red,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              '${widget.issue!['note'] ?? ''}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                height: 1.5,
+                                color: ink,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    if (field.key != scrapped) const SizedBox(width: 10),
                   ],
                 ],
               ),
             ),
-          ),
-          if (serialResults.isNotEmpty)
-            group(
-              '逐件追溯',
-              icon: Icons.qr_code_2,
-              caption: '${serialResults.length} ${tr(context, '件')}',
-              child: GlassPanel(
-                padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
-                child: Column(
+            if (draftStorageKey != null) ...[
+              const SizedBox(height: 12),
+              GlassPanel(
+                padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
+                child: Row(
                   children: [
-                    for (final sn in serialResults.keys)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: DropdownButtonFormField<String>(
-                          key: ValueKey('serial-$sn'),
-                          initialValue: serialResults[sn],
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: blue.withValues(alpha: .09),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.cloud_done_outlined,
+                        size: 19,
+                        color: blue,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tr(context, '离线草稿'),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w800,
+                              color: ink,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(tr(context, '输入内容会自动保存在本机'), style: hint),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              await persistDraft();
+                              if (!context.mounted) return;
+                              await Navigator.of(context).push(
+                                appPageRoute<void>(
+                                  context,
+                                  const CloudSyncPage(),
+                                ),
+                              );
+                              if (mounted) edit(() {});
+                            },
+                      child: Text(tr(context, '同步与草稿')),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            if (restoreFailed)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: restoreDraft,
+                    child: Text(tr(context, '重试恢复草稿')),
+                  ),
+                ),
+              ),
+            if (draftError != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  trMessage(context, draftError!),
+                  style: const TextStyle(color: red, fontSize: 12),
+                ),
+              ),
+            if (checklistChanged)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  tr(context, '检查模板已更新，请重新逐项核对。'),
+                  style: const TextStyle(color: amber),
+                ),
+              ),
+            if (inspect) ...[
+              group(
+                '检验结论',
+                icon: Icons.fact_check_outlined,
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: SegmentedButton<String>(
+                          showSelectedIcon: false,
+                          segments: [
+                            ButtonSegment(
+                              value: 'pass',
+                              icon: const Icon(
+                                Icons.check_circle_outline,
+                                size: 18,
+                              ),
+                              label: Text(tr(context, '合格')),
+                            ),
+                            ButtonSegment(
+                              value: 'fail',
+                              icon: const Icon(Icons.warning_amber, size: 18),
+                              label: Text(tr(context, '异常')),
+                            ),
+                          ],
+                          selected: {verdict},
+                          onSelectionChanged: busy
+                              ? null
+                              : (value) => edit(() {
+                                  verdict = value.first;
+                                  if (serialResults.isEmpty) {
+                                    passed.text = verdict == 'pass'
+                                        ? '${job['quantity']}'
+                                        : '0';
+                                    failed.text = verdict == 'fail'
+                                        ? '${job['quantity']}'
+                                        : '0';
+                                    scrapped.text = '0';
+                                  }
+                                }),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        failing
+                            ? tr(context, '发现异常时将生成异常单，请补充类别与说明。')
+                            : tr(context, '逐项核对检查项，并确认合格与异常数量。'),
+                        style: hint,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (items.isNotEmpty)
+                group(
+                  '检查项',
+                  icon: Icons.checklist_rtl,
+                  caption: '${items.length} ${tr(context, '项')}',
+                  child: GlassPanel(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        for (var i = 0; i < items.length; i++) ...[
+                          if (i > 0) const Divider(height: 1),
+                          CloudValidation(
+                            validate: () {
+                              final result = answers['${items[i]['id']}'];
+                              if (result == null &&
+                                  items[i]['required'] == true) {
+                                return '请选择检查结果';
+                              }
+                              if (result == 'fail' &&
+                                  (answerNotes['${items[i]['id']}'] ?? '')
+                                      .trim()
+                                      .isEmpty) {
+                                return '请填写问题说明';
+                              }
+                              if (result == 'fail' && verdict != 'fail') {
+                                return '不合格项需要问题说明，并选择异常结论';
+                              }
+                              return null;
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 22,
+                                        height: 22,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: blue.withValues(alpha: .09),
+                                          borderRadius: BorderRadius.circular(
+                                            7,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${i + 1}',
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w800,
+                                            color: blue,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 9),
+                                      Expanded(
+                                        child: Text(
+                                          '${items[i]['label']}',
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700,
+                                            color: ink,
+                                          ),
+                                        ),
+                                      ),
+                                      if (items[i]['required'] == true)
+                                        Tag(tr(context, '必填'), color: amber),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 9),
+                                  Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children: [
+                                      for (final result in {
+                                        'pass': '合格',
+                                        'fail': '异常',
+                                        if (items[i]['allow_na'] == true)
+                                          'na': '不适用',
+                                      }.entries)
+                                        ChoiceChip(
+                                          visualDensity: VisualDensity.compact,
+                                          label: Text(
+                                            tr(context, result.value),
+                                          ),
+                                          selected:
+                                              answers['${items[i]['id']}'] ==
+                                              result.key,
+                                          onSelected: busy
+                                              ? null
+                                              : (_) => edit(() {
+                                                  answers['${items[i]['id']}'] =
+                                                      result.key;
+                                                  if (result.key == 'fail') {
+                                                    verdict = 'fail';
+                                                  }
+                                                }),
+                                        ),
+                                    ],
+                                  ),
+                                  if (answers['${items[i]['id']}'] == 'fail')
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: TextFormField(
+                                        key: ValueKey(
+                                          'check-note-${template?['id']}-${template?['version']}-${items[i]['id']}',
+                                        ),
+                                        initialValue:
+                                            answerNotes['${items[i]['id']}'] ??
+                                            '',
+                                        enabled: !busy,
+                                        decoration: InputDecoration(
+                                          labelText: tr(context, '问题说明'),
+                                          isDense: true,
+                                        ),
+                                        onChanged: (value) {
+                                          answerNotes['${items[i]['id']}'] =
+                                              value;
+                                          changedText();
+                                        },
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              group(
+                '数量核对',
+                icon: Icons.inventory_2_outlined,
+                validate: () {
+                  final counts = [
+                    passed,
+                    failed,
+                    scrapped,
+                  ].map((c) => int.tryParse(c.text.trim())).toList();
+                  if (counts.any((n) => n == null || n < 0)) {
+                    return '数量需要为非负整数';
+                  }
+                  final total = counts.fold<int>(0, (sum, n) => sum + n!);
+                  if (total < 1 || total > (job['quantity'] as int)) {
+                    return '送检数量必须等于合格、异常与报废数量之和，且不超过计划数量';
+                  }
+                  if ((verdict == 'pass' &&
+                          (counts[1] != 0 ||
+                              counts[2] != 0 ||
+                              total != job['quantity'])) ||
+                      (verdict == 'fail' && counts[1]! + counts[2]! == 0)) {
+                    return '检验结论与工件数量不一致';
+                  }
+                  return null;
+                },
+                caption: serialResults.isEmpty
+                    ? null
+                    : tr(context, '已按 SN 自动统计'),
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    children: [
+                      for (final field in <TextEditingController, String>{
+                        passed: '合格数量',
+                        failed: '异常数量',
+                        scrapped: '报废数量',
+                      }.entries) ...[
+                        Expanded(
+                          child: TextField(
+                            controller: field.key,
+                            enabled: !busy && serialResults.isEmpty,
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            decoration: InputDecoration(
+                              isDense: true,
+                              labelText: tr(context, field.value),
+                            ),
+                          ),
+                        ),
+                        if (field.key != scrapped) const SizedBox(width: 10),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              if (serialResults.isNotEmpty)
+                group(
+                  '逐件追溯',
+                  icon: Icons.qr_code_2,
+                  caption: '${serialResults.length} ${tr(context, '件')}',
+                  child: GlassPanel(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
+                    child: Column(
+                      children: [
+                        for (final sn in serialResults.keys)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: DropdownButtonFormField<String>(
+                              key: ValueKey('serial-$sn'),
+                              initialValue: serialResults[sn],
+                              isDense: true,
+                              decoration: InputDecoration(labelText: sn),
+                              validator: (value) => value == null
+                                  ? tr(context, '请为任务内每个SN填写唯一检验结论')
+                                  : null,
+                              items: [
+                                for (final e in {
+                                  'pass': '合格',
+                                  'fail': '异常',
+                                  'scrap': '报废',
+                                }.entries)
+                                  DropdownMenuItem(
+                                    value: e.key,
+                                    child: Text(tr(context, e.value)),
+                                  ),
+                              ],
+                              onChanged: busy
+                                  ? null
+                                  : (value) => edit(() {
+                                      serialResults[sn] = value!;
+                                      passed.text =
+                                          '${serialResults.values.where((v) => v == 'pass').length}';
+                                      failed.text =
+                                          '${serialResults.values.where((v) => v == 'fail').length}';
+                                      scrapped.text =
+                                          '${serialResults.values.where((v) => v == 'scrap').length}';
+                                      verdict =
+                                          int.parse(failed.text) +
+                                                  int.parse(scrapped.text) >
+                                              0
+                                          ? 'fail'
+                                          : 'pass';
+                                    }),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (failing)
+                group(
+                  '异常信息',
+                  icon: Icons.report_gmailerrorred_outlined,
+                  child: GlassPanel(
+                    padding: const EdgeInsets.all(14),
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          initialValue: category,
                           isDense: true,
-                          decoration: InputDecoration(labelText: sn),
+                          decoration: InputDecoration(
+                            labelText: tr(context, '异常类别'),
+                          ),
                           items: [
                             for (final e in {
-                              'pass': '合格',
-                              'fail': '异常',
-                              'scrap': '报废',
+                              'surface': '表面',
+                              'dimension': '尺寸',
+                              'crack': '裂纹',
+                              'deformation': '变形',
+                              'assembly': '装配',
+                              'other': '其他',
                             }.entries)
                               DropdownMenuItem(
                                 value: e.key,
                                 child: Text(tr(context, e.value)),
                               ),
                           ],
-                          onChanged: busy
+                          onChanged: busy ? null : (v) => category = v!,
+                        ),
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<String>(
+                          initialValue: severity,
+                          isDense: true,
+                          decoration: InputDecoration(
+                            labelText: tr(context, '严重程度'),
+                          ),
+                          items: [
+                            for (final e in {
+                              'minor': '轻微',
+                              'major': '主要',
+                              'critical': '严重',
+                            }.entries)
+                              DropdownMenuItem(
+                                value: e.key,
+                                child: Text(tr(context, e.value)),
+                              ),
+                          ],
+                          onChanged: busy ? null : (v) => severity = v!,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              group(
+                '照片证据',
+                icon: Icons.photo_camera_back_outlined,
+                caption: '${evidence.length} ${tr(context, '张')}',
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF4F8FF),
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(color: hairline),
+                        ),
+                        child: Icon(
+                          evidence.isEmpty
+                              ? Icons.add_photo_alternate_outlined
+                              : Icons.photo_library_outlined,
+                          size: 22,
+                          color: evidence.isEmpty ? muted : blue,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          evidence.isEmpty
+                              ? tr(context, '尚未添加照片，建议拍摄缺陷与整体外观。')
+                              : tr(context, '已添加 {0} 张照片，提交后随检验记录归档。', [
+                                  evidence.length,
+                                ]),
+                          style: hint,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: FilledButton.tonalIcon(
+                          style: FilledButton.styleFrom(
+                            minimumSize: const Size(0, 40),
+                            textStyle: TextStyle(
+                              fontFamily: Theme.of(
+                                context,
+                              ).textTheme.labelLarge?.fontFamily,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.add_a_photo_outlined,
+                            size: 17,
+                          ),
+                          label: Text(tr(context, '添加检验照片')),
+                          onPressed: busy
                               ? null
-                              : (value) => edit(() {
-                                  serialResults[sn] = value!;
-                                  passed.text =
-                                      '${serialResults.values.where((v) => v == 'pass').length}';
-                                  failed.text =
-                                      '${serialResults.values.where((v) => v == 'fail').length}';
-                                  scrapped.text =
-                                      '${serialResults.values.where((v) => v == 'scrap').length}';
-                                  verdict =
-                                      int.parse(failed.text) +
-                                              int.parse(scrapped.text) >
-                                          0
-                                      ? 'fail'
-                                      : 'pass';
-                                }),
+                              : () async {
+                                  edit(() => busy = true);
+                                  try {
+                                    final id = await cloudPickPhoto(
+                                      context,
+                                      widget.job,
+                                    );
+                                    if (id != null && mounted) {
+                                      edit(() => evidence.add(id));
+                                    }
+                                  } catch (failure) {
+                                    if (mounted) {
+                                      edit(() => error = '$failure');
+                                    }
+                                  } finally {
+                                    if (mounted) edit(() => busy = false);
+                                  }
+                                },
                         ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          if (failing)
-            group(
-              '异常信息',
-              icon: Icons.report_gmailerrorred_outlined,
-              child: GlassPanel(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    DropdownButtonFormField<String>(
-                      initialValue: category,
-                      isDense: true,
-                      decoration: InputDecoration(
-                        labelText: tr(context, '异常类别'),
-                      ),
-                      items: [
-                        for (final e in {
-                          'surface': '表面',
-                          'dimension': '尺寸',
-                          'crack': '裂纹',
-                          'deformation': '变形',
-                          'assembly': '装配',
-                          'other': '其他',
-                        }.entries)
-                          DropdownMenuItem(
-                            value: e.key,
-                            child: Text(tr(context, e.value)),
-                          ),
-                      ],
-                      onChanged: busy ? null : (v) => category = v!,
-                    ),
-                    const SizedBox(height: 12),
-                    DropdownButtonFormField<String>(
-                      initialValue: severity,
-                      isDense: true,
-                      decoration: InputDecoration(
-                        labelText: tr(context, '严重程度'),
-                      ),
-                      items: [
-                        for (final e in {
-                          'minor': '轻微',
-                          'major': '主要',
-                          'critical': '严重',
-                        }.entries)
-                          DropdownMenuItem(
-                            value: e.key,
-                            child: Text(tr(context, e.value)),
-                          ),
-                      ],
-                      onChanged: busy ? null : (v) => severity = v!,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          group(
-            '照片证据',
-            icon: Icons.photo_camera_back_outlined,
-            caption: '${evidence.length} ${tr(context, '张')}',
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  Container(
-                    width: 46,
-                    height: 46,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F8FF),
-                      borderRadius: BorderRadius.circular(13),
-                      border: Border.all(color: hairline),
-                    ),
-                    child: Icon(
-                      evidence.isEmpty
-                          ? Icons.add_photo_alternate_outlined
-                          : Icons.photo_library_outlined,
-                      size: 22,
-                      color: evidence.isEmpty ? muted : blue,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      evidence.isEmpty
-                          ? tr(context, '尚未添加照片，建议拍摄缺陷与整体外观。')
-                          : tr(context, '已添加 {0} 张照片，提交后随检验记录归档。', [
-                              evidence.length,
-                            ]),
-                      style: hint,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: FilledButton.tonalIcon(
-                      style: FilledButton.styleFrom(
-                        minimumSize: const Size(0, 40),
-                        textStyle: TextStyle(
-                          fontFamily: Theme.of(
-                            context,
-                          ).textTheme.labelLarge?.fontFamily,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      icon: const Icon(Icons.add_a_photo_outlined, size: 17),
-                      label: Text(tr(context, '添加检验照片')),
-                      onPressed: busy
-                          ? null
-                          : () async {
-                              edit(() => busy = true);
-                              try {
-                                final id = await cloudPickPhoto(
-                                  context,
-                                  widget.job,
-                                );
-                                if (id != null && mounted) {
-                                  edit(() => evidence.add(id));
-                                }
-                              } catch (failure) {
-                                if (mounted) {
-                                  edit(() => error = '$failure');
-                                }
-                              } finally {
-                                if (mounted) edit(() => busy = false);
-                              }
-                            },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-        if (widget.action == 'resolve' &&
-            account.activeWorkspace?['role'] == 'owner') ...[
-          group(
-            '处置决定',
-            icon: Icons.gavel_outlined,
-            caption: tr(context, '仅团队所有者'),
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                children: [
-                  DropdownButtonFormField<String>(
-                    initialValue: nextStatus,
-                    isDense: true,
-                    decoration: InputDecoration(
-                      labelText: tr(context, '处置后操作'),
-                    ),
-                    items: [
-                      DropdownMenuItem(
-                        value: 'inspection',
-                        child: Text(tr(context, '送交复检')),
-                      ),
-                      DropdownMenuItem(
-                        value: 'closed',
-                        child: Text(tr(context, '授权关闭')),
                       ),
                     ],
-                    onChanged: busy || conflict != null
-                        ? null
-                        : (value) => edit(() => nextStatus = value!),
                   ),
-                  if (nextStatus == 'closed') ...[
-                    const SizedBox(height: 12),
-                    DropdownButtonFormField<String>(
-                      initialValue: disposition,
-                      isDense: true,
-                      decoration: InputDecoration(
-                        labelText: tr(context, '关闭处置'),
-                      ),
-                      items: [
-                        DropdownMenuItem(
-                          value: 'scrapped',
-                          child: Text(tr(context, '报废关闭')),
-                        ),
-                        DropdownMenuItem(
-                          value: 'concession',
-                          child: Text(tr(context, '让步接收')),
-                        ),
-                      ],
-                      onChanged: busy || conflict != null
-                          ? null
-                          : (value) => edit(() => disposition = value!),
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      controller: closureReason,
-                      enabled: !busy && conflict == null,
-                      minLines: 2,
-                      maxLines: 4,
-                      maxLength: 500,
-                      decoration: InputDecoration(
-                        labelText: tr(context, '授权依据'),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
-        if (inspect || widget.action == 'resolve')
-          group(
-            widget.action == 'resolve' ? '处理结果' : '检验备注',
-            icon: Icons.edit_note_outlined,
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: TextField(
-                controller: note,
-                enabled: !busy && conflict == null,
-                maxLength: 500,
-                minLines: 3,
-                maxLines: 6,
-                decoration: InputDecoration(
-                  hintText: widget.action == 'resolve'
-                      ? tr(context, '说明处理方式、结果与后续安排')
-                      : tr(context, '补充测量值、环境或沟通信息'),
                 ),
               ),
-            ),
-          ),
-        if (error != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 14),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF4F1),
-                borderRadius: BorderRadius.circular(13),
-                border: Border.all(color: const Color(0xFFFFDCD2)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.error_outline, size: 18, color: red),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      trMessage(context, error!),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        height: 1.5,
-                        color: red,
+            ],
+            if (widget.action == 'resolve' &&
+                account.activeWorkspace?['role'] == 'owner') ...[
+              group(
+                '处置决定',
+                icon: Icons.gavel_outlined,
+                caption: tr(context, '仅团队所有者'),
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    children: [
+                      DropdownButtonFormField<String>(
+                        initialValue: nextStatus,
+                        isDense: true,
+                        decoration: InputDecoration(
+                          labelText: tr(context, '处置后操作'),
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'inspection',
+                            child: Text(tr(context, '送交复检')),
+                          ),
+                          DropdownMenuItem(
+                            value: 'closed',
+                            child: Text(tr(context, '授权关闭')),
+                          ),
+                        ],
+                        onChanged: busy || conflict != null
+                            ? null
+                            : (value) => edit(() => nextStatus = value!),
                       ),
+                      if (nextStatus == 'closed') ...[
+                        const SizedBox(height: 12),
+                        DropdownButtonFormField<String>(
+                          initialValue: disposition,
+                          isDense: true,
+                          decoration: InputDecoration(
+                            labelText: tr(context, '关闭处置'),
+                          ),
+                          items: [
+                            DropdownMenuItem(
+                              value: 'scrapped',
+                              child: Text(tr(context, '报废关闭')),
+                            ),
+                            DropdownMenuItem(
+                              value: 'concession',
+                              child: Text(tr(context, '让步接收')),
+                            ),
+                          ],
+                          onChanged: busy || conflict != null
+                              ? null
+                              : (value) => edit(() => disposition = value!),
+                        ),
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: closureReason,
+                          validator: (value) => (value ?? '').trim().isEmpty
+                              ? tr(context, '请选择关闭处置并填写授权依据')
+                              : null,
+                          enabled: !busy && conflict == null,
+                          minLines: 2,
+                          maxLines: 4,
+                          maxLength: 500,
+                          decoration: InputDecoration(
+                            labelText: tr(context, '授权依据'),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            if (inspect || widget.action == 'resolve')
+              group(
+                widget.action == 'resolve' ? '处理结果' : '检验备注',
+                icon: Icons.edit_note_outlined,
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: TextFormField(
+                    controller: note,
+                    validator: (value) =>
+                        (widget.action == 'resolve' ||
+                                (inspect && verdict == 'fail')) &&
+                            (value ?? '').trim().isEmpty
+                        ? tr(context, '请填写处理或异常说明')
+                        : null,
+                    enabled: !busy && conflict == null,
+                    maxLength: 500,
+                    minLines: 3,
+                    maxLines: 6,
+                    decoration: InputDecoration(
+                      hintText: widget.action == 'resolve'
+                          ? tr(context, '说明处理方式、结果与后续安排')
+                          : tr(context, '补充测量值、环境或沟通信息'),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        if (conflict != null) ...[
-          group(
-            '状态冲突',
-            icon: Icons.sync_problem_outlined,
-            child: GlassPanel(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CloudTaskConflictComparison(
-                    before: comparisonBase,
-                    current: conflict!,
+            if (error != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF4F1),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(color: const Color(0xFFFFDCD2)),
                   ),
-                  const SizedBox(height: 12),
-                  Text(tr(context, '任务已被其他人更新，请选择如何处理这份草稿。'), style: hint),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: OutlinedButton.icon(
-                      onPressed: () => openPage(
-                        context,
-                        CloudTaskPage(
-                          job: conflict!,
-                          workspaceId: widget.workspaceId,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.error_outline, size: 18, color: red),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          trMessage(context, error!),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            height: 1.5,
+                            color: red,
+                          ),
                         ),
                       ),
-                      icon: const Icon(Icons.open_in_new, size: 18),
-                      label: Text(tr(context, '查看最新任务')),
-                    ),
+                    ],
                   ),
-                  if ((widget.action == 'inspect' &&
-                          conflict!['status'] == 'inspection') ||
-                      (widget.action == 'resolve' &&
-                          conflict!['status'] == 'exception' &&
-                          (conflict!['exceptions'] as List? ?? []).any(
-                            (i) =>
-                                i['id'] == widget.issue?['id'] &&
-                                i['status'] == 'open',
-                          )))
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          if (!await confirm(
-                            context,
-                            tr(context, '按当前任务继续'),
-                            tr(context, '保留草稿内容继续编辑，已归档照片不会带入新检验。'),
-                          )) {
-                            return;
-                          }
-                          if (!mounted ||
-                              !account.retainsAccess(accessBinding) ||
-                              !account.canEdit) {
-                            return;
-                          }
-                          edit(() {
-                            final latest = conflict!;
-                            final oldTemplate = comparisonBase['template'];
-                            final newTemplate = latest['template'];
-                            final templateChanged =
-                                (oldTemplate is Map
-                                        ? oldTemplate['id']
-                                        : null) !=
-                                    (newTemplate is Map
-                                        ? newTemplate['id']
-                                        : null) ||
-                                (oldTemplate is Map
-                                        ? oldTemplate['version']
-                                        : null) !=
-                                    (newTemplate is Map
-                                        ? newTemplate['version']
-                                        : null);
-                            if (widget.action == 'inspect' && templateChanged) {
-                              template = newTemplate is Map
-                                  ? Map<String, dynamic>.from(newTemplate)
-                                  : (account.templates.isEmpty
-                                        ? null
-                                        : account.templates.first);
-                              answers.clear();
-                              answerNotes.clear();
-                              checklistChanged = true;
-                            }
-                            if (latest['serial_numbers'] is List) {
-                              final serials = (latest['serial_numbers'] as List)
-                                  .map((sn) => '$sn')
-                                  .toSet();
-                              serialResults.removeWhere(
-                                (sn, _) => !serials.contains(sn),
-                              );
-                              for (final sn in serials) {
-                                serialResults.putIfAbsent(sn, () => 'pass');
-                              }
-                              if (serials.isNotEmpty) {
-                                passed.text =
-                                    '${serialResults.values.where((v) => v == 'pass').length}';
-                                failed.text =
-                                    '${serialResults.values.where((v) => v == 'fail').length}';
-                                scrapped.text =
-                                    '${serialResults.values.where((v) => v == 'scrap').length}';
-                              }
-                            }
-                            savedVersion = latest['version'] as int;
-                            acceptedJob = latest;
-                            comparisonBase = cloudTaskSnapshot(latest);
-                            final archived =
-                                (conflict!['evidence'] as List? ?? [])
-                                    .where((p) => p['inspection_id'] != null)
-                                    .map((p) => p['id'])
-                                    .toSet();
-                            evidence.removeWhere(archived.contains);
-                            key = 'cloud-${uid()}';
-                            conflict = null;
-                            error = null;
-                          });
-                        },
-                        child: Text(tr(context, '按当前任务继续')),
+                ),
+              ),
+            if (conflict != null) ...[
+              group(
+                '状态冲突',
+                icon: Icons.sync_problem_outlined,
+                child: GlassPanel(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CloudTaskConflictComparison(
+                        before: comparisonBase,
+                        current: conflict!,
                       ),
-                    ),
-                  if (draftStorageKey != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          if (!await confirm(
+                      const SizedBox(height: 12),
+                      Text(tr(context, '任务已被其他人更新，请选择如何处理这份草稿。'), style: hint),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: OutlinedButton.icon(
+                          onPressed: () => openPage(
                             context,
-                            tr(context, '放弃草稿'),
-                            tr(context, '确认放弃这份未提交的草稿？'),
-                          )) {
-                            return;
-                          }
-                          draftFinished = true;
-                          await account.deleteDraft(draftStorageKey!);
-                          if (context.mounted) Navigator.pop(context);
-                        },
-                        child: Text(tr(context, '放弃草稿并刷新')),
+                            CloudTaskPage(
+                              job: conflict!,
+                              workspaceId: widget.workspaceId,
+                            ),
+                          ),
+                          icon: const Icon(Icons.open_in_new, size: 18),
+                          label: Text(tr(context, '查看最新任务')),
+                        ),
                       ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(tr(context, '返回并刷新任务')),
-                    ),
+                      if ((widget.action == 'inspect' &&
+                              conflict!['status'] == 'inspection') ||
+                          (widget.action == 'resolve' &&
+                              conflict!['status'] == 'exception' &&
+                              (conflict!['exceptions'] as List? ?? []).any(
+                                (i) =>
+                                    i['id'] == widget.issue?['id'] &&
+                                    i['status'] == 'open',
+                              )))
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: OutlinedButton(
+                            onPressed: () async {
+                              if (!await confirm(
+                                context,
+                                tr(context, '按当前任务继续'),
+                                tr(context, '保留草稿内容继续编辑，已归档照片不会带入新检验。'),
+                              )) {
+                                return;
+                              }
+                              if (!mounted ||
+                                  !account.retainsAccess(accessBinding) ||
+                                  !account.canEdit) {
+                                return;
+                              }
+                              edit(() {
+                                final latest = conflict!;
+                                final oldTemplate = comparisonBase['template'];
+                                final newTemplate = latest['template'];
+                                final templateChanged =
+                                    (oldTemplate is Map
+                                            ? oldTemplate['id']
+                                            : null) !=
+                                        (newTemplate is Map
+                                            ? newTemplate['id']
+                                            : null) ||
+                                    (oldTemplate is Map
+                                            ? oldTemplate['version']
+                                            : null) !=
+                                        (newTemplate is Map
+                                            ? newTemplate['version']
+                                            : null);
+                                if (widget.action == 'inspect' &&
+                                    templateChanged) {
+                                  template = newTemplate is Map
+                                      ? Map<String, dynamic>.from(newTemplate)
+                                      : (account.templates.isEmpty
+                                            ? null
+                                            : account.templates.first);
+                                  answers.clear();
+                                  answerNotes.clear();
+                                  checklistChanged = true;
+                                }
+                                if (latest['serial_numbers'] is List) {
+                                  final serials =
+                                      (latest['serial_numbers'] as List)
+                                          .map((sn) => '$sn')
+                                          .toSet();
+                                  serialResults.removeWhere(
+                                    (sn, _) => !serials.contains(sn),
+                                  );
+                                  for (final sn in serials) {
+                                    serialResults.putIfAbsent(sn, () => 'pass');
+                                  }
+                                  if (serials.isNotEmpty) {
+                                    passed.text =
+                                        '${serialResults.values.where((v) => v == 'pass').length}';
+                                    failed.text =
+                                        '${serialResults.values.where((v) => v == 'fail').length}';
+                                    scrapped.text =
+                                        '${serialResults.values.where((v) => v == 'scrap').length}';
+                                  }
+                                }
+                                savedVersion = latest['version'] as int;
+                                acceptedJob = latest;
+                                comparisonBase = cloudTaskSnapshot(latest);
+                                final archived =
+                                    (conflict!['evidence'] as List? ?? [])
+                                        .where(
+                                          (p) => p['inspection_id'] != null,
+                                        )
+                                        .map((p) => p['id'])
+                                        .toSet();
+                                evidence.removeWhere(archived.contains);
+                                key = 'cloud-${uid()}';
+                                conflict = null;
+                                error = null;
+                              });
+                            },
+                            child: Text(tr(context, '按当前任务继续')),
+                          ),
+                        ),
+                      if (draftStorageKey != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: OutlinedButton(
+                            onPressed: () async {
+                              if (!await confirm(
+                                context,
+                                tr(context, '放弃草稿'),
+                                tr(context, '确认放弃这份未提交的草稿？'),
+                              )) {
+                                return;
+                              }
+                              draftFinished = true;
+                              await account.deleteDraft(draftStorageKey!);
+                              if (context.mounted) Navigator.pop(context);
+                            },
+                            child: Text(tr(context, '放弃草稿并刷新')),
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(tr(context, '返回并刷新任务')),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ),
+            ],
+            const SizedBox(height: 20),
+            if (busy)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 12),
+                child: LinearProgressIndicator(),
+              ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, 52),
+                  textStyle: TextStyle(
+                    fontFamily: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.fontFamily,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                onPressed: busy || conflict != null || !canEdit ? null : submit,
+                icon: const Icon(Icons.check_circle_outline, size: 20),
+                label: Text(tr(context, '确认提交')),
               ),
             ),
-          ),
-        ],
-        const SizedBox(height: 20),
-        if (busy)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 12),
-            child: LinearProgressIndicator(),
-          ),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            style: FilledButton.styleFrom(
-              minimumSize: const Size(0, 52),
-              textStyle: TextStyle(
-                fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily,
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-              ),
+            const SizedBox(height: 8),
+            Text(
+              tr(context, '提交后可在任务历史中查看结果并补充照片。'),
+              textAlign: TextAlign.center,
+              style: hint,
             ),
-            onPressed: busy || conflict != null || !canEdit ? null : submit,
-            icon: const Icon(Icons.check_circle_outline, size: 20),
-            label: Text(tr(context, '确认提交')),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          tr(context, '提交后可在任务历史中查看结果并补充照片。'),
-          textAlign: TextAlign.center,
-          style: hint,
+          ],
         ),
       ],
     );

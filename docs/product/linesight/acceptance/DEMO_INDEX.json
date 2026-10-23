@@ -1,5 +1,5 @@
 {
-  "screenshots": 162,
+  "screenshots": 171,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2257,6 +2257,177 @@
       "height": 1280,
       "sha256": "353f9935b463913c66e0e4cbde413945f8c604aadb1cf6ac80a926b3ef4a085a",
       "batch_notes": "reauth-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/114-checklist-validation-en-desktop-render.png",
+      "title": "114-checklist-validation-en-desktop-render",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "ab3b7e58412c8f5d1744de0827d799902efb7af32cf250c32f9fd70a8a9227e9",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/114-checklist-validation-zh-desktop-render.png",
+      "title": "114-checklist-validation-zh-desktop-render",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "dab84080cd327bfc27e6bf9c8b41512c33620a6732c011ec96de07028e1a782f",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/115-unified-login-en-desktop-render.png",
+      "title": "115-unified-login-en-desktop-render",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "80a3f2737ec9cc29f438fe57e5329c89ecaa1868641ed713bb247236d05bbafb",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/115-unified-login-zh-desktop-render.png",
+      "title": "115-unified-login-zh-desktop-render",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "1e6b30fd2d04eae133af1ec3e012a899fbfc2682f329566007e8cd2be7aeba55",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/116-create-required-fields-emulator.png",
+      "title": "116-create-required-fields-emulator",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "34cb0724fda823ae507d1ec102f0bc820978e2d933fb6ab2af5b76af553c75ad",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/117-template-details-emulator.png",
+      "title": "117-template-details-emulator",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "55574378b68ff6c73173b4e9e3c78f71b58e6895dfca553964ab948cda7b3e97",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/118-inspection-required-checks-emulator.png",
+      "title": "118-inspection-required-checks-emulator",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "e5d5fd11ee62937b9d536436f08496b9db16103182734a7c30fdcc2411c38cee",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/119-inconsistent-counts-emulator.png",
+      "title": "119-inconsistent-counts-emulator",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "bb775284d5cf79fa6c79d06113ed1467fb061c7b61b9daf3bcc91e5fcae75015",
+      "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "forms-batch/png/120-return-workbench-emulator.png",
+      "title": "120-return-workbench-emulator",
+      "batch": "forms-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "QC-01",
+        "QC-02",
+        "QC-03",
+        "DAT-05",
+        "OFF-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
+      "batch_notes": "forms-batch/README.md"
     },
     {
       "file": "release-batch/png/81-login-card-en-desktop-render.png",
