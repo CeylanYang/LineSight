@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
+import '../cloud_history.dart';
 import '../cloud_trace.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
@@ -1225,7 +1226,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                 style: const TextStyle(fontSize: 11.5, color: muted),
               ),
             ),
-          ...history.take(4).map((event) => _HistoryRow(event: event)),
+          ...history.take(4).map((event) => CloudHistoryEvent(event: event)),
         ],
         if (tab == 1) ...[
           if (canEdit && !busy && error == null && status == 'inspection')
@@ -1525,7 +1526,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
               title: tr(context, '暂无事件'),
               subtitle: tr(context, '任务操作后可在这里查看历史。'),
             ),
-          ...history.map((event) => _HistoryRow(event: event)),
+          ...history.map((event) => CloudHistoryEvent(event: event)),
         ],
       ],
     );
@@ -1654,85 +1655,6 @@ class _StatusTrack extends StatelessWidget {
                 ],
               ),
             ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HistoryRow extends StatelessWidget {
-  final Map<String, dynamic> event;
-  const _HistoryRow({required this.event});
-  @override
-  Widget build(BuildContext context) {
-    final actor = '${event['actor'] ?? ''}';
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: GlassPanel(
-        padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
-        child: Row(
-          children: [
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: blue.withValues(alpha: .09),
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                actor.isEmpty ? 'L' : actor.characters.first,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                  color: blue,
-                ),
-              ),
-            ),
-            const SizedBox(width: 11),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr(context, switch (event['action']) {
-                      'job.created' => '创建任务',
-                      'job.status' => '任务状态更新',
-                      'inspection.pass' => '检验合格',
-                      'inspection.fail' => '检验异常',
-                      'exception.created' => '创建异常',
-                      'exception.resolved' => '完成异常处置',
-                      _ => '任务操作',
-                    }),
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w700,
-                      color: ink,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${actor.isEmpty ? 'LineSight' : actor} · ${cloudTimestamp(event['created_at'])}',
-                    style: const TextStyle(fontSize: 10, color: muted),
-                  ),
-                  if ('${(event['details'] as Map?)?['resolution'] ?? ''}'
-                      .isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 3),
-                      child: Text(
-                        '${(event['details'] as Map?)?['resolution']}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 10.5,
-                          color: Color(0xFF7D8EA5),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

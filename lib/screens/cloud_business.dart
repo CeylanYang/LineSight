@@ -11,6 +11,7 @@ import '../cloud_outbox.dart';
 import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
+import '../cloud_history.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../ui.dart';
@@ -1463,13 +1464,32 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
   }
 }
 
-class CloudInspectionDetailPage extends StatelessWidget {
+class CloudInspectionDetailPage extends StatefulWidget {
   final Map<String, dynamic> record;
   const CloudInspectionDetailPage({super.key, required this.record});
   @override
+  State<CloudInspectionDetailPage> createState() =>
+      _CloudInspectionDetailPageState();
+}
+
+class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
+  String? binding;
+  bool bound = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!bound) {
+      binding = CloudScope.of(context).accessScope;
+      bound = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final record = widget.record;
     final account = CloudScope.of(context);
     if (!account.signedIn) return cloudAccessRequired(context);
+    if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     final template = record['template_snapshot'] as Map? ?? {};
     final answers = (record['answers'] as List?) ?? const [];
     final evidence = (record['evidence'] as List?) ?? const [];
@@ -1544,6 +1564,10 @@ class CloudInspectionDetailPage extends StatelessWidget {
             ],
           ),
         ),
+        if ((record['serial_results'] as Map? ?? {}).isNotEmpty)
+          CloudSerialResults(
+            results: Map<String, dynamic>.from(record['serial_results']),
+          ),
         SectionHeader(
           tr(context, '检验结果'),
           icon: Icons.checklist_rtl,
@@ -1743,7 +1767,11 @@ class CloudInspectionDetailPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                '${widgetStage(context, evidence[i]['stage'])} · ${cloudTimestamp(evidence[i]['created_at'])}',
+                                [
+                                  widgetStage(context, evidence[i]['stage']),
+                                  if (evidence[i]['created_at'] != null)
+                                    cloudTimestamp(evidence[i]['created_at']),
+                                ].join(' · '),
                                 style: const TextStyle(
                                   fontSize: 11,
                                   color: muted,

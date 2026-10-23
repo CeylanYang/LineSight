@@ -346,3 +346,39 @@ class WorkbenchDateTests(TestCase):
             self.assertEqual(self.client.get(base+'jobs/',bad).status_code,400)
         other = APIClient(); other.force_authenticate(get_user_model().objects.create_user(username='workbench-outsider'))
         self.assertEqual(other.get(base+'jobs/', filters).status_code,404)
+
+
+class HistoryProjectionTests(TestCase):
+    setUp = WorkflowApiTests.setUp
+    to_inspection = WorkflowApiTests.to_inspection
+
+    def test_history_has_record_provenance_without_rewriting_sparse_legacy_events(self):
+        from .models import AuditEvent, QualityInspection
+        base = f'/api/v1/workspaces/{self.ws}/'
+        job = self.client.post(base+'jobs/', {'part_name':'History batch','printer':'A1','quantity':2}, format='json').data
+        self.to_inspection(job['id'])
+        key='history-inspection-00001'
+        payload={'version':3,'verdict':'fail','note':'Surface mark','inspected_qty':2,'pass_qty':1,'fail_qty':1,'scrap_qty':0}
+        url=base+f"jobs/{job['id']}/inspection/"
+        response=self.client.post(url,payload,format='json',HTTP_IDEMPOTENCY_KEY=key)
+        self.assertEqual(response.status_code,201,response.data)
+        self.assertEqual(self.client.post(url,payload,format='json',HTTP_IDEMPOTENCY_KEY=key).status_code,201)
+        check=QualityInspection.objects.get(job_id=job['id'])
+        # Old rows may have only a verdict. Read projection must not mutate them.
+        sparse=AuditEvent.objects.create(workspace_id=self.ws,job_id=job['id'],user=self.owner,action='inspection.fail',object_id=str(check.pk),details={'verdict':'fail'})
+        original=list(AuditEvent.objects.filter(job_id=job['id']).values())
+        history=self.client.get(base+f"jobs/{job['id']}/history/").data
+        self.assertEqual(len(history),len(original))
+        event=next(e for e in history if e['action']=='inspection.fail' and e['id']!=sparse.pk)
+        self.assertEqual(event['details']['previous'],'inspection')
+        self.assertEqual(event['details']['status'],'exception')
+        self.assertEqual(event['record']['round_no'],1)
+        self.assertEqual(event['record']['pass_qty'],1)
+        self.assertEqual(event['actor_id'],self.owner.pk)
+        self.assertEqual(event['workspace_id'],self.ws)
+        legacy=next(e for e in history if e['id']==sparse.pk)
+        self.assertEqual(legacy['details'],{'verdict':'fail'})
+        self.assertEqual(legacy['record']['fail_qty'],1)
+        self.assertEqual(original,list(AuditEvent.objects.filter(job_id=job['id']).values()))
+        foreign=APIClient(); foreign.force_authenticate(get_user_model().objects.create_user(username='history-foreign'))
+        self.assertEqual(foreign.get(base+f"jobs/{job['id']}/history/").status_code,404)

@@ -1,0 +1,32 @@
+{
+  "version": "1.1.29+8046",
+  "entry": "lib/main.dart",
+  "flutter_tests_passed": 140,
+  "new_history_component_tests_passed": 3,
+  "django_tests_passed": 38,
+  "flutter_analyze": "No issues found",
+  "release_build_passed": true,
+  "release_build_duration": "3m 1s",
+  "signature_verified": true,
+  "integration_test_plugin_absent_from_release_dex": true,
+  "sha256": "b91ccb4903c5f3d7e189142cae952e3800c614ca66aa73388fff0f8739cb004a",
+  "emulator_started": false,
+  "normal_android_upgrade_tested": false,
+  "physical_device_ui_tested": false,
+  "physical_camera_tested": false,
+  "live_demo_https_journey": "live-api.json",
+  "cloud_fixture": "live-history.json",
+  "screenshots": {
+    "count": 4,
+    "origin": "Flutter desktop widget test rendering",
+    "data": "Actual HTTPS records from isolated demo workspace 5",
+    "width": 390,
+    "languages": [
+      "zh",
+      "en"
+    ]
+  },
+  "gallery_screenshots": 81,
+  "signing": "Existing debug-compatible certificate; formal signing pending",
+  "product_plan_complete": false
+}

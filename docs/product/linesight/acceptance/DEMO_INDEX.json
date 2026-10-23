@@ -1,0 +1,1280 @@
+{
+  "screenshots": 81,
+  "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
+  "items": [
+    {
+      "file": "sso/png/01-cloud-visitor-workbench.png",
+      "title": "01-cloud-visitor-workbench",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "897f702e134df2c738e7ade60c12a59bb09245eb2eb52b9e158bd4cdc3d6d940",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/02-unified-secondary-login.png",
+      "title": "02-unified-secondary-login",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "5d9e5a49ffa295c87753b3999c6333aef97a61e31300b66fac1ee041cf3f2c77",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/03-cloud-demo-workbench.png",
+      "title": "03-cloud-demo-workbench",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "4e240c80ba27ec2a8fae3bc873510aeecaad34331bb87e29ae5146b5371fac3e",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/04-cloud-account-workspace.png",
+      "title": "04-cloud-account-workspace",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "973972193b723f3f80482f49851f98d6fff8a982001a04919565fd76ee9def9a",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/05-cloud-account-security.png",
+      "title": "05-cloud-account-security",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "c7e3ccc26a1529ff0a7d947970c4d9f98131a784b27330d49f01cfa8a8a3029f",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/06-cloud-team-members.png",
+      "title": "06-cloud-team-members",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "518d27a01832549f11dbf9d96a5f94805b59740a70d9714aa6b0509b0b7b25b5",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/07-cloud-logout.png",
+      "title": "07-cloud-logout",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "84567a76493a40a29c8a64e8447e2788f35963dee1172b3dcdfd17008853b3d6",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/08-create-cloud-task.png",
+      "title": "08-create-cloud-task",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "0ef4218a96bf9db482ee24514baef65427cdd46d763d655d1313b4152547c68a",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/09-task-queued-overview.png",
+      "title": "09-task-queued-overview",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "212641acd5ae0420df8370c4a3da5c190efc8fdfcc9e9ba99b2a39332aba8507",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/10-task-awaiting-inspection.png",
+      "title": "10-task-awaiting-inspection",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "6ceb9c7c6cf9010889290fdda953440751ce5f514976b54db54a42a2a3087832",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/11-inspection-issue-input.png",
+      "title": "11-inspection-issue-input",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "a32d6362b78f2437d9d4d0862ae4d0b2ae2bbcffff6c5619deeb33ade7164f0d",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/12-task-open-issue.png",
+      "title": "12-task-open-issue",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8d4b9049756dc056d73ce191474fc8a4d535d4ce3206ca24fd5426caa36e0621",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/13-issue-resolution-input.png",
+      "title": "13-issue-resolution-input",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "633e1e782e2e0968bf10a58cc9f038481981213d687e667de450ef26f548cbd3",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/14-reinspection-rounds.png",
+      "title": "14-reinspection-rounds",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "54e6a07e9709129886245bce6e698f6b37e45e921d25e33c7f1525c8ab831d39",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/15-task-event-history.png",
+      "title": "15-task-event-history",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8c6218ec852a1ebc3f584cfe51b241c7ac8083a7bdebe61927e11b29cbd2cb03",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "sso/png/16-cloud-task-list-filter.png",
+      "title": "16-cloud-task-list-filter",
+      "batch": "sso",
+      "batch_requirement_ids": [
+        "SSO-01",
+        "SSO-02",
+        "SSO-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "d67af138a2d049fac16af2c70ec6eb529dd6a221ed83e6b82b25e72706860499",
+      "batch_notes": "sso/README.md"
+    },
+    {
+      "file": "product-batch/png/08-create-cloud-task.png",
+      "title": "08-create-cloud-task",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "32b8707afc0a9df6c5bac7bfe45669759d534ad8b3235b13b8687a7adb00813e",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/09-task-queued-overview.png",
+      "title": "09-task-queued-overview",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "ebb680587d6e5c0491afcae011060dbef552c5b5634ab280c3e55a93de484c35",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/10-task-awaiting-inspection.png",
+      "title": "10-task-awaiting-inspection",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "9d8cb39aeb685cb214e11d6d37db7c68cad5cf5de73b2d8df944f3074527573c",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/11-inspection-issue-input.png",
+      "title": "11-inspection-issue-input",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "773846aede92543f6f20b40177da841019c8c90d232c4ba4f7c8a6bbda1caddb",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/12-task-open-issue.png",
+      "title": "12-task-open-issue",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "9f85cf15dd9ccc97fb45fafb58eca92b1ab8e6e64c65647713b6a998442de741",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/13-issue-resolution-input.png",
+      "title": "13-issue-resolution-input",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "4fbd5225dc0aa49857e969309dfa8202c158b8c891fc31850916879de9312adb",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/14-reinspection-rounds.png",
+      "title": "14-reinspection-rounds",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8f3002b1dc5567ac44814eaa44f95b63015d5babdd8047d5af2af938374b7d92",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/15-task-event-history.png",
+      "title": "15-task-event-history",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "3e35f567d5ae4231e1d29e0fed0bc7daa928305d40ccec70f83344fcb7e1ccdc",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/16-cloud-task-list-filter.png",
+      "title": "16-cloud-task-list-filter",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "5fdaa2146eda669ba56aa3dc700208d9b1fefc66d9e4fb1317babba716fbb2bf",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/17-quality-insights.png",
+      "title": "17-quality-insights",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "36c253b634ef4a6828521f88b9efac797650fc26b6e18f9cd0f500a3249609ee",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/18-checklist-templates.png",
+      "title": "18-checklist-templates",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "d10e2da324fd65c4ea8b7007864813a89523c7def64e8fa01dcda979e1bcc377",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/19-inspection-snapshot.png",
+      "title": "19-inspection-snapshot",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8aa7d2ed0921e14542b002c0a17e333d6ac10fd2c07d5166430140e725d67792",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/20-release-main-visitor.png",
+      "title": "20-release-main-visitor",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "af228169ec03be41252a003e8903eeac7ee4cb9337ceaa418d05de1b410642f4",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/21-release-demo-workbench.png",
+      "title": "21-release-demo-workbench",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "4f4af7e30fc21e3c612c5de682f39c36aa58bc8d040104771ff6cf4988e52b28",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "product-batch/png/22-release-system-print.png",
+      "title": "22-release-system-print",
+      "batch": "product-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "QC-01",
+        "QC-02",
+        "QC-05",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "c15cf27adfb193d9e9da5224736cb59d87ff7ada94127200fcb9216f44739949",
+      "batch_notes": "product-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/23-restored-inspection-draft.png",
+      "title": "23-restored-inspection-draft",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "5762a292b0f64043bb86582a527db0b15245a34420bf27857fa24ecf86712017",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/24-encrypted-photo-pending.png",
+      "title": "24-encrypted-photo-pending",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "bab2cfb06d72cb7135562f9e5aaab862fc3c37ac4a78ff6fba70684162059928",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/25-photo-retry-acknowledged.png",
+      "title": "25-photo-retry-acknowledged",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8f5adb850a184987d4823caec42a6d58fc2b0d572e33e28e48883eb79c42e9b1",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/26-real-photo-evidence.png",
+      "title": "26-real-photo-evidence",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "c5f0fd0d23520c13ed17b02427952b35fed4cfa5b415e01b76841325a86d301c",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/27-edge-reference.png",
+      "title": "27-edge-reference",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "06f09bb76889c2d360ab8faf96353d365066349d20480ea318129f9d0033f1a5",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/28-versioned-notification-read.png",
+      "title": "28-versioned-notification-read",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "47105560a4bb6b2ba7d5acc3f6270ba08652259cd1e1f00d1f27b4327feb8a20",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/29-main-upgrade-queue.png",
+      "title": "29-main-upgrade-queue",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "9d9f6d02baea12d883ab3048deca7737cdf209585a97b1de4ecf7be9e37ffa28",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/30-main-restored-inspection.png",
+      "title": "30-main-restored-inspection",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "0c31eed940a5f7f9177e7e52145225ead86580f5bf5966a7c7aaa682f9fff6bb",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "offline-batch/png/31-main-process-recovery.png",
+      "title": "31-main-process-recovery",
+      "batch": "offline-batch",
+      "batch_requirement_ids": [
+        "OFF-01",
+        "OFF-02",
+        "OFF-03",
+        "COL-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "014e842022e0d03a0192cfc5ba61d696d60f253ba19a3b1f55e05c4169509ce7",
+      "batch_notes": "offline-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/32-scoped-task-list.png",
+      "title": "32-scoped-task-list",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "f3019f00ce9ef8a475b8dbb5d7b74b4731fc8ecc89fdab1c9bc0477c4dfec466",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/33-shared-filter-dialog.png",
+      "title": "33-shared-filter-dialog",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "59cd47c604eef181e258fc931b9dff75c780597e00baa5199f29fffe2778fd40",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/34-scoped-metrics.png",
+      "title": "34-scoped-metrics",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "c5e2f31500355b71d437357f376e28f4b1c1d44e7558597e2c76c575ee677590",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/35-category-drilldown.png",
+      "title": "35-category-drilldown",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8634dd5a349358583be6d6a6175b5045cdd8f36fa9a0bcef47ff5019b61c4b79",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/36-report-provenance.png",
+      "title": "36-report-provenance",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "b58cd66fb5f96e911f4eb6164792a437680889a30420d58c1b1ef66a3fbde232",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/37-report-evidence-thumbnails.png",
+      "title": "37-report-evidence-thumbnails",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "20ee3edda0085034712843c0504eac639c58bfe7315b5acb8d540b567940ceca",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/38-main-category-task-drilldown.png",
+      "title": "38-main-category-task-drilldown",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "8ecb204e371388846468fdc8cdd1f224fce052118e0f5fb215bd64692445fc79",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/39-main-system-pdf.png",
+      "title": "39-main-system-pdf",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "f376ab22b6936157de7739fc4ccdaf2f5aa0554a6504115cff15bf7d613cb68a",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/40-main-system-pdf-evidence.png",
+      "title": "40-main-system-pdf-evidence",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "d27ee28304a9d26d5dfbb67cffaccd8cff24fa25c4171e51346fd2b366f600d1",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "query-batch/png/41-main-filtered-record-rounds.png",
+      "title": "41-main-filtered-record-rounds",
+      "batch": "query-batch",
+      "batch_requirement_ids": [
+        "UI-02",
+        "REP-01",
+        "REP-02",
+        "REP-03"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "ebe1186db45ad65e4526b555892cc90ffc49c6102820486d859996516826d3b0",
+      "batch_notes": "query-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/42-task-qr-code.png",
+      "title": "42-task-qr-code",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "30b7724320b99035f7dba57bf8028d1b31570bc4c7f6314f18272cb59f49d338",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/43-qr-scanner-entry.png",
+      "title": "43-qr-scanner-entry",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "d4c6587462938cdd88d981e5ab6615d2969e98349246b62b05ce81b884a90a77",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/44-decoded-authorized-task.png",
+      "title": "44-decoded-authorized-task",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "ff92de4728a7430ac6b126a57ace5cdc0ad8177ccfe7d2de6fd3898033cab345",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/45-trace-secondary-login.png",
+      "title": "45-trace-secondary-login",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "3c64cb04ef10846a8c809ea1a23c638338664e9be5b29619051cb3ddc06bb4f3",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/46-trace-membership-denied.png",
+      "title": "46-trace-membership-denied",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "db244cc665f9f6a37f678c433eec82b26568c1c0bbcffd784b74f1114934f3d2",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/47-inspection-date-report-scope.png",
+      "title": "47-inspection-date-report-scope",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "eeb6ca4b6d3e2566abd2c9a8aeeae3347e0fe6d9e4c301b8988457a0c0c39671",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/48-first-inspection-day-drilldown.png",
+      "title": "48-first-inspection-day-drilldown",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "48f05779322e3efbbd92469d020ab4109e72487dafeb4bbbd21610d5ad1a7098",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/49-normal-cold-link-login-gate.png",
+      "title": "49-normal-cold-link-login-gate",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "1ce312af7058f69b8066396ecb4d2a574780fb98637b04840241e51559c4d9d6",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/50-normal-external-link-authorized-task.png",
+      "title": "50-normal-external-link-authorized-task",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "1e9fb020df75b5bbbac45951a870940f02c11856e142e732c7f5321f2d3043b4",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "trace-batch/png/51-normal-warm-link-membership-denied.png",
+      "title": "51-normal-warm-link-membership-denied",
+      "batch": "trace-batch",
+      "batch_requirement_ids": [
+        "UI-09",
+        "DAT-02",
+        "REP-02"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "f0114c5f5a5af469381248fa74f4104dd4f2483a257f2bafe17a99ab11c4fdfa",
+      "batch_notes": "trace-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/52-local-import-authorization.png",
+      "title": "52-local-import-authorization",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "0d218dc79de436d55816dffcf7a5b0f745b777744cea18ecfcdabadd5f1ba5c2",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/53-local-import-preview-excludes-samples.png",
+      "title": "53-local-import-preview-excludes-samples",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "87bb3bf900d6d1c4fb521bdac9db8e674ac981af07b0baf95b05aaed1fd8450e",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/54-cloud-import-receipt.png",
+      "title": "54-cloud-import-receipt",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "fc06fd99f04a08d79d6d5d03922f352b7340240bd4a3a1174c2be6d3ed526ffc",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/55-repeat-import-deduplicated.png",
+      "title": "55-repeat-import-deduplicated",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "edc370ebaf09971a507a25bc078be380dd89ed15686bf9d3baaef88df7ac7c52",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/56-recovered-photo-encrypted-outbox.png",
+      "title": "56-recovered-photo-encrypted-outbox",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "fee6b60f421d366e8ca7f4d5a04f673920ec59cbd80a1dc2e177954739d447be",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/57-recovered-photo-cloud-receipt.png",
+      "title": "57-recovered-photo-cloud-receipt",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "164437be67378e695b586f0e023ebefda85cb8968398314a1beb198a1f42d8f2",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/57a-actual-upload-progress.png",
+      "title": "57a-actual-upload-progress",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "581585f6b1f3496819a51f8f85bf5d56cbc27e1cc389411cc16615cce842f772",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/58-sync-diagnostics-connected.png",
+      "title": "58-sync-diagnostics-connected",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "af5f6ef11f5e2bb6912f2e4da8c87cb525658ce698758363b81a9fe7ab65ad0d",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "sync-batch/png/59-redacted-support-diagnostics.png",
+      "title": "59-redacted-support-diagnostics",
+      "batch": "sync-batch",
+      "batch_requirement_ids": [
+        "DAT-04",
+        "QC-04",
+        "OFF-02",
+        "REL-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "82c7c8ee4a5a4b867aa3c4672d1ea402918bbd817b579bb09d6aa274cc835f89",
+      "batch_notes": "sync-batch/README.md"
+    },
+    {
+      "file": "workbench-batch/png/60-workbench-en-desktop-render.png",
+      "title": "60-workbench-en-desktop-render",
+      "batch": "workbench-batch",
+      "batch_requirement_ids": [
+        "UI-01",
+        "UI-06",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "07600fc6e1c5a206b1cad5a026e0d705aed9c470eab1165265a79eb7e9e8a136",
+      "batch_notes": "workbench-batch/README.md"
+    },
+    {
+      "file": "workbench-batch/png/60-workbench-zh-desktop-render.png",
+      "title": "60-workbench-zh-desktop-render",
+      "batch": "workbench-batch",
+      "batch_requirement_ids": [
+        "UI-01",
+        "UI-06",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "cf70d550f03916b714d5aabc79ec979ce5f35ccc40f4aaa3fe0d4caf38604ee9",
+      "batch_notes": "workbench-batch/README.md"
+    },
+    {
+      "file": "workbench-batch/png/61-todo-en-desktop-render.png",
+      "title": "61-todo-en-desktop-render",
+      "batch": "workbench-batch",
+      "batch_requirement_ids": [
+        "UI-01",
+        "UI-06",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "bf48759594473d5c0c729a5734b7ec1dfddcf2d53eafdcad6e325c7349b6901a",
+      "batch_notes": "workbench-batch/README.md"
+    },
+    {
+      "file": "workbench-batch/png/61-todo-zh-desktop-render.png",
+      "title": "61-todo-zh-desktop-render",
+      "batch": "workbench-batch",
+      "batch_requirement_ids": [
+        "UI-01",
+        "UI-06",
+        "UI-11"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "70da6d367c4dab1a4a53454738720ef3272342c5760685bbd59aa3567f190717",
+      "batch_notes": "workbench-batch/README.md"
+    },
+    {
+      "file": "access-batch/png/62-account-en-desktop-render.png",
+      "title": "62-account-en-desktop-render",
+      "batch": "access-batch",
+      "batch_requirement_ids": [
+        "COL-04",
+        "UI-11",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "f15bc2f6b6aaf991c2a3fb123ee55c83c9b36a1871549385df94cb5729fa2e60",
+      "batch_notes": "access-batch/README.md"
+    },
+    {
+      "file": "access-batch/png/62-account-zh-desktop-render.png",
+      "title": "62-account-zh-desktop-render",
+      "batch": "access-batch",
+      "batch_requirement_ids": [
+        "COL-04",
+        "UI-11",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "6cc76dd6b9de8fdb087ffd02ad0f7c374e966e62d3558c3978fece11bdb21b70",
+      "batch_notes": "access-batch/README.md"
+    },
+    {
+      "file": "access-batch/png/63-viewer-team-en-desktop-render.png",
+      "title": "63-viewer-team-en-desktop-render",
+      "batch": "access-batch",
+      "batch_requirement_ids": [
+        "COL-04",
+        "UI-11",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "d9f97a3619e915b24670b2df1c05f90844e95bc023947194d902514d13ae24ae",
+      "batch_notes": "access-batch/README.md"
+    },
+    {
+      "file": "access-batch/png/63-viewer-team-zh-desktop-render.png",
+      "title": "63-viewer-team-zh-desktop-render",
+      "batch": "access-batch",
+      "batch_requirement_ids": [
+        "COL-04",
+        "UI-11",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "87ba9a30b032313a426383a6b9220e36129163ffae259df3544f668e08246581",
+      "batch_notes": "access-batch/README.md"
+    },
+    {
+      "file": "history-batch/png/64-history-en-desktop-render.png",
+      "title": "64-history-en-desktop-render",
+      "batch": "history-batch",
+      "batch_requirement_ids": [
+        "DAT-06",
+        "UI-05",
+        "QC-03"
+      ],
+      "origin": "desktop-component-render",
+      "width": 390,
+      "height": 1700,
+      "sha256": "3f52e7ad70054ae25ae676e87b41c68e96aeb04b64a58dd497bb0d631794f04b",
+      "batch_notes": "history-batch/README.md"
+    },
+    {
+      "file": "history-batch/png/64-history-zh-desktop-render.png",
+      "title": "64-history-zh-desktop-render",
+      "batch": "history-batch",
+      "batch_requirement_ids": [
+        "DAT-06",
+        "UI-05",
+        "QC-03"
+      ],
+      "origin": "desktop-component-render",
+      "width": 390,
+      "height": 1700,
+      "sha256": "02538b9823f247797d377bc681a60c51de475505d407536ea69135ef2b14e8a0",
+      "batch_notes": "history-batch/README.md"
+    },
+    {
+      "file": "history-batch/png/65-serial-results-en-desktop-render.png",
+      "title": "65-serial-results-en-desktop-render",
+      "batch": "history-batch",
+      "batch_requirement_ids": [
+        "DAT-06",
+        "UI-05",
+        "QC-03"
+      ],
+      "origin": "desktop-component-render",
+      "width": 390,
+      "height": 1700,
+      "sha256": "7736691b2bab0d50e80269d1da6dffd1f3a02b041ee5142ee2e793db34bca239",
+      "batch_notes": "history-batch/README.md"
+    },
+    {
+      "file": "history-batch/png/65-serial-results-zh-desktop-render.png",
+      "title": "65-serial-results-zh-desktop-render",
+      "batch": "history-batch",
+      "batch_requirement_ids": [
+        "DAT-06",
+        "UI-05",
+        "QC-03"
+      ],
+      "origin": "desktop-component-render",
+      "width": 390,
+      "height": 1700,
+      "sha256": "cad95ae02bc54366a42710937178e16dcd2c2862615ab22be9f9a38a052700fa",
+      "batch_notes": "history-batch/README.md"
+    }
+  ],
+  "product_plan_complete": false
+}

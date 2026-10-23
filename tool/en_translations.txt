@@ -1508,3 +1508,14 @@
 1507|Sign-in required
 1508|items
 1509|Surface scratches, assembly fit, key dimensions, labels and batch
+1510|Photo uploaded
+1511|Actor not recorded
+1512|Task version
+1513|Record ID
+1514|Photo stage
+1515|Inspection photo
+1516|Inspected
+1517|Passed
+1518|Failed
+1519|Scrapped
+1520|Per-piece inspection results

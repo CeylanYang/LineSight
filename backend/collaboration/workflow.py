@@ -171,10 +171,10 @@ def inspection_command(request, job, *, exception_only=False):
         from .product import person
         case = ExceptionCase.objects.create(job=job, note=note, assignee=str(request.data.get('assignee') or person(job.assignee) or person(request.user))[:100],
             inspection=check, category=category, severity=severity, creator=request.user)
-        event(request, job, 'exception.created', case.pk, inspection_id=check.pk)
+        event(request, job, 'exception.created', case.pk, inspection_id=check.pk, category=category, severity=severity, assignee=case.assignee)
     job.status = 'closed' if verdict == 'pass' else 'exception'
     job.save(update_fields=['status', 'updated_at'])
-    event(request, job, 'inspection.' + verdict, check.pk, verdict=verdict)
+    event(request, job, 'inspection.' + verdict, check.pk, verdict=verdict, previous='inspection', status=job.status, round_no=check.round_no, inspected_qty=inspected, pass_qty=passed, fail_qty=failed, scrap_qty=scrapped, evidence_ids=photo_ids)
     if exception_only:
         return Response({'id': case.pk, 'status': case.status, 'note': case.note, 'assignee': case.assignee,
                          'job_version': job.version}, status=201)
@@ -223,12 +223,13 @@ def resolve(request, workspace_id, case_id):
                 return Response({'detail': '请选择关闭处置并填写授权依据'}, status=400)
             if other_open:
                 return reject('请先处理所有未完成异常')
+        previous = job.status
         case.status, case.resolution, case.resolved_at = 'resolved', resolution, timezone.now()
         case.save(update_fields=['status', 'resolution', 'resolved_at'])
         job.status = 'exception' if other_open else target
         job.save(update_fields=['status', 'updated_at'])
         event(request, job, 'exception.resolved', case.pk, resolution=resolution,
-            status=job.status, disposition=disposition if target == 'closed' else None,
+            previous=previous, status=job.status, disposition=disposition if target == 'closed' else None,
             closure_reason=reason if target == 'closed' else None, actor_role=member.role)
         return Response({'status': case.status, 'job_status': job.status, 'job_version': job.version})
     return mutate(request, member, case.job_id, command)
@@ -244,6 +245,19 @@ def history(request, workspace_id, job_id):
         raise Http404 from exc
     rows = AuditEvent.objects.filter(workspace=member.workspace).filter(Q(job=job) |
         Q(job__isnull=True, object_id=str(job.pk), action__startswith='job.')).select_related('user', 'user__cloud_identity').order_by('created_at', 'pk')
-    return Response([{'id': row.pk, 'action': row.action, 'object_id': row.object_id,
-        'version': row.version, 'details': row.details, 'created_at': row.created_at.isoformat(),
-        'actor': (identity.display_name if (identity := getattr(row.user, 'cloud_identity', None)) else row.user.get_full_name() or row.user.username) if row.user else ''} for row in rows])
+    checks = {str(check.pk): check for check in job.quality_inspections.all()}
+    output = []
+    for row in rows:
+        kind = 'inspection' if row.action.startswith('inspection.') else 'issue' if row.action.startswith('exception.') else 'evidence' if row.action.startswith('evidence.') else 'task'
+        record = None
+        if kind == 'inspection' and (check := checks.get(row.object_id)):
+            record = {'id':check.pk, 'round_no':check.round_no, 'verdict':check.verdict,
+                'inspected_qty':check.inspected_qty, 'pass_qty':check.pass_qty, 'fail_qty':check.fail_qty,
+                'scrap_qty':check.scrap_qty, 'template_version':check.template_snapshot.get('version')}
+        identity = getattr(row.user, 'cloud_identity', None)
+        output.append({'id':row.pk, 'job_id':str(job.pk), 'workspace_id':member.workspace_id,
+            'action':row.action, 'object_id':row.object_id, 'object_type':kind,
+            'version':row.version, 'details':row.details, 'record':record,
+            'created_at':row.created_at.isoformat(), 'actor_id':row.user_id,
+            'actor':(identity.display_name if identity else row.user.get_full_name() or row.user.username) if row.user else ''})
+    return Response(output)

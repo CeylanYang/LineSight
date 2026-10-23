@@ -1,0 +1,14 @@
+{
+  "demo_only": true,
+  "job_id": "5327299a-6201-4fdf-abba-f2037fc89712",
+  "events": 8,
+  "actor_object_version_provenance": true,
+  "evidence_stage_recorded": true,
+  "two_inspection_rounds_preserved": true,
+  "inspection_replay_without_duplicate_event": true,
+  "serial_mode_first_denominator": 2,
+  "serial_mode_first_pass": 1,
+  "serial_mode_final_release": 2,
+  "anonymous_status": 401,
+  "foreign_workspace_status": 404
+}

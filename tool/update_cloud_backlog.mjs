@@ -7,6 +7,7 @@ const target = path.join(dir, 'LineSight_Development_Backlog.xlsx');
 const wb = await SpreadsheetFile.importXlsx(await FileBlob.load(target));
 const sheet = wb.worksheets.getItem('开发台账');
 const rows = sheet.getRange('A7:J62').values;
+await fs.writeFile('.artifact-work/history-backlog-before.png', new Uint8Array(await (await wb.render({sheetName:'开发台账',range:'A3:F16',scale:1,format:'png'})).arrayBuffer()));
 const changes = {
   'SSO-01': ['待验收', 'acceptance/sso/api-verification.json; acceptance/sso/png/02-unified-secondary-login.png', '内置端点与独立演示账号已实际接入；普通账户/演示团队相互隔离，越权API被拒绝'],
   'SSO-02': ['待验收', 'acceptance/sso/provider-verification.json; acceptance/sso/api-verification.json; deploy/sso/README.md', 'Keycloak 26.8.1已上线；真实PKCE登录、签名/issuer/audience校验、轮换刷新、退出即时撤权通过；Android使用AppAuth'],
@@ -96,6 +97,12 @@ Object.assign(changes, {
  'UI-11': ['开发中', 'tool/audit_cloud_copy.py; acceptance/access-batch/copy-audit.json; test/cloud_access_ui_test.dart', '新增130条英文目录项，3个主云端模块275个直接tr文本无漏译；照片数占位符，320宽英文页头溢出修正；4张中英文360宽桌面组件PNG。动态错误及完整真机流程继续'],
  'COL-02': ['开发中', 'lib/screens/cloud_shell.dart; lib/cloud_account.dart; test/cloud_access_ui_test.dart', '账户资料与修改密码已接Keycloak UPDATE_PASSWORD；身份变化重置旧姓名草稿，令牌续期/退出沿用现有测试。密码动作仅接线验证，真实改密/撤销旧会话与SMTP找回仍待完成'],
 });
+Object.assign(changes, {
+ 'DAT-06': ['待验收', 'backend/collaboration/workflow.py; lib/cloud_history.dart; acceptance/history-batch/', '云端8事件记录操作者、对象、版本、前后状态和照片阶段；稀疏旧事件只投影不可变检验快照，不改写原事件；首检/复检及幂等真实HTTPS联调通过，Android界面待真机'],
+ 'UI-05': ['待联调', 'lib/cloud_history.dart; test/cloud_history_test.dart; acceptance/history-batch/png/', '展开时间线显示检验轮次、数量、版本与完整处置内容，使用实际云端演示数据生成中英文桌面组件PNG；实机验收继续'],
+ 'QC-03': ['待验收', 'lib/screens/cloud_business.dart; acceptance/history-batch/live-api.json; test/cloud_history_test.dart', '两件SN首检1合格/1异常，整改后复检2合格并关闭；逐件历史判定保留，身份/团队切换隐藏原记录，真实云端与组件验证通过，Android待真机'],
+ 'QA-04': ['开发中', 'acceptance/DEMO_INDEX.html; acceptance/DEMO_INDEX.json; acceptance/history-batch/', '81张功能演示PNG可离线搜索，逐张记录来源、尺寸和哈希；本批4张为云端演示数据的桌面组件渲染。未启动模拟器，双真机及外部用户验收继续'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;
@@ -104,6 +111,8 @@ for (let index = 0; index < rows.length; index++) {
   sheet.getRange(`I${row}:J${row}`).values = [[change[1], change[2]]];
 }
 wb.recalculate();
+await fs.writeFile('.artifact-work/history-backlog-after.png', new Uint8Array(await (await wb.render({sheetName:'开发台账',range:'A3:F16',scale:1,format:'png'})).arrayBuffer()));
+console.log((await wb.inspect({kind:'match',searchTerm:'#REF!|#DIV/0!|#VALUE!|#NAME\\?|#NUM!',options:{useRegex:true,maxResults:15},maxChars:1500})).ndjson);
 console.log((await wb.inspect({kind: 'table', range: '开发台账!A3:F3', tableMaxRows: 1, tableMaxCols: 6})).ndjson);
 await (await SpreadsheetFile.exportXlsx(wb)).save(target);
 const mirror = sheet.getRange('A6:J62').values;

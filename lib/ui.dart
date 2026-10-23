@@ -2,7 +2,7 @@ import 'l10n.dart';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.28';
+const appVersion = '1.1.29';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
