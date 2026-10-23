@@ -1,5 +1,5 @@
 {
-  "screenshots": 106,
+  "screenshots": 118,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1645,6 +1645,186 @@
       "height": 1600,
       "sha256": "2d132165c0e738e45dc45f4d288d6aa5cb98ce95d6b3e7ef3388568a2b5d9a92",
       "batch_notes": "nfc-batch/README.md"
+    },
+    {
+      "file": "closure-batch/after-source.png",
+      "title": "after-source",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "reference-source-image",
+      "width": 1400,
+      "height": 933,
+      "sha256": "d47557c14df4bf4acf1448033f3021a36ca9cac4fb6b2c85fa56d64154a5ef23",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/before-source.png",
+      "title": "before-source",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "reference-source-image",
+      "width": 1400,
+      "height": 933,
+      "sha256": "be84ccc6e93104eae6c4c19c07e3b9debef6461f3663a266c5d759af82777dd1",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/74-sessions-en-desktop-render.png",
+      "title": "74-sessions-en-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "612d98ca8c1b98c71f58dd82f50e169e5ba3f6e9c802401d2083230fb6309f0f",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/74-sessions-zh-desktop-render.png",
+      "title": "74-sessions-zh-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "1d0737e59d7c9924cf923bac2fd3d088c164bab54810c64096db1c92a6fb65e6",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/75-before-after-en-desktop-render.png",
+      "title": "75-before-after-en-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "b83b5f90ba2adaa66a50cfd9f18133fb6df0d40fccb8d496d8b07d0c68a09d75",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/75-before-after-zh-desktop-render.png",
+      "title": "75-before-after-zh-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "5f1a32d27aaa178dbf9e19a71add0a4758ae5f7731c7b4c7fd2e58f902d19574",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/76-lifecycle-en-desktop-render.png",
+      "title": "76-lifecycle-en-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "325d6b3bfb64ad3518d786f7d153643cc87e42d13b75adc9a5f0db0d7f63a05b",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/76-lifecycle-zh-desktop-render.png",
+      "title": "76-lifecycle-zh-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1500,
+      "sha256": "c2d972d8658bd183a0dda7beb1aec8c09cb7b491a1646c3d5bb6e82117197b5e",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/77-account-en-desktop-render.png",
+      "title": "77-account-en-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "6c6017af8366e7770bf17d97406afc8c053a1198d50e9f43dc7473fd346253a7",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/77-account-zh-desktop-render.png",
+      "title": "77-account-zh-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9a8a48611fd22356b5a3821c083b226ca4f80b970bb1cb823792de29cc23916a",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/78-login-card-en-desktop-render.png",
+      "title": "78-login-card-en-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "47b2b2e2b72b5cbc79f02722b399138af41519241757117c02c423cc769c425b",
+      "batch_notes": "closure-batch/README.md"
+    },
+    {
+      "file": "closure-batch/png/78-login-card-zh-desktop-render.png",
+      "title": "78-login-card-zh-desktop-render",
+      "batch": "closure-batch",
+      "batch_requirement_ids": [
+        "UI-04",
+        "QC-07",
+        "COL-02"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "51c4f1f0eba1908f4e633f8a00c440027d52a9ce2b63f6bc698085e7c3e17d33",
+      "batch_notes": "closure-batch/README.md"
     }
   ],
   "product_plan_complete": false

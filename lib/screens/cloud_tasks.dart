@@ -5,6 +5,8 @@ import '../cloud_account.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
 import '../cloud_history.dart';
+import '../cloud_lifecycle.dart';
+import 'cloud_evidence_compare.dart';
 import '../cloud_feedback.dart';
 import '../cloud_trace.dart';
 import '../collaboration_api.dart';
@@ -1172,7 +1174,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
           ),
         ),
         const SizedBox(height: 14),
-        _StatusTrack(status: status),
+        CloudLifecycleTrack(job: job),
         const SizedBox(height: 16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -1466,6 +1468,22 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                         ],
                       ),
                     ],
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.compare, size: 16),
+                      label: Text(tr(context, '整改前后对比')),
+                      onPressed: () => openPage(
+                        context,
+                        CloudEvidenceComparePage(
+                          jobId: '${job['id']}',
+                          issueId: issue['id'] as int,
+                          photos: evidence
+                              .map(
+                                (row) => Map<String, dynamic>.from(row as Map),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
                     for (final photo in evidence.where(
                       (p) => p['issue_id'] == issue['id'],
                     ))
@@ -1575,95 +1593,6 @@ class _MiniStat extends StatelessWidget {
       ],
     ),
   );
-}
-
-class _StatusTrack extends StatelessWidget {
-  final String status;
-  const _StatusTrack({required this.status});
-  @override
-  Widget build(BuildContext context) {
-    const steps = ['queued', 'printing', 'inspection', 'closed'];
-    final exception = status == 'exception';
-    final current = exception ? 2 : steps.indexOf(status).clamp(0, 3);
-    return GlassPanel(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            for (var i = 0; i < steps.length; i++) ...[
-              if (i > 0)
-                SizedBox(
-                  width: 20,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 26),
-                    child: Container(
-                      height: 2,
-                      color: i <= current ? blue : hairline,
-                    ),
-                  ),
-                ),
-              Column(
-                children: [
-                  Container(
-                    width: 26,
-                    height: 26,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: i < current
-                          ? green
-                          : i == current
-                          ? (exception ? red : blue)
-                          : Colors.white,
-                      border: Border.all(
-                        color: i <= current
-                            ? Colors.transparent
-                            : const Color(0xFFD7E2F0),
-                        width: 1.5,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: i < current
-                        ? const Icon(Icons.check, size: 13, color: Colors.white)
-                        : i == current
-                        ? Icon(
-                            exception
-                                ? Icons.priority_high_rounded
-                                : Icons.circle,
-                            size: exception ? 14 : 8,
-                            color: Colors.white,
-                          )
-                        : Text(
-                            '${i + 1}',
-                            style: const TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFF9AA9BD),
-                            ),
-                          ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    tr(
-                      context,
-                      exception && i == 2
-                          ? '异常处理中'
-                          : taskStatusLabels[steps[i]] ?? steps[i],
-                    ),
-                    style: TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                      color: i <= current ? ink : const Color(0xFF9AA9BD),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class CloudTaskCommandPage extends StatefulWidget {

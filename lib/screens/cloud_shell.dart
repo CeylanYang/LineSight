@@ -12,6 +12,7 @@ import '../language_selector.dart';
 import 'cloud_tasks.dart';
 import 'cloud_business.dart';
 import 'cloud_nfc.dart';
+import 'cloud_sessions.dart';
 import '../nfc_reader.dart';
 
 class CloudShell extends StatefulWidget {
@@ -1018,6 +1019,16 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
             ),
           ),
           if (!account.demoAccount) ...[
+            GlassPanel(
+              padding: EdgeInsets.zero,
+              child: MenuTile(
+                title: tr(context, '登录会话'),
+                subtitle: tr(context, '管理当前账户的登录设备'),
+                icon: Icons.devices,
+                color: blue,
+                onTap: () => openPage(context, const CloudSessionsPage()),
+              ),
+            ),
             SectionHeader(tr(context, '登录安全'), icon: Icons.key_outlined),
             GlassPanel(
               padding: EdgeInsets.zero,

@@ -1,0 +1,8 @@
+{
+  "demo_only": true,
+  "job_id": "608e72c3-7591-45d7-a86d-8ddfc7d8abbd",
+  "queued_printing_inspection_exception_reinspection_closed": true,
+  "before_after_issue_binding": true,
+  "two_inspection_rounds": true,
+  "generated_reference_images": true
+}

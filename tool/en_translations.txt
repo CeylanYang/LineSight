@@ -1591,3 +1591,25 @@
 1590|This card is no longer linked.
 1591|This card is linked to another account on this phone.
 1592|Card sign-in has expired. Sign in again.
+1593|Sign-in sessions
+1594|Manage devices signed in to your account
+1595|Other device
+1596|Sign out other sessions
+1597|Sign out other sessions?
+1598|Sign out this session?
+1599|Other devices will need to sign in again. This session stays signed in.
+1600|This session will end immediately and require sign-in again.
+1601|No sign-in sessions
+1602|Refresh to see the latest sign-in status
+1603|Current session
+1604|Signed in
+1605|Last active
+1606|Sign out this session
+1607|Issue / recheck
+1608|Current stage
+1609|Pending
+1610|Skipped
+1611|Before and after
+1612|Issue record
+1613|No photos uploaded yet
+1614|View original and contours

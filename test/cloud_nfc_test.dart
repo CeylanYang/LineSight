@@ -370,7 +370,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/nfc-batch/png/73-login-card-$language-desktop-render.png',
+          '../docs/product/linesight/acceptance/closure-batch/png/78-login-card-$language-desktop-render.png',
         ),
       );
     });

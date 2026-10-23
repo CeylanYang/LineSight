@@ -294,10 +294,12 @@ class CloudAccount extends ChangeNotifier {
   final CloudTokenVault vault;
   final CloudIdentityGateway identity;
   final String apiUrl;
+  final CollaborationApi Function(String token)? identityApiFactory;
   CloudAccount({
     CloudTokenVault? vault,
     CloudIdentityGateway? identity,
     this.apiUrl = defaultCollaborationApi,
+    this.identityApiFactory,
   }) : vault = vault ?? SecureCloudTokenVault(),
        identity =
            identity ??
@@ -409,6 +411,66 @@ class CloudAccount extends ChangeNotifier {
       if (failure.status == 401 && epoch == _epoch) await _expired();
       rethrow;
     }
+  }
+
+  Future<dynamic> _identitySessionsRequest(String method, String path) async {
+    final epoch = _epoch;
+    try {
+      if (_tokens == null) throw const CollaborationApiException(401, '请先登录');
+      if (demoAccount || _tokens!.clientId == 'linesight-demo') {
+        throw const CollaborationApiException(403, '当前账户没有访问权限');
+      }
+      if (_tokens!.expiresAt.isBefore(
+        DateTime.now().add(const Duration(seconds: 30)),
+      )) {
+        await _refresh();
+      }
+      if (epoch != _epoch || _tokens == null) {
+        throw const CollaborationApiException(401, '请先登录');
+      }
+      final api =
+          identityApiFactory?.call(_tokens!.access) ??
+          CollaborationApi('$cloudIssuer/account/', token: _tokens!.access);
+      final result = await api.request(method, path);
+      if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
+      return result;
+    } on CollaborationApiException catch (failure) {
+      if (failure.status == 401 && epoch == _epoch) await _expired();
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> listIdentitySessions() async {
+    final data = await _identitySessionsRequest('GET', 'sessions');
+    return (data as List)
+        .map((row) => Map<String, dynamic>.from(row as Map))
+        .toList();
+  }
+
+  Future<void> revokeIdentitySession(String id) async {
+    if (!RegExp(r'^[a-zA-Z0-9_-]{1,128}$').hasMatch(id)) {
+      throw const CollaborationApiException(400, '请核对填写内容');
+    }
+    final epoch = _epoch;
+    final sessions = await listIdentitySessions();
+    if (epoch != _epoch) {
+      throw const CollaborationApiException(401, '请先登录');
+    }
+    final selected = sessions.where((row) => row['id'] == id).firstOrNull;
+    if (selected == null) throw const CollaborationApiException(404, '记录暂不可访问');
+    await _identitySessionsRequest('DELETE', 'sessions/$id');
+    if (selected['current'] == true && epoch == _epoch) {
+      _epoch++;
+      _tokens = null;
+      _resetViews();
+      error = null;
+      await _persist(_epoch);
+      notifyListeners();
+    }
+  }
+
+  Future<void> revokeOtherIdentitySessions() async {
+    await _identitySessionsRequest('DELETE', 'sessions?current=false');
   }
 
   Future<void> _operation(Future<void> Function() action) async {
