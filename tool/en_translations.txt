@@ -1378,3 +1378,133 @@
 1377|No inspection data
 1378|Progress updated from
 1379|Progress updated to
+1380|Workspace changed
+1381|Return to the workbench and reopen this page.
+1382|Your account or team changed. Reopen this page.
+1383|Update the password for this account
+1384|Download details for this scope
+1385|Sync inspection progress, photo evidence and quality reports with your team.
+1386|Personal workspace
+1387|tasks
+1388|templates
+1389|Record a separate inspection result for each piece
+1390|Cloud snapshot
+1391|people
+1392|Team owner only
+1393|Team administrators only
+1394|Average time from issue creation to closure
+1395|Tasks
+1396|Task and inspection sync
+1397|This task was updated by someone else. Choose how to continue with this draft.
+1398|Task list
+1399|reports
+1400|drafts
+1401|Continue with your account
+1402|Use system printing to save a PDF
+1403|For example: final appearance and dimension check
+1404|Preferences
+1405|All notifications
+1406|Changing the role creates a new invitation code
+1407|Create a production inspection task
+1408|Refresh data
+1409|Team workspace
+1410|Historical inspections retain their original checklist
+1411|Original photos and edge references
+1412|Publish a checklist to create standardized inspection tasks.
+1413|A failed result creates an issue. Add its category and description.
+1414|Sync tasks, inspections and reports, and keep drafts when offline.
+1415|members
+1416|Team and account
+1417|Team access
+1418|Team quality trends and exports
+1419|View a report with photos in the app
+1420|Basic information
+1421|Enter the piece details. Your draft is saved on this device.
+1422|Resolution stage
+1423|Export CSV
+1424|Reports and exports
+1425|Add photos of the defect and overall appearance.
+1426|Workspace
+1427|Counts calculated from serial numbers
+1428|{0} photos added. They will be saved with the inspection.
+1429|Cleared
+1430|photos
+1431|photos pending upload
+1432|No tasks match these filters.
+1433|No inspection data in this scope
+1434|No issues recorded in this scope
+1435|Photos pending upload
+1436|Pieces awaiting inspection
+1437|Quick actions
+1438|Members
+1439|All photos synced
+1440|Printing stage
+1441|Sorted by task count
+1442|Workspace checklist versions
+1443|Workspace data and access
+1444|Metrics for the current filters
+1445|Save this action to the task history. You can add photos later.
+1446|Pinch to zoom and drag to see details
+1447|The new version becomes the default checklist
+1448|Last 7 days
+1449|Recent activity
+1450|Open issues
+1451|Unnamed member
+1452|Unassigned
+1453|Unread
+1454|Quality records at hand
+1455|No photos for this inspection
+1456|No checklist items recorded for this inspection.
+1457|items
+1458|pending notifications
+1459|reminders
+1460|unread
+1461|Key metrics
+1462|Checklist item count is valid
+1463|Checklist items
+1464|Inspection checklist
+1465|Inspection result
+1466|Inspection stage
+1467|Checklist information
+1468|One item per line (3–6 items)
+1469|New issues and reinspections will appear here.
+1470|No pending notifications
+1471|No unsubmitted drafts
+1472|Demo data
+1473|Account details cannot be changed for the shared demo.
+1474|Select a date to view its tasks
+1475|Photo evidence
+1476|Photo evidence
+1477|Live status, inspection rounds and serial numbers
+1478|On site
+1479|Production quality workbench
+1480|Generated at
+1481|Sign in to load tasks and notifications for your workspace.
+1482|Sign in to view tasks and inspections.
+1483|Sign in to manage your account and password.
+1484|Sign in to your workspace
+1485|Sign-in security
+1486|Offline photos and unsubmitted work
+1487|Offline drafts
+1488|English / Simplified Chinese
+1489|Use consistent checks and keep each checklist version with its inspection.
+1490|Add measurements, conditions or handover notes
+1491|Evidence
+1492|Evidence photos
+1493|Describe the action, result and next steps
+1494|Enter 3–6 checklist items
+1495|Account information
+1496|Open the task list with the same filters
+1497|Your changes are saved on this device
+1498|Traceability and notes
+1499|Review results, inspectors and photo evidence for every round.
+1500|Check each item and confirm passed and failed quantities.
+1501|Notifications
+1502|Pass rates and issue trends
+1503|Invite members and manage roles
+1504|Reload
+1505|Retry
+1506|Saved with the inspection
+1507|Sign-in required
+1508|items
+1509|Surface scratches, assembly fit, key dimensions, labels and batch

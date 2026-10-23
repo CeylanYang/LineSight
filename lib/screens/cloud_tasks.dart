@@ -43,6 +43,18 @@ Widget cloudAccessRequired(BuildContext context) => DetailScaffold(
   ],
 );
 
+Widget cloudScopeChanged(BuildContext context) => DetailScaffold(
+  title: tr(context, '工作区已切换'),
+  children: [
+    Text(tr(context, '返回工作台后重新打开页面')),
+    const SizedBox(height: 16),
+    FilledButton(
+      onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+      child: Text(tr(context, '返回工作台')),
+    ),
+  ],
+);
+
 class CloudTaskListPage extends StatefulWidget {
   final String? status;
   final Map<String, String> filters;
@@ -484,7 +496,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   String key = 'cloud-${uid()}';
   bool busy = false;
   String? error;
-  String? draftStorageKey;
+  String? draftStorageKey, accessBinding;
   bool draftLoaded = false;
   @override
   void didChangeDependencies() {
@@ -492,6 +504,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     if (!draftLoaded) {
       draftLoaded = true;
       final account = CloudScope.of(context);
+      accessBinding = account.accessScope;
       draftStorageKey = account.draftKey('create');
       loadMembers(account);
       if (draftStorageKey != null) restoreDraft(account);
@@ -508,7 +521,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                   )
                   as List)
               .cast<Map<String, dynamic>>();
-      if (mounted) {
+      if (mounted && account.retainsAccess(accessBinding)) {
         setState(() {
           teamMembers = rows;
           if (assigneeId != null && !rows.any((m) => m['id'] == assigneeId)) {
@@ -522,7 +535,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   Future<void> restoreDraft(CloudAccount account) async {
     try {
       final data = await account.readDraft(draftStorageKey!);
-      if (!mounted || data == null) return;
+      if (!mounted || data == null || !account.retainsAccess(accessBinding)) {
+        return;
+      }
       setState(() {
         key = data['request_key'] as String? ?? key;
         name.text = '${data['name'] ?? ''}';
@@ -581,7 +596,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     if (!form.currentState!.validate()) return;
     final account = CloudScope.of(context),
         workspace = CloudScope.of(context).activeWorkspace;
-    if (workspace == null ||
+    if (!account.retainsAccess(accessBinding) ||
+        !account.canEdit ||
+        workspace == null ||
         (draftStorageKey != null &&
             draftStorageKey != account.draftKey('create'))) {
       return;
@@ -630,6 +647,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         (draftStorageKey != null &&
             draftStorageKey != account.draftKey('create'))) {
       return cloudAccessRequired(context);
+    }
+    if (!account.retainsAccess(accessBinding)) {
+      return cloudScopeChanged(context);
     }
     InputDecoration field(String label, IconData icon) => InputDecoration(
       labelText: tr(context, label),
@@ -1747,6 +1767,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   final passed = TextEditingController(),
       failed = TextEditingController(text: '0'),
       scrapped = TextEditingController(text: '0');
+  String? accessBinding;
   bool initialized = false;
   @override
   void didChangeDependencies() {
@@ -1754,6 +1775,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     if (!initialized) {
       initialized = true;
       final account = CloudScope.of(context);
+      accessBinding = account.accessScope;
       template =
           widget.job['template'] as Map<String, dynamic>? ??
           (account.templates.isEmpty ? null : account.templates.first);
@@ -1800,7 +1822,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   Future<void> restoreDraft() async {
     try {
       final data = await draftAccount!.readDraft(draftStorageKey!);
-      if (!mounted) return;
+      if (!mounted || !draftAccount!.retainsAccess(accessBinding)) return;
       if (data != null) {
         note.text = '${data['note'] ?? ''}';
         nextStatus = '${data['next_status'] ?? 'inspection'}';
@@ -1902,6 +1924,11 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
 
   Future<void> submit() async {
     final account = CloudScope.of(context), action = widget.action;
+    if (!account.retainsAccess(accessBinding) ||
+        !account.canEdit ||
+        account.activeWorkspace?['id'] != widget.workspaceId) {
+      return;
+    }
     if ((action == 'resolve' || (action == 'inspect' && verdict == 'fail')) &&
         note.text.trim().isEmpty) {
       edit(() => error = '请填写处理或异常说明');
@@ -1947,6 +1974,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           await persistDraft();
         }
       }
+      account.requireAccess(accessBinding, write: true);
       final base = 'workspaces/${widget.workspaceId}';
       final path = action == 'resolve'
           ? '$base/exceptions/${widget.issue!['id']}/resolve/'
@@ -2026,6 +2054,10 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
             draftStorageKey !=
                 account.draftKey('${widget.action}-${widget.job['id']}'))) {
       return cloudAccessRequired(context);
+    }
+    if (!account.retainsAccess(accessBinding) ||
+        account.activeWorkspace?['id'] != widget.workspaceId) {
+      return cloudScopeChanged(context);
     }
     if (!draftReady) {
       return DetailScaffold(
@@ -2554,10 +2586,9 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                     child: Text(
                       evidence.isEmpty
                           ? tr(context, '尚未添加照片，建议拍摄缺陷与整体外观。')
-                          : tr(
-                              context,
-                              '已添加 ${evidence.length} 张照片，提交后随检验记录归档。',
-                            ),
+                          : tr(context, '已添加 {0} 张照片，提交后随检验记录归档。', [
+                              evidence.length,
+                            ]),
                       style: hint,
                     ),
                   ),

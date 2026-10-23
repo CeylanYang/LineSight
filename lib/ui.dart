@@ -2,7 +2,7 @@ import 'l10n.dart';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.27';
+const appVersion = '1.1.28';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -608,7 +608,11 @@ class HeroAction extends StatelessWidget {
           ? BorderSide(color: Colors.white.withValues(alpha: .26))
           : BorderSide.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-      textStyle: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
+      textStyle: TextStyle(
+        fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily,
+        fontSize: 12.5,
+        fontWeight: FontWeight.w800,
+      ),
     ),
   );
 }

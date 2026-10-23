@@ -1,3 +1,12 @@
+# 1.1.28 账号/团队切换与双语批次
+
+当前工作区sync-delivery / feature/sync-delivery。CloudAccount identityScope/accessScope包含会话身份及团队角色；新建/状态/检验/模板表单绑定原作用域并提交前核对；两种成员页拒绝过期响应，团队切换清空邀请码；图片页拒绝过期结果且切换清缓存；账户草稿按新身份重置。修改密码仍接Keycloak标准动作，没有本地密码表单。
+
+新增8项回归，全量137项通过，静态检查无问题。三个云端主模块275个直接tr文本无漏译，新增130条英文目录项；照片数改占位符；修复新英文长文案引出的320宽页头溢出。四张360宽中英文PNG为桌面组件渲染，明确标记desktop-render，不能当真机证据。具体构建/签名结果见acceptance/access-batch/validation.json。
+
+继续不启动模拟器。低资源构建2 workers/2GB堆/no-daemon、不自动安装。后端无改动；上一批每日私有备份与隔离恢复持续生效。SMTP和恢复后实际OIDC登录、完整业务双语/角色审计、正式签名、升级/相机/双真机及10名外部验收仍待推进；完整产品计划未完成。
+
+---
 # 云端恢复演练批次 · 客户端保持1.1.27
 
 2026-10-23。tool/rehearse_cloud_restore.py已部署，业务SQLite28表、Keycloak PostgreSQL101表及16个图片文件完成实际隔离恢复与全表指纹核对，20条任务保留；副本API权限/图片读取通过。临时身份数据库已删除，线上健康与发现文档正常。证据acceptance/restore-batch，回滚手册deploy/sso/RESTORE.md。

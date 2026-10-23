@@ -171,9 +171,13 @@ class _CloudShellState extends State<CloudShell> {
             const SizedBox(height: 2),
             Row(
               children: [
-                Text(
-                  tr(context, '生产质量工作台'),
-                  style: const TextStyle(fontSize: 10.5, color: muted),
+                Flexible(
+                  child: Text(
+                    tr(context, '生产质量工作台'),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 10.5, color: muted),
+                  ),
                 ),
                 if (account.demoAccount) ...[
                   const SizedBox(width: 6),
@@ -872,6 +876,7 @@ class CloudProfilePage extends StatefulWidget {
 
 class _CloudProfilePageState extends State<CloudProfilePage> {
   final _name = TextEditingController();
+  String? _identityBinding;
   bool _initialized = false;
   @override
   void dispose() {
@@ -882,7 +887,8 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    if (!_initialized) {
+    if (!_initialized || _identityBinding != account.identityScope) {
+      _identityBinding = account.identityScope;
       _name.text = account.displayName;
       _initialized = true;
     }
@@ -986,7 +992,7 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
               padding: EdgeInsets.zero,
               child: MenuTile(
                 title: tr(context, '修改密码'),
-                subtitle: tr(context, '通过团队身份服务更新登录凭据'),
+                subtitle: tr(context, '更新当前账户的登录密码'),
                 icon: Icons.lock_reset,
                 color: green,
                 onTap: account.busy
@@ -1021,33 +1027,49 @@ class CloudMembersPage extends StatefulWidget {
 
 class _CloudMembersPageState extends State<CloudMembersPage> {
   List<Map<String, dynamic>>? _members;
-  String? _error;
+  String? _error, _scope;
   bool _loading = false;
+  int _generation = 0;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_members == null && _error == null && !_loading) _load();
+    final next = CloudScope.of(context).accessScope;
+    if (next != _scope) {
+      _scope = next;
+      _members = null;
+      _error = null;
+      _loading = false;
+      _generation++;
+      if (next != null) _load();
+    }
   }
 
   Future<void> _load() async {
     final account = CloudScope.of(context),
-        workspace = CloudScope.of(context).activeWorkspace;
-    if (workspace == null) return;
+        captured = _scope,
+        ticket = ++_generation;
+    if (captured == null) return;
     _loading = true;
     _error = null;
     try {
       final rows =
           (await account.request(
                     'GET',
-                    'workspaces/${workspace['id']}/members/',
+                    'workspaces/${account.activeWorkspace!['id']}/members/',
                   )
                   as List)
               .cast<Map<String, dynamic>>();
-      if (mounted) setState(() => _members = rows);
+      if (mounted && ticket == _generation && account.retainsAccess(captured)) {
+        setState(() => _members = rows);
+      }
     } catch (_) {
-      if (mounted) setState(() => _error = '无法加载成员，请重试');
+      if (mounted && ticket == _generation && account.retainsAccess(captured)) {
+        setState(() => _error = '无法加载成员，请重试');
+      }
     } finally {
-      _loading = false;
+      if (mounted && ticket == _generation && account.retainsAccess(captured)) {
+        setState(() => _loading = false);
+      }
     }
   }
 
@@ -1058,8 +1080,7 @@ class _CloudMembersPageState extends State<CloudMembersPage> {
           title: tr(context, '团队成员'),
           children: [
             if (_error != null) Text(trMessage(context, _error!)),
-            if (_members == null && _error == null)
-              const LinearProgressIndicator(),
+            if (_loading) const LinearProgressIndicator(),
             ...?_members?.map(
               (member) => GlassPanel(
                 child: ListTile(

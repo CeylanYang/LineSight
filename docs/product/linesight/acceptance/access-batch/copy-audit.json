@@ -1,0 +1,7 @@
+{
+  "scope": "Literal tr(context, text) calls in cloud_shell/cloud_business/cloud_tasks",
+  "unique_literals_checked": 275,
+  "missing": [],
+  "runtime_interpolation": [],
+  "dynamic_messages_and_user_content_audited": false
+}

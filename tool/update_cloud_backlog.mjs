@@ -91,6 +91,11 @@ Object.assign(changes, {
  'REL-02': ['待验收', 'tool/rehearse_cloud_restore.py; deploy/sso/RESTORE.md; acceptance/restore-batch/', '实际恢复业务库28表/身份库101表/16图片，全表行及字节哈希一致，20任务保留；副本API读取、403/404/401与图片读取通过；每日备份timer已启用，生产回滚方案已写。未切换生产；异机副本及恢复后Keycloak真实登录待后续'],
  'SSO-03': ['待验收', 'acceptance/sso/; acceptance/restore-batch/; deploy/sso/RESTORE.md', 'realm/client/独立演示身份已初始化，旧账户密码及关系保留；身份库101表已实际隔离恢复，凭据/客户端/密钥行指纹一致，每日备份已启用。SMTP与恢复后真实OIDC登录仍待验证'],
 });
+Object.assign(changes, {
+ 'COL-04': ['待联调', 'lib/cloud_account.dart; test/cloud_access_ui_test.dart; acceptance/access-batch/', '两种成员页按身份/团队/角色绑定，拒绝迟到成员响应，切换清空邀请码；模板/新建/状态/检验提交核对原绑定，图片缓存切换清空。8项组件回归通过；全角色真机联调继续'],
+ 'UI-11': ['开发中', 'tool/audit_cloud_copy.py; acceptance/access-batch/copy-audit.json; test/cloud_access_ui_test.dart', '新增130条英文目录项，3个主云端模块275个直接tr文本无漏译；照片数占位符，320宽英文页头溢出修正；4张中英文360宽桌面组件PNG。动态错误及完整真机流程继续'],
+ 'COL-02': ['开发中', 'lib/screens/cloud_shell.dart; lib/cloud_account.dart; test/cloud_access_ui_test.dart', '账户资料与修改密码已接Keycloak UPDATE_PASSWORD；身份变化重置旧姓名草稿，令牌续期/退出沿用现有测试。密码动作仅接线验证，真实改密/撤销旧会话与SMTP找回仍待完成'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

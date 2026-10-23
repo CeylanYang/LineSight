@@ -265,6 +265,25 @@ class CloudAccount extends ChangeNotifier {
   Future<void> _vaultWrites = Future<void>.value();
   bool get signedIn => _tokens != null;
   final Map<String, double> uploadProgress = {};
+  String? get identityScope =>
+      signedIn ? '$_epoch/${profile?['id'] ?? ''}' : null;
+  String? get accessScope => identityScope == null || activeWorkspace == null
+      ? null
+      : '$identityScope/${activeWorkspace!['id']}/${activeWorkspace!['role']}';
+  bool retainsAccess(String? captured) =>
+      captured != null && captured == accessScope;
+  void requireAccess(
+    String? captured, {
+    bool write = false,
+    bool owner = false,
+  }) {
+    if (!retainsAccess(captured) ||
+        (write && !canEdit) ||
+        (owner && activeWorkspace?['role'] != 'owner')) {
+      throw const CollaborationApiException(403, '账户或团队已切换，请重新打开页面');
+    }
+  }
+
   bool get demoAccount => profile?['is_demo'] == true;
   String get displayName => '${profile?['display_name'] ?? ''}';
   bool get canEdit =>

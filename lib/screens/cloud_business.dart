@@ -794,6 +794,17 @@ class CloudTemplateEditor extends StatefulWidget {
 
 class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
   final name = TextEditingController(), items = TextEditingController();
+  String? binding;
+  bool bound = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!bound) {
+      binding = CloudScope.of(context).accessScope;
+      bound = true;
+    }
+  }
+
   bool busy = false;
   String? error;
   @override
@@ -820,184 +831,196 @@ class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
   }
 
   @override
-  Widget build(BuildContext context) => DetailScaffold(
-    title: tr(context, '发布检查模板'),
-    children: [
-      GlassPanel(
-        padding: const EdgeInsets.all(14),
-        child: Row(
+  Widget build(BuildContext context) => !CloudScope.of(context).signedIn
+      ? cloudAccessRequired(context)
+      : !CloudScope.of(context).retainsAccess(binding)
+      ? cloudScopeChanged(context)
+      : DetailScaffold(
+          title: tr(context, '发布检查模板'),
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: blue.withValues(alpha: .09),
-                borderRadius: BorderRadius.circular(13),
-              ),
-              child: const Icon(
-                Icons.rule_folder_outlined,
-                color: blue,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            GlassPanel(
+              padding: const EdgeInsets.all(14),
+              child: Row(
                 children: [
-                  Text(
-                    tr(context, '新版本将覆盖当前默认检查项'),
-                    style: const TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
-                      color: ink,
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: blue.withValues(alpha: .09),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: const Icon(
+                      Icons.rule_folder_outlined,
+                      color: blue,
+                      size: 20,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    tr(context, '历史检验记录保留原模板快照'),
-                    style: const TextStyle(fontSize: 11, color: muted),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tr(context, '新版本将覆盖当前默认检查项'),
+                          style: const TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w800,
+                            color: ink,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          tr(context, '历史检验记录保留原模板快照'),
+                          style: const TextStyle(fontSize: 11, color: muted),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-      SectionHeader(tr(context, '模板信息'), icon: Icons.badge_outlined),
-      GlassPanel(
-        padding: const EdgeInsets.all(16),
-        child: TextField(
-          controller: name,
-          maxLength: 100,
-          decoration: InputDecoration(
-            labelText: tr(context, '模板名称'),
-            hintText: tr(context, '例如：外观与尺寸终检'),
-          ),
-        ),
-      ),
-      SectionHeader(
-        tr(context, '检查项'),
-        icon: Icons.checklist_rtl,
-        caption: '$count ${tr(context, '项')}',
-      ),
-      GlassPanel(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: items,
-              minLines: 5,
-              maxLines: 10,
-              decoration: InputDecoration(
-                labelText: tr(context, '每行一项（3 至 6 项）'),
-                hintText: tr(context, '表面划痕\n装配间隙\n关键尺寸\n标识与批次'),
-                alignLabelWithHint: true,
+            SectionHeader(tr(context, '模板信息'), icon: Icons.badge_outlined),
+            GlassPanel(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                controller: name,
+                maxLength: 100,
+                decoration: InputDecoration(
+                  labelText: tr(context, '模板名称'),
+                  hintText: tr(context, '例如：外观与尺寸终检'),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(
-                  count >= 3 && count <= 6
-                      ? Icons.check_circle_outline
-                      : Icons.info_outline,
-                  size: 16,
-                  color: count >= 3 && count <= 6 ? green : amber,
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    count >= 3 && count <= 6
-                        ? tr(context, '检查项数量符合发布要求')
-                        : tr(context, '请填写 3 至 6 个检查项'),
-                    style: TextStyle(
-                      fontSize: 11.5,
-                      color: count >= 3 && count <= 6 ? muted : amber,
+            SectionHeader(
+              tr(context, '检查项'),
+              icon: Icons.checklist_rtl,
+              caption: '$count ${tr(context, '项')}',
+            ),
+            GlassPanel(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextField(
+                    controller: items,
+                    minLines: 5,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      labelText: tr(context, '每行一项（3 至 6 项）'),
+                      hintText: tr(context, '表面划痕、装配间隙、关键尺寸、标识与批次'),
+                      alignLabelWithHint: true,
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(
+                        count >= 3 && count <= 6
+                            ? Icons.check_circle_outline
+                            : Icons.info_outline,
+                        size: 16,
+                        color: count >= 3 && count <= 6 ? green : amber,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          count >= 3 && count <= 6
+                              ? tr(context, '检查项数量符合发布要求')
+                              : tr(context, '请填写 3 至 6 个检查项'),
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            color: count >= 3 && count <= 6 ? muted : amber,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (error != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF4F1),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(color: const Color(0xFFFFDCD2)),
+                  ),
+                  child: Text(
+                    trMessage(context, error!),
+                    style: const TextStyle(fontSize: 12, color: red),
+                  ),
                 ),
-              ],
+              ),
+            const SizedBox(height: 18),
+            if (busy)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: LinearProgressIndicator(),
+              ),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, 50),
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                onPressed:
+                    busy ||
+                        CloudScope.of(context).activeWorkspace?['role'] !=
+                            'owner'
+                    ? null
+                    : () async {
+                        final account = CloudScope.of(context),
+                            rows = items.text
+                                .split('\n')
+                                .where((s) => s.trim().isNotEmpty)
+                                .toList();
+                        setState(() {
+                          busy = true;
+                          error = null;
+                        });
+                        try {
+                          account.requireAccess(
+                            binding,
+                            write: true,
+                            owner: true,
+                          );
+                          await account.request(
+                            'POST',
+                            'workspaces/${account.activeWorkspace!['id']}/templates/',
+                            body: {
+                              'name': name.text.trim(),
+                              'items': [
+                                for (var i = 0; i < rows.length; i++)
+                                  {
+                                    'id': 'item-${i + 1}',
+                                    'label': rows[i].trim(),
+                                    'required': true,
+                                    'allow_na': true,
+                                  },
+                              ],
+                            },
+                          );
+                          await account.reload();
+                          if (context.mounted) Navigator.pop(context);
+                        } catch (failure) {
+                          if (mounted) setState(() => error = '$failure');
+                        } finally {
+                          if (mounted) setState(() => busy = false);
+                        }
+                      },
+                icon: const Icon(Icons.publish_outlined, size: 19),
+                label: Text(tr(context, '发布')),
+              ),
             ),
           ],
-        ),
-      ),
-      if (error != null)
-        Padding(
-          padding: const EdgeInsets.only(top: 14),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFF4F1),
-              borderRadius: BorderRadius.circular(13),
-              border: Border.all(color: const Color(0xFFFFDCD2)),
-            ),
-            child: Text(
-              trMessage(context, error!),
-              style: const TextStyle(fontSize: 12, color: red),
-            ),
-          ),
-        ),
-      const SizedBox(height: 18),
-      if (busy)
-        const Padding(
-          padding: EdgeInsets.only(bottom: 10),
-          child: LinearProgressIndicator(),
-        ),
-      SizedBox(
-        width: double.infinity,
-        child: FilledButton.icon(
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(0, 50),
-            textStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          onPressed: busy
-              ? null
-              : () async {
-                  final account = CloudScope.of(context),
-                      rows = items.text
-                          .split('\n')
-                          .where((s) => s.trim().isNotEmpty)
-                          .toList();
-                  setState(() {
-                    busy = true;
-                    error = null;
-                  });
-                  try {
-                    await account.request(
-                      'POST',
-                      'workspaces/${account.activeWorkspace!['id']}/templates/',
-                      body: {
-                        'name': name.text.trim(),
-                        'items': [
-                          for (var i = 0; i < rows.length; i++)
-                            {
-                              'id': 'item-${i + 1}',
-                              'label': rows[i].trim(),
-                              'required': true,
-                              'allow_na': true,
-                            },
-                        ],
-                      },
-                    );
-                    await account.reload();
-                    if (context.mounted) Navigator.pop(context);
-                  } catch (failure) {
-                    if (mounted) setState(() => error = '$failure');
-                  } finally {
-                    if (mounted) setState(() => busy = false);
-                  }
-                },
-          icon: const Icon(Icons.publish_outlined, size: 19),
-          label: Text(tr(context, '发布')),
-        ),
-      ),
-    ],
-  );
+        );
 }
 
 class CloudTeamPage extends StatefulWidget {
@@ -1008,19 +1031,30 @@ class CloudTeamPage extends StatefulWidget {
 
 class _CloudTeamPageState extends State<CloudTeamPage> {
   List<Map<String, dynamic>> members = [];
-  bool busy = false, loaded = false;
-  String? error, invitation;
+  bool busy = false;
+  String? error, invitation, binding;
+  int generation = 0;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!loaded) {
-      loaded = true;
-      load();
+    final next = CloudScope.of(context).accessScope;
+    if (next != binding) {
+      binding = next;
+      members = [];
+      invitation = null;
+      error = null;
+      busy = false;
+      generation++;
+      if (next != null) load();
     }
   }
 
-  Future<void> action(Future<void> Function(CloudAccount account) work) async {
-    final account = CloudScope.of(context);
+  Future<void> action(
+    Future<void> Function(CloudAccount account) work, {
+    String? expectedScope,
+  }) async {
+    final account = CloudScope.of(context), captured = expectedScope ?? binding;
+    if (!account.retainsAccess(captured) || busy) return;
     setState(() {
       busy = true;
       error = null;
@@ -1028,23 +1062,43 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     try {
       await work(account);
     } catch (failure) {
-      if (mounted) setState(() => error = '$failure');
+      if (mounted && account.retainsAccess(captured)) {
+        setState(() => error = '$failure');
+      }
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted && account.retainsAccess(captured)) {
+        setState(() => busy = false);
+      }
     }
   }
 
-  Future<void> load() => action((account) async {
-    if (account.activeWorkspace == null) return;
-    final rows =
-        (await account.request(
-                  'GET',
-                  'workspaces/${account.activeWorkspace!['id']}/members/',
-                )
-                as List)
-            .cast<Map<String, dynamic>>();
-    if (mounted) setState(() => members = rows);
-  });
+  Future<void> load() async {
+    final account = CloudScope.of(context),
+        captured = binding,
+        ticket = ++generation;
+    if (!account.retainsAccess(captured)) return;
+    busy = true;
+    try {
+      final rows =
+          (await account.request(
+                    'GET',
+                    'workspaces/${account.activeWorkspace!['id']}/members/',
+                  )
+                  as List)
+              .cast<Map<String, dynamic>>();
+      if (mounted && ticket == generation && account.retainsAccess(captured)) {
+        setState(() => members = rows);
+      }
+    } catch (failure) {
+      if (mounted && ticket == generation && account.retainsAccess(captured)) {
+        setState(() => error = '$failure');
+      }
+    } finally {
+      if (mounted && ticket == generation && account.retainsAccess(captured)) {
+        setState(() => busy = false);
+      }
+    }
+  }
 
   String roleLabel(BuildContext context, Object? role) =>
       tr(context, switch (role) {
@@ -1064,12 +1118,15 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     final account = CloudScope.of(context),
         workspace = CloudScope.of(context).activeWorkspace;
     if (!account.signedIn) return cloudAccessRequired(context);
+    final capturedScope = account.accessScope;
+    Future<void> run(Future<void> Function(CloudAccount) work) =>
+        action(work, expectedScope: capturedScope);
     final owner = workspace?['role'] == 'owner' && !account.demoAccount;
     const hint = TextStyle(fontSize: 11.5, height: 1.5, color: muted);
     Future<void> createTeam() async {
       final name = await cloudTextPrompt(context, '创建团队');
       if (name == null || name.isEmpty) return;
-      await action((account) async {
+      await run((account) async {
         final result = await account.request(
           'POST',
           'workspaces/create/',
@@ -1086,7 +1143,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     Future<void> joinTeam() async {
       final code = await cloudTextPrompt(context, '输入邀请码');
       if (code == null || code.isEmpty) return;
-      await action((account) async {
+      await run((account) async {
         final result = await account.request(
           'POST',
           'workspaces/redeem/',
@@ -1100,13 +1157,15 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
       if (mounted) await load();
     }
 
-    Future<void> invite(String role) => action((account) async {
+    Future<void> invite(String role) => run((account) async {
       final result = await account.request(
         'POST',
         'workspaces/${workspace!['id']}/invite/',
         body: {'role': role},
       );
-      if (mounted) setState(() => invitation = '${result['code']}');
+      if (mounted && account.retainsAccess(capturedScope)) {
+        setState(() => invitation = '${result['code']}');
+      }
     });
 
     return DetailScaffold(
@@ -1334,7 +1393,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                             )) {
                               return;
                             }
-                            await action((account) async {
+                            await run((account) async {
                               final path =
                                   'workspaces/${workspace!['id']}/members/${Uri.encodeComponent('${members[i]['username']}')}/';
                               await account.request(
@@ -1386,7 +1445,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                     )) {
                       return;
                     }
-                    await action((account) async {
+                    await run((account) async {
                       await account.request(
                         'POST',
                         'workspaces/${workspace['id']}/leave/',
@@ -1727,30 +1786,49 @@ class CloudEvidencePage extends StatefulWidget {
 class _CloudEvidencePageState extends State<CloudEvidencePage> {
   Uint8List? bytes;
   bool edge = false, loading = false;
-  String? error;
+  String? error, binding;
+  bool bound = false;
+  int generation = 0;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final account = CloudScope.of(context);
+    if (!bound) {
+      binding = account.accessScope;
+      bound = true;
+    }
+    if (!account.retainsAccess(binding)) {
+      bytes = null;
+      error = null;
+      generation++;
+      return;
+    }
     if (bytes == null && !loading && error == null) load();
   }
 
   Future<void> load() async {
     final account = CloudScope.of(context);
+    if (!account.retainsAccess(binding)) return;
+    final ticket = ++generation;
     loading = true;
     try {
       final result = await account.download(
         'workspaces/${account.activeWorkspace!['id']}/jobs/${widget.jobId}/evidence/${widget.photo['id']}/${edge ? 'preview' : 'original'}/',
       );
-      if (mounted) {
+      if (mounted && ticket == generation && account.retainsAccess(binding)) {
         setState(() {
           bytes = Uint8List.fromList(result);
           error = null;
         });
       }
     } catch (failure) {
-      if (mounted) setState(() => error = '$failure');
+      if (mounted && ticket == generation && account.retainsAccess(binding)) {
+        setState(() => error = '$failure');
+      }
     } finally {
-      if (mounted) setState(() => loading = false);
+      if (mounted && ticket == generation && account.retainsAccess(binding)) {
+        setState(() => loading = false);
+      }
     }
   }
 
@@ -1758,6 +1836,9 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
   Widget build(BuildContext context) {
     if (!CloudScope.of(context).signedIn) {
       return cloudAccessRequired(context);
+    }
+    if (!CloudScope.of(context).retainsAccess(binding)) {
+      return cloudScopeChanged(context);
     }
     const hint = TextStyle(fontSize: 11.5, height: 1.5, color: muted);
     return DetailScaffold(
