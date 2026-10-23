@@ -860,36 +860,51 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       error = null;
     });
     try {
-      await account.request(
-        'POST',
-        'workspaces/${workspace['id']}/jobs/',
-        idempotencyKey: key,
-        body: {
-          'part_name': name.text.trim(),
-          'printer': printer.text.trim(),
-          if (selectedProfile != null) 'profile_id': selectedProfile!['id'],
-          if (selectedProfile?['revision'] != null)
-            'profile_revision': selectedProfile!['revision'],
-          'quantity': int.parse(quantity.text),
-          'note': note.text.trim(),
-          'batch_code': batch.text.trim(),
-          if (assigneeId != null) 'assignee_id': assigneeId,
-          'tracking_mode': serialMode ? 'serial' : 'batch',
-          'serial_numbers': serialMode
-              ? serials.text
-                    .split(RegExp(r'[\s,，]+'))
-                    .where((s) => s.isNotEmpty)
-                    .toList()
-              : [],
-          if (templateId != null || account.templates.isNotEmpty)
-            'template_id': templateId ?? account.templates.first['id'],
-        },
+      final created = Map<String, dynamic>.from(
+        await account.request(
+              'POST',
+              'workspaces/${workspace['id']}/jobs/',
+              idempotencyKey: key,
+              body: {
+                'part_name': name.text.trim(),
+                'printer': printer.text.trim(),
+                if (selectedProfile != null)
+                  'profile_id': selectedProfile!['id'],
+                if (selectedProfile?['revision'] != null)
+                  'profile_revision': selectedProfile!['revision'],
+                'quantity': int.parse(quantity.text),
+                'note': note.text.trim(),
+                'batch_code': batch.text.trim(),
+                if (assigneeId != null) 'assignee_id': assigneeId,
+                'tracking_mode': serialMode ? 'serial' : 'batch',
+                'serial_numbers': serialMode
+                    ? serials.text
+                          .split(RegExp(r'[\s,，]+'))
+                          .where((s) => s.isNotEmpty)
+                          .toList()
+                    : [],
+                if (templateId != null || account.templates.isNotEmpty)
+                  'template_id': templateId ?? account.templates.first['id'],
+              },
+            )
+            as Map,
       );
-      if (draftStorageKey != null) await account.deleteDraft(draftStorageKey!);
-      await account.reload();
+      if (!mounted || !account.retainsAccess(accessBinding)) return;
+      if (draftStorageKey != null) {
+        // The server receipt remains successful even if local cleanup fails.
+        // Its persisted request key makes a later draft retry a server replay.
+        unawaited(account.deleteDraft(draftStorageKey!).catchError((_) {}));
+      }
       if (mounted && account.retainsAccess(accessBinding)) {
         cloudOutcome(context, '任务已创建');
-        Navigator.pop(context);
+        Navigator.of(context).pushReplacement<void, void>(
+          appPageRoute<void>(
+            context,
+            CloudTaskPage(job: created, workspaceId: workspace['id'] as int),
+          ),
+        );
+        // Refresh the caller's lists without delaying the confirmed result.
+        unawaited(account.reload());
       }
     } on CollaborationApiException catch (failure) {
       if (mounted && account.retainsAccess(accessBinding)) {

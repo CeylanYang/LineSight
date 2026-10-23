@@ -1,5 +1,5 @@
 {
-  "screenshots": 289,
+  "screenshots": 291,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2660,7 +2660,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "40d10f5c1487f518c598cc1b2b7c4e3eb28da79e94c90177a2c12e2dc9b81e98",
+      "sha256": "c0e222e683e2e82ee279c0b96d5345a2eeed793ed284fa9f2bbfd5a8290edb27",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -2678,7 +2678,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "bfd4ebd4e6e80043323f8d1d9f132ccfc6a0bdff0c1f6518d01396875a0fe83b",
+      "sha256": "9fdcc2f02b2ef8d90afe5b3f223689f39dca24bfb4129bc9f1c862094cb6e5b0",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -4666,6 +4666,40 @@
       "height": 824,
       "sha256": "7d330bfc1003e7a282b455654970e2e4d753ebcb5026cabb134e9c7f9b8c87ad",
       "batch_notes": "native-final-batch/README.md"
+    },
+    {
+      "file": "create-navigation-batch/png/290-created-task-en-component.png",
+      "title": "290-created-task-en-component",
+      "batch": "create-navigation-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "OFF-01",
+        "QA-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 360,
+      "height": 1100,
+      "sha256": "015af2847e65a116c997ffbe6fc7907b73a80a2cb164aeca852b70e51f8d24d7",
+      "batch_notes": "create-navigation-batch/README.md"
+    },
+    {
+      "file": "create-navigation-batch/png/290-created-task-zh-component.png",
+      "title": "290-created-task-zh-component",
+      "batch": "create-navigation-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "OFF-01",
+        "QA-04"
+      ],
+      "origin": "android-screenshot",
+      "width": 360,
+      "height": 1100,
+      "sha256": "5aeff34f64472e55def7808cb77ed467226e5c81980f067b77ecad1e70df60fc",
+      "batch_notes": "create-navigation-batch/README.md"
     }
   ],
   "product_plan_complete": false

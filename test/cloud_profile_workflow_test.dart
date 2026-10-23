@@ -39,6 +39,9 @@ class ProfileAccount extends DraftTaskAccount {
         if (failure != null) throw failure!;
         return pending == null ? [printerProfile] : pending!.future;
       }
+      if (path.contains('/jobs/')) {
+        return super.request(method, path);
+      }
       return [];
     }
     return super.request(
@@ -195,6 +198,9 @@ void main() {
       await tap(tester, 'Create job');
       expect(account.submitted?['profile_id'], 'starter:a1');
       expect(account.submitted?['printer'], 'Bambu Lab A1');
+      expect(find.byType(CloudTaskPage), findsOneWidget);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
       expect(find.text('Origin'), findsOneWidget);
     },
   );

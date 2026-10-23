@@ -36,6 +36,7 @@ groups = {
     'profile-batch': ['QC-01','UI-08','UI-11','QA-04'],
     'profile-management-batch': ['QC-01','SEC-04','UI-08','UI-11','QA-04'],
     'native-final-batch': ['SSO-04','QC-01','UI-08','UI-11','QA-04'],
+    'create-navigation-batch': ['UI-03','UI-08','UI-11','OFF-01','QA-04'],
 }
 items = []
 for group, ids in groups.items():
