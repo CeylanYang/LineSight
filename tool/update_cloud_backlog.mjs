@@ -87,6 +87,10 @@ Object.assign(changes, {
  'COL-04': ['开发中', 'lib/cloud_account.dart; test/cloud_workbench_test.dart', '写入入口仅对已登录owner/operator开放；viewer和未知角色均拒绝。团队切换隔离与服务端即时撤权已有测试，完整只读页面审计继续'],
  'REL-03': ['开发中', 'acceptance/sync-batch/validation.json; acceptance/workbench-batch/', '用户停用模拟器；8039至8040普通包覆盖升级、回执保留与登录恢复未执行，待真机；历史默认卸载误清理证据已更正，今后不清数据'],
 });
+Object.assign(changes, {
+ 'REL-02': ['待验收', 'tool/rehearse_cloud_restore.py; deploy/sso/RESTORE.md; acceptance/restore-batch/', '实际恢复业务库28表/身份库101表/16图片，全表行及字节哈希一致，20任务保留；副本API读取、403/404/401与图片读取通过；每日备份timer已启用，生产回滚方案已写。未切换生产；异机副本及恢复后Keycloak真实登录待后续'],
+ 'SSO-03': ['待验收', 'acceptance/sso/; acceptance/restore-batch/; deploy/sso/RESTORE.md', 'realm/client/独立演示身份已初始化，旧账户密码及关系保留；身份库101表已实际隔离恢复，凭据/客户端/密钥行指纹一致，每日备份已启用。SMTP与恢复后真实OIDC登录仍待验证'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

@@ -1,0 +1,12 @@
+[Unit]
+Description=LineSight private database media and identity backup
+After=linesight.service linesight-identity.service
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=180
+ExecStart=/opt/linesight/venv/bin/python /opt/linesight-identity/api-cutover/rehearse_cloud_restore.py --backup-only

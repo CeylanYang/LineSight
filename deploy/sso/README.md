@@ -41,6 +41,9 @@ Verification scripts: `verify_keycloak.py`, `verify_legacy_password_import.py`,
 tokens. API probes create isolated acceptance workspaces; their provider test
 identity is deleted after verification. Workflow probes use only the demo team.
 
-Remaining operational setup: SMTP password-reset delivery, scheduled provider
-database backups with a restore rehearsal, and final release upgrade checks.
+Daily SQLite/media/provider snapshots and isolated restoration are deployed.
+See [RESTORE.md](RESTORE.md) and acceptance/restore-batch for the actual row/hash
+and restored-API results. Provider login after restoration and production cutover
+remain untested. Off-host backup/retention, SMTP and final release upgrade checks
+remain outstanding.
 Hosted authenticated password changes use Keycloak's UPDATE_PASSWORD action.

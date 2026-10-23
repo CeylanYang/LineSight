@@ -1,0 +1,31 @@
+{
+  "at": "20261023T134318707127Z",
+  "backup": "/var/backups/linesight/complete/20261023T134318707127Z",
+  "mode": "restore_rehearsal",
+  "sqlite_tables": 28,
+  "provider_tables": 101,
+  "media_files": 16,
+  "backup_permissions": "0700 directory / 0600 private files",
+  "production_replaced": false,
+  "artifacts_sha256": {
+    "linesight.sqlite3": "659dccd3aa35fe38b0a40c46399a16dfc0da0d6be18f727bc4def7f105943805",
+    "identity.dump": "c0f7719605927dfdd19bed6d8c7b4383237b0863e375b6ea43140eef6337aae0",
+    "private-manifest.json": "d7c4cc29fc122c3110d186c139ee52fe2900efd6f1ce47d7bc2616568eb9145a"
+  },
+  "api": {
+    "restored_jobs": 20,
+    "owner_read": true,
+    "viewer_read": true,
+    "viewer_write_status": 403,
+    "outsider_status": 404,
+    "anonymous_status": 401,
+    "authenticated_photo_read": true,
+    "oidc_transport": "Membership/API checks use force_authenticate on clone; provider boot/login not exercised."
+  },
+  "sqlite_rows_identical": true,
+  "foreign_keys_valid": true,
+  "restored_media_identical": true,
+  "provider_rows_identical": true,
+  "provider_credentials_clients_keys_identical": true,
+  "temporary_provider_database_removed": true
+}

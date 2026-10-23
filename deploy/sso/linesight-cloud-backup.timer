@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily LineSight private cloud backup
+
+[Timer]
+OnCalendar=*-*-* 03:20:00
+RandomizedDelaySec=10m
+Persistent=true
+Unit=linesight-cloud-backup.service
+
+[Install]
+WantedBy=timers.target
