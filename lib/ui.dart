@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.18';
+const appVersion = '1.1.20';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -176,7 +176,12 @@ class PageBody extends StatelessWidget {
     child: ConstrainedBox(
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(22, 24, 22, 32),
+        padding: EdgeInsets.fromLTRB(
+          22,
+          24,
+          22,
+          32 + MediaQuery.paddingOf(context).bottom,
+        ),
         children: children,
       ),
     ),

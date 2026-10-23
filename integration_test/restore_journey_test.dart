@@ -1,3 +1,4 @@
+import 'package:linesight_flutter/liquid_glass_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -72,7 +73,7 @@ void main() {
 
       await tester.tap(
         find.descendant(
-          of: find.byType(NavigationBar),
+          of: find.byType(LiquidGlassBar),
           matching: find.text('我的'),
         ),
       );

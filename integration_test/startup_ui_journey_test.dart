@@ -17,9 +17,11 @@ void main() {
         ..startupStage = dark ? '检查工作区与还原点' : '读取检测记录与本机设置'
         ..preferences = {'dark': dark, 'reduceMotion': dark};
       await tester.pumpWidget(LineSightApp(key: UniqueKey(), store: store));
-      await tester.pump(const Duration(milliseconds: 700));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 2900));
+      await tester.pump();
       expect(find.text(store.startupStage), findsOneWidget);
-      expect(find.text('正在打开\n本机工作区'), findsOneWidget);
+      expect(find.text('LineSight'), findsOneWidget);
       if (dark) {
         expect(find.byType(CircularProgressIndicator), findsNothing);
         expect(find.byIcon(Icons.hourglass_top_rounded), findsOneWidget);

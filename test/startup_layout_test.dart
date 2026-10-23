@@ -31,7 +31,7 @@ void main() {
             ..preferences = {'dark': dark, 'reduceMotion': true};
           await tester.pumpWidget(LineSightApp(key: UniqueKey(), store: store));
           await tester.pumpAndSettle();
-          expect(find.text('正在打开\n本机工作区'), findsOneWidget);
+          expect(find.text('LineSight'), findsOneWidget);
           expect(find.byType(CircularProgressIndicator), findsNothing);
           expect(find.byIcon(Icons.hourglass_top_rounded), findsOneWidget);
           for (final stage in [
@@ -61,7 +61,7 @@ void main() {
           store.step('完成', complete: true);
           await tester.pumpAndSettle();
           expect(find.text('准备好，看见细节。'), findsOneWidget);
-          expect(find.text('正在打开\n本机工作区'), findsNothing);
+          expect(find.byKey(const ValueKey('brand-reveal-canvas')), findsNothing);
           expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox.shrink());
           store.dispose();

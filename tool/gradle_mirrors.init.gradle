@@ -1,0 +1,23 @@
+// Local build helper: apply with gradlew -I ../tool/gradle_mirrors.init.gradle.
+// Covers Flutter's included Gradle build as well as the app.
+def redirect = { repository ->
+    if (repository instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
+        switch (repository.url.host) {
+            case 'storage.googleapis.com': repository.setUrl('https://storage.flutter-io.cn/download.flutter.io'); break
+            case 'plugins.gradle.org': repository.setUrl('https://maven.aliyun.com/repository/gradle-plugin'); break
+            case 'repo.maven.apache.org':
+            case 'repo1.maven.org': repository.setUrl('https://maven.aliyun.com/repository/central'); break
+            case 'dl.google.com':
+            case 'maven.google.com': repository.setUrl('https://maven.aliyun.com/repository/google'); break
+        }
+    }
+}
+settingsEvaluated { settings ->
+    settings.pluginManagement.repositories.all(redirect)
+    settings.dependencyResolutionManagement.repositories.all(redirect)
+}
+allprojects {
+    buildscript.repositories.all(redirect)
+    repositories.all(redirect)
+    afterEvaluate { repositories.all(redirect) }
+}

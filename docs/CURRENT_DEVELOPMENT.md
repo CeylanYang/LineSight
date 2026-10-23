@@ -1,3 +1,17 @@
+# Current development — particle brand reveal 1.1.20
+
+Current source: `C:/Users/29668/LineSight-workspaces/week6-cloud` (based on 1.1.19).
+See [brand reveal and concurrent initialization](BRAND_REVEAL.md).
+Release artifacts: `C:/Users/29668/LineSight-releases/1.1.20/`.
+
+# Previous development — liquid glass navigation 1.1.19
+
+Current source: `C:/Users/29668/LineSight-workspaces/week6-cloud` (based on 1.1.18).
+See [liquid glass implementation and verification](LIQUID_GLASS_BAR.md).
+The notes below are retained historical 1.1.10 context.
+
+---
+
 # Current development — local release 1.1.10
 
 Active release source: `C:/Users/29668/LineSight-workspaces/bilingual`.

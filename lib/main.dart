@@ -1,3 +1,4 @@
+import 'liquid_glass_bar.dart';
 import 'l10n.dart';
 import 'dart:ui' show FrameTiming;
 import 'package:flutter/material.dart';
@@ -41,7 +42,13 @@ Future<void> main() async {
     failed: store.startupError != null,
   );
   if (trace != null) store.addListener(traceState);
-  runApp(LineSightApp(store: store));
+  runApp(
+    LineSightApp(
+      store: store,
+      showBrandReveal: true,
+      revealStartAfter: WidgetsBinding.instance.waitUntilFirstFrameRasterized,
+    ),
+  );
   trace?.mark('run-app');
   if (trace != null) {
     WidgetsBinding.instance.waitUntilFirstFrameRasterized.then(
@@ -62,7 +69,14 @@ Future<void> main() async {
 
 class LineSightApp extends StatefulWidget {
   final AppStore store;
-  const LineSightApp({super.key, required this.store});
+  final bool? showBrandReveal;
+  final Future<void>? revealStartAfter;
+  const LineSightApp({
+    super.key,
+    required this.store,
+    this.showBrandReveal,
+    this.revealStartAfter,
+  });
   @override
   State<LineSightApp> createState() => _LineSightAppState();
 }
@@ -73,10 +87,13 @@ class _LineSightAppState extends State<LineSightApp>
   // progress, data updates and navigator resets; theme mode still follows state.
   late final ThemeData _lightTheme = appTheme(false);
   late final ThemeData _darkTheme = appTheme(true);
+  late bool _revealFinished;
 
   @override
   void initState() {
     super.initState();
+    // Preinitialized test/embedded workspaces do not replay the cold-start brand.
+    _revealFinished = !(widget.showBrandReveal ?? !widget.store.ready);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -125,11 +142,36 @@ class _LineSightAppState extends State<LineSightApp>
               ? s.recoveryUser == null
                     ? const StorageFailurePage()
                     : const StorageRecoveryPage()
-              : !s.ready
-              ? const StartupPage()
-              : s.user == null
-              ? const AuthPage()
-              : const AppShell(),
+              : Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Build/layout the next screen while the reveal owns visibility.
+                    if (s.ready)
+                      Offstage(
+                        offstage: !_revealFinished,
+                        child: TickerMode(
+                          enabled: _revealFinished,
+                          child: ExcludeFocus(
+                            excluding: !_revealFinished,
+                            child: s.user == null
+                                ? const AuthPage()
+                                : const AppShell(),
+                          ),
+                        ),
+                      ),
+                    if (!_revealFinished || !s.ready)
+                      StartupPage(
+                        key: const ValueKey('cold-start-reveal'),
+                        animate: !_revealFinished,
+                        startAfter: widget.revealStartAfter,
+                        onRevealComplete: () {
+                          if (mounted && !_revealFinished) {
+                            setState(() => _revealFinished = true);
+                          }
+                        },
+                      ),
+                  ],
+                ),
         );
       },
     ),
@@ -172,6 +214,7 @@ class _AppShellState extends State<AppShell> {
     }
 
     return Scaffold(
+      extendBody: !wide,
       body: Backdrop(
         child: SafeArea(
           bottom: false,
@@ -211,23 +254,12 @@ class _AppShellState extends State<AppShell> {
       ),
       bottomNavigationBar: wide
           ? null
-          : GlassPanel(
-              radius: 0,
-              padding: EdgeInsets.zero,
-              child: NavigationBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                height: 72,
-                selectedIndex: tab,
-                onDestinationSelected: select,
-                destinations: List.generate(
-                  4,
-                  (i) => NavigationDestination(
-                    icon: Icon(icons[i]),
-                    label: labels[i],
-                  ),
-                ),
-              ),
+          : LiquidGlassBar(
+              labels: labels,
+              icons: icons,
+              selectedIndex: tab,
+              onSelected: select,
+              glass: s.glass,
             ),
     );
   }

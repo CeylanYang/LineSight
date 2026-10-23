@@ -1,3 +1,4 @@
+import 'package:linesight_flutter/liquid_glass_bar.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -87,11 +88,11 @@ void main() {
     await tester.tap(find.byType(BackButton).last);
     await tester.pumpAndSettle();
     await tester.tap(find.descendant(
-        of: find.byType(NavigationBar), matching: find.text('配方中心')));
+        of: find.byType(LiquidGlassBar), matching: find.text('配方中心')));
     await tester.pumpAndSettle();
     await capture('recipes');
     await tester.tap(find.descendant(
-        of: find.byType(NavigationBar), matching: find.text('我的')));
+        of: find.byType(LiquidGlassBar), matching: find.text('我的')));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(find.text('深色模式'), 300,
         scrollable: find.byType(Scrollable).last);

@@ -1,3 +1,4 @@
+import 'package:linesight_flutter/liquid_glass_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linesight_flutter/main.dart';
@@ -33,7 +34,7 @@ void main() {
         for (final label in ['检测记录', '配方中心', '我的', '工作台']) {
           await tester.tap(
             find.descendant(
-              of: find.byType(NavigationBar),
+              of: find.byType(LiquidGlassBar),
               matching: find.text(label),
             ),
           );

@@ -4,6 +4,8 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import android.app.Activity
+import android.os.Build
+import android.os.Bundle
 import android.content.Intent
 import android.net.Uri
 import java.io.File
@@ -17,11 +19,44 @@ class MainActivity : FlutterActivity() {
     private var source: File? = null
     private var expectedHash: String? = null
     @Volatile private var destroyed = false
+    private val brandHaptics by lazy { LineSightHaptics(this) }
+    private var flutterUiDisplayed = false
+    private var systemSplashGone = Build.VERSION.SDK_INT < 31
+    private val visibleReplies = mutableListOf<MethodChannel.Result>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= 31) {
+            splashScreen.setOnExitAnimationListener { splash ->
+                // The framework's exit transition can still cover an already
+                // rasterized Flutter frame. Remove it before starting the clock.
+                splash.remove()
+                systemSplashGone = true
+                completeVisibleReplies()
+            }
+        }
+    }
+
+    private fun completeVisibleReplies() {
+        if (!flutterUiDisplayed || !systemSplashGone) return
+        visibleReplies.forEach { it.success(null) }
+        visibleReplies.clear()
+    }
 
     private fun scratchRoot(): File = File(cacheDir, "linesight_backups").apply { mkdirs() }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/brand-haptics").setMethodCallHandler { call, result ->
+            when (call.method) {
+                "awaitVisible" -> {
+                    if (flutterUiDisplayed && systemSplashGone) result.success(null) else visibleReplies += result
+                }
+                "play" -> { brandHaptics.play(call.argument<Int>("elapsedMs") ?: 0); result.success(null) }
+                "cancel" -> { brandHaptics.cancel(); result.success(null) }
+                else -> result.notImplemented()
+            }
+        }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/files").setMethodCallHandler { call, result ->
             when (call.method) {
                 "scratchRoot" -> result.success(scratchRoot().absolutePath)
@@ -126,7 +161,21 @@ class MainActivity : FlutterActivity() {
     private fun hex(bytes: ByteArray) = bytes.joinToString("") { "%02x".format(it.toInt() and 255) }
     private fun clearPending() { reply = null; source = null; expectedHash = null }
 
+    override fun onFlutterUiDisplayed() {
+        super.onFlutterUiDisplayed()
+        flutterUiDisplayed = true
+        completeVisibleReplies()
+    }
+
+    override fun onPause() {
+        brandHaptics.cancel()
+        super.onPause()
+    }
+
     override fun onDestroy() {
+        visibleReplies.forEach { it.error("activity_closed", "Activity closed before first display", null) }
+        visibleReplies.clear()
+        brandHaptics.cancel()
         destroyed = true
         reply?.error("activity_closed", "文件保存窗口已关闭，请检查目标文件", null)
         clearPending()

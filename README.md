@@ -1,5 +1,19 @@
 # LineSight
 
+Current release: **1.1.20** — [2.8-second particle brand reveal](docs/BRAND_REVEAL.md),
+without diagonal reflection stripes, with synchronized Android touch envelopes
+and concurrent storage initialization/login layout preloading. Based on 1.1.19.
+Active source: `C:/Users/29668/LineSight-workspaces/week6-cloud`.
+Packages: `C:/Users/29668/LineSight-releases/1.1.20/`.
+
+## Liquid glass navigation — 1.1.19
+
+Current Android source: `C:/Users/29668/LineSight-workspaces/week6-cloud`.
+The phone bottom bar now uses a Flutter adaptation of LiquidGlassBar with backdrop
+refraction, press enlargement and drag-to-select. Chinese/English destinations,
+the glass switch, reduced motion and tablet navigation are retained.
+[Implementation and validation](docs/LIQUID_GLASS_BAR.md).
+
 LineSight is an offline Flutter workspace for production-line quality inspection. Version 1.1 adds local authentication, persistent inspection workflows, recipe configuration, quality statistics, and data management. Version 1.1.9 adds review-draft protection, stale-evidence checks and repeated-query reuse. Worker-based startup validation and accessible loading steps are included. Immutable CSV previews, streaming generation and verified native saving are included. Authenticated startup recovery preserves original data atomically. Complete streaming backups, portable timestamps, audit traceability and item-by-item restore/undo previews are included. The interface is in Simplified Chinese with light/dark glass surfaces and responsive phone/tablet layouts.
 
 ## Portable web experience
