@@ -1,0 +1,17 @@
+{
+  "demo_only": true,
+  "job_id": "af04e1fb-168c-465e-b77a-fec1d1854653",
+  "combined_filters": [
+    "task ID",
+    "status",
+    "category",
+    "unassigned"
+  ],
+  "shared_task_ids": true,
+  "two_rounds": true,
+  "first_pass_rate": 0.8,
+  "final_release_rate": 1,
+  "csv_matches_metrics": true,
+  "report_has_evidence": 3,
+  "report_provenance": true
+}

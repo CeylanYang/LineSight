@@ -234,3 +234,49 @@ class NotificationTests(TestCase):
         other = APIClient(); other.force_authenticate(get_user_model().objects.create_user(username='other-notice'))
         self.assertEqual(other.post(url, {'version': 1}, format='json').status_code, 404)
         self.assertEqual(self.client.post(url, {'version': True}, format='json').status_code, 400)
+
+
+class QueryScopeTests(TestCase):
+    setUp = WorkflowApiTests.setUp
+    to_inspection = WorkflowApiTests.to_inspection
+
+    def test_shared_filters_do_not_duplicate_tasks_and_report_exports_match(self):
+        import csv
+        from django.utils import timezone
+        from datetime import timedelta
+        base = f'/api/v1/workspaces/{self.ws}/'
+        created = []
+        for name, batch in [('Scope target', 'BATCH-QUERY'), ('Outside scope', 'OTHER')]:
+            job = self.client.post(base + 'jobs/', {'part_name': name, 'printer': 'A1', 'quantity': 2, 'batch_code': batch}, format='json').data
+            self.to_inspection(job['id'])
+            response = self.client.post(base + f"jobs/{job['id']}/inspection/", {'verdict': 'pass', 'inspected_qty': 2, 'pass_qty': 2, 'fail_qty': 0, 'scrap_qty': 0}, format='json')
+            self.assertEqual(response.status_code, 201, response.data)
+            created.append(job)
+        target = ProductionJob.objects.get(pk=created[0]['id'])
+        target.assignee = self.owner
+        target.save(update_fields=['assignee'])
+        from .models import ExceptionCase
+        for index in range(2):
+            ExceptionCase.objects.create(job=target, category='surface', note=f'Archived issue {index}', status='resolved')
+        now = timezone.now()
+        params = {'category': 'surface', 'q': 'BATCH-QUERY', 'status': 'closed', 'assignee': self.owner.pk, 'inspector': self.owner.pk, 'verdict': 'pass', 'from': (now-timedelta(days=1)).isoformat(), 'to': (now+timedelta(days=1)).isoformat()}
+        jobs = self.client.get(base + 'jobs/', params).data
+        self.assertEqual([job['id'] for job in jobs], [str(target.pk)])
+        record = self.client.get(base + 'records/', params).data
+        self.assertEqual(len(record), 1)
+        metrics = self.client.get(base + 'metrics/', params).data
+        report = self.client.get(base + 'report/', params).data
+        self.assertEqual(metrics, report['metrics'])
+        self.assertEqual(metrics['task_ids'], [str(target.pk)])
+        self.assertEqual(metrics['first_inspected_pieces'], 2)
+        self.assertEqual([job['id'] for job in report['jobs']], [str(target.pk)])
+        self.assertEqual(report['source'], 'cloud')
+        self.assertEqual(report['filters']['q'], 'BATCH-QUERY')
+        self.assertTrue(report['report_id'].startswith('LS-'))
+        export = self.client.get(base + 'report/', {**params, 'download': 'csv'})
+        rows = list(csv.reader(io.StringIO(export.content.decode('utf-8-sig'))))
+        self.assertIn(['first_inspected_pieces', '2'], rows)
+        self.assertIn(str(target.pk), export.content.decode('utf-8-sig'))
+        self.assertNotIn(created[1]['id'], export.content.decode('utf-8-sig'))
+        for bad in [{'assignee': 'invalid'}, {'inspector': '99999999999999999999999999'}, {'status': 'invalid'}, {'from': '2026-10-23'}]:
+            self.assertEqual(self.client.get(base + 'metrics/', bad).status_code, 400)

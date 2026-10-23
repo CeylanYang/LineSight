@@ -1,0 +1,13 @@
+{
+  "version": "1.1.24+8036",
+  "flutter_tests": 117,
+  "backend_tests": 34,
+  "analyze": "passed",
+  "android_query_journey": "passed",
+  "normal_main_upgrade": "passed",
+  "category_task_drilldown": "passed",
+  "system_pdf": "passed: two pages with Chinese text and three evidence images",
+  "live_https_scope": "passed",
+  "product_plan_complete": false,
+  "filtered_record_rounds": "passed: normal-main task-ID search shows two actual rounds, PNG41"
+}

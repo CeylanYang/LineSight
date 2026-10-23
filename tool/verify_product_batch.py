@@ -38,7 +38,7 @@ try:
     _,metrics=call('GET',base+f"metrics/?q={job['id']}");assert metrics['first_pass_rate']==.8 and metrics['final_release_rate']==1,metrics
     _,records=call('GET',base+f"records/?q={job['id']}");assert len(records)==2 and sum(len(r['evidence']) for r in records)==3,records
     status,csvtext=call('GET',base+f"report/?q={job['id']}&download=csv",raw=True);assert status==200
-    table=dict(list(csv.reader(io.StringIO(csvtext)))[1:]);assert float(table['first_pass_rate'])==metrics['first_pass_rate']
+    table={row[0]:row[1] for row in list(csv.reader(io.StringIO(csvtext)))[1:] if len(row)==2};assert float(table['first_pass_rate'])==metrics['first_pass_rate']
     result={'job_id':job['id'],'template_version':template['version'],'two_rounds':True,'stage_photos':3,'first_pass_rate':.8,'final_release_rate':1,'csv_matches_metrics':True,'demo_only':True}
     Path('docs/product/linesight/acceptance/product-batch/live-api.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 finally:

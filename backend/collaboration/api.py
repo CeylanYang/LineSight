@@ -297,7 +297,8 @@ def redeem(request):
 def jobs(request, workspace_id):
     member = membership(request, workspace_id, write=request.method == "POST")
     if request.method == "GET":
-        return Response([job_json(x) for x in member.workspace.jobs.order_by("-created_at")])
+        from .product import filtered_jobs
+        return Response([job_json(x) for x in filtered_jobs(request, member)])
     d = request.data
     part, printer, quantity = str(d.get("part_name", "")).strip(), str(d.get("printer", "")).strip(), d.get("quantity")
     if not part or len(part) > 100 or not printer or len(printer) > 80 or type(quantity) is not int or not 1 <= quantity <= 999:

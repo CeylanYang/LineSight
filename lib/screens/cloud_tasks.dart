@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
+import '../cloud_filters.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
@@ -43,18 +44,76 @@ Widget cloudAccessRequired(BuildContext context) => DetailScaffold(
 
 class CloudTaskListPage extends StatefulWidget {
   final String? status;
-  const CloudTaskListPage({super.key, this.status});
+  final Map<String, String> filters;
+  const CloudTaskListPage({super.key, this.status, this.filters = const {}});
   @override
   State<CloudTaskListPage> createState() => _CloudTaskListPageState();
 }
 
 class _CloudTaskListPageState extends State<CloudTaskListPage> {
   final search = TextEditingController();
-  String? status;
+  Map<String, String> filters = {};
+  List<Map<String, dynamic>>? rows;
+  String? scope, error;
+  String sourceVersion = '';
+  bool busy = false;
+  int serial = 0;
   @override
   void initState() {
     super.initState();
-    status = widget.status;
+    filters = {
+      ...widget.filters,
+      if (widget.status != null) 'status': widget.status!,
+    };
+    search.text = filters['q'] ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final account = CloudScope.of(context);
+    final next = account.draftKey('task-query');
+    final revision = account.jobs
+        .map((row) => '${row['id']}/${row['version']}')
+        .join(',');
+    final changed = revision != sourceVersion;
+    sourceVersion = revision;
+    if (next != scope) {
+      if (scope != null) {
+        filters.clear();
+        search.clear();
+      }
+      scope = next;
+      if (next != null) load();
+    } else if (changed && next != null) {
+      load();
+    }
+  }
+
+  Future<void> load() async {
+    final account = CloudScope.of(context), captured = scope, ticket = ++serial;
+    setState(() {
+      busy = true;
+      error = null;
+      rows = null;
+    });
+    try {
+      final data =
+          await account.request(
+                'GET',
+                'workspaces/${account.activeWorkspace!['id']}/jobs/${cloudQuery(filters)}',
+              )
+              as List;
+      if (mounted &&
+          ticket == serial &&
+          captured == account.draftKey('task-query')) {
+        setState(() => rows = data.cast<Map<String, dynamic>>());
+      }
+    } catch (failure) {
+      if (mounted && ticket == serial) setState(() => error = '$failure');
+    } finally {
+      if (mounted && ticket == serial) setState(() => busy = false);
+    }
   }
 
   @override
@@ -66,54 +125,101 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    final jobs = account.jobs
-        .where(
-          (j) =>
-              (status == null || j['status'] == status) &&
-              '${j['part_name']} ${j['printer']}'.toLowerCase().contains(
-                search.text.trim().toLowerCase(),
-              ),
-        )
-        .toList();
+    if (!account.signedIn) return cloudAccessRequired(context);
+    final jobs = rows ?? <Map<String, dynamic>>[];
     return DetailScaffold(
       title: tr(context, '生产任务'),
+      actions: [
+        IconButton(
+          tooltip: tr(context, '刷新'),
+          onPressed: busy ? null : load,
+          icon: const Icon(Icons.refresh),
+        ),
+      ],
       children: [
         TextField(
           controller: search,
-          onChanged: (_) => setState(() {}),
+          onSubmitted: (_) {
+            if (search.text.trim().isEmpty) {
+              filters.remove('q');
+            } else {
+              filters['q'] = search.text.trim();
+            }
+            load();
+          },
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.search),
-            labelText: tr(context, '搜索任务或设备'),
+            labelText: tr(context, '任务号、批次或名称'),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                if (search.text.trim().isEmpty) {
+                  filters.remove('q');
+                } else {
+                  filters['q'] = search.text.trim();
+                }
+                load();
+              },
+            ),
           ),
         ),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           children: [
-            ChoiceChip(
-              label: Text(tr(context, '全部')),
-              selected: status == null,
-              onSelected: (_) => setState(() => status = null),
-            ),
-            ...taskStatusLabels.entries.map(
-              (e) => ChoiceChip(
+            for (final e in {'': '全部', ...taskStatusLabels}.entries)
+              ChoiceChip(
                 label: Text(tr(context, e.value)),
-                selected: status == e.key,
-                onSelected: (_) => setState(() => status = e.key),
+                selected: (filters['status'] ?? '') == e.key,
+                onSelected: (_) {
+                  setState(() {
+                    if (e.key.isEmpty) {
+                      filters.remove('status');
+                    } else {
+                      filters['status'] = e.key;
+                    }
+                  });
+                  load();
+                },
               ),
+            ActionChip(
+              avatar: const Icon(Icons.filter_list),
+              label: Text(tr(context, '筛选范围')),
+              onPressed: () async {
+                final selected = await cloudFilterDialog(context, filters);
+                if (selected != null && mounted) {
+                  setState(() {
+                    filters = selected;
+                    search.text = filters['q'] ?? '';
+                  });
+                  load();
+                }
+              },
             ),
           ],
         ),
-        if (account.canEdit)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: FilledButton.icon(
-              onPressed: () => openPage(context, const CloudCreateTaskPage()),
-              icon: const Icon(Icons.add),
-              label: Text(tr(context, '新建任务')),
+        Text(cloudScopeLabel(context, filters)),
+        Wrap(
+          spacing: 8,
+          children: [
+            if (account.canEdit)
+              FilledButton.icon(
+                onPressed: () => openPage(context, const CloudCreateTaskPage()),
+                icon: const Icon(Icons.add),
+                label: Text(tr(context, '新建任务')),
+              ),
+            OutlinedButton.icon(
+              onPressed: () =>
+                  openPage(context, CloudReportPage(filters: Map.of(filters))),
+              icon: const Icon(Icons.analytics_outlined),
+              label: Text(tr(context, '范围报告')),
             ),
-          ),
-        if (jobs.isEmpty)
+          ],
+        ),
+        if (busy) const LinearProgressIndicator(),
+        if (error != null)
+          Text(trMessage(context, error!), style: const TextStyle(color: red)),
+        if (!busy && jobs.isEmpty)
           EmptyState(
             title: tr(context, '暂无生产任务'),
             subtitle: tr(context, '没有符合条件的任务。'),
@@ -133,7 +239,7 @@ class CloudTaskTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text('${job['part_name']}'),
       subtitle: Text(
-        '${job['printer']} · ${job['quantity']} ${tr(context, '件')}',
+        '${job['printer']} · ${job['quantity']} ${tr(context, '件')}\n${job['batch_code'] ?? ''} · ${job['assignee'] == null || job['assignee'] == '' ? tr(context, '未指派') : job['assignee']}',
       ),
       trailing: Tag(
         tr(context, taskStatusLabels[job['status']] ?? '${job['status']}'),

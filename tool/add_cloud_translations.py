@@ -49,6 +49,15 @@ messages.update({
 '请切回原工作区后重试':'Switch back to the original workspace and retry.', '图片队列已更新，请刷新':'The photo queue has changed. Refresh it.', '图片标识无效':'Invalid photo identifier.', '网络连接失败，请重试':'Connection failed. Retry.', '连接超时，请重试':'Connection timed out. Retry.', '图片已保存，请在同步页面重试上传':'Photo saved. Retry its upload on the Sync page.', '无法读取待同步内容，请重试':'Unable to load sync items. Retry.', '上传失败，请重试':'Upload failed. Retry.', '无法打开草稿，请检查任务权限后重试':'Unable to open this draft. Check task access and retry.', '还有图片待上传，请先在同步页面完成上传':'Upload the remaining photos on the Sync page first.', '网络连接失败，草稿已保留，请重试':'Connection failed. Your draft was kept. Retry.', '任务已更新，请核对当前任务后处理草稿':'The task has changed. Review its current state before continuing this draft.', '恢复草稿':'Restore draft', '重试恢复草稿':'Retry restoring draft', '放弃草稿':'Discard draft', '确认放弃这份未提交的草稿？':'Discard this unsubmitted draft?', '放弃草稿并刷新':'Discard draft and refresh',
 '按当前任务继续':'Continue with current task', '保留草稿内容继续编辑，已归档照片不会带入新检验。':'Keep editing this draft with the current task. Archived photos will not be added to a new inspection.', '处置后操作':'Next action', '送交复检':'Send for reinspection', '授权关闭':'Authorized closure', '关闭处置':'Disposition', '报废关闭':'Close as scrapped', '让步接收':'Accept by concession', '授权依据':'Authorization reason',
 })
+messages.update({
+    '全部任务': 'All tasks', '筛选范围': 'Filter scope', '任务号、批次或名称': 'Task ID, batch or name',
+    '范围报告': 'Scoped report', '清空筛选': 'Clear filters', '应用筛选': 'Apply filters',
+    '任务日期': 'Task dates', '任务起始日期': 'Task start date', '任务结束日期': 'Task end date',
+    '平均异常处理时长': 'Average issue resolution time', '查看范围内任务': 'View matching tasks',
+    '云端数据': 'Cloud data', '报告预览': 'Report preview', '复制追溯码': 'Copy trace code',
+    '没有符合条件的记录。': 'No records match your filters.',
+    '尺寸偏差': 'Dimensional deviation', '表面缺陷': 'Surface defect', '装配问题': 'Assembly issue',
+})
 path = Path('tool/l10n_source.json')
 source = json.loads(path.read_text(encoding='utf-8'))
 existing = set(source.values())

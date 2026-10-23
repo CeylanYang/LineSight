@@ -58,6 +58,15 @@ Object.assign(changes, {
   'QC-08': ['待联调', 'lib/screens/cloud_tasks.dart; backend/collaboration/test_workflow.py', '整改可送复检；管理员授权关闭需处置方式及依据，服务端仍验证角色和生命周期'],
   'REL-03': ['开发中', 'tool/deploy_cloud_identity.py; acceptance/offline-batch/', '0006已上线，备份api-20261023T111325Z，27张原表旧行保留，外键与健康检查通过；恢复演练继续'],
 });
+Object.assign(changes, {
+  'UI-02': ['待验收', 'lib/cloud_filters.dart; lib/screens/cloud_tasks.dart; acceptance/query-batch/png/32-scoped-task-list.png', '任务号/批次/名称、状态、负责人、未指派、任务日期、异常类别组合筛选接真实API；有空态、加载、刷新，详情返回保留范围'],
+  'DAT-02': ['开发中', 'lib/screens/cloud_business.dart; backend/collaboration/product.py; acceptance/query-batch/live-api.json', '云端记录支持任务/批次、检验人、结论、任务日期及类别；轮次/快照/证据保持；按检验时间段的过滤继续'],
+  'DAT-03': ['待验收', 'backend/collaboration/tests.py; acceptance/query-batch/live-api.json', '任务、记录、指标、报告、CSV共享任务范围；组合筛选实际HTTPS验证两轮、首次80%/最终100%与三张证据'],
+  'QC-06': ['待验收', 'lib/cloud_filters.dart; backend/collaboration/product.py; acceptance/query-batch/', '缺陷类别筛选、分类数量和对应任务下钻已接；类别/严重度/创建人/责任人/处置说明保留'],
+  'REP-02': ['开发中', 'lib/screens/cloud_business.dart; acceptance/query-batch/png/35-category-drilldown.png', '7日趋势、异常类别分布、平均处置时长与分类任务下钻；趋势日期下钻继续'],
+  'REP-03': ['待验收', 'lib/screens/cloud_business.dart; acceptance/query-batch/png/36-report-provenance.png; acceptance/query-batch/png/37-report-evidence-thumbnails.png', '真实报告预览含团队/范围/编号、批次、轮次、模板版本、处置与证据缩略图；PDF也接图片，普通APK系统打印两页与证据图片实际通过（PNG39/40）'],
+  'REP-04': ['待验收', 'backend/collaboration/product.py; tool/verify_query_batch.py; acceptance/query-batch/live-api.json', '报告与CSV携带云端来源、团队、生成时间、筛选条件、追溯编号与逐轮数量明细；越权门禁沿用统一membership'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

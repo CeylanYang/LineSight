@@ -337,8 +337,9 @@ void main() {
         await tester.pump(const Duration(milliseconds: 250));
         if (account.notifications.any(
           (row) => row['task_id'] == notice['id'] && row['read'] == true,
-        ))
+        )) {
           break;
+        }
       }
       expect(
         account.notifications.firstWhere(

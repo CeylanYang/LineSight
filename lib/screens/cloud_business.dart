@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,10 +8,162 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
+import '../cloud_filters.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../ui.dart';
 import 'cloud_tasks.dart';
+
+Future<Map<int, Uint8List>> cloudReportImages(
+  CloudAccount account,
+  Map snapshot,
+) async {
+  final captured = account.draftKey('report-images');
+  final workspace = snapshot['workspace_id'];
+  final images = <int, Uint8List>{};
+  for (final task in snapshot['jobs'] as List? ?? []) {
+    for (final photo in task['evidence'] as List? ?? []) {
+      if (captured != account.draftKey('report-images') ||
+          account.activeWorkspace?['id'] != workspace) {
+        throw const CollaborationApiException(403, '请切回原工作区后重试');
+      }
+      final raw = await account.download(
+        'workspaces/$workspace/jobs/${task['id']}/evidence/${photo['id']}/original/',
+      );
+      final codec = await ui.instantiateImageCodec(
+        Uint8List.fromList(raw),
+        targetWidth: 360,
+        allowUpscaling: false,
+      );
+      final frame = await codec.getNextFrame();
+      try {
+        final bytes = await frame.image.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
+        if (bytes != null) {
+          images[photo['id'] as int] = bytes.buffer.asUint8List();
+        }
+      } finally {
+        frame.image.dispose();
+        codec.dispose();
+      }
+    }
+  }
+  if (captured != account.draftKey('report-images') ||
+      account.activeWorkspace?['id'] != workspace) {
+    throw const CollaborationApiException(403, '请切回原工作区后重试');
+  }
+  return images;
+}
+
+class CloudReportSnapshotPage extends StatelessWidget {
+  final Map snapshot;
+  final Map<int, Uint8List> images;
+  const CloudReportSnapshotPage({
+    super.key,
+    required this.snapshot,
+    required this.images,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.signedIn ||
+        account.activeWorkspace?['id'] != snapshot['workspace_id']) {
+      return cloudAccessRequired(context);
+    }
+    return DetailScaffold(
+      title: tr(context, '报告预览'),
+      children: [
+        Text(
+          '${snapshot['workspace']}',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        Text('${tr(context, '云端数据')} · ${snapshot['generated_at']}'),
+        SelectableText('${snapshot['report_id']}'),
+        Text(
+          cloudScopeLabel(
+            context,
+            Map<String, String>.from(snapshot['filters'] as Map),
+          ),
+        ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.copy),
+          label: Text(tr(context, '复制追溯码')),
+          onPressed: () async {
+            await Clipboard.setData(
+              ClipboardData(text: '${snapshot['report_id']}'),
+            );
+            if (context.mounted) toast(context, '已复制');
+          },
+        ),
+        for (final task in snapshot['jobs'] as List? ?? [])
+          GlassPanel(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('${task['part_name']} · ${task['batch_code']}'),
+                  subtitle: Text(
+                    '${task['id']} · v${task['version']}\n${tr(context, '负责人')}: ${task['assignee']}',
+                  ),
+                  onTap: () => openPage(
+                    context,
+                    CloudTaskPage(
+                      job: Map<String, dynamic>.from(task as Map),
+                      workspaceId: snapshot['workspace_id'] as int,
+                    ),
+                  ),
+                ),
+                for (final check in task['inspections'] as List? ?? [])
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      '${tr(context, '检验轮次')} ${check['round_no']} · ${tr(context, check['verdict'] == 'pass' ? '合格' : '异常')}',
+                    ),
+                    subtitle: Text(
+                      '${check['inspector']} · ${cloudTimestamp(check['created_at'])}\n${check['note']}\n${check['template_snapshot']?['name'] ?? ''} · v${check['template_snapshot']?['version'] ?? ''}',
+                    ),
+                  ),
+                for (final issue in task['exceptions'] as List? ?? [])
+                  Text(
+                    '${tr(context, cloudCategories[issue['category']] ?? '${issue['category']}')} · ${issue['assignee']}\n${issue['note']}\n${issue['resolution']}',
+                  ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final photo in task['evidence'] as List? ?? [])
+                      if (images[photo['id']] != null)
+                        InkWell(
+                          onTap: () => openPage(
+                            context,
+                            CloudEvidencePage(
+                              jobId: '${task['id']}',
+                              photo: Map<String, dynamic>.from(photo as Map),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Image.memory(
+                                images[photo['id']]!,
+                                width: 120,
+                                height: 90,
+                                fit: BoxFit.contain,
+                              ),
+                              Text('#${photo['id']} · ${photo['stage']}'),
+                            ],
+                          ),
+                        ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
 
 Future<String?> cloudTextPrompt(BuildContext context, String title) async {
   final controller = TextEditingController();
@@ -639,7 +792,8 @@ Future<int?> cloudPickPhoto(
 
 class CloudReportPage extends StatefulWidget {
   final String? jobId;
-  const CloudReportPage({super.key, this.jobId});
+  final Map<String, String> filters;
+  const CloudReportPage({super.key, this.jobId, this.filters = const {}});
   @override
   State<CloudReportPage> createState() => _CloudReportPageState();
 }
@@ -649,21 +803,37 @@ class _CloudReportPageState extends State<CloudReportPage> {
   String? error;
   Map<String, dynamic>? scopedMetrics;
   bool loaded = false;
-  String get query => widget.jobId == null
-      ? ''
-      : '?q=${Uri.encodeQueryComponent(widget.jobId!)}';
+  Map<String, String> filters = {};
+  String? scope;
+  int generation = 0;
+  String get query => cloudQuery(filters);
+  @override
+  void initState() {
+    super.initState();
+    filters = {...widget.filters, if (widget.jobId != null) 'q': widget.jobId!};
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!loaded && widget.jobId != null) {
-      loaded = true;
-      load();
+    final next = CloudScope.of(context).draftKey('report-query');
+    if (next != scope) {
+      if (scope != null) filters.clear();
+      scope = next;
+      scopedMetrics = null;
+      if (next != null) load();
     }
   }
 
   Future<void> load() async {
-    final account = CloudScope.of(context);
-    busy = true;
+    final account = CloudScope.of(context),
+        captured = scope,
+        ticket = ++generation;
+    setState(() {
+      busy = true;
+      error = null;
+      scopedMetrics = null;
+    });
     try {
       final data =
           await account.request(
@@ -671,22 +841,22 @@ class _CloudReportPageState extends State<CloudReportPage> {
                 'workspaces/${account.activeWorkspace!['id']}/metrics/$query',
               )
               as Map;
-      if (mounted) {
+      if (mounted &&
+          ticket == generation &&
+          captured == account.draftKey('report-query')) {
         setState(() => scopedMetrics = Map<String, dynamic>.from(data));
       }
     } catch (failure) {
-      if (mounted) setState(() => error = '$failure');
+      if (mounted && ticket == generation) setState(() => error = '$failure');
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted && ticket == generation) setState(() => busy = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context),
-        metrics = widget.jobId == null
-            ? account.metrics
-            : scopedMetrics ?? <String, dynamic>{};
+        metrics = scopedMetrics ?? <String, dynamic>{};
     if (!account.signedIn) return cloudAccessRequired(context);
     String rate(Object? value) =>
         value is num ? '${(value * 100).toStringAsFixed(1)}%' : '—';
@@ -696,6 +866,24 @@ class _CloudReportPageState extends State<CloudReportPage> {
         Text(
           '${account.activeWorkspace?['name']}',
           style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        Text('${tr(context, '云端数据')} · ${cloudScopeLabel(context, filters)}'),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.filter_list),
+          label: Text(tr(context, '筛选范围')),
+          onPressed: busy
+              ? null
+              : () async {
+                  final selected = await cloudFilterDialog(
+                    context,
+                    filters,
+                    records: true,
+                  );
+                  if (selected != null && mounted) {
+                    setState(() => filters = selected);
+                    load();
+                  }
+                },
         ),
         for (final entry in {
           'first_pass_rate': '首次通过率',
@@ -729,6 +917,37 @@ class _CloudReportPageState extends State<CloudReportPage> {
             trailing: Text('${day['passed']}/${day['inspected']}'),
           ),
         ),
+        SectionHeading(tr(context, '异常类别')),
+        ...((metrics['issue_categories'] as Map?) ?? {}).entries.map(
+          (entry) => GlassPanel(
+            child: ListTile(
+              title: Text(
+                tr(context, cloudCategories[entry.key] ?? '${entry.key}'),
+              ),
+              trailing: Text('${entry.value}'),
+              onTap: () => openPage(
+                context,
+                CloudTaskListPage(
+                  filters: {...filters, 'category': '${entry.key}'},
+                ),
+              ),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(tr(context, '平均异常处理时长')),
+          trailing: Text(
+            metrics['average_issue_seconds'] == null
+                ? '—'
+                : '${((metrics['average_issue_seconds'] as num) / 3600).toStringAsFixed(1)} h',
+          ),
+        ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.list_alt),
+          label: Text(tr(context, '查看范围内任务')),
+          onPressed: () =>
+              openPage(context, CloudTaskListPage(filters: Map.of(filters))),
+        ),
         if (busy) const LinearProgressIndicator(),
         if (error != null)
           Text(trMessage(context, error!), style: const TextStyle(color: red)),
@@ -759,6 +978,40 @@ class _CloudReportPageState extends State<CloudReportPage> {
                   }
                 },
         ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.preview_outlined),
+          label: Text(tr(context, '报告预览')),
+          onPressed: busy
+              ? null
+              : () async {
+                  setState(() {
+                    busy = true;
+                    error = null;
+                  });
+                  try {
+                    final snapshot =
+                        await account.request(
+                              'GET',
+                              'workspaces/${account.activeWorkspace!['id']}/report/$query',
+                            )
+                            as Map;
+                    final images = await cloudReportImages(account, snapshot);
+                    if (context.mounted) {
+                      openPage(
+                        context,
+                        CloudReportSnapshotPage(
+                          snapshot: snapshot,
+                          images: images,
+                        ),
+                      );
+                    }
+                  } catch (failure) {
+                    if (mounted) setState(() => error = '$failure');
+                  } finally {
+                    if (mounted) setState(() => busy = false);
+                  }
+                },
+        ),
         FilledButton.icon(
           icon: const Icon(Icons.print),
           label: Text(tr(context, '打印质量报告')),
@@ -776,6 +1029,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                               'workspaces/${account.activeWorkspace!['id']}/report/$query',
                             )
                             as Map;
+                    final images = await cloudReportImages(account, snapshot);
                     final font = pw.Font.ttf(
                       await rootBundle.load('assets/fonts/NotoSansSC.ttf'),
                     );
@@ -787,6 +1041,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                     document.addPage(
                       pw.MultiPage(
                         pageFormat: PdfPageFormat.a4,
+                        maxPages: 200,
                         build: (_) => [
                           pw.Text(
                             'LineSight · ${tr(context, '质量报告')}',
@@ -794,7 +1049,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                           ),
                           pw.SizedBox(height: 12),
                           pw.Text(
-                            '${snapshot['workspace']}\n${snapshot['generated_at']}',
+                            '${snapshot['workspace']} · ${tr(context, '云端数据')}\n${snapshot['report_id']}\n${snapshot['generated_at']}\n${cloudScopeLabel(context, filters)}',
                           ),
                           pw.SizedBox(height: 20),
                           pw.TableHelper.fromTextArray(
@@ -854,10 +1109,19 @@ class _CloudReportPageState extends State<CloudReportPage> {
                               pw.Text(
                                 '${issue['assignee']} · ${issue['note']} · ${issue['resolution']}',
                               ),
-                            for (final photo in task['evidence'] as List? ?? [])
+                            for (final photo
+                                in task['evidence'] as List? ?? []) ...[
                               pw.Text(
                                 '${tr(context, '图片证据')} #${photo['id']} · ${photo['stage']}',
                               ),
+                              if (images[photo['id']] != null)
+                                pw.Image(
+                                  pw.MemoryImage(images[photo['id']]!),
+                                  width: 180,
+                                  height: 120,
+                                  fit: pw.BoxFit.contain,
+                                ),
+                            ],
                           ],
                         ],
                       ),
@@ -882,19 +1146,69 @@ class CloudRecordsPage extends StatefulWidget {
 }
 
 class _CloudRecordsPageState extends State<CloudRecordsPage> {
-  String query = '', verdict = 'all';
+  final search = TextEditingController();
+  Map<String, String> filters = {};
+  List<Map<String, dynamic>> rows = [];
+  String? scope, error;
+  String sourceVersion = '';
+  bool busy = false;
+  int generation = 0;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final account = CloudScope.of(context);
+    final next = account.draftKey('record-query');
+    final revision = account.records.map((row) => '${row['id']}').join(',');
+    final changed = revision != sourceVersion;
+    sourceVersion = revision;
+    if (next != scope) {
+      scope = next;
+      filters.clear();
+      search.clear();
+      rows = [];
+      if (next != null) load();
+    } else if (changed && next != null) {
+      load();
+    }
+  }
+
+  @override
+  void dispose() {
+    search.dispose();
+    super.dispose();
+  }
+
+  Future<void> load() async {
+    final account = CloudScope.of(context),
+        captured = scope,
+        ticket = ++generation;
+    setState(() {
+      busy = true;
+      error = null;
+      rows = [];
+    });
+    try {
+      final data =
+          await account.request(
+                'GET',
+                'workspaces/${account.activeWorkspace!['id']}/records/${cloudQuery(filters)}',
+              )
+              as List;
+      if (mounted &&
+          ticket == generation &&
+          captured == account.draftKey('record-query')) {
+        setState(() => rows = data.cast<Map<String, dynamic>>());
+      }
+    } catch (failure) {
+      if (mounted && ticket == generation) setState(() => error = '$failure');
+    } finally {
+      if (mounted && ticket == generation) setState(() => busy = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    final records = account.records
-        .where(
-          (r) =>
-              (verdict == 'all' || r['verdict'] == verdict) &&
-              '${r['part_name']} ${r['batch_code']} ${r['inspector']} ${r['task_id']}'
-                  .toLowerCase()
-                  .contains(query.toLowerCase()),
-        )
-        .toList();
     return PageBody(
       children: [
         Text(
@@ -905,29 +1219,93 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
         if (!account.signedIn) Text(tr(context, '登录后查看任务与检验记录')),
         if (account.signedIn) ...[
           TextField(
+            controller: search,
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
-              labelText: tr(context, '搜索零件、批次或检验人'),
+              labelText: tr(context, '任务号、批次或名称'),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  if (search.text.trim().isEmpty) {
+                    filters.remove('q');
+                  } else {
+                    filters['q'] = search.text.trim();
+                  }
+                  load();
+                },
+              ),
             ),
-            onChanged: (v) => setState(() => query = v),
+            onSubmitted: (_) {
+              if (search.text.trim().isEmpty) {
+                filters.remove('q');
+              } else {
+                filters['q'] = search.text.trim();
+              }
+              load();
+            },
           ),
           Wrap(
             spacing: 8,
             children: [
-              for (final e in {'all': '全部', 'pass': '合格', 'fail': '异常'}.entries)
+              for (final e in {'': '全部', 'pass': '合格', 'fail': '异常'}.entries)
                 ChoiceChip(
                   label: Text(tr(context, e.value)),
-                  selected: verdict == e.key,
-                  onSelected: (_) => setState(() => verdict = e.key),
+                  selected: (filters['verdict'] ?? '') == e.key,
+                  onSelected: (_) {
+                    if (e.key.isEmpty) {
+                      filters.remove('verdict');
+                    } else {
+                      filters['verdict'] = e.key;
+                    }
+                    load();
+                  },
                 ),
+              ActionChip(
+                avatar: const Icon(Icons.filter_list),
+                label: Text(tr(context, '筛选范围')),
+                onPressed: () async {
+                  final selected = await cloudFilterDialog(
+                    context,
+                    filters,
+                    records: true,
+                  );
+                  if (selected != null && mounted) {
+                    setState(() {
+                      filters = selected;
+                      search.text = filters['q'] ?? '';
+                    });
+                    load();
+                  }
+                },
+              ),
+              ActionChip(
+                avatar: const Icon(Icons.refresh),
+                label: Text(tr(context, '刷新')),
+                onPressed: busy ? null : load,
+              ),
+              ActionChip(
+                avatar: const Icon(Icons.analytics_outlined),
+                label: Text(tr(context, '范围报告')),
+                onPressed: () => openPage(
+                  context,
+                  CloudReportPage(filters: Map.of(filters)),
+                ),
+              ),
             ],
           ),
-          if (records.isEmpty)
+          Text(cloudScopeLabel(context, filters)),
+          if (busy) const LinearProgressIndicator(),
+          if (error != null)
+            Text(
+              trMessage(context, error!),
+              style: const TextStyle(color: red),
+            ),
+          if (!busy && rows.isEmpty)
             EmptyState(
               title: tr(context, '暂无检验记录'),
-              subtitle: tr(context, '完成检验后可在这里查看记录。'),
+              subtitle: tr(context, '没有符合条件的记录。'),
             ),
-          ...records.map(
+          ...rows.map(
             (r) => GlassPanel(
               child: ListTile(
                 title: Text('${r['part_name']}'),

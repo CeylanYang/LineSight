@@ -1297,3 +1297,20 @@
 1296|Authorization reason
 1297|Continue with current task
 1298|Keep editing this draft with the current task. Archived photos will not be added to a new inspection.
+1299|All tasks
+1300|Filter scope
+1301|Task ID, batch or name
+1302|Scoped report
+1303|Clear filters
+1304|Apply filters
+1305|Task dates
+1306|Task start date
+1307|Task end date
+1308|Average issue resolution time
+1309|View matching tasks
+1310|Cloud data
+1311|Report preview
+1312|Copy trace code
+1313|No records match your filters.
+1314|Surface defect
+1315|Assembly issue

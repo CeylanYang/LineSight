@@ -1,6 +1,8 @@
 """Workspace-scoped templates, records, piece metrics and report projections."""
 import csv
 import io
+import hashlib
+import json
 from datetime import timedelta
 from django.db import transaction
 from django.db.models import Q, F
@@ -58,7 +60,7 @@ def templates(request, workspace_id):
 def inspection_json(check):
     return {'id': check.pk, 'task_id': str(check.job_id), 'part_name': check.job.part_name, 'batch_code': check.job.batch_code,
         'round_no': check.round_no, 'verdict': check.verdict, 'note': check.note, 'inspector': person(check.inspector),
-        'created_at': check.created_at.isoformat(), 'inspected_qty': check.inspected_qty, 'pass_qty': check.pass_qty,
+        'created_at': check.created_at.isoformat(), 'inspector_id': check.inspector_id, 'inspected_qty': check.inspected_qty, 'pass_qty': check.pass_qty,
         'fail_qty': check.fail_qty, 'scrap_qty': check.scrap_qty, 'template_snapshot': check.template_snapshot,
         'answers': check.answers, 'serial_results': check.serial_results,
         'evidence': [{'id': photo.pk, 'stage': photo.stage, 'issue_id': photo.issue_id} for photo in check.photos.all()]}
@@ -66,13 +68,38 @@ def inspection_json(check):
 
 def filtered_jobs(request, member):
     rows = member.workspace.jobs.all().order_by('-created_at')
+    inspection_filters = {}
     query = str(request.query_params.get('q', '')).strip()
     if query:
         rows = rows.filter(Q(part_name__icontains=query) | Q(batch_code__icontains=query) | Q(id__icontains=query) | Q(printer__icontains=query))
     if request.query_params.get('status'):
+        if request.query_params['status'] not in ('queued', 'printing', 'inspection', 'exception', 'closed'):
+            raise ValidationError('任务状态无效')
         rows = rows.filter(status=request.query_params['status'])
     if request.query_params.get('mine') == 'true':
         rows = rows.filter(assignee=request.user)
+    for key, field in [('assignee', 'assignee_id'), ('inspector', 'quality_inspections__inspector_id')]:
+        value = request.query_params.get(key)
+        if value:
+            if key == 'assignee' and value == 'unassigned':
+                rows = rows.filter(assignee__isnull=True)
+            elif value.isdigit():
+                if len(value) > 19 or int(value) > 9223372036854775807:
+                    raise ValidationError('人员筛选无效')
+                if key == 'inspector':
+                    inspection_filters[field] = int(value)
+                else:
+                    rows = rows.filter(**{field: int(value)})
+            else:
+                raise ValidationError('人员筛选无效')
+    if request.query_params.get('category'):
+        rows = rows.filter(exceptions__category=request.query_params['category'])
+    if request.query_params.get('verdict'):
+        if request.query_params['verdict'] not in ('pass', 'fail'):
+            raise ValidationError('检验结论无效')
+        inspection_filters['quality_inspections__verdict'] = request.query_params['verdict']
+    if inspection_filters:
+        rows = rows.filter(**inspection_filters)
     for key, field in [('from', 'created_at__gte'), ('to', 'created_at__lt')]:
         if request.query_params.get(key):
             from django.utils.dateparse import parse_datetime
@@ -80,7 +107,7 @@ def filtered_jobs(request, member):
             if instant is None or timezone.is_naive(instant):
                 raise ValidationError('日期筛选需要包含时区')
             rows = rows.filter(**{field: instant})
-    return rows
+    return rows.distinct()
 
 
 def projection(request, member):
@@ -123,6 +150,8 @@ def records(request, workspace_id):
     rows = QualityInspection.objects.filter(job__in=filtered_jobs(request, member)).select_related('job', 'inspector', 'inspector__cloud_identity').prefetch_related('photos').order_by('-created_at', '-pk')
     if request.query_params.get('verdict'):
         rows = rows.filter(verdict=request.query_params['verdict'])
+    if request.query_params.get('inspector'):
+        rows = rows.filter(inspector_id=int(request.query_params['inspector']))
     return Response([inspection_json(row) for row in rows])
 
 
@@ -137,17 +166,29 @@ def metrics(request, workspace_id):
 def report(request, workspace_id):
     member = membership(request, workspace_id)
     payload = projection(request, member)
+    generated = timezone.now().isoformat()
+    criteria = {key: request.query_params[key] for key in ('q', 'status', 'assignee', 'inspector', 'category', 'verdict', 'from', 'to', 'mine') if request.query_params.get(key)}
+    source = 'cloud'
+    report_id = 'LS-' + hashlib.sha256(f'{workspace_id}/{generated}/{json.dumps(criteria, sort_keys=True)}'.encode()).hexdigest()[:16].upper()
     if request.query_params.get('download') == 'csv':
         out = io.StringIO(); writer = csv.writer(out)
         writer.writerow(['metric', 'value'])
         for key in ('first_inspected_pieces', 'first_pass_pieces', 'first_pass_rate', 'final_planned_pieces', 'final_released_pieces', 'final_release_rate', 'latest_fail_pieces', 'latest_scrap_pieces'):
             writer.writerow([key, payload[key]])
+        writer.writerow(['workspace', member.workspace.name]); writer.writerow(['source', source])
+        writer.writerow(['report_id', report_id]); writer.writerow(['generated_at', generated])
+        writer.writerow(['filters', json.dumps(criteria, ensure_ascii=False, sort_keys=True)])
+        writer.writerow([])
+        writer.writerow(['task_id', 'part_name', 'batch_code', 'status', 'assignee', 'round_no', 'inspector', 'verdict', 'inspected_qty', 'pass_qty', 'fail_qty', 'scrap_qty'])
+        for job in filtered_jobs(request, member).prefetch_related('quality_inspections__inspector__cloud_identity').select_related('assignee'):
+            for check in job.quality_inspections.order_by('round_no'):
+                writer.writerow([str(job.pk), job.part_name, job.batch_code, job.status, person(job.assignee), check.round_no, person(check.inspector), check.verdict, check.inspected_qty, check.pass_qty, check.fail_qty, check.scrap_qty])
         response = HttpResponse('\ufeff' + out.getvalue(), content_type='text/csv; charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="linesight-quality.csv"'
         return response
     from .api import job_json
-    return Response({'workspace': member.workspace.name, 'generated_at': timezone.now().isoformat(),
-                     'jobs': [job_json(job) for job in filtered_jobs(request, member)] if request.query_params.get('q') else [],
+    return Response({'workspace': member.workspace.name, 'workspace_id': member.workspace_id, 'source': source, 'filters': criteria, 'report_id': report_id, 'generated_at': generated,
+                     'jobs': [job_json(job) for job in filtered_jobs(request, member)],
                      'metrics': payload, 'tasks': [job.pk for job in filtered_jobs(request, member)]})
 
 
