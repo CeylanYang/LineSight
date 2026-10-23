@@ -32,6 +32,9 @@ String cloudScopeLabel(BuildContext context, Map<String, String> filters) {
     'from': '任务起始日期',
     'to': '任务结束日期',
     'mine': '我的任务',
+    'inspected_from': '检验起始日期',
+    'inspected_to': '检验结束日期',
+    'first_day': '首次检验日期（UTC）',
   };
   return filters.entries
       .map((entry) {
@@ -46,10 +49,13 @@ String cloudScopeLabel(BuildContext context, Map<String, String> filters) {
           value = tr(context, value == 'pass' ? '合格' : '异常');
         }
         if (value == 'unassigned') value = tr(context, '未指派');
-        if (entry.key == 'from' || entry.key == 'to') {
+        if (entry.key == 'from' ||
+            entry.key == 'to' ||
+            entry.key == 'inspected_from' ||
+            entry.key == 'inspected_to') {
           var date = DateTime.tryParse(value)?.toLocal();
           if (date != null) {
-            if (entry.key == 'to') {
+            if (entry.key == 'to' || entry.key == 'inspected_to') {
               date = date.subtract(const Duration(seconds: 1));
             }
             value =
@@ -178,6 +184,44 @@ Future<Map<String, String>?> cloudFilterDialog(
                       }
                     },
                   ),
+                  if (records)
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.date_range),
+                      label: Text(tr(context, '检验日期')),
+                      onPressed: () async {
+                        final range = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime(2100),
+                          initialDateRange:
+                              values['inspected_from'] == null ||
+                                  values['inspected_to'] == null
+                              ? null
+                              : DateTimeRange(
+                                  start: DateTime.parse(
+                                    values['inspected_from']!,
+                                  ).toLocal(),
+                                  end: DateTime.parse(values['inspected_to']!)
+                                      .toLocal()
+                                      .subtract(const Duration(seconds: 1)),
+                                ),
+                        );
+                        if (range != null) {
+                          update(() {
+                            values['inspected_from'] = DateTime(
+                              range.start.year,
+                              range.start.month,
+                              range.start.day,
+                            ).toUtc().toIso8601String();
+                            values['inspected_to'] = DateTime(
+                              range.end.year,
+                              range.end.month,
+                              range.end.day + 1,
+                            ).toUtc().toIso8601String();
+                          });
+                        }
+                      },
+                    ),
                   Text(cloudScopeLabel(context, values)),
                 ],
               ),

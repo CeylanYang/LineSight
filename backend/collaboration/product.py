@@ -5,7 +5,7 @@ import hashlib
 import json
 from datetime import timedelta
 from django.db import transaction
-from django.db.models import Q, F
+from django.db.models import Q, F, OuterRef, Subquery
 from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
@@ -66,6 +66,17 @@ def inspection_json(check):
         'evidence': [{'id': photo.pk, 'stage': photo.stage, 'issue_id': photo.issue_id} for photo in check.photos.all()]}
 
 
+def query_instant(value):
+    from django.utils.dateparse import parse_datetime
+    try:
+        instant = parse_datetime(value)
+    except (ValueError, TypeError):
+        instant = None
+    if instant is None or timezone.is_naive(instant):
+        raise ValidationError('日期筛选需要包含时区')
+    return instant
+
+
 def filtered_jobs(request, member):
     rows = member.workspace.jobs.all().order_by('-created_at')
     inspection_filters = {}
@@ -98,15 +109,30 @@ def filtered_jobs(request, member):
         if request.query_params['verdict'] not in ('pass', 'fail'):
             raise ValidationError('检验结论无效')
         inspection_filters['quality_inspections__verdict'] = request.query_params['verdict']
+    for key, field in [('inspected_from', 'created_at__gte'), ('inspected_to', 'created_at__lt')]:
+        value = request.query_params.get(key)
+        if value:
+            instant = query_instant(value)
+            inspection_filters['quality_inspections__' + field] = instant
     if inspection_filters:
         rows = rows.filter(**inspection_filters)
+    if request.query_params.get('first_day'):
+        from django.utils.dateparse import parse_date
+        try:
+            day = parse_date(request.query_params['first_day'])
+        except (ValueError, TypeError):
+            day = None
+        if day is None:
+            raise ValidationError('检验日期无效')
+        first = QualityInspection.objects.filter(job_id=OuterRef('pk')).order_by('round_no', 'created_at', 'pk').values('created_at')[:1]
+        rows = rows.annotate(first_checked_at=Subquery(first)).filter(first_checked_at__date=day)
     for key, field in [('from', 'created_at__gte'), ('to', 'created_at__lt')]:
         if request.query_params.get(key):
-            from django.utils.dateparse import parse_datetime
-            instant = parse_datetime(request.query_params[key])
-            if instant is None or timezone.is_naive(instant):
-                raise ValidationError('日期筛选需要包含时区')
+            instant = query_instant(request.query_params[key])
             rows = rows.filter(**{field: instant})
+    for start, end in [('from', 'to'), ('inspected_from', 'inspected_to')]:
+        if request.query_params.get(start) and request.query_params.get(end) and query_instant(request.query_params[start]) >= query_instant(request.query_params[end]):
+            raise ValidationError('结束日期需要晚于开始日期')
     return rows.distinct()
 
 
@@ -152,6 +178,9 @@ def records(request, workspace_id):
         rows = rows.filter(verdict=request.query_params['verdict'])
     if request.query_params.get('inspector'):
         rows = rows.filter(inspector_id=int(request.query_params['inspector']))
+    for key, field in [('inspected_from', 'created_at__gte'), ('inspected_to', 'created_at__lt')]:
+        if request.query_params.get(key):
+            rows = rows.filter(**{field: request.query_params[key]})
     return Response([inspection_json(row) for row in rows])
 
 
@@ -163,11 +192,12 @@ def metrics(request, workspace_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@transaction.atomic
 def report(request, workspace_id):
     member = membership(request, workspace_id)
     payload = projection(request, member)
     generated = timezone.now().isoformat()
-    criteria = {key: request.query_params[key] for key in ('q', 'status', 'assignee', 'inspector', 'category', 'verdict', 'from', 'to', 'mine') if request.query_params.get(key)}
+    criteria = {key: request.query_params[key] for key in ('q', 'status', 'assignee', 'inspector', 'category', 'verdict', 'from', 'to', 'mine', 'inspected_from', 'inspected_to', 'first_day') if request.query_params.get(key)}
     source = 'cloud'
     report_id = 'LS-' + hashlib.sha256(f'{workspace_id}/{generated}/{json.dumps(criteria, sort_keys=True)}'.encode()).hexdigest()[:16].upper()
     if request.query_params.get('download') == 'csv':

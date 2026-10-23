@@ -67,6 +67,12 @@ Object.assign(changes, {
   'REP-03': ['待验收', 'lib/screens/cloud_business.dart; acceptance/query-batch/png/36-report-provenance.png; acceptance/query-batch/png/37-report-evidence-thumbnails.png', '真实报告预览含团队/范围/编号、批次、轮次、模板版本、处置与证据缩略图；PDF也接图片，普通APK系统打印两页与证据图片实际通过（PNG39/40）'],
   'REP-04': ['待验收', 'backend/collaboration/product.py; tool/verify_query_batch.py; acceptance/query-batch/live-api.json', '报告与CSV携带云端来源、团队、生成时间、筛选条件、追溯编号与逐轮数量明细；越权门禁沿用统一membership'],
 });
+Object.assign(changes, {
+  'UI-09': ['待联调', 'lib/cloud_trace.dart; lib/main.dart; test/cloud_trace_test.dart; acceptance/trace-batch/', '任务二维码、复制ID/链接、原生MLKit解码、扫码与手动入口已接；登录后才授权读取，跨团队拒绝；Android解码与路由旅程通过，物理相机真机扫码待验收'],
+  'DAT-02': ['待验收', 'lib/cloud_filters.dart; backend/collaboration/product.py; acceptance/trace-batch/live-api.json', '记录及报告增加独立检验起止日期；检验人/结论/时间匹配同一轮次；记录只显示范围内轮次，报告保留完整历史和首次指标；真实HTTPS通过'],
+  'REP-02': ['待验收', 'lib/screens/cloud_business.dart; backend/collaboration/tests.py; acceptance/trace-batch/png/48-first-inspection-day-drilldown.png', '7日趋势、类别分布与平均处置时长；趋势按实际首次检验UTC日期下钻并保留原范围，Android与跨日后端测试通过'],
+  'UI-11': ['开发中', 'lib/l10n_catalog.dart; lib/cloud_trace.dart; lib/screens/cloud_business.dart', '扫码/日期筛选补齐双语，报告与PDF阶段名译为检验/整改前/整改后；全页面窄屏与角色审计继续'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

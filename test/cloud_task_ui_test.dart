@@ -171,7 +171,7 @@ void main() {
     tester,
   ) async {
     await open(tester, CloudTaskPage(job: account.task, workspaceId: 1));
-    expect(find.text('Bracket'), findsOneWidget);
+    expect(find.text('Bracket'), findsWidgets);
     account.authenticated = false;
     account.notifyListeners();
     await tester.pumpAndSettle();
@@ -190,6 +190,11 @@ void main() {
     for (final language in ['zh', 'en']) {
       store.preferences['language'] = language;
       await open(tester, CloudTaskPage(job: account.task, workspaceId: 1));
+      await tester.scrollUntilVisible(
+        find.byType(SegmentedButton<int>),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       for (final value in [1, 2, 3, 0]) {
         final segmented = tester.widget<SegmentedButton<int>>(
           find.byType(SegmentedButton<int>),

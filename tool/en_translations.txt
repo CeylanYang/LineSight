@@ -1314,3 +1314,22 @@
 1313|No records match your filters.
 1314|Surface defect
 1315|Assembly issue
+1316|Task QR code
+1317|Copy task ID
+1318|Copy trace link
+1319|Task trace
+1320|Scan task code
+1321|Enter trace code
+1322|Enter task ID or trace link
+1323|Invalid trace code. Check it and try again.
+1324|This account cannot access this task.
+1325|Could not open this task. Try again.
+1326|Could not open this task. Check your connection and retry.
+1327|Scan a LineSight task QR code.
+1328|Camera unavailable. Allow camera access or enter a trace code.
+1329|Inspection dates
+1330|Inspection start date
+1331|Inspection end date
+1332|First inspection date (UTC)
+1333|The end date must follow the start date.
+1334|Surface reference

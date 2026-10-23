@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
 import '../cloud_filters.dart';
+import '../cloud_trace.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
@@ -643,6 +644,14 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
     return DetailScaffold(
       title: '${job['part_name']}',
       actions: [
+        IconButton(
+          icon: const Icon(Icons.qr_code),
+          tooltip: tr(context, '任务二维码'),
+          onPressed: () => openPage(context, CloudTraceCodePage(
+            trace: TaskTrace(widget.workspaceId, '${job['id']}'),
+            partName: '${job['part_name']}',
+          )),
+        ),
         IconButton(
           icon: const Icon(Icons.copy),
           tooltip: tr(context, '复制追溯号'),

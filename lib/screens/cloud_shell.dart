@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_trace.dart';
 import '../l10n.dart';
 import '../liquid_glass_bar.dart';
 import '../ui.dart';
@@ -154,6 +155,15 @@ class _CloudShellState extends State<CloudShell> {
         style: Theme.of(context).textTheme.headlineLarge,
       ),
       const SizedBox(height: 16),
+      if (account.signedIn)
+        Wrap(spacing: 8, children: [
+          IconButton(icon: const Icon(Icons.qr_code_scanner),
+            tooltip: tr(context, '扫码追溯'),
+            onPressed: () => openPage(context, const CloudScanPage())),
+          IconButton(icon: const Icon(Icons.keyboard),
+            tooltip: tr(context, '输入追溯号'),
+            onPressed: () => openCloudTraceInput(context)),
+        ]),
       if (!account.signedIn)
         _loginState(context)
       else ...[

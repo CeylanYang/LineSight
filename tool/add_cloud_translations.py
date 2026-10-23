@@ -58,6 +58,18 @@ messages.update({
     '没有符合条件的记录。': 'No records match your filters.',
     '尺寸偏差': 'Dimensional deviation', '表面缺陷': 'Surface defect', '装配问题': 'Assembly issue',
 })
+messages.update({
+    '任务二维码': 'Task QR code', '复制任务ID': 'Copy task ID', '复制追溯链接': 'Copy trace link',
+    '任务追溯': 'Task trace', '扫码追溯': 'Scan task code', '输入追溯号': 'Enter trace code',
+    '输入任务ID或追溯链接': 'Enter task ID or trace link', '追溯号无效，请检查后重试': 'Invalid trace code. Check it and try again.',
+    '当前账户无法访问该任务': 'This account cannot access this task.', '无法打开任务，请重试': 'Could not open this task. Try again.',
+    '无法打开任务，请检查网络后重试': 'Could not open this task. Check your connection and retry.',
+    '请扫描LineSight任务二维码': 'Scan a LineSight task QR code.',
+    '相机不可用，请允许相机访问或输入追溯号': 'Camera unavailable. Allow camera access or enter a trace code.',
+    '工件预览': 'Part preview', '外观参考': 'Surface reference',
+    '检验日期': 'Inspection dates', '检验起始日期': 'Inspection start date', '检验结束日期': 'Inspection end date',
+    '首次检验日期（UTC）': 'First inspection date (UTC)', '结束日期需要晚于开始日期': 'The end date must follow the start date.',
+})
 path = Path('tool/l10n_source.json')
 source = json.loads(path.read_text(encoding='utf-8'))
 existing = set(source.values())

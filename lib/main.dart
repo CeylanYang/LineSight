@@ -14,6 +14,7 @@ import 'screens/storage_recovery.dart';
 import 'screens/startup.dart';
 import 'startup_trace.dart';
 import 'cloud_account.dart';
+import 'cloud_trace.dart';
 import 'screens/cloud_shell.dart';
 
 Future<void> main() async {
@@ -94,12 +95,55 @@ class _LineSightAppState extends State<LineSightApp>
   late final ThemeData _lightTheme = appTheme(false);
   late final ThemeData _darkTheme = appTheme(true);
   late bool _revealFinished;
+  final _cloudNavigator = GlobalKey<NavigatorState>();
+  String? _pendingTrace;
+
+  void _openPendingTrace() {
+    if (_pendingTrace == null ||
+        !_revealFinished ||
+        !widget.store.ready ||
+        widget.cloud == null ||
+        widget.store.startupError != null) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted ||
+          _pendingTrace == null ||
+          _cloudNavigator.currentState == null) {
+        return;
+      }
+      final link = _pendingTrace!;
+      _pendingTrace = null;
+      _cloudNavigator.currentState!.push(
+        MaterialPageRoute<void>(builder: (_) => CloudTracePage(link: link)),
+      );
+    });
+    WidgetsBinding.instance.ensureVisualUpdate();
+  }
+
+  @override
+  Future<bool> didPushRouteInformation(
+    RouteInformation routeInformation,
+  ) async {
+    final link = routeInformation.uri.toString();
+    if (widget.cloud == null || !TaskTrace.isLink(link)) return false;
+    _pendingTrace = link;
+    _openPendingTrace();
+    return true;
+  }
+
+  @override
+  Future<bool> didPushRoute(String route) =>
+      didPushRouteInformation(RouteInformation(uri: Uri.parse(route)));
 
   @override
   void initState() {
     super.initState();
     // Preinitialized test/embedded workspaces do not replay the cold-start brand.
     _revealFinished = !(widget.showBrandReveal ?? !widget.store.ready);
+    final initialLink =
+        WidgetsBinding.instance.platformDispatcher.defaultRouteName;
+    if (TaskTrace.isLink(initialLink)) _pendingTrace = initialLink;
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -125,9 +169,12 @@ class _LineSightAppState extends State<LineSightApp>
       listenable: widget.store,
       builder: (context, _) {
         final s = widget.store;
+        _openPendingTrace();
         final app = MaterialApp(
           key: ValueKey(widget.cloud == null ? s.session : 'cloud'),
           title: 'LineSight',
+          navigatorKey: widget.cloud == null ? null : _cloudNavigator,
+          initialRoute: '/',
           debugShowCheckedModeBanner: false,
           locale: s.languageCode == 'en'
               ? const Locale('en')

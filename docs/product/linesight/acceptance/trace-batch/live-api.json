@@ -1,0 +1,10 @@
+{
+  "demo_only": true,
+  "job_id": "af04e1fb-168c-465e-b77a-fec1d1854653",
+  "date_range_rounds": 2,
+  "first_day_matches_actual_first_round": true,
+  "next_day_excludes_task": true,
+  "original_metrics_preserved": true,
+  "anonymous_status": 401,
+  "unauthorized_workspace_status": 404
+}

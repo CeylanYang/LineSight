@@ -151,7 +151,7 @@ class CloudReportSnapshotPage extends StatelessWidget {
                                 height: 90,
                                 fit: BoxFit.contain,
                               ),
-                              Text('#${photo['id']} · ${photo['stage']}'),
+                              Text('#${photo['id']} · ${tr(context, {'inspection': '检验照片', 'before': '整改前', 'after': '整改后'}[photo['stage']] ?? '${photo['stage']}')}'),
                             ],
                           ),
                         ),
@@ -909,6 +909,9 @@ class _CloudReportPageState extends State<CloudReportPage> {
         ...((metrics['trend'] as List?) ?? []).map(
           (day) => ListTile(
             title: Text('${day['day']}'),
+            onTap: () => openPage(context, CloudTaskListPage(
+              filters: {...filters, 'first_day': '${day['day']}'},
+            )),
             subtitle: LinearProgressIndicator(
               value: (day['inspected'] as num) == 0
                   ? 0
@@ -1112,7 +1115,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                             for (final photo
                                 in task['evidence'] as List? ?? []) ...[
                               pw.Text(
-                                '${tr(context, '图片证据')} #${photo['id']} · ${photo['stage']}',
+                                '${tr(context, '图片证据')} #${photo['id']} · ${tr(context, {'inspection': '检验照片', 'before': '整改前', 'after': '整改后'}[photo['stage']] ?? '${photo['stage']}')}',
                               ),
                               if (images[photo['id']] != null)
                                 pw.Image(

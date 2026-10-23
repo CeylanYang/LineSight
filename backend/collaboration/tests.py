@@ -280,3 +280,29 @@ class QueryScopeTests(TestCase):
         self.assertNotIn(created[1]['id'], export.content.decode('utf-8-sig'))
         for bad in [{'assignee': 'invalid'}, {'inspector': '99999999999999999999999999'}, {'status': 'invalid'}, {'from': '2026-10-23'}]:
             self.assertEqual(self.client.get(base + 'metrics/', bad).status_code, 400)
+
+    def test_inspection_range_and_first_round_drilldown_use_real_round_dates(self):
+        from datetime import datetime, timezone, timedelta
+        from .models import QualityInspection
+        base = f'/api/v1/workspaces/{self.ws}/'
+        job = self.client.post(base + 'jobs/', {'part_name': 'Dates', 'printer': 'A1', 'quantity': 2}, format='json').data
+        self.to_inspection(job['id'])
+        path = base + f"jobs/{job['id']}/inspection/"
+        self.assertEqual(self.client.post(path, {'verdict':'pass', 'inspected_qty':2, 'pass_qty':2, 'fail_qty':0, 'scrap_qty':0}, format='json').status_code, 201)
+        first = QualityInspection.objects.get(job_id=job['id'])
+        first_time = datetime(2026,10,22,23,59,tzinfo=timezone.utc)
+        QualityInspection.objects.filter(pk=first.pk).update(created_at=first_time)
+        second = QualityInspection.objects.create(job_id=job['id'], inspector=self.owner, round_no=2, verdict='pass', inspected_qty=2, pass_qty=2, fail_qty=0, scrap_qty=0)
+        QualityInspection.objects.filter(pk=second.pk).update(created_at=first_time+timedelta(minutes=11))
+        filters = {'inspected_from':'2026-10-23T00:00:00Z', 'inspected_to':'2026-10-24T00:00:00Z', 'inspector':self.owner.pk}
+        records = self.client.get(base+'records/', filters).data
+        self.assertEqual([row['round_no'] for row in records], [2])
+        self.assertEqual(len(self.client.get(base+'jobs/', filters).data), 1)
+        report = self.client.get(base+'report/', filters).data
+        self.assertEqual(report['filters']['inspected_from'], filters['inspected_from'])
+        self.assertEqual(report['metrics']['first_inspected_pieces'], 2)
+        self.assertEqual(len(report['jobs'][0]['inspections']), 2)
+        self.assertEqual(len(self.client.get(base+'jobs/', {'first_day':'2026-10-22'}).data), 1)
+        self.assertEqual(self.client.get(base+'jobs/', {'first_day':'2026-10-23'}).data, [])
+        for invalid in [{'first_day':'2026-02-30'}, {'inspected_from':'2026-13-01T00:00:00Z'}, {'inspected_from':'2026-10-23'}, {'inspected_from':'2026-10-24T00:00:00Z','inspected_to':'2026-10-23T00:00:00Z'}]:
+            self.assertEqual(self.client.get(base+'records/', invalid).status_code, 400)

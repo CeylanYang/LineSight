@@ -1,0 +1,23 @@
+{
+  "version": "1.1.25+8038",
+  "entry": "lib/main.dart",
+  "flutter_full_tests_passed": 120,
+  "django_tests_passed": 35,
+  "android_integration_journey_passed": true,
+  "native_mlkit_qr_image_decode": true,
+  "production_detect_callback_routing": true,
+  "physical_phone_camera_scan_validated": false,
+  "normal_apk_build_success": true,
+  "normal_apk_signature_verified": true,
+  "integration_test_plugin_present_in_apk_dex": false,
+  "upgrade_install_preserves_data": true,
+  "cold_external_link_login_gate": true,
+  "normal_demo_login_to_authorized_task": true,
+  "warm_external_task_link": true,
+  "warm_external_membership_denied": true,
+  "cold_or_denied_ui_discloses_task": false,
+  "anonymous_cloud_read_status": 401,
+  "foreign_workspace_cloud_read_status": 404,
+  "product_plan_complete": false,
+  "source_note": "Preserved concurrent UI and parts asset changes remain in the working directory. Feature commit is not a complete APK source snapshot."
+}
