@@ -1,0 +1,174 @@
+{
+  "workspace_id": 15,
+  "profile": {
+    "id": "workspace:2",
+    "name": "Managed profile probe",
+    "version": "probe-v1",
+    "source": "https://bambulab.com/en/a1",
+    "note": "Isolated verification",
+    "override": true,
+    "revision": 1,
+    "default_template_id": 2,
+    "default_template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    }
+  },
+  "latest": {
+    "id": "workspace:2",
+    "name": "Managed profile probe",
+    "version": "probe-v3-b",
+    "source": "https://bambulab.com/en/a1",
+    "note": "Isolated verification",
+    "override": true,
+    "revision": 3,
+    "default_template_id": null,
+    "default_template": null
+  },
+  "copy": {
+    "id": "workspace:3",
+    "name": "Managed profile copy",
+    "version": "probe-v1",
+    "source": "https://bambulab.com/en/a1",
+    "note": "Isolated verification",
+    "override": true,
+    "revision": 1,
+    "default_template_id": 2,
+    "default_template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    }
+  },
+  "old_task": {
+    "id": "a0f39e06-a771-42cc-862c-f75572116c5c",
+    "version": 1,
+    "part_name": "Bound checklist probe",
+    "printer": "Managed profile probe",
+    "quantity": 1,
+    "note": "",
+    "status": "queued",
+    "created_at": "2026-10-23T23:12:36.640289+00:00",
+    "updated_at": "2026-10-23T23:12:36.640355+00:00",
+    "batch_code": "",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "probe-v1",
+    "profile_source": "https://bambulab.com/en/a1",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "new_task": {
+    "id": "92410d60-4ef4-4224-9352-6f5f1a93373d",
+    "version": 1,
+    "part_name": "Unbound checklist probe",
+    "printer": "Managed profile probe",
+    "quantity": 1,
+    "note": "",
+    "status": "queued",
+    "created_at": "2026-10-23T23:12:37.259122+00:00",
+    "updated_at": "2026-10-23T23:12:37.259160+00:00",
+    "batch_code": "",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": null,
+    "profile_version": "probe-v2",
+    "profile_source": "https://bambulab.com/en/a1",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "source": "Actual HTTPS in a new isolated workspace; no existing user data changed."
+}

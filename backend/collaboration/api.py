@@ -12,6 +12,8 @@ import numpy as np
 from django.contrib.auth import authenticate, get_user_model
 from django.conf import settings
 from django.core import signing
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.db.models import F, Q
@@ -184,26 +186,97 @@ STARTER_PROFILES = [
 ]
 
 
+def profile_json(profile):
+    from .product import template_json
+    return {"id": f"workspace:{profile.pk}", "name": profile.name, "version": profile.version,
+        "source": profile.source_url, "note": profile.note, "override": True,
+        "revision": profile.revision, "default_template_id": profile.default_template_id,
+        "default_template": template_json(profile.default_template) if profile.default_template_id else None}
+
+
+def resolve_profile(workspace, key):
+    if key.startswith("starter:"):
+        return next(({**item, "revision": 0, "default_template_id": None, "default_template": None}
+            for item in STARTER_PROFILES if item["id"] == key), None)
+    if key.startswith("workspace:"):
+        try:
+            item = PrinterProfile.objects.select_related('default_template').get(pk=int(key.split(":", 1)[1]), workspace=workspace)
+            return profile_json(item)
+        except (ValueError, OverflowError, PrinterProfile.DoesNotExist):
+            pass
+    return None
+
+
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def printer_profiles(request, workspace_id):
     member = membership(request, workspace_id, write=request.method == "POST")
     if request.method == "GET":
-        overrides = PrinterProfile.objects.filter(workspace=member.workspace).order_by("name")
-        return Response(STARTER_PROFILES + [{"id": f"workspace:{p.pk}", "name": p.name, "version": p.version,
-            "source": p.source_url, "note": p.note, "override": True} for p in overrides])
+        overrides = PrinterProfile.objects.filter(workspace=member.workspace).select_related('default_template').order_by("name")
+        return Response([{**p, "revision": 0, "default_template_id": None, "default_template": None} for p in STARTER_PROFILES]
+            + [profile_json(p) for p in overrides])
     if member.role != Membership.OWNER:
         raise PermissionDenied("仅工作区所有者可维护打印机配置")
-    name = str(request.data.get("name", "")).strip()
-    version = str(request.data.get("version", "")).strip()
-    source = str(request.data.get("source", "")).strip()
-    note = str(request.data.get("note", "")).strip()
-    if not name or len(name) > 80 or not version or len(version) > 40 or not source.startswith("https://") or len(note) > 300:
-        return Response({"detail": "请填写配置名称、版本和 HTTPS 来源"}, status=400)
-    profile, created = PrinterProfile.objects.update_or_create(workspace=member.workspace, name=name,
-        defaults={"version": version, "source_url": source, "note": note})
-    return Response({"id": f"workspace:{profile.pk}", "name": profile.name, "version": profile.version,
-        "source": profile.source_url, "note": profile.note, "override": True}, status=201 if created else 200)
+    d = request.data
+    key = request.headers.get('Idempotency-Key', '')
+    cloud = isinstance(request.auth, dict) and bool(request.auth.get('iss'))
+    if (key and not 16 <= len(key) <= 64) or (cloud and not key):
+        return Response({'detail': '请求标识无效，请重试', 'code': 'idempotency_required'}, status=400)
+    name, version = str(d.get("name", "")).strip(), str(d.get("version", "")).strip()
+    source, note = str(d.get("source", "")).strip(), str(d.get("note", "")).strip()
+    valid_source = len(source) <= 300
+    try:
+        URLValidator(schemes=['https'])(source)
+    except DjangoValidationError:
+        valid_source = False
+    if not name or len(name) > 80 or not version or len(version) > 40 or not valid_source or len(note) > 300:
+        return Response({"detail": "请填写配置名称、版本和有效 HTTPS 来源"}, status=400)
+    template_id = d.get('default_template_id')
+    template = None
+    if template_id is not None:
+        if type(template_id) is not int:
+            return Response({'detail': '检查模板不存在'}, status=400)
+        template = CheckTemplate.objects.filter(Q(workspace=member.workspace) | Q(workspace__isnull=True), pk=template_id).first()
+        if template is None:
+            return Response({'detail': '检查模板不存在'}, status=400)
+    fingerprint = hashlib.sha256(json.dumps({'actor': request.user.pk, 'body': d}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+    with transaction.atomic():
+        Workspace.objects.filter(pk=workspace_id).update(name=F('name'))
+        prior = AuditEvent.objects.filter(workspace=member.workspace, action='profile.saved', details__request_key=key).first() if key else None
+        if prior:
+            if prior.user_id != request.user.pk or prior.details.get('request_hash') != fingerprint:
+                return Response({'detail': '请求标识已用于其他内容', 'code': 'idempotency_conflict'}, status=409)
+            return Response(prior.details['result'], status=prior.details['response_status'])
+        profile_id = d.get('id')
+        item = None
+        if profile_id is not None:
+            resolved = resolve_profile(member.workspace, str(profile_id))
+            if not resolved or not resolved.get('override'):
+                return Response({'detail': '团队打印配置不存在'}, status=404)
+            item = PrinterProfile.objects.get(pk=int(str(profile_id).split(':')[1]), workspace=member.workspace)
+            if name != item.name:
+                return Response({'detail': '修改配置名称请使用复制功能'}, status=400)
+            if type(d.get('revision')) is not int or d['revision'] != item.revision:
+                return Response({'detail': '配置已更新，请核对最新版本', 'code': 'profile_version_conflict', 'current': profile_json(item)}, status=409)
+        else:
+            item = PrinterProfile.objects.filter(workspace=member.workspace, name=name).first()
+            if item and cloud:
+                return Response({'detail': '同名配置已存在，请编辑现有配置或使用其他名称', 'code': 'profile_name_conflict', 'current': profile_json(item)}, status=409)
+        created = item is None
+        if created:
+            item = PrinterProfile(workspace=member.workspace, name=name)
+        else:
+            item.revision += 1
+        item.version, item.source_url, item.note = version, source, note
+        # Legacy updates that predate template binding leave that binding intact.
+        if 'default_template_id' in d or created:
+            item.default_template = template
+        item.save()
+        result = profile_json(item)
+        response_status = 201 if created else 200
+        details = {'request_key': key, 'request_hash': fingerprint, 'result': result, 'response_status': response_status}
+        AuditEvent.objects.create(workspace=member.workspace, user=request.user, action='profile.saved', object_id=str(item.pk), version=item.revision, details=details)
+    return Response(result, status=response_status)
 
 
 @api_view(["GET", "POST"])
@@ -306,16 +379,7 @@ def jobs(request, workspace_id):
     if not part or len(part) > 100 or not printer or len(printer) > 80 or type(quantity) is not int or not 1 <= quantity <= 999:
         return Response({"detail": "任务名称、设备和数量不符合要求"}, status=400)
     profile_id = str(d.get("profile_id", ""))
-    profile = None
-    if profile_id.startswith("starter:"):
-        profile = next((item for item in STARTER_PROFILES if item["id"] == profile_id), None)
-    elif profile_id.startswith("workspace:"):
-        try:
-            profile = PrinterProfile.objects.get(pk=int(profile_id.split(":", 1)[1]), workspace=member.workspace)
-        except (ValueError, PrinterProfile.DoesNotExist):
-            profile = None
-        if profile:
-            profile = {"name": profile.name, "version": profile.version, "source": profile.source_url}
+    profile = resolve_profile(member.workspace, profile_id) if profile_id else None
     if profile_id and profile is None:
         return Response({"detail": "打印机配置不存在或不属于此工作区"}, status=404)
     if profile:
@@ -342,6 +406,8 @@ def jobs(request, workspace_id):
     payload = json.dumps({"part_name": part, "printer": printer, "quantity": quantity, "note": note,
                           "profile_id": profile_id, 'batch_code': batch, 'tracking_mode': mode,
                           'serial_numbers': serials, 'assignee_id': assignee_id, 'template_id': template.pk if template else None}, sort_keys=True, ensure_ascii=False)
+    if 'profile_revision' in d:
+        payload = json.dumps({'payload': json.loads(payload), 'profile_revision': d['profile_revision']}, sort_keys=True, ensure_ascii=False)
     payload_hash = hashlib.sha256(payload.encode()).hexdigest()
     if request_id:
         if not 16 <= len(request_id) <= 64:
@@ -359,6 +425,15 @@ def jobs(request, workspace_id):
                 if prior.request_hash != payload_hash:
                     return Response({"detail": "任务请求标识已用于其他内容"}, status=409)
                 return Response(job_json(prior.job), status=200)
+        if profile_id:
+            profile = resolve_profile(member.workspace, profile_id)
+            if profile is None:
+                return Response({'detail': '打印机配置不存在或不属于此工作区'}, status=404)
+            if 'profile_revision' in d and (type(d['profile_revision']) is not int or d['profile_revision'] != profile['revision']):
+                return Response({'detail': '配置已更新，请重新选择打印配置', 'code': 'profile_version_conflict', 'current': profile}, status=409)
+            printer = profile['name']
+            if 'template_id' not in d and profile.get('default_template_id'):
+                template = CheckTemplate.objects.get(pk=profile['default_template_id'])
         if mode == 'serial' and PieceSerial.objects.filter(workspace=member.workspace, serial__in=serials).exists():
             return Response({'detail': 'SN已属于其他任务，不可重复统计'}, status=409)
         job = ProductionJob.objects.create(workspace=member.workspace, part_name=part, printer=printer,

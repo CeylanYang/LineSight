@@ -713,7 +713,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       draftLoaded = true;
       selectedProfile = widget.initialProfile;
       if (selectedProfile != null) printer.text = '${selectedProfile!['name']}';
-      templateId = widget.initialTemplateId;
+      templateId =
+          widget.initialTemplateId ??
+          selectedProfile?['default_template_id'] as int?;
       final account = CloudScope.of(context);
       accessBinding = account.accessScope;
       draftOwner = account.profile?['id'];
@@ -792,7 +794,11 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         batch.text = '${data['batch'] ?? ''}';
         serials.text = '${data['serials'] ?? ''}';
         serialMode = data['serialMode'] == true;
-        templateId = widget.initialTemplateId ?? data['templateId'] as int?;
+        templateId =
+            widget.initialTemplateId ??
+            (widget.initialProfile?['default_template_id'] as int?) ??
+            (data['templateId'] as int?) ??
+            (selectedProfile?['default_template_id'] as int?);
         final savedAssignee = data['assignee_id'] as int?;
         assigneeId =
             teamMembers.isEmpty ||
@@ -862,6 +868,8 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
           'part_name': name.text.trim(),
           'printer': printer.text.trim(),
           if (selectedProfile != null) 'profile_id': selectedProfile!['id'],
+          if (selectedProfile?['revision'] != null)
+            'profile_revision': selectedProfile!['revision'],
           'quantity': int.parse(quantity.text),
           'note': note.text.trim(),
           'batch_code': batch.text.trim(),
@@ -913,6 +921,17 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
             draftStorageKey != account.draftKey('create'))) {
       return cloudScopeChanged(context);
     }
+    final choices = <int, Map<String, dynamic>>{
+      for (final t in account.templates) t['id'] as int: t,
+    };
+    final pinned = selectedProfile?['default_template'];
+    if (pinned is Map) {
+      choices.putIfAbsent(
+        pinned['id'] as int,
+        () => Map<String, dynamic>.from(pinned),
+      );
+    }
+    final taskTemplates = choices.values.toList();
     InputDecoration field(String label, IconData icon) => InputDecoration(
       labelText: tr(context, label),
       errorMaxLines: 3,
@@ -999,6 +1018,10 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                               }
                               setState(() {
                                 selectedProfile = selected;
+                                if (selected['default_template_id'] != null) {
+                                  templateId =
+                                      selected['default_template_id'] as int;
+                                }
                                 printer.text = '${selected['name']}';
                               });
                               await saveDraft();
@@ -1060,13 +1083,14 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                         ),
                       ],
                     ),
-                    if (account.templates.isNotEmpty)
+                    if (taskTemplates.isNotEmpty)
                       DropdownButtonFormField<int>(
+                        key: ValueKey(templateId),
                         initialValue:
-                            templateId ?? account.templates.first['id'] as int,
+                            templateId ?? taskTemplates.first['id'] as int,
                         isExpanded: true,
                         decoration: field('检查模板', Icons.fact_check_outlined),
-                        items: account.templates
+                        items: taskTemplates
                             .map(
                               (t) => DropdownMenuItem<int>(
                                 value: t['id'] as int,

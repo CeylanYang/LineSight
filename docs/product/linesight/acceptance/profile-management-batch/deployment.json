@@ -1,0 +1,20 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/profile-management/20261023T231223Z",
+  "before_sha256": {
+    "collaboration/api.py": "9c92d3b7b0042d49cddf8815e5f295c803a01aff30a8aa77ffc07774b87257cf",
+    "collaboration/models.py": "a35c4b02ac0f349a6abec50ba99503ed808ad86417e353c54490a9faa2de35d6",
+    "collaboration/migrations/0009_profile_template_binding.py": null
+  },
+  "after_sha256": {
+    "collaboration/api.py": "684d172c29953a8b5fea67050e40b1570d871b7bdf8b13cecef9ff740de57a11",
+    "collaboration/models.py": "aacb77b774883b1888fde7aa442a55ee8fa7b15c7eef8a4700e35d80bf6323a5",
+    "collaboration/migrations/0009_profile_template_binding.py": "8fa0521ee0ccadf68476384b658f93833e26e752977a01d8b7c80a5f784fedf2"
+  },
+  "schema_migration": "0009_profile_template_binding",
+  "existing_tables_checked": 31,
+  "existing_rows_preserved": true,
+  "existing_profiles_default_revision_one": true,
+  "api_health": true,
+  "identity_configuration_changed": false
+}

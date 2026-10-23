@@ -76,6 +76,47 @@ void main() {
         supportedLocales: const [Locale('en'), Locale('zh')],
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         theme: appTheme(false).copyWith(
+          filledButtonTheme: FilledButtonThemeData(
+            style:
+                (appTheme(false).filledButtonTheme.style ?? const ButtonStyle())
+                    .copyWith(
+                      textStyle: const WidgetStatePropertyAll(
+                        TextStyle(
+                          fontFamily: 'EvidenceFont',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style:
+                (appTheme(false).outlinedButtonTheme.style ??
+                        const ButtonStyle())
+                    .copyWith(
+                      textStyle: const WidgetStatePropertyAll(
+                        TextStyle(
+                          fontFamily: 'EvidenceFont',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style:
+                (appTheme(false).textButtonTheme.style ?? const ButtonStyle())
+                    .copyWith(
+                      textStyle: const WidgetStatePropertyAll(
+                        TextStyle(
+                          fontFamily: 'EvidenceFont',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+          ),
+
           textTheme: appTheme(
             false,
           ).textTheme.apply(fontFamily: 'EvidenceFont'),

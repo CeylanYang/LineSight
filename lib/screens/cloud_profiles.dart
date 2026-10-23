@@ -5,6 +5,7 @@ import '../l10n.dart';
 import '../ui.dart';
 import 'cloud_business.dart';
 import 'cloud_tasks.dart';
+import 'cloud_profile_editor.dart';
 import 'auth.dart';
 import 'modules.dart';
 
@@ -69,6 +70,7 @@ class _ProfilesState extends State<CloudProfilesPage> {
   bool bound = false, loading = true;
   Object? failure;
   List<Map<String, dynamic>> profiles = [];
+  final acknowledged = <String, Map<String, dynamic>>{};
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -95,7 +97,24 @@ class _ProfilesState extends State<CloudProfilesPage> {
       final rows = (result as List)
           .map((p) => Map<String, dynamic>.from(p as Map))
           .toList();
-      if (mounted) setState(() => profiles = rows);
+      if (mounted) {
+        final merged = <String, Map<String, dynamic>>{
+          for (final row in rows) '${row['id']}': row,
+        };
+        for (final entry in acknowledged.entries) {
+          final remote = merged[entry.key];
+          if (remote == null ||
+              (entry.value['revision'] as int? ?? 0) >
+                  (remote['revision'] as int? ?? 0)) {
+            merged[entry.key] = entry.value;
+          }
+        }
+        setState(
+          () =>
+              profiles = merged.values.toList()
+                ..sort((a, b) => '${a['name']}'.compareTo('${b['name']}')),
+        );
+      }
     } catch (error) {
       if (mounted && account.retainsAccess(binding)) {
         setState(() => failure = error);
@@ -105,6 +124,15 @@ class _ProfilesState extends State<CloudProfilesPage> {
     }
   }
 
+  void accepted(Map<String, dynamic> result) {
+    if (!mounted || !CloudScope.of(context).retainsAccess(binding)) return;
+    acknowledged['${result['id']}'] = result;
+    setState(() {
+      profiles = [...profiles.where((p) => p['id'] != result['id']), result]
+        ..sort((a, b) => '${a['name']}'.compareTo('${b['name']}'));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
@@ -112,6 +140,18 @@ class _ProfilesState extends State<CloudProfilesPage> {
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     return DetailScaffold(
       title: tr(context, widget.picking ? '选择打印配置' : '打印配置'),
+      actions: [
+        if (account.activeWorkspace?['role'] == 'owner')
+          IconButton(
+            tooltip: tr(context, '创建打印配置'),
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              if (account.retainsAccess(binding)) {
+                openPage(context, CloudProfileEditor(onSaved: accepted));
+              }
+            },
+          ),
+      ],
       children: [
         if (loading)
           const CloudLoadingPanel()
@@ -142,6 +182,7 @@ class _ProfilesState extends State<CloudProfilesPage> {
                             builder: (_) => CloudProfileDetailPage(
                               profile: profile,
                               picking: widget.picking,
+                              onSaved: accepted,
                             ),
                           ),
                         );
@@ -164,16 +205,25 @@ class _ProfilesState extends State<CloudProfilesPage> {
 class CloudProfileDetailPage extends StatefulWidget {
   final Map<String, dynamic> profile;
   final bool picking;
+  final ValueChanged<Map<String, dynamic>>? onSaved;
   const CloudProfileDetailPage({
     super.key,
     required this.profile,
     this.picking = false,
+    this.onSaved,
   });
   @override
   State<CloudProfileDetailPage> createState() => _ProfileDetailState();
 }
 
 class _ProfileDetailState extends State<CloudProfileDetailPage> {
+  late Map<String, dynamic> selected = widget.profile;
+  void accepted(Map<String, dynamic> result) {
+    if (!mounted || !CloudScope.of(context).retainsAccess(binding)) return;
+    setState(() => selected = result);
+    widget.onSaved?.call(result);
+  }
+
   String? binding;
   bool bound = false;
   @override
@@ -187,7 +237,7 @@ class _ProfileDetailState extends State<CloudProfileDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final account = CloudScope.of(context), profile = widget.profile;
+    final account = CloudScope.of(context), profile = selected;
     if (!account.signedIn) return cloudAccessRequired(context);
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     return DetailScaffold(
@@ -216,6 +266,63 @@ class _ProfileDetailState extends State<CloudProfileDetailPage> {
             ],
           ),
         ),
+        if (profile['default_template'] is Map)
+          ListTile(
+            leading: const Icon(Icons.fact_check_outlined),
+            title: Text(tr(context, '默认检查模板')),
+            subtitle: Text(
+              '${profile['default_template']['name']} · v${profile['default_template']['version']}',
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              if (account.retainsAccess(binding)) {
+                openPage(
+                  context,
+                  CloudTemplateDetailPage(
+                    template: Map<String, dynamic>.from(
+                      profile['default_template'] as Map,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        if (account.activeWorkspace?['role'] == 'owner')
+          Wrap(
+            spacing: 10,
+            runSpacing: 8,
+            children: [
+              if (profile['override'] == true)
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.edit_outlined),
+                  label: Text(tr(context, '编辑打印配置')),
+                  onPressed: () {
+                    if (account.retainsAccess(binding)) {
+                      openPage(
+                        context,
+                        CloudProfileEditor(profile: profile, onSaved: accepted),
+                      );
+                    }
+                  },
+                ),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.copy_outlined),
+                label: Text(tr(context, '复制打印配置')),
+                onPressed: () {
+                  if (account.retainsAccess(binding)) {
+                    openPage(
+                      context,
+                      CloudProfileEditor(
+                        profile: profile,
+                        copy: true,
+                        onSaved: accepted,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         if (account.canEdit)
           FilledButton.icon(
             onPressed: () {

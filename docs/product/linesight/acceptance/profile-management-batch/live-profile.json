@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "native_pkce_provider_flow": true,
+  "new_isolated_probe_workspace": true,
+  "same_key_returns_original_receipt": true,
+  "same_key_altered_payload_rejected": true,
+  "duplicate_name_rejected": true,
+  "profile_default_template_applies": true,
+  "old_task_keeps_profile_and_template": true,
+  "stale_profile_task_rejected": true,
+  "new_task_uses_updated_configuration": true,
+  "concurrent_editors_one_success_one_conflict": true,
+  "copy_creates_distinct_profile": true,
+  "new_probe_profiles": 2,
+  "new_probe_tasks": 2,
+  "temporary_provider_identity_deleted": true
+}

@@ -1692,3 +1692,18 @@
 1691|Create task with this checklist
 1692|Local recipes and stations
 1693|Recipes, changeover and system · Local
+1694|Create printer profile
+1695|Edit printer profile
+1696|Copy printer profile
+1697|Default checklist
+1698|Profile name
+1699|HTTPS profile source
+1700|No default checklist
+1701|Save printer profile
+1702|Printer profile saved
+1703|The printer profile has not been saved.
+1704|Enter a valid HTTPS address
+1705|Could not save printer profile
+1706|Profile updated; review the latest version
+1707|Continue from latest, keeping edits
+1708|Check the name, version and HTTPS source, then check your connection and save again.

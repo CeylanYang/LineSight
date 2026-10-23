@@ -97,6 +97,8 @@ class JobRequest(models.Model):
 
 
 class PrinterProfile(models.Model):
+    revision = models.PositiveIntegerField(default=1)
+    default_template = models.ForeignKey("CheckTemplate", on_delete=models.PROTECT, null=True, blank=True, related_name="printer_profiles")
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="printer_profiles")
     name = models.CharField(max_length=80)
     version = models.CharField(max_length=40)
