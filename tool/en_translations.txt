@@ -1677,3 +1677,18 @@
 1676|This checklist name already exists. Publish a version from its details.
 1677|This checklist name already exists. Choose another name.
 1678|Check {0}
+1679|Choose printer profiles and checklists to create production tasks.
+1680|Printer profiles
+1681|View printers, profile versions and sources
+1682|Manage checklist items and versions
+1683|Choose printer profile
+1684|Enter printer manually
+1685|No printer profiles
+1686|You can also enter a printer manually when creating a task.
+1687|Team profile
+1688|Built-in profile
+1689|Use this profile
+1690|Create task with this profile
+1691|Create task with this checklist
+1692|Local recipes and stations
+1693|Recipes, changeover and system · Local
