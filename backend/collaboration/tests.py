@@ -100,6 +100,20 @@ class WorkflowApiTests(TestCase):
         self.assertEqual(data["sample_count"], 0)
         self.assertEqual(data["records"][0]["id"], "legacy-1")
 
+    def test_imported_history_retains_original_and_final_review_results(self):
+        url = f"/api/v1/workspaces/{self.ws}/legacy-inspections/"
+        rows = [
+            {"id": "review-pass", "at": "2026-10-23T10:00:00Z", "passed": False, "review": "pass", "sample": False},
+            {"id": "review-fail", "at": "2026-10-23T10:00:00Z", "passed": True, "review": "fail", "sample": False},
+        ]
+        response = self.client.post(url, {"records": rows}, format="json")
+        self.assertEqual(response.status_code, 201)
+        data = {row['id']: row for row in self.client.get(url).data['records']}
+        self.assertTrue(data['review-pass']['passed'])
+        self.assertFalse(data['review-pass']['original_passed'])
+        self.assertFalse(data['review-fail']['passed'])
+        self.assertTrue(data['review-fail']['original_passed'])
+
     def test_rejects_fake_image_payload(self):
         job = self.client.post(f"/api/v1/workspaces/{self.ws}/jobs/", {"part_name": "Bracket", "printer": "A1", "quantity": 1}, format="json").data
         self.to_inspection(job["id"])

@@ -1,0 +1,11 @@
+{
+  "workspace_id": 5,
+  "job_id": "1567602f-45e8-4a7f-86c1-19f7e79b8628",
+  "source_record_id": "DEMO-LOCAL-1792761217242563",
+  "samples_excluded": true,
+  "repeat_import_skipped": 1,
+  "recovered_photo_acknowledged": true,
+  "actual_transport_progress_samples": 16,
+  "diagnostics_connected": true,
+  "diagnostics_redacted_fields_verified": true
+}

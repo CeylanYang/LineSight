@@ -1,3 +1,19 @@
+# 1.1.26 本机导入、恢复与同步批次
+
+资源约束更新：用户要求停用虚拟机/QEMU；已关闭Android模拟器及闲置构建后台。后续不启动模拟器，使用静态检查、单元测试、云端接口及必要时真机验收。普通8040已构建，不为补截图或升级测试重启模拟器；覆盖升级/回执保留/普通包会话恢复待真机验证。
+
+2026-10-23。**后续功能开发以C:/Users/29668/LineSight-workspaces/sync-delivery / feature/sync-delivery为当前工作区**。bffcf05保存共享界面快照；原product-plan目录仍有界面/素材开发，不得覆盖其后续修改。
+
+- CloudLocalImportPage接本机账户密码授权、预览/确认团队、默认排除示例、源ID重复跳过、分批进度；账户/团队/本机会话变化中止后续批次。导入历史同时保留原始与复核结论。
+- CloudPhotoRecovery接持久上下文/文件指针、原账户/团队/任务/阶段恢复到加密队列；WebP原生转PNG、最长边3000，服务端16MP约束保留；同步页提供恢复/放弃。
+- CloudAccount分块写入并flush后报告进度，回执前最多99%；CloudDiagnosticsPage检查当前团队云连接，复制白名单支持信息，不含令牌/凭据/记录内容。
+- Flutter全量126项、后端36项、Android完整旅程通过，analyze无问题。真实本机SQLite密码授权、HTTPS导入去重、恢复转换/上传回执、16次进度更新、原生剪贴板白名单见acceptance/sync-batch；物理相机与真实系统进程回收待真机。
+- 后端备份api-20261023T130044Z，28张原表旧行、7名旧用户、外键及健康检查通过，无新增迁移。HTTPS回读见sync-batch/live-api.json。
+- **驱动修正：Flutter drive默认stop会卸载App。此批早期曾触发，现必须显式--keep-app-running。tool/run_sync_journey.ps1固定该参数。** 1.1.25“升级保留数据”证据已更正，交付目录JSON同步更正；不能把那个安装当作数据保留证明。
+- 普通入口1.1.26+8040构建、签名/DEX与8039→8040覆盖安装结果以sync-batch/validation.json为准。tool/package_sync_batch.py打包冻结的.artifact-work/sso/sync8040.apk。
+- 下一批：角色/双语/小屏与工作台/待办日期口径审计、数据库/媒体/身份恢复演练、正式签名和SMTP；双真机与10外部用户验收仍待实际环境。总计划未完成，保持goal active。
+
+---
 # 1.1.25 追溯与检验日期批次
 
 2026-10-23。本批新增任务二维码、复制ID/链接、MLKit扫码和手动输入、冷/热外部链接与统一二级登录门禁、独立检验日期筛选、首次检验日期趋势下钻。云端仍按团队授权，不使用二维码授予权限。

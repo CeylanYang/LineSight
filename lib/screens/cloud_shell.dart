@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_local_import.dart';
+import '../cloud_photo_recovery.dart';
 import '../cloud_trace.dart';
 import '../l10n.dart';
 import '../liquid_glass_bar.dart';
@@ -16,6 +18,31 @@ class CloudShell extends StatefulWidget {
 
 class _CloudShellState extends State<CloudShell> {
   int _tab = 0;
+  String? recoveryScope;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final account = CloudScope.of(context),
+        next = CloudScope.of(context).draftKey('outbox');
+    if (next == recoveryScope) return;
+    recoveryScope = next;
+    if (next == null) return;
+    Future<void>(() async {
+      try {
+        final count = await CloudPhotoRecovery.instance.onStartup(account);
+        if (mounted && account.draftKey('outbox') == next && count > 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(tr(context, '已恢复 {0} 张照片，请在同步页面上传', [count])),
+            ),
+          );
+        }
+      } catch (_) {
+        /* The sync page offers recovery and retry actions. */
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context), local = AppScope.of(context);
@@ -296,11 +323,7 @@ class _CloudShellState extends State<CloudShell> {
                 ],
               ),
             ),
-            const Icon(
-              Icons.chevron_right,
-              size: 18,
-              color: Color(0xFFA9B8CC),
-            ),
+            const Icon(Icons.chevron_right, size: 18, color: Color(0xFFA9B8CC)),
           ],
         ),
       ),
@@ -387,8 +410,7 @@ class _CloudShellState extends State<CloudShell> {
                   HeroAction(
                     label: tr(context, '登录'),
                     icon: Icons.login,
-                    onPressed: () =>
-                        openPage(context, const CloudLoginPage()),
+                    onPressed: () => openPage(context, const CloudLoginPage()),
                   ),
                 ],
         ),
@@ -468,10 +490,7 @@ class _CloudShellState extends State<CloudShell> {
                   : null,
             ),
           ...account.jobs.take(5).map((job) => CloudTaskTile(job: job)),
-          SectionHeader(
-            tr(context, '快捷操作'),
-            icon: Icons.bolt_outlined,
-          ),
+          SectionHeader(tr(context, '快捷操作'), icon: Icons.bolt_outlined),
           AdaptiveGrid(
             minWidth: 168,
             children: [
@@ -492,7 +511,8 @@ class _CloudShellState extends State<CloudShell> {
                 ),
               QuickAction(
                 title: tr(context, '待办与通知'),
-                caption: '${account.notifications.length} ${tr(context, '条提醒')}',
+                caption:
+                    '${account.notifications.length} ${tr(context, '条提醒')}',
                 icon: Icons.notifications_active_outlined,
                 color: amber,
                 onPressed: () =>
@@ -522,16 +542,15 @@ class _CloudShellState extends State<CloudShell> {
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Column(
                 children: [
-                  for (var i = 0; i < account.notifications.take(3).length; i++)
-                    ...[
-                      if (i > 0)
-                        const Divider(height: 1, indent: 58, endIndent: 14),
-                      _noticeRow(
-                        context,
-                        account,
-                        account.notifications[i],
-                      ),
-                    ],
+                  for (
+                    var i = 0;
+                    i < account.notifications.take(3).length;
+                    i++
+                  ) ...[
+                    if (i > 0)
+                      const Divider(height: 1, indent: 58, endIndent: 14),
+                    _noticeRow(context, account, account.notifications[i]),
+                  ],
                 ],
               ),
             ),
@@ -620,17 +639,13 @@ class _CloudShellState extends State<CloudShell> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () =>
-                      openPage(context, const CloudProfilePage()),
+                  onPressed: () => openPage(context, const CloudProfilePage()),
                   icon: const Icon(Icons.chevron_right),
                 ),
               ],
             ),
           ),
-          SectionHeader(
-            tr(context, '团队与账户'),
-            icon: Icons.groups_2_outlined,
-          ),
+          SectionHeader(tr(context, '团队与账户'), icon: Icons.groups_2_outlined),
           if (account.workspaces.isNotEmpty)
             GlassPanel(
               padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
@@ -680,10 +695,19 @@ class _CloudShellState extends State<CloudShell> {
                   color: const Color(0xFF7B61D9),
                   onTap: () => openPage(context, const CloudSyncPage()),
                 ),
+                if (account.canEdit)
+                  MenuTile(
+                    title: tr(context, '导入本机记录'),
+                    subtitle: tr(context, '授权、预览并导入历史记录'),
+                    icon: Icons.move_to_inbox_outlined,
+                    onTap: () =>
+                        openPage(context, const CloudLocalImportPage()),
+                  ),
                 const Divider(height: 1, indent: 64, endIndent: 14),
                 MenuTile(
                   title: tr(context, '待办与通知'),
-                  subtitle: '${account.notifications.length} ${tr(context, '条提醒')}',
+                  subtitle:
+                      '${account.notifications.length} ${tr(context, '条提醒')}',
                   icon: Icons.notifications_active_outlined,
                   color: amber,
                   onTap: () =>
@@ -797,7 +821,11 @@ class CloudLoginPage extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 tr(context, '登录后将自动载入当前工作区的任务与通知。'),
-                style: const TextStyle(fontSize: 11.5, color: muted, height: 1.5),
+                style: const TextStyle(
+                  fontSize: 11.5,
+                  color: muted,
+                  height: 1.5,
+                ),
               ),
               if (account.busy) ...[
                 const SizedBox(height: 14),
@@ -835,7 +863,11 @@ class CloudLoginPage extends StatelessWidget {
                 title: tr(context, '任务与检验同步'),
                 subtitle: tr(context, '状态、轮次和逐件 SN 实时更新'),
                 icon: Icons.sync_alt,
-                trailing: const Icon(Icons.check_circle, color: green, size: 18),
+                trailing: const Icon(
+                  Icons.check_circle,
+                  color: green,
+                  size: 18,
+                ),
               ),
               const Divider(height: 1, indent: 62, endIndent: 4),
               MenuTile(
@@ -843,7 +875,11 @@ class CloudLoginPage extends StatelessWidget {
                 subtitle: tr(context, '原图与边缘参考双重归档'),
                 icon: Icons.photo_library_outlined,
                 color: const Color(0xFF7B61D9),
-                trailing: const Icon(Icons.check_circle, color: green, size: 18),
+                trailing: const Icon(
+                  Icons.check_circle,
+                  color: green,
+                  size: 18,
+                ),
               ),
               const Divider(height: 1, indent: 62, endIndent: 4),
               MenuTile(
@@ -851,7 +887,11 @@ class CloudLoginPage extends StatelessWidget {
                 subtitle: tr(context, '按工作区隔离数据与操作权限'),
                 icon: Icons.verified_user_outlined,
                 color: green,
-                trailing: const Icon(Icons.check_circle, color: green, size: 18),
+                trailing: const Icon(
+                  Icons.check_circle,
+                  color: green,
+                  size: 18,
+                ),
               ),
             ],
           ),

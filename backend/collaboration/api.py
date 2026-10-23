@@ -216,7 +216,9 @@ def legacy_inspections(request, workspace_id):
         return Response({"count": rows.count(), "sample_count": rows.filter(payload__sample=True).count(),
             "records": [{"id": row.source_id, "at": row.payload.get("at", ""),
                          "recipe": row.payload.get("recipeName", ""), "serial": row.payload.get("serial", ""),
-                         "passed": row.payload.get("passed", False), "sample": row.payload.get("sample", False)}
+                         "passed": (row.payload.get("review") == "pass" if row.payload.get("review") in ("pass", "fail") else row.payload.get("passed") is True),
+                         "original_passed": row.payload.get("passed") is True,
+                         "review": row.payload.get("review"), "sample": row.payload.get("sample", False)}
                         for row in recent]})
     if int(request.META.get("CONTENT_LENGTH", 0)) > 5 * 1024 * 1024:
         return Response({"detail": "导入内容超过 5 MB，请分批导入"}, status=413)

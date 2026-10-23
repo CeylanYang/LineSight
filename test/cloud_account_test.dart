@@ -104,13 +104,22 @@ void main() {
     'photo multipart declares its complete length for the cloud WSGI server',
     () async {
       await account.signIn();
+      final progress = <double>[];
+      account.addListener(() {
+        final value = account.uploadProgress['stable-key'];
+        if (value != null) progress.add(value);
+      });
       final receipt = await account.uploadPhoto(
         'workspaces/1/jobs/task/evidence/',
-        utf8.encode('attachment-content'),
+        [...utf8.encode('attachment-content'), ...List<int>.filled(200000, 65)],
         'stable-key',
         {'stage': 'inspection'},
       );
       expect(receipt['id'], 42);
+      expect(progress.first, 0);
+      expect(progress.any((value) => value > 0 && value < .99), true);
+      expect(progress.last, .99);
+      expect(account.uploadProgress, isEmpty);
     },
   );
 

@@ -73,6 +73,13 @@ Object.assign(changes, {
   'REP-02': ['待验收', 'lib/screens/cloud_business.dart; backend/collaboration/tests.py; acceptance/trace-batch/png/48-first-inspection-day-drilldown.png', '7日趋势、类别分布与平均处置时长；趋势按实际首次检验UTC日期下钻并保留原范围，Android与跨日后端测试通过'],
   'UI-11': ['开发中', 'lib/l10n_catalog.dart; lib/cloud_trace.dart; lib/screens/cloud_business.dart', '扫码/日期筛选补齐双语，报告与PDF阶段名译为检验/整改前/整改后；全页面窄屏与角色审计继续'],
 });
+Object.assign(changes, {
+  'DAT-04': ['待联调', 'lib/cloud_local_import.dart; test/cloud_local_import_test.dart; acceptance/sync-batch/', '云登录内二级导入页，本机工程师/管理员另行授权，预览与确认目标团队、默认排除示例、稳定源ID云端去重；授权/身份/团队变化中止；Android与HTTPS留证以本批结果为准'],
+  'QC-04': ['待联调', 'lib/cloud_photo_recovery.dart; test/cloud_photo_recovery_test.dart; acceptance/sync-batch/', '拍照/相册上下文持久化，Android丢失结果在原账户/团队/任务恢复到加密队列；WebP转PNG，按尺寸缩小；10MB及服务端16MP约束保留；物理相机/进程回收真机验收仍待补'],
+  'OFF-02': ['待联调', 'lib/cloud_account.dart; lib/cloud_outbox.dart; test/cloud_account_test.dart; acceptance/sync-batch/', '分块写入并flush后更新上传百分比，服务器回执前最多99%；恢复照片与原任务/阶段绑定，按身份隔离，仍支持重试/移除；本批Android真实传输回执与进度采样留证'],
+  'REL-04': ['开发中', 'lib/cloud_sync_diagnostics.dart; acceptance/sync-batch/', '同步诊断检查当前团队云连接，汇总待传/回执/草稿，复制版本、平台、UTC时间、团队ID和状态码白名单；不含令牌/凭据/记录内容。服务端集中请求追踪继续'],
+  'REL-03': ['开发中', 'acceptance/trace-batch/validation.json; acceptance/sync-batch/', '已更正1.1.25默认测试清理导致不能证明升级保留数据的证据；后续驱动显式keep-app-running，普通包仅install -r；本批8039→8040留证，完整旧数据库恢复/迁移仍继续'],
+});
 for (let index = 0; index < rows.length; index++) {
   const id = rows[index][0], change = changes[id];
   if (!change) continue;

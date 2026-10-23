@@ -1,0 +1,21 @@
+{
+  "version": "1.1.26+8040",
+  "entry": "lib/main.dart",
+  "flutter_tests_passed": 126,
+  "django_tests_passed": 36,
+  "flutter_analyze": "No issues found",
+  "android_sync_journey_passed": true,
+  "native_clipboard_whitelist_verified": true,
+  "actual_transport_progress_samples": 16,
+  "release_build_passed": true,
+  "signature_verified": true,
+  "integration_test_plugin_absent_from_release_dex": true,
+  "normal_release_upgrade_tested": false,
+  "upgrade_install_preserves_data": null,
+  "normal_release_session_restore_tested": false,
+  "physical_camera_tested": false,
+  "real_process_loss_recovery_tested": false,
+  "emulator_policy": "Stopped at user request; no further emulator or QEMU runs. Normal release upgrade and session restore remain pending on a physical device.",
+  "signing": "Existing debug-compatible certificate; formal signing pending",
+  "product_plan_complete": false
+}

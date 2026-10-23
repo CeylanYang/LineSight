@@ -8,6 +8,8 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../cloud_account.dart';
 import '../cloud_outbox.dart';
+import '../cloud_photo_recovery.dart';
+import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
@@ -260,10 +262,7 @@ class CloudReportSnapshotPage extends StatelessWidget {
         if (jobs.isEmpty)
           GlassPanel(
             padding: const EdgeInsets.all(18),
-            child: Text(
-              tr(context, '当前筛选范围内没有任务。'),
-              style: hint,
-            ),
+            child: Text(tr(context, '当前筛选范围内没有任务。'), style: hint),
           )
         else
           for (final task in jobs)
@@ -288,10 +287,9 @@ class CloudReportSnapshotPage extends StatelessWidget {
                           PartThumb(
                             partName: '${task['part_name']}',
                             size: 52,
-                            defect:
-                                (task['exceptions'] as List? ?? []).any(
-                                  (e) => e['status'] == 'open',
-                                ),
+                            defect: (task['exceptions'] as List? ?? []).any(
+                              (e) => e['status'] == 'open',
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -415,8 +413,7 @@ class CloudReportSnapshotPage extends StatelessWidget {
                                 color: ink,
                               ),
                             ),
-                            if ('${issue['resolution'] ?? ''}'
-                                .isNotEmpty) ...[
+                            if ('${issue['resolution'] ?? ''}'.isNotEmpty) ...[
                               const SizedBox(height: 3),
                               Text(
                                 '${tr(context, '处理结果')}：${issue['resolution']}',
@@ -480,7 +477,6 @@ class CloudReportSnapshotPage extends StatelessWidget {
     );
   }
 }
-
 
 Future<String?> cloudTextPrompt(BuildContext context, String title) async {
   final controller = TextEditingController();
@@ -658,8 +654,7 @@ class CloudTemplatesPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: OutlinedButton.icon(
-                onPressed: () =>
-                    openPage(context, const CloudTemplateEditor()),
+                onPressed: () => openPage(context, const CloudTemplateEditor()),
                 icon: const Icon(Icons.add, size: 18),
                 label: Text(tr(context, '发布检查模板')),
               ),
@@ -768,10 +763,7 @@ class _TemplateDetailPage extends StatelessWidget {
                     ),
                   ),
                   Tag(
-                    tr(
-                      context,
-                      items[i]['required'] == true ? '必填' : '选填',
-                    ),
+                    tr(context, items[i]['required'] == true ? '必填' : '选填'),
                     color: items[i]['required'] == true ? amber : muted,
                   ),
                 ],
@@ -816,10 +808,8 @@ class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
 
   void _refresh() => setState(() {});
 
-  int get count => items.text
-      .split('\n')
-      .where((line) => line.trim().isNotEmpty)
-      .length;
+  int get count =>
+      items.text.split('\n').where((line) => line.trim().isNotEmpty).length;
 
   @override
   void dispose() {
@@ -902,10 +892,7 @@ class _CloudTemplateEditorState extends State<CloudTemplateEditor> {
               maxLines: 10,
               decoration: InputDecoration(
                 labelText: tr(context, '每行一项（3 至 6 项）'),
-                hintText: tr(
-                  context,
-                  '表面划痕\n装配间隙\n关键尺寸\n标识与批次',
-                ),
+                hintText: tr(context, '表面划痕\n装配间隙\n关键尺寸\n标识与批次'),
                 alignLabelWithHint: true,
               ),
             ),
@@ -1059,14 +1046,12 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     if (mounted) setState(() => members = rows);
   });
 
-  String roleLabel(BuildContext context, Object? role) => tr(
-    context,
-    switch (role) {
-      'owner' => '团队管理员',
-      'operator' => '操作成员',
-      _ => '只读成员',
-    },
-  );
+  String roleLabel(BuildContext context, Object? role) =>
+      tr(context, switch (role) {
+        'owner' => '团队管理员',
+        'operator' => '操作成员',
+        _ => '只读成员',
+      });
 
   Color roleColor(Object? role) => switch (role) {
     'owner' => amber,
@@ -1217,19 +1202,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      onPressed: busy
-                          ? null
-                          : () => invite('operator'),
+                      onPressed: busy ? null : () => invite('operator'),
                       icon: const Icon(Icons.vpn_key_outlined, size: 17),
                       label: Text(tr(context, '生成邀请码')),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  tr(context, '切换权限会立即生成新的邀请码'),
-                  style: hint,
-                ),
+                Text(tr(context, '切换权限会立即生成新的邀请码'), style: hint),
                 if (invitation != null) ...[
                   const SizedBox(height: 12),
                   Container(
@@ -1488,8 +1468,10 @@ class CloudInspectionDetailPage extends StatelessWidget {
                 items: {
                   tr(context, '批次号'): '${record['batch_code'] ?? ''}',
                   tr(context, '检验轮次'): '${record['round_no'] ?? ''}',
-                  tr(context, '检验模板'):
-                      '${template['name'] ?? ''}${template['version'] == null ? '' : ' · v${template['version']}'}',
+                  tr(
+                    context,
+                    '检验模板',
+                  ): '${template['name'] ?? ''}${template['version'] == null ? '' : ' · v${template['version']}'}',
                   if (record['inspected_qty'] != null)
                     tr(context, '工件数量'): '${record['inspected_qty']}',
                   if (record['inspected_qty'] != null)
@@ -1583,14 +1565,11 @@ class CloudInspectionDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             Tag(
-                              tr(
-                                context,
-                                switch (answers[i]['result']) {
-                                  'pass' => '合格',
-                                  'fail' => '异常',
-                                  _ => '不适用',
-                                },
-                              ),
+                              tr(context, switch (answers[i]['result']) {
+                                'pass' => '合格',
+                                'fail' => '异常',
+                                _ => '不适用',
+                              }),
                               color: switch (answers[i]['result']) {
                                 'pass' => green,
                                 'fail' => red,
@@ -1714,11 +1693,7 @@ class CloudInspectionDetailPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Icon(
-                          Icons.chevron_right,
-                          size: 20,
-                          color: muted,
-                        ),
+                        const Icon(Icons.chevron_right, size: 20, color: muted),
                       ],
                     ),
                   ),
@@ -1824,17 +1799,10 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Icon(
-                    Icons.pinch_outlined,
-                    size: 15,
-                    color: muted,
-                  ),
+                  const Icon(Icons.pinch_outlined, size: 15, color: muted),
                   const SizedBox(width: 6),
                   Expanded(
-                    child: Text(
-                      tr(context, '支持双指缩放与拖动查看细节'),
-                      style: hint,
-                    ),
+                    child: Text(tr(context, '支持双指缩放与拖动查看细节'), style: hint),
                   ),
                   Text(
                     '${tr(context, '证据')} #${widget.photo['id']}',
@@ -1889,9 +1857,7 @@ class _CloudEvidencePageState extends State<CloudEvidencePage> {
               child: InteractiveViewer(
                 minScale: .5,
                 maxScale: 8,
-                child: Center(
-                  child: Image.memory(bytes!, fit: BoxFit.contain),
-                ),
+                child: Center(child: Image.memory(bytes!, fit: BoxFit.contain)),
               ),
             ),
           ),
@@ -1936,31 +1902,16 @@ Future<int?> cloudPickPhoto(
     ),
   );
   if (source == null || !context.mounted) return null;
-  final account = CloudScope.of(context),
-      profileId = CloudScope.of(context).profile?['id'],
-      workspace = CloudScope.of(context).activeWorkspace!['id'];
-  final photo = await ImagePicker().pickImage(
-    source: source,
-    maxWidth: 3000,
-    maxHeight: 3000,
-    imageQuality: 88,
-  );
-  if (photo == null) return null;
-  final bytes = await photo.readAsBytes();
-  if (bytes.length > 10 * 1024 * 1024) {
-    throw const CollaborationApiException(400, '请选择不超过 10 MB 的图片');
-  }
-  if (profileId != account.profile?['id'] ||
-      workspace != account.activeWorkspace?['id']) {
-    throw const CollaborationApiException(401, '请先登录');
-  }
-  final outbox = CloudOutbox(account);
-  final item = await outbox.enqueue(
+  final account = CloudScope.of(context);
+  final item = await CloudPhotoRecovery.instance.pick(
+    account,
     '${job['id']}',
-    bytes,
+    source,
     stage: stage,
     issueId: issue?['id'] as int?,
   );
+  if (item == null) return null;
+  final outbox = CloudOutbox(account);
   try {
     return await outbox.retry(item['key'] as String);
   } catch (_) {
@@ -2135,14 +2086,8 @@ class _CloudReportPageState extends State<CloudReportPage> {
                 data: [
                   [tr(context, '首次通过率'), rate(data['first_pass_rate'])],
                   [tr(context, '最终放行率'), rate(data['final_release_rate'])],
-                  [
-                    tr(context, '首次送检工件'),
-                    '${data['first_inspected_pieces']}',
-                  ],
-                  [
-                    tr(context, '最终放行工件'),
-                    '${data['final_released_pieces']}',
-                  ],
+                  [tr(context, '首次送检工件'), '${data['first_inspected_pieces']}'],
+                  [tr(context, '最终放行工件'), '${data['final_released_pieces']}'],
                   [tr(context, '异常工件'), '${data['latest_fail_pieces']}'],
                   [tr(context, '报废工件'), '${data['latest_scrap_pieces']}'],
                 ],
@@ -2259,10 +2204,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                       style: const TextStyle(fontSize: 12, color: red),
                     ),
                   ),
-                  TextButton(
-                    onPressed: load,
-                    child: Text(tr(context, '重试')),
-                  ),
+                  TextButton(onPressed: load, child: Text(tr(context, '重试'))),
                 ],
               ),
             ),
@@ -2276,8 +2218,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
           builder: (context, c) {
             final columns = c.maxWidth >= 720 ? 3 : 2;
             final width = (c.maxWidth - (columns - 1) * 10) / columns;
-            Widget cell(Widget child) =>
-                SizedBox(width: width, child: child);
+            Widget cell(Widget child) => SizedBox(width: width, child: child);
             return Wrap(
               spacing: 10,
               runSpacing: 10,
@@ -2344,10 +2285,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
           child: trend.isEmpty
               ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(
-                    tr(context, '当前范围内暂无检验数据'),
-                    style: hint,
-                  ),
+                  child: Text(tr(context, '当前范围内暂无检验数据'), style: hint),
                 )
               : Column(
                   children: [
@@ -2373,9 +2311,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                                   width: 78,
                                   child: Text(
                                     '${trend[i]['day']}'.substring(
-                                      '${trend[i]['day']}'.length > 5
-                                          ? 5
-                                          : 0,
+                                      '${trend[i]['day']}'.length > 5 ? 5 : 0,
                                     ),
                                     style: const TextStyle(
                                       fontSize: 12,
@@ -2408,12 +2344,12 @@ class _CloudReportPageState extends State<CloudReportPage> {
                                                         0
                                                     ? 0.0
                                                     : ((trend[i]['passed']
-                                                                    as num? ??
-                                                                0) /
-                                                                (trend[i]['inspected']
-                                                                    as num))
-                                                            .clamp(0.0, 1.0)
-                                                            .toDouble(),
+                                                                      as num? ??
+                                                                  0) /
+                                                              (trend[i]['inspected']
+                                                                  as num))
+                                                          .clamp(0.0, 1.0)
+                                                          .toDouble(),
                                                 child: const ColoredBox(
                                                   color: green,
                                                 ),
@@ -2462,10 +2398,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                     children: [
                       const Icon(Icons.check_circle_outline, color: green),
                       const SizedBox(width: 10),
-                      Text(
-                        tr(context, '当前范围内没有登记异常'),
-                        style: hint,
-                      ),
+                      Text(tr(context, '当前范围内没有登记异常'), style: hint),
                     ],
                   ),
                 )
@@ -2514,12 +2447,12 @@ class _CloudReportPageState extends State<CloudReportPage> {
                                           minHeight: 6,
                                           value: categoryMax == 0
                                               ? 0
-                                              : (categories.values
-                                                            .elementAt(i)
+                                              : (categories.values.elementAt(i)
                                                         as num) /
                                                     categoryMax,
-                                          backgroundColor:
-                                              const Color(0xFFEEF3FA),
+                                          backgroundColor: const Color(
+                                            0xFFEEF3FA,
+                                          ),
                                           color: red.withValues(alpha: .75),
                                         ),
                                       ),
@@ -2653,7 +2586,6 @@ class _CloudReportPageState extends State<CloudReportPage> {
     );
   }
 }
-
 
 class _CountPill extends StatelessWidget {
   final String label;
@@ -2831,8 +2763,11 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
                   spacing: 7,
                   runSpacing: 7,
                   children: [
-                    for (final e
-                        in {'': '全部', 'pass': '合格', 'fail': '异常'}.entries)
+                    for (final e in {
+                      '': '全部',
+                      'pass': '合格',
+                      'fail': '异常',
+                    }.entries)
                       ChoiceChip(
                         label: Text(tr(context, e.value)),
                         selected: (filters['verdict'] ?? '') == e.key,
@@ -2879,17 +2814,9 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
                 color: blue,
               ),
               const SizedBox(width: 7),
-              _CountPill(
-                label: tr(context, '合格'),
-                value: passed,
-                color: green,
-              ),
+              _CountPill(label: tr(context, '合格'), value: passed, color: green),
               const SizedBox(width: 7),
-              _CountPill(
-                label: tr(context, '异常'),
-                value: failed,
-                color: red,
-              ),
+              _CountPill(label: tr(context, '异常'), value: failed, color: red),
               const Spacer(),
               IconButton.filledTonal(
                 tooltip: tr(context, '范围报告'),
@@ -2939,10 +2866,8 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
                   type: MaterialType.transparency,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    onTap: () => openPage(
-                      context,
-                      CloudInspectionDetailPage(record: r),
-                    ),
+                    onTap: () =>
+                        openPage(context, CloudInspectionDetailPage(record: r)),
                     child: Row(
                       children: [
                         PartThumb(
@@ -2975,9 +2900,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
                                       context,
                                       r['verdict'] == 'pass' ? '合格' : '异常',
                                     ),
-                                    color: r['verdict'] == 'pass'
-                                        ? green
-                                        : red,
+                                    color: r['verdict'] == 'pass' ? green : red,
                                   ),
                                 ],
                               ),
@@ -3054,6 +2977,53 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
   bool busy = false;
   String? error;
   String? scope;
+  Future<void> recover({bool discard = false}) async {
+    final account = CloudScope.of(context), captured = scope;
+    if (discard &&
+        !await confirm(
+          context,
+          tr(context, '放弃照片恢复'),
+          tr(context, '确认放弃上次未完成的照片？'),
+        )) {
+      return;
+    }
+    if (!mounted) return;
+    setState(() {
+      busy = true;
+      error = null;
+    });
+    try {
+      var count = 0;
+      if (discard) {
+        await CloudPhotoRecovery.instance.discard(account);
+      } else {
+        count = await CloudPhotoRecovery.instance.onStartup(account);
+      }
+      await load();
+      if (mounted && captured == scope) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              tr(
+                context,
+                discard
+                    ? '已放弃照片恢复'
+                    : count == 0
+                    ? '没有可恢复的照片'
+                    : '已恢复 {0} 张照片，请在同步页面上传',
+                [count],
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (failure) {
+      if (mounted && captured == scope) setState(() => error = '$failure');
+    } finally {
+      if (mounted && captured == scope) setState(() => busy = false);
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -3063,6 +3033,9 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
       scope = next;
       photos = [];
       drafts = [];
+      busy = false;
+      error = null;
+      outbox = null;
       if (next != null) {
         outbox = CloudOutbox(account);
         load();
@@ -3088,15 +3061,16 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
   }
 
   Future<void> retry(String key) async {
+    final captured = scope, queue = outbox;
     setState(() {
       busy = true;
       error = null;
     });
     try {
-      await outbox!.retry(key);
-      await load();
+      await queue!.retry(key);
+      if (mounted && captured == scope) await load();
     } catch (failure) {
-      if (mounted) {
+      if (mounted && captured == scope) {
         setState(
           () => error = failure is CollaborationApiException
               ? failure.message
@@ -3104,7 +3078,7 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
         );
       }
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted && captured == scope) setState(() => busy = false);
     }
   }
 
@@ -3118,6 +3092,11 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
       title: tr(context, '同步与草稿'),
       actions: [
         IconButton(
+          icon: const Icon(Icons.network_check),
+          tooltip: tr(context, '同步诊断'),
+          onPressed: () => openPage(context, const CloudDiagnosticsPage()),
+        ),
+        IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: busy ? null : load,
         ),
@@ -3127,8 +3106,20 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
           eyebrow: 'DATA / OFFLINE SYNC',
           title: tr(context, '同步与草稿'),
           subtitle:
-              '${account.activeWorkspace?['name'] ?? ''} · $drafts.length ${tr(context, '份草稿')} · $pending ${tr(context, '张待上传')}',
+              '${account.activeWorkspace?['name'] ?? ''} · ${drafts.length} ${tr(context, '份草稿')} · $pending ${tr(context, '张待上传')}',
           actions: [
+            HeroAction(
+              label: tr(context, '恢复照片'),
+              icon: Icons.restore,
+              ghost: true,
+              onPressed: busy ? null : () => recover(),
+            ),
+            HeroAction(
+              label: tr(context, '放弃照片恢复'),
+              icon: Icons.close,
+              ghost: true,
+              onPressed: busy ? null : () => recover(discard: true),
+            ),
             HeroAction(
               label: tr(context, '刷新云端数据'),
               icon: Icons.cloud_sync_outlined,
@@ -3200,12 +3191,7 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
               children: [
                 const Icon(Icons.cloud_done_outlined, color: green, size: 20),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    tr(context, '所有照片均已同步至云端'),
-                    style: hint,
-                  ),
-                ),
+                Expanded(child: Text(tr(context, '所有照片均已同步至云端'), style: hint)),
               ],
             ),
           )
@@ -3267,6 +3253,14 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
                         ),
                       ],
                     ),
+                    if (account.uploadProgress['${item['key']}'] != null) ...[
+                      LinearProgressIndicator(
+                        value: account.uploadProgress['${item['key']}'],
+                      ),
+                      Text(
+                        '${(account.uploadProgress['${item['key']}']! * 100).floor()}% · ${tr(context, '正在上传')}',
+                      ),
+                    ],
                     if (item['error'] != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
@@ -3329,12 +3323,7 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
               children: [
                 const Icon(Icons.task_alt, color: green, size: 20),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    tr(context, '没有未提交的草稿'),
-                    style: hint,
-                  ),
-                ),
+                Expanded(child: Text(tr(context, '没有未提交的草稿'), style: hint)),
               ],
             ),
           )
@@ -3411,10 +3400,8 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
                                 as Map,
                           );
                           if (!context.mounted) return;
-                          final matches =
-                              (job['exceptions'] as List? ?? []).where(
-                                (e) => e['id'] == drafts[i]['issue_id'],
-                              );
+                          final matches = (job['exceptions'] as List? ?? [])
+                              .where((e) => e['id'] == drafts[i]['issue_id']);
                           await Navigator.of(context).push(
                             MaterialPageRoute<void>(
                               builder: (_) => CloudTaskCommandPage(
@@ -3511,10 +3498,7 @@ class CloudNotificationsPage extends StatelessWidget {
                 ),
               ),
               if (unread > 0)
-                Tag(
-                  tr(context, '待处理'),
-                  color: amber,
-                )
+                Tag(tr(context, '待处理'), color: amber)
               else
                 Tag(tr(context, '已清空'), color: green),
             ],
@@ -3636,11 +3620,7 @@ class CloudNotificationsPage extends StatelessWidget {
                         if (notice['read'] == true)
                           const Padding(
                             padding: EdgeInsets.only(right: 4),
-                            child: Icon(
-                              Icons.done_all,
-                              size: 18,
-                              color: muted,
-                            ),
+                            child: Icon(Icons.done_all, size: 18, color: muted),
                           )
                         else
                           TextButton(

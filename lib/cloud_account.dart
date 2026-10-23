@@ -264,6 +264,7 @@ class CloudAccount extends ChangeNotifier {
   Future<void>? _refreshing;
   Future<void> _vaultWrites = Future<void>.value();
   bool get signedIn => _tokens != null;
+  final Map<String, double> uploadProgress = {};
   bool get demoAccount => profile?['is_demo'] == true;
   String get displayName => '${profile?['display_name'] ?? ''}';
   bool get canEdit =>
@@ -541,6 +542,8 @@ class CloudAccount extends ChangeNotifier {
     final client = HttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     final boundary = 'linesight${DateTime.now().microsecondsSinceEpoch}';
+    uploadProgress[key] = 0;
+    notifyListeners();
     try {
       final req = await client.postUrl(Uri.parse(apiUrl).resolve(path));
       req.headers.set(
@@ -571,8 +574,19 @@ class CloudAccount extends ChangeNotifier {
         0,
         (total, part) => total + part.length,
       );
+      var sent = 0;
       for (final part in parts) {
-        req.add(part);
+        for (var offset = 0; offset < part.length; offset += 65536) {
+          if (epoch != _epoch) {
+            throw const CollaborationApiException(401, '请先登录');
+          }
+          final end = (offset + 65536).clamp(0, part.length);
+          req.add(part.sublist(offset, end));
+          await req.flush().timeout(const Duration(seconds: 30));
+          sent += end - offset;
+          uploadProgress[key] = (sent / req.contentLength).clamp(0, .99);
+          notifyListeners();
+        }
       }
       final response = await req.close().timeout(const Duration(seconds: 60));
       final body = Map<String, dynamic>.from(
@@ -593,6 +607,8 @@ class CloudAccount extends ChangeNotifier {
       throw const CollaborationApiException(503, '连接超时，请重试');
     } finally {
       client.close(force: true);
+      uploadProgress.remove(key);
+      notifyListeners();
     }
   }
 

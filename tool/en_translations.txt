@@ -1333,3 +1333,36 @@
 1332|First inspection date (UTC)
 1333|The end date must follow the start date.
 1334|Surface reference
+1335|Import device records
+1336|Authorize, preview and import historical records
+1337|Your account or workspace changed. Preview again.
+1338|Destination team
+1339|Authorize with a device engineer or administrator account
+1340|Device username
+1341|Device password
+1342|Authorize and preview
+1343|Confirm import
+1344|Import {0} records into {1}
+1345|Import again
+1346|Team historical records
+1347|Your role can only view records
+1348|Switch to the original account and team to recover this photo.
+1349|A photo is being processed. Please wait.
+1350|Recover the previous photo on the sync page first.
+1351|The photo could not be recovered. Take it again.
+1352|Recovered {0} photos. Upload them on the sync page.
+1353|Recover photos
+1354|Discard photo recovery
+1355|Discard the previous unfinished photo?
+1356|Photo recovery discarded
+1357|No photos to recover
+1358|Sync diagnostics
+1359|Cloud connection
+1360|Connected
+1361|Needs attention
+1362|Last checked
+1363|Check connection
+1364|Copy diagnostics
+1365|Diagnostics copied
+1366|Connection failed. Check your network or sign in again.
+1367|Uploading

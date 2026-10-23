@@ -1,0 +1,19 @@
+{
+  "demo_only": true,
+  "source_record_id": "DEMO-LOCAL-1792761217242563",
+  "source_record_occurrences": 1,
+  "sample_excluded": true,
+  "repeat_import_skipped": 1,
+  "original_and_review_outcomes_preserved": true,
+  "job_id": "1567602f-45e8-4a7f-86c1-19f7e79b8628",
+  "evidence_id": 9,
+  "recovered_image_format": "PNG",
+  "recovered_image_dimensions": [
+    1400,
+    933
+  ],
+  "actual_transport_progress_samples": 16,
+  "diagnostics_redacted_fields_verified": true,
+  "anonymous_status": 401,
+  "foreign_workspace_status": 404
+}
