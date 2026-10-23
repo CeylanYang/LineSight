@@ -1,0 +1,12 @@
+{
+  "version": "1.1.46+8070",
+  "flutter_full_tests_passed": 374,
+  "new_profile_tests": 21,
+  "backend_tests_passed": 68,
+  "flutter_analyze_clean": true,
+  "live_https_profile_verified": true,
+  "new_component_png": 10,
+  "native_final_apk_verified": false,
+  "local_device_data_preserved": true,
+  "backend_deployment_needed": false
+}

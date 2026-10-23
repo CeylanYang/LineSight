@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "native_pkce_provider_flow": true,
+  "new_isolated_probe_workspace": true,
+  "built_in_profiles_read": true,
+  "task_uses_selected_profile": true,
+  "explicit_template_pinned": true,
+  "task_retry_does_not_duplicate": true,
+  "old_job_keeps_profile_snapshot_after_update": true,
+  "new_job_uses_updated_profile": true,
+  "unknown_profile_rejected": true,
+  "new_probe_tasks": 2,
+  "temporary_provider_identity_deleted": true
+}

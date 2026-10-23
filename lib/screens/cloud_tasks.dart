@@ -18,6 +18,7 @@ import '../models.dart' show uid;
 import '../ui.dart';
 import '../time.dart' show zonedStamp;
 import 'cloud_business.dart';
+import 'cloud_profiles.dart';
 import 'cloud_shell.dart' show CloudLoginPage, cloudReauthenticate;
 
 String cloudTimestamp(Object? value) {
@@ -674,7 +675,13 @@ class CloudTaskTile extends StatelessWidget {
 }
 
 class CloudCreateTaskPage extends StatefulWidget {
-  const CloudCreateTaskPage({super.key});
+  final Map<String, dynamic>? initialProfile;
+  final int? initialTemplateId;
+  const CloudCreateTaskPage({
+    super.key,
+    this.initialProfile,
+    this.initialTemplateId,
+  });
   @override
   State<CloudCreateTaskPage> createState() => _CloudCreateTaskPageState();
 }
@@ -688,6 +695,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       batch = TextEditingController(),
       serials = TextEditingController();
   int? templateId, assigneeId;
+  Map<String, dynamic>? selectedProfile;
   List<Map<String, dynamic>> teamMembers = [];
   bool serialMode = false;
   String key = 'cloud-${uid()}';
@@ -703,6 +711,9 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
     super.didChangeDependencies();
     if (!draftLoaded) {
       draftLoaded = true;
+      selectedProfile = widget.initialProfile;
+      if (selectedProfile != null) printer.text = '${selectedProfile!['name']}';
+      templateId = widget.initialTemplateId;
       final account = CloudScope.of(context);
       accessBinding = account.accessScope;
       draftOwner = account.profile?['id'];
@@ -770,13 +781,18 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       setState(() {
         key = data['request_key'] as String? ?? key;
         name.text = '${data['name'] ?? ''}';
-        printer.text = '${data['printer'] ?? ''}';
+        if (widget.initialProfile == null) {
+          printer.text = '${data['printer'] ?? ''}';
+          if (data['profile'] is Map) {
+            selectedProfile = Map<String, dynamic>.from(data['profile'] as Map);
+          }
+        }
         quantity.text = '${data['quantity'] ?? '1'}';
         note.text = '${data['note'] ?? ''}';
         batch.text = '${data['batch'] ?? ''}';
         serials.text = '${data['serials'] ?? ''}';
         serialMode = data['serialMode'] == true;
-        templateId = data['templateId'] as int?;
+        templateId = widget.initialTemplateId ?? data['templateId'] as int?;
         final savedAssignee = data['assignee_id'] as int?;
         assigneeId =
             teamMembers.isEmpty ||
@@ -800,6 +816,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         'request_key': key,
         'name': name.text,
         'printer': printer.text,
+        'profile': selectedProfile,
         'quantity': quantity.text,
         'note': note.text,
         'batch': batch.text,
@@ -844,6 +861,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         body: {
           'part_name': name.text.trim(),
           'printer': printer.text.trim(),
+          if (selectedProfile != null) 'profile_id': selectedProfile!['id'],
           'quantity': int.parse(quantity.text),
           'note': note.text.trim(),
           'batch_code': batch.text.trim(),
@@ -962,9 +980,53 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                           ? tr(context, '请填写零件名称')
                           : null,
                     ),
+                    OutlinedButton.icon(
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              final selected = await Navigator.of(context)
+                                  .push<Map<String, dynamic>>(
+                                    MaterialPageRoute(
+                                      builder: (_) => const CloudProfilesPage(
+                                        picking: true,
+                                      ),
+                                    ),
+                                  );
+                              if (!mounted ||
+                                  selected == null ||
+                                  !account.retainsAccess(accessBinding)) {
+                                return;
+                              }
+                              setState(() {
+                                selectedProfile = selected;
+                                printer.text = '${selected['name']}';
+                              });
+                              await saveDraft();
+                            },
+                      icon: const Icon(Icons.tune),
+                      label: Text(tr(context, '选择打印配置')),
+                    ),
+                    if (selectedProfile != null)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          '${selectedProfile!['name']} · ${selectedProfile!['version']}',
+                        ),
+                        subtitle: Text('${selectedProfile!['source']}'),
+                        trailing: IconButton(
+                          tooltip: tr(context, '改为手动填写'),
+                          onPressed: busy
+                              ? null
+                              : () {
+                                  setState(() => selectedProfile = null);
+                                  saveDraft();
+                                },
+                          icon: const Icon(Icons.close),
+                        ),
+                      ),
                     TextFormField(
                       controller: printer,
-                      enabled: !busy,
+                      enabled: !busy && selectedProfile == null,
                       maxLength: 80,
                       decoration: field('打印设备', Icons.print_outlined),
                       validator: (v) => v == null || v.trim().isEmpty
@@ -1119,6 +1181,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         Row(
           children: [
             Expanded(
+              flex: 2,
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(0, 48),
@@ -1435,6 +1498,10 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
               InfoGrid(
                 items: {
                   tr(context, '打印设备'): '${job['printer'] ?? ''}',
+                  if ('${job['profile_version'] ?? ''}'.isNotEmpty)
+                    tr(context, '配置版本'): '${job['profile_version']}',
+                  if ('${job['profile_source'] ?? ''}'.isNotEmpty)
+                    tr(context, '配置来源'): '${job['profile_source']}',
                   tr(context, '工件数量'):
                       '${job['quantity'] ?? ''} ${tr(context, '件')}',
                   tr(context, '批次号'): '${job['batch_code'] ?? ''}',

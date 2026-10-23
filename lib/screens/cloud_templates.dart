@@ -7,7 +7,8 @@ import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
 import '../ui.dart';
-import 'cloud_tasks.dart' show cloudAccessRequired, cloudScopeChanged;
+import 'cloud_tasks.dart'
+    show cloudAccessRequired, cloudScopeChanged, CloudCreateTaskPage;
 
 class CloudTemplateDetailPage extends StatefulWidget {
   final Map<String, dynamic> template;
@@ -156,6 +157,19 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
             label: Text(tr(context, '复制模板')),
           ),
         ],
+        if (account.canEdit)
+          FilledButton.icon(
+            onPressed: () {
+              if (account.retainsAccess(binding)) {
+                openPage(
+                  context,
+                  CloudCreateTaskPage(initialTemplateId: selected['id'] as int),
+                );
+              }
+            },
+            icon: const Icon(Icons.add_task),
+            label: Text(tr(context, '使用此模板创建任务')),
+          ),
       ],
     );
   }

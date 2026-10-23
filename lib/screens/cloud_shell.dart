@@ -13,6 +13,7 @@ import '../liquid_glass_bar.dart';
 import '../ui.dart';
 import '../language_selector.dart';
 import 'cloud_tasks.dart';
+import 'cloud_profiles.dart';
 import 'cloud_business.dart';
 import 'cloud_nfc.dart';
 import 'cloud_sessions.dart';
@@ -72,7 +73,7 @@ class _CloudShellState extends State<CloudShell> {
     final pages = [
       _workbench(context, account),
       const CloudRecordsPage(),
-      const CloudTemplatesPage(),
+      const CloudConfigurationPage(),
       _profile(context, account),
     ];
     void select(int tab) {

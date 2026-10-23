@@ -361,10 +361,20 @@ void main() {
       await tap(tester, find.text('Publish'));
       await tap(tester, find.text('Done'));
       expect(find.byType(CloudTemplateEditor), findsNothing);
+      await tester.scrollUntilVisible(
+        find.byType(DropdownButtonFormField<int>),
+        -300,
+        scrollable: find.byType(Scrollable).first,
+      );
       final version = tester.widget<DropdownButtonFormField<int>>(
         find.byType(DropdownButtonFormField<int>),
       );
       expect(version.initialValue, 12);
+      await tester.scrollUntilVisible(
+        find.text('Publish new version'),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Publish new version'), findsOneWidget);
       expect(account.posts.length, 1);
     },
