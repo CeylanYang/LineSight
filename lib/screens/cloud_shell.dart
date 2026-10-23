@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_feedback.dart';
 import '../cloud_navigation.dart';
 import '../cloud_workbench.dart';
 import '../cloud_local_import.dart';
@@ -124,7 +125,8 @@ class _CloudShellState extends State<CloudShell> {
                     children: [
                       if (account.busy || account.restoring)
                         const LinearProgressIndicator(),
-                      if (account.error != null)
+                      if (account.error != null &&
+                          account.workspaceFailure == null)
                         MaterialBanner(
                           content: Text(trMessage(context, account.error!)),
                           actions: [
@@ -368,7 +370,9 @@ class _CloudShellState extends State<CloudShell> {
           eyebrow: 'LINESIGHT · QUALITY OPS',
           title: tr(context, '工作台'),
           subtitle: account.signedIn
-              ? '${tr(context, '待质检')} $pending · ${tr(context, '异常处理中')} $issues · ${tr(context, '已关闭')} $closed'
+              ? !account.workspaceDataReady
+                    ? tr(context, '与团队同步质检进度、照片证据与质量报告。')
+                    : '${tr(context, '待质检')} $pending · ${tr(context, '异常处理中')} $issues · ${tr(context, '已关闭')} $closed'
               : tr(context, '登录后查看任务与检验记录'),
           trailing: account.demoAccount
               ? Container(
@@ -450,7 +454,14 @@ class _CloudShellState extends State<CloudShell> {
             padding: const EdgeInsets.only(top: 18),
             child: _loginState(context),
           )
-        else ...[
+        else if (!account.workspaceDataReady) ...[
+          CloudWorkspaceStatus(account: account),
+          TextButton.icon(
+            onPressed: () => openPage(context, const CloudSyncPage()),
+            icon: const Icon(Icons.cloud_sync_outlined),
+            label: Text(tr(context, '同步与草稿')),
+          ),
+        ] else ...[
           CloudWorkbenchSummary(account: account),
           SectionHeader(
             tr(context, '生产任务'),
@@ -703,8 +714,9 @@ class _CloudShellState extends State<CloudShell> {
                 const Divider(height: 1, indent: 64, endIndent: 14),
                 MenuTile(
                   title: tr(context, '待办与通知'),
-                  subtitle:
-                      '${account.notifications.length} ${tr(context, '条提醒')}',
+                  subtitle: account.workspaceDataReady
+                      ? '${account.notifications.length} ${tr(context, '条提醒')}'
+                      : tr(context, '待办与通知'),
                   icon: Icons.notifications_active_outlined,
                   color: amber,
                   onTap: () =>

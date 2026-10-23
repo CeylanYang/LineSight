@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cloud_account.dart';
+import 'cloud_feedback.dart';
 import 'l10n.dart';
 import 'screens/cloud_tasks.dart';
 import 'ui.dart';
@@ -21,6 +22,9 @@ class CloudWorkbenchSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!account.workspaceDataReady) {
+      return CloudWorkspaceStatus(account: account);
+    }
     final bounds = cloudTodayBounds(now ?? DateTime.now());
     final start = DateTime.parse(bounds['updated_from']!);
     final end = DateTime.parse(bounds['updated_to']!);

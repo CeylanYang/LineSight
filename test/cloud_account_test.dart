@@ -48,13 +48,23 @@ void main() {
   late TestIdentity identity;
   late CloudAccount account;
   var status = 200;
+  String? rejectedPath;
+  Completer<void>? readGate;
+  var emptyWorkspace = false, emptyRows = false;
   setUp(() async {
     status = 200;
+    rejectedPath = null;
+    readGate = null;
+    emptyWorkspace = false;
+    emptyRows = false;
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
       request.response.headers.contentType = ContentType.json;
-      request.response.statusCode = status;
       final path = request.uri.path;
+      if (path.endsWith('notifications/')) await readGate?.future;
+      final responseStatus =
+          rejectedPath != null && path.endsWith(rejectedPath!) ? 403 : status;
+      request.response.statusCode = responseStatus;
       if (path.endsWith('evidence/')) {
         final received = await request.fold<List<int>>(
           [],
@@ -70,17 +80,21 @@ void main() {
         await request.response.close();
         return;
       }
-      final Object body = status != 200
+      final Object body = responseStatus != 200
           ? {'detail': 'server rejection'}
           : path.endsWith('metrics/')
           ? <String, dynamic>{}
           : path.endsWith('auth/me/')
           ? {'display_name': 'Engineer', 'home_workspace_id': 1}
           : path.endsWith('workspaces/')
-          ? [
-              {'id': 1, 'name': 'Personal', 'role': 'owner'},
-              {'id': 2, 'name': 'Team', 'role': 'viewer'},
-            ]
+          ? emptyWorkspace
+                ? []
+                : [
+                    {'id': 1, 'name': 'Personal', 'role': 'owner'},
+                    {'id': 2, 'name': 'Team', 'role': 'viewer'},
+                  ]
+          : emptyRows
+          ? []
           : [
               {'id': path.contains('/2/') ? 'team-job' : 'personal-job'},
             ];
@@ -99,6 +113,92 @@ void main() {
     account.dispose();
     await server.close(force: true);
   });
+
+  test(
+    'workspace readiness waits for the full bundle and valid empty data is ready',
+    () async {
+      expect(account.workspaceDataLoaded, false);
+      readGate = Completer<void>();
+      final pending = account.signIn();
+      while (account.activeWorkspace == null) {
+        await Future<void>.delayed(const Duration(milliseconds: 5));
+      }
+      expect(account.workspaceLoading, true);
+      expect(account.workspaceDataReady, false);
+      expect(account.jobs, isEmpty);
+      readGate!.complete();
+      await pending;
+      expect(account.workspaceDataReady, true);
+      emptyRows = true;
+      await account.reload();
+      expect(account.workspaceDataReady, true);
+      expect(account.jobs, isEmpty);
+      expect(account.workspaceFailure, isNull);
+    },
+  );
+
+  test(
+    'bundle failure preserves status without publishing partial data; retry recovers',
+    () async {
+      rejectedPath = 'notifications/';
+      await account.signIn();
+      expect(account.signedIn, true);
+      expect(account.workspaceLoading, false);
+      expect(account.workspaceDataReady, false);
+      expect(account.jobs, isEmpty);
+      expect(
+        account.workspaceFailure,
+        isA<CollaborationApiException>().having((e) => e.status, 'status', 403),
+      );
+      rejectedPath = null;
+      await account.reload();
+      expect(account.workspaceDataReady, true);
+      expect(account.workspaceFailure, isNull);
+      expect(account.jobs, isNotEmpty);
+    },
+  );
+
+  test(
+    'failure before workspace selection is a read failure; no teams is a successful read',
+    () async {
+      rejectedPath = 'auth/me/';
+      await account.signIn();
+      expect(account.workspaceDataReady, false);
+      expect(account.workspaceFailure, isA<CollaborationApiException>());
+      rejectedPath = null;
+      emptyWorkspace = true;
+      await account.reload();
+      expect(account.workspaceDataLoaded, true);
+      expect(account.workspaceDataReady, false);
+      expect(account.workspaceLoading, false);
+      expect(account.workspaceFailure, isNull);
+      expect(account.activeWorkspace, isNull);
+    },
+  );
+
+  test(
+    'a late workspace response cannot restore expired workspace data',
+    () async {
+      await account.signIn();
+      readGate = Completer<void>();
+      final old = account.reload();
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+      status = 401;
+      await expectLater(
+        account.request('GET', 'auth/me/'),
+        throwsA(isA<CollaborationApiException>()),
+      );
+      status = 200;
+      readGate!.complete();
+      await old;
+      expect(account.signedIn, false);
+      expect(account.activeWorkspace, isNull);
+      expect(account.jobs, isEmpty);
+      expect(account.workspaceDataReady, false);
+      expect(account.workspaceDataLoaded, false);
+      expect(account.workspaceFailure, isNull);
+    },
+  );
 
   test(
     'photo multipart declares its complete length for the cloud WSGI server',

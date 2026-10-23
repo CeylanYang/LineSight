@@ -1,5 +1,5 @@
 {
-  "screenshots": 179,
+  "screenshots": 193,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2428,6 +2428,230 @@
       "height": 1280,
       "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
       "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-empty-en-desktop-render.png",
+      "title": "128-workspace-empty-en-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "45bc72be77c6063716468fda73fc57409f9d60be5c6651ab71a75e24361aa295",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-empty-zh-desktop-render.png",
+      "title": "128-workspace-empty-zh-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "f1f0c5e69ee3b24b7d22534cd0376218adf27a54d1fb0c363b5ba8250af7ee48",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-failure-en-desktop-render.png",
+      "title": "128-workspace-failure-en-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "7bf225560a9ce8a404aebd2e6ca632b67f7778460abaf9de9668b183b360b49c",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-failure-zh-desktop-render.png",
+      "title": "128-workspace-failure-zh-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "da80d883e258163ed31e6b8bcddeef6a5b7c098cc19fb2fc545b7e6b2bb1723d",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-loading-en-desktop-render.png",
+      "title": "128-workspace-loading-en-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "fe02ece70ea9991165e57c911ab4567e62f54c97f99673fd8bfa204c709b44a2",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-loading-zh-desktop-render.png",
+      "title": "128-workspace-loading-zh-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "d226d4158e9941c95a82054f3919ea1ed597380140dca849dca34770db2d4912",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-no-team-en-desktop-render.png",
+      "title": "128-workspace-no-team-en-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "2695915d2f2ef25892ede87f0e22104f78495c23acedacd3b3a205ccdb41af60",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/128-workspace-no-team-zh-desktop-render.png",
+      "title": "128-workspace-no-team-zh-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 800,
+      "sha256": "b95c57a26e3cf65492d60d6598c7bde3a8d480809c0d163d5feb59ced2bae036",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/129-unified-login-en-desktop-render.png",
+      "title": "129-unified-login-en-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "cbd023944a913e4ffa6588972b2181f3904fc74f916642dfd24362ddab8f28dc",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/129-unified-login-zh-desktop-render.png",
+      "title": "129-unified-login-zh-desktop-render",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "c41299de07e1207e7efc287c02b5886eb2bea45e682a0b32829944f03d6ed371",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/130-workbench-ready-zh-emulator.png",
+      "title": "130-workbench-ready-zh-emulator",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "befb9e7a40fac3d8625006f2e998c7752482f5d2ab0fc9cba1e3d9f30096ba8b",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/131-workbench-network-failure-zh-emulator.png",
+      "title": "131-workbench-network-failure-zh-emulator",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "54e285b6242a2a107c2276d1ac5d0947bbdba30d6d339068a7b6af45a3bd7617",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/132-templates-network-failure-zh-emulator.png",
+      "title": "132-templates-network-failure-zh-emulator",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "219a3be38a419c6ae6096ad91dac81f11cf6e9fcf0500c04f34a1176c14bb1b8",
+      "batch_notes": "read-state-batch/README.md"
+    },
+    {
+      "file": "read-state-batch/png/133-records-network-failure-zh-emulator.png",
+      "title": "133-records-network-failure-zh-emulator",
+      "batch": "read-state-batch",
+      "batch_requirement_ids": [
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "1d870ceb3d80c8e4aa911e9d07b6061ceffd08df101c258cc6b387c35b9d5687",
+      "batch_notes": "read-state-batch/README.md"
     },
     {
       "file": "navigation-batch/png/120-account-secondary-emulator.png",

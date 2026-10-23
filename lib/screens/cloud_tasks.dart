@@ -334,6 +334,12 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
     if (!account.signedIn) return cloudAccessRequired(context);
+    if (account.activeWorkspace == null) {
+      return DetailScaffold(
+        title: tr(context, '生产任务'),
+        children: [CloudWorkspaceStatus(account: account)],
+      );
+    }
     final jobs = rows ?? <Map<String, dynamic>>[];
     return DetailScaffold(
       title: tr(context, '生产任务'),
@@ -438,7 +444,7 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '${busy || error != null ? '—' : jobs.length} ${tr(context, '个任务')}',
+                '${busy || error != null || rows == null ? '—' : jobs.length} ${tr(context, '个任务')}',
                 style: const TextStyle(
                   fontSize: 10.5,
                   fontWeight: FontWeight.w800,
@@ -488,7 +494,7 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
         const SizedBox(height: 10),
         if (busy) const CloudLoadingPanel(),
         if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
-        if (!busy && error == null && jobs.isEmpty)
+        if (!busy && error == null && rows != null && jobs.isEmpty)
           EmptyState(
             title: tr(context, '暂无生产任务'),
             subtitle: tr(context, '没有符合条件的任务。'),

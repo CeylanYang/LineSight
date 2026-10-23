@@ -20,6 +20,7 @@ class AccessAccount extends CloudAccount {
   bool get signedIn => true;
   AccessAccount() {
     restoring = false;
+    workspaceDataLoaded = true;
     profile = {
       'id': 'user-a',
       'display_name': 'Quality Engineer',

@@ -484,7 +484,7 @@ class CloudReportSnapshotPage extends StatelessWidget {
 
 Future<String?> cloudTextPrompt(BuildContext context, String title) async {
   final controller = TextEditingController();
-  final result = await showDialog<String>(
+  final route = DialogRoute<String>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(tr(context, title)),
@@ -501,6 +501,8 @@ Future<String?> cloudTextPrompt(BuildContext context, String title) async {
       ],
     ),
   );
+  final result = await Navigator.of(context).push(route);
+  await route.completed;
   controller.dispose();
   return result;
 }
@@ -510,7 +512,9 @@ class CloudTemplatesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    final owner = account.activeWorkspace?['role'] == 'owner';
+    final owner =
+        account.workspaceDataReady &&
+        account.activeWorkspace?['role'] == 'owner';
     return PageBody(
       children: [
         PageHeading(
@@ -544,6 +548,8 @@ class CloudTemplatesPage extends StatelessWidget {
               child: Text(tr(context, '登录')),
             ),
           )
+        else if (!account.workspaceDataReady)
+          CloudWorkspaceStatus(account: account)
         else if (account.templates.isEmpty)
           EmptyState(
             icon: Icons.fact_check_outlined,
@@ -1089,9 +1095,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
   Future<void> action(
     Future<void> Function(CloudAccount account) work, {
     String? expectedScope,
+    bool identityOnly = false,
   }) async {
     final account = CloudScope.of(context), captured = expectedScope ?? binding;
-    if (!account.retainsAccess(captured) || busy) return;
+    final identity = account.identityScope;
+    bool current() => identityOnly
+        ? identity != null && account.identityScope == identity
+        : account.retainsAccess(captured);
+    if (!current() || busy) return;
     setState(() {
       busy = true;
       error = null;
@@ -1099,11 +1110,11 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     try {
       await work(account);
     } catch (failure) {
-      if (mounted && account.retainsAccess(captured)) {
+      if (mounted && current()) {
         setState(() => error = '$failure');
       }
     } finally {
-      if (mounted && account.retainsAccess(captured)) {
+      if (mounted && current()) {
         setState(() => busy = false);
       }
     }
@@ -1163,7 +1174,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
     Future<void> createTeam() async {
       final name = await cloudTextPrompt(context, '创建团队');
       if (name == null || name.isEmpty) return;
-      await run((account) async {
+      await action((account) async {
         final result = await account.request(
           'POST',
           'workspaces/create/',
@@ -1173,14 +1184,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
         await account.selectWorkspace(
           account.workspaces.firstWhere((w) => w['id'] == result['id']),
         );
-      });
+      }, identityOnly: true);
       if (mounted) await load();
     }
 
     Future<void> joinTeam() async {
       final code = await cloudTextPrompt(context, '输入邀请码');
       if (code == null || code.isEmpty) return;
-      await run((account) async {
+      await action((account) async {
         final result = await account.request(
           'POST',
           'workspaces/redeem/',
@@ -1190,7 +1201,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
         await account.selectWorkspace(
           account.workspaces.firstWhere((w) => w['id'] == result['id']),
         );
-      });
+      }, identityOnly: true);
       if (mounted) await load();
     }
 
@@ -2769,7 +2780,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
   String? scope;
   Object? error;
   String sourceVersion = '';
-  bool busy = false;
+  bool busy = false, loaded = false;
   int generation = 0;
   @override
   void didChangeDependencies() {
@@ -2784,6 +2795,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
       filters.clear();
       search.clear();
       rows = [];
+      loaded = false;
       if (next != null) load();
     } else if (changed && next != null) {
       load();
@@ -2802,8 +2814,10 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
         ticket = ++generation;
     setState(() {
       busy = true;
+      loaded = false;
       error = null;
       rows = [];
+      loaded = false;
     });
     try {
       final data =
@@ -2815,7 +2829,10 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
       if (mounted &&
           ticket == generation &&
           captured == account.draftKey('record-query')) {
-        setState(() => rows = data.cast<Map<String, dynamic>>());
+        setState(() {
+          rows = data.cast<Map<String, dynamic>>();
+          loaded = true;
+        });
       }
     } catch (failure) {
       if (mounted && ticket == generation) setState(() => error = failure);
@@ -2859,7 +2876,9 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
               child: Text(tr(context, '登录')),
             ),
           ),
-        if (account.signedIn) ...[
+        if (account.signedIn && account.activeWorkspace == null)
+          CloudWorkspaceStatus(account: account),
+        if (account.signedIn && account.activeWorkspace != null) ...[
           GlassPanel(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 13),
             child: Column(
@@ -2941,15 +2960,21 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
           const SizedBox(height: 12),
           Row(
             children: [
-              _CountPill(
-                label: tr(context, '全部'),
-                value: rows.length,
-                color: blue,
-              ),
-              const SizedBox(width: 7),
-              _CountPill(label: tr(context, '合格'), value: passed, color: green),
-              const SizedBox(width: 7),
-              _CountPill(label: tr(context, '异常'), value: failed, color: red),
+              if (loaded && !busy && error == null) ...[
+                _CountPill(
+                  label: tr(context, '全部'),
+                  value: rows.length,
+                  color: blue,
+                ),
+                const SizedBox(width: 7),
+                _CountPill(
+                  label: tr(context, '合格'),
+                  value: passed,
+                  color: green,
+                ),
+                const SizedBox(width: 7),
+                _CountPill(label: tr(context, '异常'), value: failed, color: red),
+              ],
               const Spacer(),
               IconButton.filledTonal(
                 tooltip: tr(context, '范围报告'),
@@ -2978,7 +3003,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
           const SizedBox(height: 10),
           if (busy) const CloudLoadingPanel(),
           if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
-          if (!busy && error == null && rows.isEmpty)
+          if (loaded && !busy && error == null && rows.isEmpty)
             EmptyState(
               title: tr(context, '暂无检验记录'),
               subtitle: tr(context, '没有符合条件的记录。'),
@@ -3569,6 +3594,12 @@ class CloudNotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
     if (!account.signedIn) return cloudAccessRequired(context);
+    if (!account.workspaceDataReady) {
+      return DetailScaffold(
+        title: tr(context, '待办与通知'),
+        children: [CloudWorkspaceStatus(account: account)],
+      );
+    }
     final notices = account.notifications;
     final unread = notices.where((notice) => notice['read'] != true).length;
     const hint = TextStyle(fontSize: 11.5, height: 1.5, color: muted);

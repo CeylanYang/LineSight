@@ -327,6 +327,9 @@ class CloudAccount extends ChangeNotifier {
   Map<String, dynamic> metrics = {};
   bool busy = false, restoring = true;
   String? error;
+  bool workspaceDataLoaded = false, workspaceLoading = false;
+  Object? workspaceFailure;
+  bool get workspaceDataReady => workspaceDataLoaded && activeWorkspace != null;
   int _epoch = 0, _workspaceEpoch = 0;
   Future<void>? _refreshing;
   Future<void> _vaultWrites = Future<void>.value();
@@ -357,6 +360,9 @@ class CloudAccount extends ChangeNotifier {
       signedIn &&
       const {'owner', 'operator'}.contains(activeWorkspace?['role']);
   void _resetViews() {
+    workspaceDataLoaded = false;
+    workspaceLoading = false;
+    workspaceFailure = null;
     profile = null;
     activeWorkspace = null;
     workspaces = [];
@@ -549,20 +555,48 @@ class CloudAccount extends ChangeNotifier {
     await _persist(epoch);
     await _load();
   });
+  void _beginWorkspaceRead() {
+    workspaceDataLoaded = false;
+    workspaceLoading = true;
+    workspaceFailure = null;
+    jobs = [];
+    templates = [];
+    records = [];
+    notifications = [];
+    metrics = {};
+    notifyListeners();
+  }
+
   Future<void> _load() async {
-    profile = Map<String, dynamic>.from(
-      await request('GET', 'auth/me/') as Map,
-    );
-    workspaces = (await request('GET', 'workspaces/') as List)
-        .cast<Map<String, dynamic>>();
-    final selected = activeWorkspace?['id'] ?? profile?['home_workspace_id'];
-    final match = workspaces.where((w) => w['id'] == selected);
-    if (workspaces.isEmpty) {
-      activeWorkspace = null;
-      jobs = [];
-      return;
+    final epoch = ++_workspaceEpoch;
+    _beginWorkspaceRead();
+    try {
+      final nextProfile = Map<String, dynamic>.from(
+        await request('GET', 'auth/me/') as Map,
+      );
+      final nextWorkspaces = (await request('GET', 'workspaces/') as List)
+          .map((row) => Map<String, dynamic>.from(row as Map))
+          .toList();
+      if (epoch != _workspaceEpoch) return;
+      final selected =
+          activeWorkspace?['id'] ?? nextProfile['home_workspace_id'];
+      profile = nextProfile;
+      workspaces = nextWorkspaces;
+      final match = workspaces.where((w) => w['id'] == selected);
+      if (workspaces.isEmpty) {
+        activeWorkspace = null;
+        workspaceDataLoaded = true;
+        workspaceLoading = false;
+        return;
+      }
+      await _select(match.isNotEmpty ? match.first : workspaces.first);
+    } catch (failure) {
+      if (epoch == _workspaceEpoch) {
+        workspaceFailure = failure;
+        workspaceLoading = false;
+      }
+      rethrow;
     }
-    await _select(match.isNotEmpty ? match.first : workspaces.first);
   }
 
   Future<void> selectWorkspace(Map<String, dynamic> workspace) =>
@@ -570,29 +604,39 @@ class CloudAccount extends ChangeNotifier {
   Future<void> _select(Map<String, dynamic> workspace) async {
     final epoch = ++_workspaceEpoch;
     activeWorkspace = workspace;
-    jobs = [];
-    templates = [];
-    records = [];
-    notifications = [];
-    metrics = {};
-    notifyListeners();
-    final base = 'workspaces/${workspace['id']}/';
-    final data = await Future.wait([
-      for (final path in [
-        'jobs/',
-        'templates/',
-        'records/',
-        'metrics/',
-        'notifications/',
-      ])
-        request('GET', '$base$path'),
-    ]);
-    if (epoch == _workspaceEpoch) {
-      jobs = (data[0] as List).cast<Map<String, dynamic>>();
-      templates = (data[1] as List).cast<Map<String, dynamic>>();
-      records = (data[2] as List).cast<Map<String, dynamic>>();
-      metrics = Map<String, dynamic>.from(data[3] as Map);
-      notifications = (data[4] as List).cast<Map<String, dynamic>>();
+    _beginWorkspaceRead();
+    try {
+      final base = 'workspaces/${workspace['id']}/';
+      final data = await Future.wait([
+        for (final path in [
+          'jobs/',
+          'templates/',
+          'records/',
+          'metrics/',
+          'notifications/',
+        ])
+          request('GET', '$base$path'),
+      ]);
+      List<Map<String, dynamic>> rows(int index) => (data[index] as List)
+          .map((row) => Map<String, dynamic>.from(row as Map))
+          .toList();
+      final nextJobs = rows(0), nextTemplates = rows(1), nextRecords = rows(2);
+      final nextMetrics = Map<String, dynamic>.from(data[3] as Map);
+      final nextNotifications = rows(4);
+      if (epoch != _workspaceEpoch) return;
+      jobs = nextJobs;
+      templates = nextTemplates;
+      records = nextRecords;
+      metrics = nextMetrics;
+      notifications = nextNotifications;
+      workspaceDataLoaded = true;
+      workspaceLoading = false;
+    } catch (failure) {
+      if (epoch == _workspaceEpoch) {
+        workspaceFailure = failure;
+        workspaceLoading = false;
+      }
+      rethrow;
     }
   }
 

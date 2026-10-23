@@ -4,6 +4,7 @@ import 'cloud_navigation.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'l10n_catalog.dart';
+import 'screens/cloud_business.dart' show CloudTeamPage;
 import 'screens/cloud_shell.dart' show cloudReauthenticate;
 import 'ui.dart';
 import 'store.dart';
@@ -80,7 +81,8 @@ class _CloudFailurePanelState extends State<CloudFailurePanel> {
         : '$failure';
     // Only catalogued application messages are customer copy. Transport/HTML
     // responses and exception strings may contain internal or private data.
-    final detail = englishMessages.containsKey(raw)
+    final detail =
+        raw != '无法连接服务，请检查地址和网络后重试' && englishMessages.containsKey(raw)
         ? tr(context, raw)
         : tr(context, message);
     return Padding(
@@ -211,4 +213,31 @@ class CloudLoadingPanel extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// Shared workspace reads must succeed before empty states or counts are shown.
+class CloudWorkspaceStatus extends StatelessWidget {
+  final CloudAccount account;
+  const CloudWorkspaceStatus({super.key, required this.account});
+  @override
+  Widget build(BuildContext context) {
+    if (account.workspaceLoading) return const CloudLoadingPanel();
+    if (account.workspaceFailure != null) {
+      return CloudFailurePanel(
+        failure: account.workspaceFailure!,
+        onRetry: account.reload,
+      );
+    }
+    if (account.workspaceDataLoaded && account.activeWorkspace == null) {
+      return EmptyState(
+        title: tr(context, '团队与账户'),
+        subtitle: tr(context, '你还没有加入团队。创建工作区，或输入邀请代码加入。'),
+        action: FilledButton(
+          onPressed: () => openPage(context, const CloudTeamPage()),
+          child: Text(tr(context, '团队与账户')),
+        ),
+      );
+    }
+    return const CloudLoadingPanel();
+  }
 }

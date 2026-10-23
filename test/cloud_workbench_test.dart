@@ -10,6 +10,9 @@ import 'package:linesight_flutter/store.dart';
 import 'package:linesight_flutter/screens/cloud_tasks.dart';
 
 class WorkbenchAccount extends CloudAccount {
+  WorkbenchAccount() {
+    workspaceDataLoaded = true;
+  }
   @override
   bool get signedIn => true;
 }

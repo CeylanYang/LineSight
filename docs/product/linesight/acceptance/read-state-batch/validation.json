@@ -1,0 +1,54 @@
+{
+  "version": "1.1.40+8064",
+  "flutter_tests_passed": 254,
+  "new_tests": 14,
+  "flutter_analyze": "No issues found",
+  "backend_source_unchanged": true,
+  "preview_upgrade_verified": true,
+  "production_signature_verified": true,
+  "final_reinstall_storage_verified": true,
+  "native_failure_hides_counts": true,
+  "native_retry_recovers": false,
+  "earlier_8064_candidate_retry_recovered": true,
+  "native_templates_and_records_failure_zh": true,
+  "native_workbench_failure_zh": true,
+  "final_native_retry_and_english_pending": true,
+  "component_loading_failure_empty_no_team_zh_en": true,
+  "first_team_creation_without_workspace_widget_verified": true,
+  "late_read_after_expiry_cannot_publish": true,
+  "emulator_stopped_after_acceptance": true,
+  "cloud_business_writes_performed": false,
+  "storage_files_preserved": 12,
+  "databases_preserved": 1,
+  "keystore_aliases_and_sentinel_preserved": true,
+  "app_data_cleared": false,
+  "main_app_uninstalled": false,
+  "initial_upgrade_existing_login_restored": true,
+  "emulator_system_ui_anr_waited": true,
+  "emulator_multiple_access_violations": true,
+  "emulator_crash_root_cause_confirmed": false,
+  "phone_installs": 0,
+  "production_upgrade_retested_this_batch": false,
+  "native_screenshots": [
+    {
+      "file": "png/130-workbench-ready-zh-emulator.png",
+      "sha256": "befb9e7a40fac3d8625006f2e998c7752482f5d2ab0fc9cba1e3d9f30096ba8b"
+    },
+    {
+      "file": "png/131-workbench-network-failure-zh-emulator.png",
+      "sha256": "54e285b6242a2a107c2276d1ac5d0947bbdba30d6d339068a7b6af45a3bd7617"
+    },
+    {
+      "file": "png/132-templates-network-failure-zh-emulator.png",
+      "sha256": "219a3be38a419c6ae6096ad91dac81f11cf6e9fcf0500c04f34a1176c14bb1b8"
+    },
+    {
+      "file": "png/133-records-network-failure-zh-emulator.png",
+      "sha256": "1d870ceb3d80c8e4aa911e9d07b6061ceffd08df101c258cc6b387c35b9d5687"
+    }
+  ],
+  "physical_nfc_verified": false,
+  "two_physical_phones_verified": false,
+  "ten_external_users_verified": false,
+  "product_plan_complete": false
+}
