@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'cloud_account.dart';
+import 'cloud_feedback.dart';
+import 'l10n_catalog.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'models.dart';
@@ -14,16 +16,19 @@ class CloudImportPlan {
   final CloudAccount cloud;
   final int localSession, workspaceId;
   final String scope;
+  final String? accessScope;
   final List<Inspection> records;
   CloudImportPlan.capture(this.local, this.cloud)
     : localSession = local.session,
       workspaceId = cloud.activeWorkspace?['id'] as int? ?? 0,
       scope = cloud.draftKey('legacy-import') ?? '',
+      accessScope = cloud.accessScope,
       records = local.captureTeamImport() {
     authorize();
   }
   void authorize() {
     local.requireSession(localSession, elevated: true);
+    cloud.requireAccess(accessScope, write: true);
     if (scope.isEmpty ||
         cloud.draftKey('legacy-import') != scope ||
         !cloud.canEdit) {
@@ -88,7 +93,29 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
   CloudImportPlan? plan;
   bool busy = false, includeSamples = false;
   int completed = 0, total = 0;
-  String? error;
+  Object? error, historyFailure;
+  bool historyLoading = false;
+  String? binding;
+  bool bound = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!bound) {
+      binding = CloudScope.of(context).accessScope;
+      bound = true;
+    }
+    if (plan != null) {
+      try {
+        plan!.authorize();
+      } catch (_) {
+        plan = null;
+        history = null;
+        result = null;
+        historyFailure = null;
+      }
+    }
+  }
+
   Map<String, int>? result;
   Map<String, dynamic>? history;
   @override
@@ -99,17 +126,24 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
   }
 
   Future<void> preview() async {
+    if (busy) return;
     final local = AppScope.of(context), cloud = CloudScope.of(context);
     setState(() {
       busy = true;
       error = null;
       result = null;
+      history = null;
+      historyFailure = null;
+      plan = null;
     });
     try {
+      cloud.requireAccess(binding, write: true);
       if (!local.engineer || local.user?.enabled != true) {
         await local.login(username.text, password.text);
         password.clear();
       }
+      if (!mounted) return;
+      cloud.requireAccess(binding, write: true);
       final next = CloudImportPlan.capture(local, cloud);
       if (mounted) {
         setState(() {
@@ -119,24 +153,52 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
       }
     } catch (failure) {
       if (mounted) {
-        setState(
-          () => error = failure is StateError ? failure.message : '$failure',
-        );
+        setState(() => error = failure);
       }
     } finally {
       if (mounted) setState(() => busy = false);
     }
   }
 
+  Future<void> loadHistory() async {
+    final captured = plan;
+    if (captured == null || historyLoading) return;
+    setState(() {
+      historyLoading = true;
+      historyFailure = null;
+    });
+    try {
+      captured.authorize();
+      final records = Map<String, dynamic>.from(
+        await captured.cloud.request(
+          'GET',
+          'workspaces/${captured.workspaceId}/legacy-inspections/',
+        ),
+      );
+      captured.authorize();
+      if (mounted && identical(plan, captured)) {
+        setState(() => history = records);
+      }
+    } catch (failure) {
+      if (mounted && identical(plan, captured)) {
+        setState(() => historyFailure = failure);
+      }
+    } finally {
+      if (mounted) setState(() => historyLoading = false);
+    }
+  }
+
   Future<void> upload() async {
-    final captured = plan!;
+    if (busy || plan == null) return;
+    final captured = plan!, samples = includeSamples;
+    setState(() => busy = true);
     try {
       captured.authorize();
       if (!await confirm(
         context,
         tr(context, '确认导入'),
         tr(context, '将 {0} 条记录导入 {1}', [
-          captured.selected(includeSamples).length,
+          captured.selected(samples).length,
           captured.cloud.activeWorkspace?['name'] ?? '',
         ]),
       )) {
@@ -145,15 +207,17 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
       captured.authorize();
       if (!mounted) return;
       setState(() {
-        busy = true;
         error = null;
+        result = null;
+        history = null;
+        historyFailure = null;
         completed = 0;
-        total = captured.selected(includeSamples).length;
+        total = captured.selected(samples).length;
       });
       final uploaded = await captured.upload(
-        includeSamples: includeSamples,
+        includeSamples: samples,
         onProgress: (done, count) {
-          if (mounted) {
+          if (mounted && identical(plan, captured)) {
             setState(() {
               completed = done;
               total = count;
@@ -161,28 +225,26 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
           }
         },
       );
-      final records = Map<String, dynamic>.from(
-        await captured.cloud.request(
-          'GET',
-          'workspaces/${captured.workspaceId}/legacy-inspections/',
-        ),
-      );
       captured.authorize();
-      if (mounted) {
-        setState(() {
-          result = uploaded;
-          history = records;
-        });
-      }
+      if (!mounted || !identical(plan, captured)) return;
+      setState(() => result = uploaded);
+      await loadHistory();
     } catch (failure) {
-      if (mounted) {
-        setState(
-          () => error = failure is StateError ? failure.message : '$failure',
-        );
+      if (mounted && identical(plan, captured)) {
+        setState(() => error = failure);
       }
     } finally {
       if (mounted) setState(() => busy = false);
     }
+  }
+
+  String failureMessage(BuildContext context, Object failure) {
+    final raw = failure is StateError
+        ? failure.message
+        : failure is CollaborationApiException
+        ? failure.message
+        : '';
+    return tr(context, englishMessages.containsKey(raw) ? raw : '操作未完成，请重试。');
   }
 
   @override
@@ -191,6 +253,7 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
     if (!cloud.signedIn || cloud.activeWorkspace == null) {
       return cloudAccessRequired(context);
     }
+    if (!cloud.retainsAccess(binding)) return cloudScopeChanged(context);
     if (!cloud.canEdit) {
       return DetailScaffold(
         title: tr(context, '导入本机记录'),
@@ -243,8 +306,11 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
                 : (value) => setState(() {
                     includeSamples = value ?? false;
                     result = null;
+                    history = null;
+                    historyFailure = null;
                   }),
           ),
+          if (selected.isEmpty) Text(tr(context, '没有可导入的记录')),
           Text(tr(context, '记录数：{0}', [selected.length])),
           Text(
             tr(context, '合格：{0} · 异常：{1}', [
@@ -264,12 +330,15 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
             label: Text(tr(context, result == null ? '确认导入' : '再次导入')),
           ),
         ],
-        if (busy && (plan == null || valid)) ...[
+        if (busy && total > 0 && valid) ...[
           LinearProgressIndicator(value: total == 0 ? null : completed / total),
           Text('$completed / $total'),
         ],
         if (error != null)
-          Text(trMessage(context, error!), style: const TextStyle(color: red)),
+          Text(
+            failureMessage(context, error!),
+            style: const TextStyle(color: red),
+          ),
         if (valid && result != null)
           Text(
             tr(context, '已导入 {0} 条，跳过 {1} 条', [
@@ -277,6 +346,9 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
               result!['skipped'],
             ]),
           ),
+        if (valid && historyLoading) const CloudLoadingPanel(),
+        if (valid && historyFailure != null)
+          CloudFailurePanel(failure: historyFailure!, onRetry: loadHistory),
         if (valid && history != null) ...[
           SectionHeading(tr(context, '团队历史记录')),
           Text(tr(context, '记录数：{0}', [history!['count']])),
@@ -284,7 +356,14 @@ class _CloudLocalImportPageState extends State<CloudLocalImportPage> {
             ListTile(
               title: Text('${row['recipe']} · ${row['serial']}'),
               subtitle: Text('${row['at']}'),
-              trailing: Text(tr(context, row['passed'] == true ? '合格' : '异常')),
+              trailing: Wrap(
+                spacing: 6,
+                children: [
+                  if (row['sample'] == true)
+                    Tag(tr(context, '演示数据'), color: amber),
+                  Text(tr(context, row['passed'] == true ? '合格' : '异常')),
+                ],
+              ),
             ),
         ],
       ],

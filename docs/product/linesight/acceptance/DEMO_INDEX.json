@@ -1,5 +1,5 @@
 {
-  "screenshots": 203,
+  "screenshots": 213,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -2428,6 +2428,166 @@
       "height": 1280,
       "sha256": "6ab73e9905aa9b04c621e678b6d742c57dfd99da13fd29dfdeb92d1198d324b8",
       "batch_notes": "forms-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-authorize-en-desktop-render.png",
+      "title": "150-local-import-authorize-en-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "41617ff3d3fe7723da387b0ce9aec736b0c4e660b81d7eceb2294eca812be8c6",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-authorize-zh-desktop-render.png",
+      "title": "150-local-import-authorize-zh-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "2665cf1e3c77997c9ebef551992df011e11c7f454efda9534a6b221d3750fcde",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-history-failure-en-desktop-render.png",
+      "title": "150-local-import-history-failure-en-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "426df90ab705051ec6710b3d3a9e4e3441d3213466defe688ba091243aedebb2",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-history-failure-zh-desktop-render.png",
+      "title": "150-local-import-history-failure-zh-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "59b352f90f0f125d3cd6b557a1c2caf9c6d2c8d38556dc35b68061a0dc90d366",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-preview-en-desktop-render.png",
+      "title": "150-local-import-preview-en-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "2de566f57124201fdb3cb2a87079f63249c88fa4ac6508696ae951c555e48a08",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-preview-zh-desktop-render.png",
+      "title": "150-local-import-preview-zh-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "51c5de7a598226bf1e09566479e3d464a9ca88e41efccd92290502ffef470904",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-success-en-desktop-render.png",
+      "title": "150-local-import-success-en-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "60f4bba5ab4f8c886299bca3f2b1ef7d3c915978fcc44a98dc426f59078371c7",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/150-local-import-success-zh-desktop-render.png",
+      "title": "150-local-import-success-zh-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "507009aa3202e00d9d964b7ae7e62a18ea85524145e2fc0e4aa63c44dcd43baf",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/151-unified-login-en-desktop-render.png",
+      "title": "151-unified-login-en-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "cc5509cfe1799fb70207fc998ef5559f35e895c54567d9cf7328e6044e5ea7ef",
+      "batch_notes": "import-batch/README.md"
+    },
+    {
+      "file": "import-batch/png/151-unified-login-zh-desktop-render.png",
+      "title": "151-unified-login-zh-desktop-render",
+      "batch": "import-batch",
+      "batch_requirement_ids": [
+        "SEC-01",
+        "DAT-04",
+        "UI-08",
+        "UI-12"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "36d881ca924e9494bf83016a2422a0d4cae71619f5e20e2d0178b1b175f33179",
+      "batch_notes": "import-batch/README.md"
     },
     {
       "file": "notification-batch/png/140-notification-failure-en-desktop-render.png",

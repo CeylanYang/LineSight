@@ -1,0 +1,18 @@
+{
+  "version": "1.1.42+8066",
+  "flutter_full_tests_passed": 288,
+  "targeted_tests_passed": 33,
+  "new_import_ui_tests": 18,
+  "analysis_clean": true,
+  "live_https_import_verified": true,
+  "sample_default_excluded": true,
+  "repeat_import_deduplicated": true,
+  "late_response_hidden_after_scope_change": true,
+  "local_lock_hides_preview_and_history": true,
+  "desktop_png_count": 10,
+  "native_final_apk_validated": false,
+  "phone_installs": 0,
+  "app_data_cleared": false,
+  "backend_source_unchanged": true,
+  "product_plan_complete": false
+}

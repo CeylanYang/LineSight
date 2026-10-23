@@ -1,0 +1,22 @@
+{
+  "demo_only": true,
+  "workspace_id": 5,
+  "synthetic_record_id": "DEMO-IMPORT-fe7ec8af72c442eca77e",
+  "default_excludes_samples": true,
+  "explicit_sample_opt_in": true,
+  "repeat_import_deduplicated": true,
+  "original_and_final_conclusions_preserved": true,
+  "previous_import_records_unchanged": true,
+  "all_existing_jobs_unchanged": true,
+  "device_records_read_or_uploaded": false,
+  "final_record": {
+    "id": "DEMO-IMPORT-fe7ec8af72c442eca77e",
+    "at": "2026-10-23T21:28:44.252666+00:00",
+    "recipe": "DEMO · Device import verification",
+    "serial": "DEMO-IMPORT",
+    "passed": true,
+    "original_passed": false,
+    "review": "pass",
+    "sample": true
+  }
+}

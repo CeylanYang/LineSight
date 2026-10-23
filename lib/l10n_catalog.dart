@@ -1650,4 +1650,5 @@ const englishMessages = <String, String>{
   "异常信息": "Issue details",
   "处置决定": "Disposition",
   "状态冲突": "Task changed",
+  "没有可导入的记录": "No records to import",
 };
