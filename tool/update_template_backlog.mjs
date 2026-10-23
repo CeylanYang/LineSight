@@ -26,7 +26,7 @@ if(process.argv.includes('--inspect-only')){
  await render('before');process.exit(0);
 }
 const evidence=JSON.parse(await fs.readFile(path.join(dir,'acceptance/template-batch/validation.json'),'utf8'));
-if(!evidence.live_https_template_verified || evidence.flutter_full_tests_passed !== 352)throw Error('Read state acceptance missing');
+if(!evidence.live_https_template_verified || evidence.flutter_full_tests_passed !== 353)throw Error('Read state acceptance missing');
 for(let i=0;i<rows.length;i++){
  const change=changes[rows[i][0]];if(!change)continue;
  const row=i+7;

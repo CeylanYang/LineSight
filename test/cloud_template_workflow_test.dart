@@ -169,6 +169,7 @@ void main() {
       expect((data['items'] as List).first['required'], isFalse);
       expect((data['items'] as List)[1]['allow_na'], isFalse);
       expect(find.text('Checklist published'), findsWidgets);
+      expect(account.templates.any((t) => t['id'] == 12), isTrue);
     },
   );
   testWidgets(
@@ -349,6 +350,23 @@ void main() {
       account.notifyListeners();
       await tester.pumpAndSettle();
       expect(find.text('Workspace changed'), findsOneWidget);
+    },
+  );
+  testWidgets(
+    'finishing publication returns to the newly published version even if catalogue refresh fails',
+    (tester) async {
+      account.readFailure = const CollaborationApiException(503, 'private');
+      await show(tester, page: CloudTemplateDetailPage(template: checklist()));
+      await tap(tester, find.text('Publish new version'));
+      await tap(tester, find.text('Publish'));
+      await tap(tester, find.text('Done'));
+      expect(find.byType(CloudTemplateEditor), findsNothing);
+      final version = tester.widget<DropdownButtonFormField<int>>(
+        find.byType(DropdownButtonFormField<int>),
+      );
+      expect(version.initialValue, 12);
+      expect(find.text('Publish new version'), findsOneWidget);
+      expect(account.posts.length, 1);
     },
   );
   for (final language in ['zh', 'en']) {

@@ -1,7 +1,7 @@
 {
   "version": "1.1.45+8069",
-  "flutter_full_tests_passed": 352,
-  "new_template_tests": 24,
+  "flutter_full_tests_passed": 353,
+  "new_template_tests": 25,
   "backend_tests_passed": 68,
   "new_backend_tests": 8,
   "analysis_clean": true,
@@ -20,5 +20,7 @@
   "native_final_apk_validated": false,
   "phone_installs": 0,
   "app_data_cleared": false,
-  "product_plan_complete": false
+  "product_plan_complete": false,
+  "return_to_newly_published_version_verified": true,
+  "published_version_retained_when_catalogue_refresh_fails": true
 }

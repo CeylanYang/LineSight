@@ -548,6 +548,15 @@ class CloudAccount extends ChangeNotifier {
         await _load();
       });
   Future<void> reload() => _operation(_load);
+  void acceptTemplatePublication(String? scope, Map<String, dynamic> result) {
+    requireAccess(scope, write: true, owner: true);
+    templates = [
+      result,
+      ...templates.where((row) => row['id'] != result['id']),
+    ];
+    notifyListeners();
+  }
+
   Future<List<Map<String, dynamic>>> reloadTemplates(String? scope) async {
     requireAccess(scope);
     final rows =

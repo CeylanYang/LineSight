@@ -9,7 +9,7 @@ import zipfile
 root=Path(__file__).resolve().parents[1]
 gallery=root/'docs/product/linesight/acceptance'
 validation=json.loads((gallery/'template-batch/validation.json').read_text())
-assert validation['live_https_template_verified'] and validation['flutter_full_tests_passed']==352
+assert validation['live_https_template_verified'] and validation['flutter_full_tests_passed']==353
 assert not subprocess.check_output(['git','status','--porcelain'],cwd=root,text=True).strip()
 index=json.loads((gallery/'DEMO_INDEX.json').read_text())
 for row in index['items']:

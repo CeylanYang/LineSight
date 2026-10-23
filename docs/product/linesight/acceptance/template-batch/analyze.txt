@@ -41,4 +41,4 @@ Got dependencies!
 37 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Analyzing sync-delivery...                                      
-No issues found! (ran in 21.1s)
+No issues found! (ran in 21.0s)

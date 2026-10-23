@@ -46,9 +46,18 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
             (a, b) => (b['version'] as int).compareTo(a['version'] as int),
           );
     if (!versions.any((t) => t['id'] == selected['id'])) versions.add(selected);
+    versions.sort(
+      (a, b) => (b['version'] as int).compareTo(a['version'] as int),
+    );
     final latest = versions.first;
     final owner = account.activeWorkspace?['role'] == 'owner';
     final items = selected['items'] as List;
+    void published(Map<String, dynamic> result) {
+      if (mounted && account.retainsAccess(binding)) {
+        setState(() => selected = result);
+      }
+    }
+
     return DetailScaffold(
       title: '${selected['name']}',
       children: [
@@ -118,7 +127,13 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
             FilledButton.icon(
               onPressed: () {
                 if (account.retainsAccess(binding)) {
-                  openPage(context, CloudTemplateEditor(template: selected));
+                  openPage(
+                    context,
+                    CloudTemplateEditor(
+                      template: selected,
+                      onPublished: published,
+                    ),
+                  );
                 }
               },
               icon: const Icon(Icons.publish_outlined),
@@ -129,7 +144,11 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
               if (account.retainsAccess(binding)) {
                 openPage(
                   context,
-                  CloudTemplateEditor(template: selected, copy: true),
+                  CloudTemplateEditor(
+                    template: selected,
+                    copy: true,
+                    onPublished: published,
+                  ),
                 );
               }
             },
@@ -164,7 +183,13 @@ class _DraftItem {
 class CloudTemplateEditor extends StatefulWidget {
   final Map<String, dynamic>? template;
   final bool copy;
-  const CloudTemplateEditor({super.key, this.template, this.copy = false});
+  final ValueChanged<Map<String, dynamic>>? onPublished;
+  const CloudTemplateEditor({
+    super.key,
+    this.template,
+    this.copy = false,
+    this.onPublished,
+  });
   @override
   State<CloudTemplateEditor> createState() => _TemplateEditorState();
 }
@@ -247,6 +272,9 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
     try {
       final rows = await account.reloadTemplates(binding);
       if (!mounted || !account.retainsAccess(binding)) return;
+      if (receipt != null && !rows.any((row) => row['id'] == receipt!['id'])) {
+        account.acceptTemplatePublication(binding, receipt!);
+      }
       final family =
           rows
               .where(
@@ -313,6 +341,8 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
       );
       if (!mounted || !account.retainsAccess(binding)) return;
       setState(() => receipt = result);
+      account.acceptTemplatePublication(binding, result);
+      widget.onPublished?.call(result);
       cloudOutcome(context, '模板已发布');
       await refreshCatalog();
     } catch (error) {

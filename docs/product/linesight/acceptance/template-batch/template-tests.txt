@@ -1,2 +1,2 @@
-00:06 +33: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: en checklist small large-text and tablet layouts
-00:06 +34: All tests passed!
+00:07 +24: en checklist small large-text and tablet layouts
+00:07 +25: All tests passed!
