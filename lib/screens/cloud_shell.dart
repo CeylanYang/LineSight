@@ -546,73 +546,84 @@ class _CloudShellState extends State<CloudShell> {
           _loginState(context)
         else ...[
           GlassPanel(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Container(
-                  width: 56,
-                  height: 56,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    account.displayName.isEmpty
-                        ? 'L'
-                        : account.displayName.characters.first,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            padding: EdgeInsets.zero,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(24),
+              onTap: () => openPage(context, const CloudProfilePage()),
+              child: Semantics(
+                button: true,
+                label: tr(context, '账户信息'),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
                     children: [
-                      Text(
-                        account.displayName.isEmpty
-                            ? tr(context, '未命名成员')
-                            : account.displayName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: ink,
-                          letterSpacing: -.4,
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          account.displayName.isEmpty
+                              ? 'L'
+                              : account.displayName.characters.first,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      Text(
-                        '@${account.profile?['username'] ?? ''}',
-                        style: const TextStyle(fontSize: 11.5, color: muted),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              account.displayName.isEmpty
+                                  ? tr(context, '未命名成员')
+                                  : account.displayName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: ink,
+                                letterSpacing: -.4,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              '@${account.profile?['username'] ?? ''}',
+                              style: const TextStyle(
+                                fontSize: 11.5,
+                                color: muted,
+                              ),
+                            ),
+                            const SizedBox(height: 7),
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              children: [
+                                Tag(roleLabel, color: blue),
+                                if (account.demoAccount)
+                                  Tag(tr(context, '演示数据'), color: amber),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 7),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          Tag(roleLabel, color: blue),
-                          if (account.demoAccount)
-                            Tag(tr(context, '演示数据'), color: amber),
-                        ],
-                      ),
+                      const Icon(Icons.chevron_right),
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () => openPage(context, const CloudProfilePage()),
-                  icon: const Icon(Icons.chevron_right),
-                ),
-              ],
+              ),
             ),
           ),
           SectionHeader(tr(context, '团队与账户'), icon: Icons.groups_2_outlined),

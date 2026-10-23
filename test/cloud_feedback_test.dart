@@ -306,7 +306,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/feedback-batch/png/67-task-retry-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/conflict-batch/png/100-task-retry-$locale-desktop-render.png',
         ),
       );
     });

@@ -1618,3 +1618,12 @@
 1617|Inspection submitted
 1618|Resolution submitted
 1619|Task status updated
+1620|When editing
+1621|Updated task
+1622|Task name
+1623|Updated at
+1624|View latest task
+1625|The checklist has changed. Review each item again.
+1626|After submitting, view the result and add photos from task history.
+1627|Not selected
+1628|Status

@@ -22,6 +22,7 @@ groups = {
     'nfc-batch': ['NFC-01','NFC-02'],
     'closure-batch': ['UI-04','QC-07','COL-02'],
     'access2-batch': ['SEC-05','SEC-06','UI-10','UI-11'],
+    'conflict-batch': ['OFF-03','UI-11','UI-12','SSO-04'],
     'release-batch': ['REL-01','REL-03','UI-11'],
 }
 items = []

@@ -1620,4 +1620,13 @@ const englishMessages = <String, String>{
   "检验已提交": "Inspection submitted",
   "处理结果已提交": "Resolution submitted",
   "任务状态已更新": "Task status updated",
+  "编辑时": "When editing",
+  "任务更新后": "Updated task",
+  "任务名称": "Task name",
+  "更新时间": "Updated at",
+  "查看最新任务": "View latest task",
+  "检查模板已更新，请重新逐项核对。": "The checklist has changed. Review each item again.",
+  "提交后可在任务历史中查看结果并补充照片。": "After submitting, view the result and add photos from task history.",
+  "未选择": "Not selected",
+  "状态": "Status",
 };

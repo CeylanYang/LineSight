@@ -1,0 +1,470 @@
+{
+  "workspace_id": 5,
+  "before": {
+    "id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+    "version": 3,
+    "part_name": "DEMO · 支架终检",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "inspection",
+    "created_at": "2026-10-23T17:49:55.449859+00:00",
+    "updated_at": "2026-10-23T17:49:55.739570+00:00",
+    "batch_code": "DEMO-REVIEW-d65911dd",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [],
+    "evidence": []
+  },
+  "template": {
+    "id": 2,
+    "name": "尺寸与装配检查",
+    "version": 1,
+    "items": [
+      {
+        "id": "item-1",
+        "label": "关键尺寸",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-2",
+        "label": "孔位与配合",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-3",
+        "label": "装配适配",
+        "required": true,
+        "allow_na": false
+      },
+      {
+        "id": "item-4",
+        "label": "紧固与稳定性",
+        "required": true,
+        "allow_na": true
+      }
+    ],
+    "built_in": true
+  },
+  "original_jobs_modified": false,
+  "demo_only": true,
+  "winner_key": "88a20bb2d9364154aa234e5d49d58184",
+  "loser_key": "c079a0346a0f49b2a2af5b16c5c4fa3e",
+  "winner": {
+    "id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+    "version": 4,
+    "part_name": "DEMO · 支架终检",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-23T17:49:55.449859+00:00",
+    "updated_at": "2026-10-23T18:14:55.113613+00:00",
+    "batch_code": "DEMO-REVIEW-d65911dd",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [
+      {
+        "id": 22,
+        "task_id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+        "part_name": "DEMO · 支架终检",
+        "batch_code": "DEMO-REVIEW-d65911dd",
+        "round_no": 1,
+        "verdict": "pass",
+        "note": "外观与装配尺寸复核完成",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-23T18:14:55.112655+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "stale_request_status": 409,
+  "conflict_current": {
+    "id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+    "version": 4,
+    "part_name": "DEMO · 支架终检",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-23T17:49:55.449859+00:00",
+    "updated_at": "2026-10-23T18:14:55.113613+00:00",
+    "batch_code": "DEMO-REVIEW-d65911dd",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [
+      {
+        "id": 22,
+        "task_id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+        "part_name": "DEMO · 支架终检",
+        "batch_code": "DEMO-REVIEW-d65911dd",
+        "round_no": 1,
+        "verdict": "pass",
+        "note": "外观与装配尺寸复核完成",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-23T18:14:55.112655+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "verified_after_android": true,
+  "only_one_inspection": true,
+  "after": {
+    "id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+    "version": 4,
+    "part_name": "DEMO · 支架终检",
+    "printer": "Bambu Lab A1",
+    "quantity": 2,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-23T17:49:55.449859+00:00",
+    "updated_at": "2026-10-23T18:14:55.113613+00:00",
+    "batch_code": "DEMO-REVIEW-d65911dd",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [],
+    "inspections": [
+      {
+        "id": 22,
+        "task_id": "a89b1e97-5124-4c20-b4f1-501bfd867f80",
+        "part_name": "DEMO · 支架终检",
+        "batch_code": "DEMO-REVIEW-d65911dd",
+        "round_no": 1,
+        "verdict": "pass",
+        "note": "外观与装配尺寸复核完成",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-23T18:14:55.112655+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  }
+}

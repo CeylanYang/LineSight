@@ -37,6 +37,141 @@ Color taskColor(String status) => switch (status) {
   _ => blue,
 };
 
+Map<String, dynamic> cloudTaskSnapshot(Map<String, dynamic> job) => {
+  for (final name in [
+    'version',
+    'status',
+    'part_name',
+    'printer',
+    'quantity',
+    'batch_code',
+    'assignee',
+    'updated_at',
+  ])
+    if (job.containsKey(name)) name: job[name],
+  if (job.containsKey('template'))
+    'template': job['template'] is Map
+        ? {
+            for (final name in ['id', 'name', 'version'])
+              name: job['template'][name],
+          }
+        : null,
+  if (job['inspections'] is List)
+    'inspection_round': (job['inspections'] as List).fold<int>(0, (
+      round,
+      check,
+    ) {
+      final next = check['round_no'] as int? ?? 0;
+      return next > round ? next : round;
+    }),
+};
+
+class CloudTaskConflictComparison extends StatelessWidget {
+  final Map<String, dynamic> before, current;
+  const CloudTaskConflictComparison({
+    super.key,
+    required this.before,
+    required this.current,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final after = cloudTaskSnapshot(current);
+    String value(Map<String, dynamic> row, String field) {
+      if (!row.containsKey(field)) return '—';
+      final raw = row[field];
+      if (field == 'status') {
+        return tr(context, taskStatusLabels[raw] ?? '$raw');
+      }
+      if (field == 'updated_at') return raw == null ? '—' : cloudTimestamp(raw);
+      if (field == 'template') {
+        return raw is Map
+            ? '${raw['name']} · v${raw['version']}'
+            : tr(context, '未选择');
+      }
+      if (field == 'assignee') {
+        return raw == null || '$raw'.isEmpty ? tr(context, '未指派') : '$raw';
+      }
+      return raw == null || '$raw'.isEmpty ? '—' : '$raw';
+    }
+
+    const fields = {
+      'version': '版本',
+      'status': '状态',
+      'inspection_round': '检验轮次',
+      'part_name': '任务名称',
+      'quantity': '工件数量',
+      'printer': '打印设备',
+      'batch_code': '批次号',
+      'assignee': '负责人',
+      'template': '检查模板',
+      'updated_at': '更新时间',
+    };
+    final visible = fields.entries.where(
+      (field) =>
+          ['version', 'status', 'inspection_round'].contains(field.key) ||
+          value(before, field.key) != value(after, field.key),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                tr(context, '编辑时'),
+                style: const TextStyle(color: muted),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                tr(context, '任务更新后'),
+                style: const TextStyle(
+                  color: blue,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ),
+        for (final field in visible) ...[
+          const SizedBox(height: 12),
+          Text(
+            tr(context, field.value),
+            style: const TextStyle(fontSize: 11, color: muted),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  value(before, field.key),
+                  style: const TextStyle(fontSize: 13, color: ink),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  value(after, field.key),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: value(before, field.key) == value(after, field.key)
+                        ? ink
+                        : blue,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+}
+
 Widget cloudAccessRequired(BuildContext context) => DetailScaffold(
   title: tr(context, '登录'),
   children: [
@@ -1644,6 +1779,8 @@ class CloudTaskCommandPage extends StatefulWidget {
 }
 
 class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
+  Map<String, dynamic>? acceptedJob;
+  late Map<String, dynamic> comparisonBase;
   final note = TextEditingController(), closureReason = TextEditingController();
   String nextStatus = 'inspection', disposition = 'scrapped';
   String key = 'cloud-${uid()}';
@@ -1661,6 +1798,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     super.didChangeDependencies();
     if (!initialized) {
       initialized = true;
+      comparisonBase = cloudTaskSnapshot(widget.job);
       final account = CloudScope.of(context);
       accessBinding = account.accessScope;
       template =
@@ -1734,6 +1872,14 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           template = Map<String, dynamic>.from(data['template'] as Map);
         }
         savedVersion = data['version'] as int?;
+        if (data['task_snapshot'] is Map) {
+          comparisonBase = Map<String, dynamic>.from(
+            data['task_snapshot'] as Map,
+          );
+        } else if (savedVersion != null &&
+            savedVersion != widget.job['version']) {
+          comparisonBase = {'version': savedVersion};
+        }
         if (savedVersion != null && savedVersion != widget.job['version']) {
           conflict = widget.job;
           error = '任务已更新，请核对当前任务后处理草稿';
@@ -1774,6 +1920,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
         'action': widget.action,
         'issue_id': widget.issue?['id'],
         'version': savedVersion ?? widget.job['version'],
+        'task_snapshot': comparisonBase,
         'note': note.text,
         'next_status': nextStatus,
         'disposition': disposition,
@@ -1797,6 +1944,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   }
 
   bool busy = false;
+  bool checklistChanged = false;
   String? error;
   Map<String, dynamic>? conflict;
   @override
@@ -1974,7 +2122,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
       'printing' => '开始打印',
       _ => '送检',
     };
-    final job = widget.job;
+    final job = acceptedJob ?? widget.job;
     final partName = '${job['part_name']}';
     final status = '${job['status']}';
     final canEdit = account.canEdit;
@@ -2162,6 +2310,14 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
               style: const TextStyle(color: red, fontSize: 12),
             ),
           ),
+        if (checklistChanged)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Text(
+              tr(context, '检查模板已更新，请重新逐项核对。'),
+              style: const TextStyle(color: amber),
+            ),
+          ),
         if (inspect) ...[
           group(
             '检验结论',
@@ -2197,10 +2353,10 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                               verdict = value.first;
                               if (serialResults.isEmpty) {
                                 passed.text = verdict == 'pass'
-                                    ? '${widget.job['quantity']}'
+                                    ? '${job['quantity']}'
                                     : '0';
                                 failed.text = verdict == 'fail'
-                                    ? '${widget.job['quantity']}'
+                                    ? '${job['quantity']}'
                                     : '0';
                                 scrapped.text = '0';
                               }
@@ -2300,6 +2456,9 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: TextFormField(
+                                  key: ValueKey(
+                                    'check-note-${template?['id']}-${template?['version']}-${items[i]['id']}',
+                                  ),
                                   initialValue:
                                       answerNotes['${items[i]['id']}'] ?? '',
                                   decoration: InputDecoration(
@@ -2367,6 +2526,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: DropdownButtonFormField<String>(
+                          key: ValueKey('serial-$sn'),
                           initialValue: serialResults[sn],
                           isDense: true,
                           decoration: InputDecoration(labelText: sn),
@@ -2662,16 +2822,26 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    '${tr(context, '当前任务状态')}：${tr(context, taskStatusLabels[conflict!['status']] ?? '')}',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: ink,
+                  CloudTaskConflictComparison(
+                    before: comparisonBase,
+                    current: conflict!,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(tr(context, '任务已被其他人更新，请选择如何处理这份草稿。'), style: hint),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: OutlinedButton.icon(
+                      onPressed: () => openPage(
+                        context,
+                        CloudTaskPage(
+                          job: conflict!,
+                          workspaceId: widget.workspaceId,
+                        ),
+                      ),
+                      icon: const Icon(Icons.open_in_new, size: 18),
+                      label: Text(tr(context, '查看最新任务')),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(tr(context, '任务已被其他人更新，请选择如何处理这份草稿。'), style: hint),
                   if ((widget.action == 'inspect' &&
                           conflict!['status'] == 'inspection') ||
                       (widget.action == 'resolve' &&
@@ -2692,9 +2862,60 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                           )) {
                             return;
                           }
-                          if (!mounted) return;
+                          if (!mounted ||
+                              !account.retainsAccess(accessBinding) ||
+                              !account.canEdit) {
+                            return;
+                          }
                           edit(() {
-                            savedVersion = conflict!['version'] as int;
+                            final latest = conflict!;
+                            final oldTemplate = comparisonBase['template'];
+                            final newTemplate = latest['template'];
+                            final templateChanged =
+                                (oldTemplate is Map
+                                        ? oldTemplate['id']
+                                        : null) !=
+                                    (newTemplate is Map
+                                        ? newTemplate['id']
+                                        : null) ||
+                                (oldTemplate is Map
+                                        ? oldTemplate['version']
+                                        : null) !=
+                                    (newTemplate is Map
+                                        ? newTemplate['version']
+                                        : null);
+                            if (widget.action == 'inspect' && templateChanged) {
+                              template = newTemplate is Map
+                                  ? Map<String, dynamic>.from(newTemplate)
+                                  : (account.templates.isEmpty
+                                        ? null
+                                        : account.templates.first);
+                              answers.clear();
+                              answerNotes.clear();
+                              checklistChanged = true;
+                            }
+                            if (latest['serial_numbers'] is List) {
+                              final serials = (latest['serial_numbers'] as List)
+                                  .map((sn) => '$sn')
+                                  .toSet();
+                              serialResults.removeWhere(
+                                (sn, _) => !serials.contains(sn),
+                              );
+                              for (final sn in serials) {
+                                serialResults.putIfAbsent(sn, () => 'pass');
+                              }
+                              if (serials.isNotEmpty) {
+                                passed.text =
+                                    '${serialResults.values.where((v) => v == 'pass').length}';
+                                failed.text =
+                                    '${serialResults.values.where((v) => v == 'fail').length}';
+                                scrapped.text =
+                                    '${serialResults.values.where((v) => v == 'scrap').length}';
+                              }
+                            }
+                            savedVersion = latest['version'] as int;
+                            acceptedJob = latest;
+                            comparisonBase = cloudTaskSnapshot(latest);
                             final archived =
                                 (conflict!['evidence'] as List? ?? [])
                                     .where((p) => p['inspection_id'] != null)
@@ -2764,7 +2985,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
         ),
         const SizedBox(height: 8),
         Text(
-          tr(context, '提交后写入任务审计记录，可继续补充照片。'),
+          tr(context, '提交后可在任务历史中查看结果并补充照片。'),
           textAlign: TextAlign.center,
           style: hint,
         ),

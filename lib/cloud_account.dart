@@ -107,8 +107,10 @@ abstract interface class CloudIdentityGateway {
 class KeycloakIdentityGateway implements CloudIdentityGateway {
   final FlutterAppAuth appAuth;
   final NfcClient nfcClient;
+  final String issuer;
   KeycloakIdentityGateway({
     this.appAuth = const FlutterAppAuth(),
+    this.issuer = cloudIssuer,
     NfcClient? nfcClient,
   }) : nfcClient = nfcClient ?? NfcClient();
   CloudTokens _tokens(
@@ -138,7 +140,7 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         AuthorizationTokenRequest(
           'linesight-android',
           _redirect,
-          issuer: cloudIssuer,
+          issuer: issuer,
           scopes: _scopes,
           additionalParameters: {
             'max_age': '240',
@@ -162,7 +164,7 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final request = await client.postUrl(
-        Uri.parse('$cloudIssuer/protocol/openid-connect/$endpoint'),
+        Uri.parse('$issuer/protocol/openid-connect/$endpoint'),
       );
       request.headers.contentType = ContentType(
         'application',
@@ -216,6 +218,20 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
 
   @override
   Future<CloudTokens> refresh(CloudTokens previous) async {
+    if (previous.clientId == 'linesight-demo') {
+      final result = await _form('token', {
+        'grant_type': 'refresh_token',
+        'client_id': previous.clientId,
+        'refresh_token': previous.refresh,
+      });
+      return CloudTokens(
+        result['access_token'] as String,
+        result['refresh_token'] as String? ?? previous.refresh,
+        previous.clientId,
+        DateTime.now().add(Duration(seconds: result['expires_in'] as int)),
+        idToken: result['id_token'] as String? ?? previous.idToken,
+      );
+    }
     if (previous.clientId == 'linesight-nfc') {
       if (previous.nfcCredential == null) {
         throw const CollaborationApiException(401, '请重新刷卡登录');
@@ -234,7 +250,7 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         TokenRequest(
           previous.clientId,
           _redirect,
-          issuer: cloudIssuer,
+          issuer: issuer,
           refreshToken: previous.refresh,
         ),
       );
@@ -278,7 +294,7 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
     try {
       await appAuth.endSession(
         EndSessionRequest(
-          issuer: cloudIssuer,
+          issuer: issuer,
           idTokenHint: previous.idToken,
           postLogoutRedirectUrl: _redirect,
         ),

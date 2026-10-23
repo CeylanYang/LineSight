@@ -1,5 +1,5 @@
 {
-  "screenshots": 142,
+  "screenshots": 154,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
     {
@@ -1921,6 +1921,198 @@
       "height": 1600,
       "sha256": "2ea38e85ecde815759bdfa6c08c7ab48eb78817494008e167dc329b96a1504a4",
       "batch_notes": "access2-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/100-task-retry-en-desktop-render.png",
+      "title": "100-task-retry-en-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "3f1881daa4802e9282e7b605ad6e1c7c46d5b8544cca05c6db104a28dd2b66df",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/100-task-retry-zh-desktop-render.png",
+      "title": "100-task-retry-zh-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "38e66411d0935a352ee37fd9287207ebed1a9ea57e68c607f7cdd0731309a9fb",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/101-inspection-draft-emulator.png",
+      "title": "101-inspection-draft-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "651fe29de05b7bab8ebdeb97772aaa0b46574c7e3fbf5f744aa4109d9e26ad9f",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/102-conflict-comparison-emulator.png",
+      "title": "102-conflict-comparison-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "e3a3b0a7bf30593eae8fc83ecc9a95d5f3533f914c4ec75fc97d8163eb01a3b4",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/103-latest-task-emulator.png",
+      "title": "103-latest-task-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "0a4be166299c7c5f078e1daaf44e5e385c1e0cf556af3d02dfb3f291944e311d",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/104-returned-conflict-draft-emulator.png",
+      "title": "104-returned-conflict-draft-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "de83074bde8a7a113002aa7b166b89587d4db5a3a06441c8da239eae4e165fc2",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/105-my-account-entry-emulator.png",
+      "title": "105-my-account-entry-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "22b6b7c149b1df8a3ca85f5c18b35a518b8f9a935e261ce0e63eb7e78c792158",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/106-account-profile-emulator.png",
+      "title": "106-account-profile-emulator",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 720,
+      "height": 1280,
+      "sha256": "69c47a01299f63021bfa8930520c1078aac9507c12eaa3ffad4e7648ded1061d",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/98-conflict-review-en-desktop-render.png",
+      "title": "98-conflict-review-en-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 328,
+      "height": 570,
+      "sha256": "adb960165f9b0be390da67d089675b52180b9627fc8c2e901e38df3caaac0df2",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/98-conflict-review-zh-desktop-render.png",
+      "title": "98-conflict-review-zh-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 328,
+      "height": 547,
+      "sha256": "2a19f00f7ec2b1563d54de5d7784535492484bd61e2f3dbd9ffda4472aaaa19e",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/99-login-card-en-desktop-render.png",
+      "title": "99-login-card-en-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "19985c60bc7856baa362ac0919e4675a472f3e424e4c2b77afdcfa7c87b7de87",
+      "batch_notes": "conflict-batch/README.md"
+    },
+    {
+      "file": "conflict-batch/png/99-login-card-zh-desktop-render.png",
+      "title": "99-login-card-zh-desktop-render",
+      "batch": "conflict-batch",
+      "batch_requirement_ids": [
+        "OFF-03",
+        "UI-11",
+        "UI-12",
+        "SSO-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1600,
+      "sha256": "0ff166394b449cbdbaad24dc3cb40cfac83bce737d88c880faa4a72d78629382",
+      "batch_notes": "conflict-batch/README.md"
     },
     {
       "file": "release-batch/png/81-login-card-en-desktop-render.png",

@@ -8,7 +8,10 @@ import xml.etree.ElementTree as ET
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('action',choices=['inspect','tap','capture','back','swipe','launch'])
 parser.add_argument('value',nargs='?')
+parser.add_argument('--batch',default='release-batch')
+parser.add_argument('--occurrence',type=int,default=0)
 args=parser.parse_args()
+if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*-batch',args.batch): parser.error('Use a simple acceptance batch directory name')
 adb=[r'C:\Users\29668\AppData\Local\Android\Sdk\platform-tools\adb.exe','-s','emulator-5554']
 def run(*parts): return subprocess.check_output(adb+list(parts),timeout=45)
 assert run('shell','getprop','ro.kernel.qemu').strip()==b'1'
@@ -25,13 +28,15 @@ if args.action in ('inspect','tap'):
         matches=[node for node in nodes if args.value in [node.get('text'),node.get('content-desc')] or args.value in node.get('content-desc','').split('\n')]
         if not matches: raise RuntimeError('Visible action missing: '+str(args.value))
         clickable=[node for node in matches if node.get('clickable')=='true']
-        node=(clickable or matches)[0]
+        candidates=clickable or matches
+        if not 0 <= args.occurrence < len(candidates): parser.error('Visible action occurrence is out of range')
+        node=candidates[args.occurrence]
         x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
         run('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2))
 elif args.action=='capture':
     name=args.value
     if not re.fullmatch(r'[a-zA-Z0-9-]+-emulator',name or ''): parser.error('Use a simple filename ending in -emulator')
-    folder=Path('docs/product/linesight/acceptance/release-batch/png');folder.mkdir(parents=True,exist_ok=True)
+    folder=Path('docs/product/linesight/acceptance')/args.batch/'png';folder.mkdir(parents=True,exist_ok=True)
     (folder/(name+'.png')).write_bytes(run('exec-out','screencap','-p'))
 elif args.action=='back': run('shell','input','keyevent','4')
 elif args.action=='swipe': run('shell','input','swipe','360','1050','360','430','350')
