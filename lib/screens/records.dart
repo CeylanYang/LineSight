@@ -606,7 +606,11 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
             ],
           ),
           const SizedBox(height: 20),
-          PartPreview(defect: !r.passed, height: 260),
+          PartPreview(
+            defect: !r.passed,
+            height: 260,
+            part: partArtKey(r.recipeName),
+          ),
           const SizedBox(height: 12),
           Text(
             tr(context, "工件预览"),

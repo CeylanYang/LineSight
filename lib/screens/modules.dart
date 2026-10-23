@@ -230,7 +230,7 @@ class RecipeDetailPage extends StatelessWidget {
           title: r.name,
           subtitle: r.material,
         ),
-        const PartPreview(height: 230),
+        PartPreview(height: 230, part: partArtKey(r.name)),
         SectionHeading(tr(context, "检测参数")),
         GlassPanel(
           child: Column(

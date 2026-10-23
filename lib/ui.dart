@@ -1,5 +1,4 @@
 import 'l10n.dart';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
@@ -9,6 +8,11 @@ const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
     red = Color(0xFFDD566C),
     amber = Color(0xFFD49022);
+
+const ink = Color(0xFF122036),
+    muted = Color(0xFF6A7B93),
+    hairline = Color(0xFFE4ECF7),
+    panelShadow = Color(0x14132E55);
 
 class AppScope extends InheritedNotifier<AppStore> {
   const AppScope({super.key, required AppStore store, required super.child})
@@ -59,6 +63,48 @@ ThemeData appTheme(bool dark) {
       surfaceTintColor: Colors.transparent,
       centerTitle: false,
       elevation: 0,
+      titleTextStyle: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -.3,
+        color: ink,
+      ),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+      ),
+    ),
+    chipTheme: base.chipTheme.copyWith(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(11),
+        side: const BorderSide(color: hairline),
+      ),
+      labelStyle: const TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: ink,
+      ),
+      selectedColor: blue.withValues(alpha: .12),
+      checkmarkColor: blue,
+    ),
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+        ),
+        side: const WidgetStatePropertyAll(BorderSide(color: hairline)),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+        ),
+      ),
     ),
     cardTheme: CardThemeData(
       elevation: 0,
@@ -124,15 +170,42 @@ class Backdrop extends StatelessWidget {
   final Widget child;
   const Backdrop({super.key, required this.child});
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFFF5F8FF), Color(0xFFFBFCFE), Color(0xFFF3FAF8)],
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      const DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFF4F8FF), Color(0xFFFBFCFE), Color(0xFFF2FAF7)],
+          ),
+        ),
       ),
-    ),
-    child: child,
+      const IgnorePointer(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment(-1.05, -1.1),
+              radius: 1.15,
+              colors: [Color(0x223478F6), Color(0x003478F6)],
+            ),
+          ),
+        ),
+      ),
+      const IgnorePointer(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment(1.15, 1.25),
+              radius: 1.1,
+              colors: [Color(0x1813B39A), Color(0x0013B39A)],
+            ),
+          ),
+        ),
+      ),
+      child,
+    ],
   );
 }
 
@@ -152,7 +225,10 @@ class GlassPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: const Color(0xFFDBE5F2)),
+        border: Border.all(color: hairline),
+        boxShadow: const [
+          BoxShadow(color: panelShadow, blurRadius: 26, offset: Offset(0, 10)),
+        ],
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -171,21 +247,24 @@ class PageBody extends StatelessWidget {
   final double maxWidth;
   const PageBody({super.key, required this.children, this.maxWidth = 1100});
   @override
-  Widget build(BuildContext context) => Align(
-    alignment: Alignment.topCenter,
-    child: ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: maxWidth),
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(
-          22,
-          24,
-          22,
-          32 + MediaQuery.paddingOf(context).bottom,
+  Widget build(BuildContext context) {
+    final narrow = MediaQuery.sizeOf(context).width < 900;
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(
+            narrow ? 18 : 22,
+            narrow ? 18 : 24,
+            narrow ? 18 : 22,
+            (narrow ? 108 : 32) + MediaQuery.paddingOf(context).bottom,
+          ),
+          children: children,
         ),
-        children: children,
       ),
-    ),
-  );
+    );
+  }
 }
 
 class DetailScaffold extends StatelessWidget {
@@ -274,11 +353,15 @@ class PageHeading extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  fontSize: MediaQuery.sizeOf(context).width < 420 ? 30 : null,
+                  height: 1.12,
+                ),
               ),
             ),
             if (trailing != null) trailing!,
@@ -287,10 +370,7 @@ class PageHeading extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           subtitle,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            height: 1.6,
-          ),
+          style: const TextStyle(color: muted, height: 1.55, fontSize: 13.5),
         ),
       ],
     ),
@@ -326,6 +406,493 @@ class SectionHeading extends StatelessWidget {
         );
       },
     ),
+  );
+}
+
+class SectionHeader extends StatelessWidget {
+  final String title;
+  final String? caption;
+  final IconData? icon;
+  final Widget? action;
+  const SectionHeader(
+    this.title, {
+    super.key,
+    this.caption,
+    this.icon,
+    this.action,
+  });
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(2, 18, 2, 12),
+    child: Row(
+      children: [
+        if (icon != null) ...[
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: blue.withValues(alpha: .09),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            child: Icon(icon, size: 18, color: blue),
+          ),
+          const SizedBox(width: 10),
+        ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: ink,
+                  letterSpacing: -.2,
+                ),
+              ),
+              if (caption != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    caption!,
+                    style: const TextStyle(fontSize: 11.5, color: muted),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        if (action != null) action!,
+      ],
+    ),
+  );
+}
+
+class HeroBanner extends StatelessWidget {
+  final String eyebrow, title, subtitle;
+  final List<Widget> actions;
+  final Widget? trailing;
+  const HeroBanner({
+    super.key,
+    required this.eyebrow,
+    required this.title,
+    required this.subtitle,
+    this.actions = const [],
+    this.trailing,
+  });
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(26),
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF1B4FC4), Color(0xFF3F7EF2), Color(0xFF5B97FF)],
+        stops: [0, .58, 1],
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: blue.withValues(alpha: .28),
+          blurRadius: 30,
+          offset: const Offset(0, 14),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(26),
+      child: Stack(
+        children: [
+          Positioned(
+            right: -46,
+            top: -70,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: .09),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 54,
+            bottom: -74,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: .07),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        eyebrow,
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: .76),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.8,
+                        ),
+                      ),
+                    ),
+                    if (trailing != null) trailing!,
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    height: 1.15,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -.7,
+                  ),
+                ),
+                const SizedBox(height: 7),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: .82),
+                    fontSize: 12.5,
+                    height: 1.5,
+                  ),
+                ),
+                if (actions.isNotEmpty) ...[
+                  const SizedBox(height: 17),
+                  Wrap(spacing: 9, runSpacing: 9, children: actions),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class HeroAction extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final bool ghost;
+  const HeroAction({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    this.ghost = false,
+  });
+  @override
+  Widget build(BuildContext context) => FilledButton.icon(
+    onPressed: onPressed,
+    icon: Icon(icon, size: 17),
+    label: Text(label),
+    style: FilledButton.styleFrom(
+      minimumSize: const Size(0, 42),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      backgroundColor: ghost
+          ? Colors.white.withValues(alpha: .16)
+          : Colors.white,
+      foregroundColor: ghost ? Colors.white : const Color(0xFF1B4FC4),
+      side: ghost
+          ? BorderSide(color: Colors.white.withValues(alpha: .26))
+          : BorderSide.none,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+      textStyle: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w800),
+    ),
+  );
+}
+
+class StatCard extends StatelessWidget {
+  final String label, value;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onTap;
+  const StatCard({
+    super.key,
+    required this.label,
+    required this.value,
+    required this.icon,
+    this.color = blue,
+    this.onTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final card = DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: hairline),
+        boxShadow: const [
+          BoxShadow(color: panelShadow, blurRadius: 22, offset: Offset(0, 8)),
+        ],
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(13, 13, 11, 13),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 31,
+                  height: 31,
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: .1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(icon, size: 17, color: color),
+                ),
+                const SizedBox(height: 12),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 27,
+                      height: 1,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -1,
+                      color: color,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: muted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    return onTap == null ? card : Semantics(button: true, child: card);
+  }
+}
+
+class QuickAction extends StatelessWidget {
+  final String title;
+  final String caption;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onPressed;
+  const QuickAction({
+    super.key,
+    required this.title,
+    required this.caption,
+    required this.icon,
+    required this.onPressed,
+    this.color = blue,
+  });
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: hairline),
+    ),
+    child: Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(18),
+        child: Padding(
+          padding: const EdgeInsets.all(13),
+          child: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: .1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, size: 20, color: color),
+              ),
+              const SizedBox(width: 11),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: ink,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      caption,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 10.5, color: muted),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: Color(0xFFA9B8CC),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+class MenuTile extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onTap;
+  final Widget? trailing;
+  const MenuTile({
+    super.key,
+    required this.title,
+    required this.icon,
+    this.subtitle,
+    this.color = blue,
+    this.onTap,
+    this.trailing,
+  });
+  @override
+  Widget build(BuildContext context) => Material(
+    type: MaterialType.transparency,
+    child: InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+        child: Row(
+          children: [
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: .1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, size: 19, color: color),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                      color: ink,
+                    ),
+                  ),
+                  if (subtitle != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        subtitle!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 11, color: muted),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            trailing ??
+                const Icon(
+                  Icons.chevron_right,
+                  size: 19,
+                  color: Color(0xFFA9B8CC),
+                ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class InfoGrid extends StatelessWidget {
+  final Map<String, String> items;
+  const InfoGrid({super.key, required this.items});
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, c) {
+      final columns = c.maxWidth >= 720 ? 3 : 2;
+      final width = (c.maxWidth - (columns - 1) * 10) / columns;
+      return Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: items.entries
+            .map(
+              (e) => SizedBox(
+                width: width,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF7FAFF),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(color: const Color(0xFFEDF3FB)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        e.key,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 10.5, color: muted),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        e.value.isEmpty ? '—' : e.value,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12.5,
+                          height: 1.3,
+                          fontWeight: FontWeight.w700,
+                          color: ink,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      );
+    },
   );
 }
 
@@ -698,145 +1265,373 @@ class _BrandPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class PartPreview extends StatelessWidget {
+const partArtKeys = [
+  'mount',
+  'cover',
+  'clip',
+  'gear',
+  'knob',
+  'jig',
+  'hinge',
+  'pulley',
+  'spacer',
+  'clamp',
+  'housing',
+  'adapter',
+];
+
+String partArtKey(String name) {
+  final n = name.toLowerCase();
+  for (final rule in const <(List<String>, String)>[
+    (['gear', '齿轮'], 'gear'),
+    (['knob', '旋钮', '手柄', '拨盘'], 'knob'),
+    (['jig', 'fixture', '治具', '检具', '夹具', '工装'], 'jig'),
+    (['hinge', '铰链', '合页'], 'hinge'),
+    (['pulley', '滑轮', '带轮', '同步轮'], 'pulley'),
+    (['spacer', 'standoff', '垫块', '隔套', '支柱'], 'spacer'),
+    (['clamp', '线夹', '管夹', '夹箍', '卡箍'], 'clamp'),
+    (['housing', '箱体', '机壳', '壳体'], 'housing'),
+    (['adapter', 'flange', '转接', '法兰', '接头'], 'adapter'),
+    (['cover', 'lid', '外壳', '盖', '罩', '面板'], 'cover'),
+    (['clip', '卡扣', '卡子', '夹'], 'clip'),
+    (['mount', 'bracket', '支架', '底座', '安装'], 'mount'),
+  ]) {
+    if (rule.$1.any(n.contains)) return rule.$2;
+  }
+  final sum = name.codeUnits.fold<int>(0, (a, b) => a + b);
+  return partArtKeys[sum % partArtKeys.length];
+}
+
+String partArtAsset(String name, {bool wide = false, bool edge = false}) =>
+    'assets/parts/part-${partArtKey(name)}${edge ? '-edge' : ''}${wide ? '-wide' : ''}.webp';
+
+class PartThumb extends StatelessWidget {
+  final String partName;
+  final double size;
   final bool defect;
-  final double height;
-  const PartPreview({super.key, this.defect = false, this.height = 220});
+  final double radius;
+  const PartThumb({
+    super.key,
+    required this.partName,
+    this.size = 60,
+    this.defect = false,
+    this.radius = 15,
+  });
   @override
   Widget build(BuildContext context) => Semantics(
-    label: defect ? tr(context, "工件预览，右上方标记缺陷区域") : tr(context, "工件表面预览"),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-        child: CustomPaint(
-          painter: _PartPainter(defect),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Tag(tr(context, "缺陷图示")),
-                const Spacer(),
-                OverflowBar(
-                  alignment: MainAxisAlignment.spaceBetween,
-                  overflowAlignment: OverflowBarAlignment.end,
-                  spacing: 12,
-                  overflowSpacing: 8,
-                  children: [
-                    Tag(
-                      defect ? tr(context, "检测到缺陷") : tr(context, "表面完整"),
-                      color: defect ? red : green,
-                    ),
-                    const Text(
-                      'CAM 01 / TOP',
-                      style: TextStyle(
-                        color: Color(0xFF98AECA),
-                        fontSize: 10,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+    image: true,
+    label: tr(context, '工件照片'),
+    child: SizedBox.square(
+      dimension: size,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              partArtAsset(partName),
+              fit: BoxFit.cover,
+              cacheWidth: (size * 3).round(),
+              errorBuilder: (_, _, _) => const ColoredBox(
+                color: Color(0xFFEAF1FA),
+                child: Icon(Icons.view_in_ar_outlined, color: blue),
+              ),
             ),
-          ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(radius),
+                border: Border.all(color: const Color(0x1A122036)),
+              ),
+            ),
+            if (defect)
+              const Positioned(
+                right: 5,
+                top: 5,
+                child: _Dot(color: red, size: 8),
+              ),
+          ],
         ),
       ),
     ),
   );
 }
 
-class _PartPainter extends CustomPainter {
+class PartArt extends StatelessWidget {
+  final String partName;
   final bool defect;
-  _PartPainter(this.defect);
+  final bool wide;
+  final bool showTags;
+  final double? height;
+  final double radius;
+  final String? caption;
+  const PartArt({
+    super.key,
+    required this.partName,
+    this.defect = false,
+    this.wide = false,
+    this.showTags = true,
+    this.height,
+    this.radius = 20,
+    this.caption,
+  });
+  @override
+  Widget build(BuildContext context) => Semantics(
+    image: true,
+    label: defect ? tr(context, '工件实拍，标记缺陷区域') : tr(context, '工件实拍'),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: SizedBox(
+        height: height,
+        width: double.infinity,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              partArtAsset(partName, wide: wide),
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) => const DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF13253D), Color(0xFF0B1727)],
+                  ),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.view_in_ar_outlined,
+                    color: Colors.white54,
+                    size: 44,
+                  ),
+                ),
+              ),
+            ),
+            const Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0x59071018),
+                      Color(0x00071018),
+                      Color(0x00071018),
+                      Color(0x66101828),
+                    ],
+                    stops: [0, .3, .62, 1],
+                  ),
+                ),
+              ),
+            ),
+            if (defect)
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: _DefectMarker(partArtKey(partName)),
+                ),
+              ),
+            if (showTags)
+              Padding(
+                padding: const EdgeInsets.all(13),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _GlassTag(
+                            text: tr(context, '工件预览'),
+                            icon: Icons.center_focus_strong,
+                          ),
+                          if (caption != null) ...[
+                            const SizedBox(width: 8),
+                            _GlassTag(text: caption!),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _SolidTag(
+                            text: tr(context, defect ? '边缘参考' : '外观参考'),
+                            color: defect ? red : green,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class PartPreview extends StatelessWidget {
+  final bool defect;
+  final double height;
+  final String part;
+  const PartPreview({
+    super.key,
+    this.defect = false,
+    this.height = 220,
+    this.part = 'mount',
+  });
+  @override
+  Widget build(BuildContext context) =>
+      PartArt(partName: part, defect: defect, height: height);
+}
+
+class _GlassTag extends StatelessWidget {
+  final String text;
+  final IconData? icon;
+  const _GlassTag({required this.text, this.icon});
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+    decoration: BoxDecoration(
+      color: Colors.white.withValues(alpha: .9),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.white.withValues(alpha: .5)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (icon != null) ...[
+          Icon(icon, size: 12, color: ink),
+          const SizedBox(width: 5),
+        ],
+        Text(
+          text,
+          style: const TextStyle(
+            color: ink,
+            fontSize: 10,
+            fontWeight: FontWeight.w800,
+            letterSpacing: .3,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _SolidTag extends StatelessWidget {
+  final String text;
+  final Color color;
+  const _SolidTag({required this.text, required this.color});
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [
+        BoxShadow(
+          color: color.withValues(alpha: .35),
+          blurRadius: 10,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Text(
+      text,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 10,
+        fontWeight: FontWeight.w800,
+      ),
+    ),
+  );
+}
+
+class _Dot extends StatelessWidget {
+  final Color color;
+  final double size;
+  const _Dot({required this.color, this.size = 10});
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: color,
+      shape: BoxShape.circle,
+      border: Border.all(color: Colors.white, width: 1.5),
+    ),
+  );
+}
+
+class _DefectMarker extends CustomPainter {
+  final String art;
+  _DefectMarker(this.art);
+  static const _boxes = {
+    'mount': Rect.fromLTWH(.40, .36, .22, .26),
+    'cover': Rect.fromLTWH(.42, .42, .22, .18),
+    'clip': Rect.fromLTWH(.36, .40, .24, .26),
+    'gear': Rect.fromLTWH(.40, .38, .21, .25),
+    'knob': Rect.fromLTWH(.40, .36, .21, .26),
+    'jig': Rect.fromLTWH(.36, .39, .26, .22),
+    'hinge': Rect.fromLTWH(.44, .40, .16, .26),
+    'pulley': Rect.fromLTWH(.40, .36, .22, .26),
+    'spacer': Rect.fromLTWH(.42, .34, .18, .32),
+    'clamp': Rect.fromLTWH(.38, .38, .23, .25),
+    'housing': Rect.fromLTWH(.40, .38, .23, .24),
+    'adapter': Rect.fromLTWH(.40, .38, .22, .26),
+  };
   @override
   void paint(Canvas canvas, Size s) {
-    canvas.drawRect(
-      Offset.zero & s,
-      Paint()
-        ..shader = const LinearGradient(
-          colors: [Color(0xFF13253D), Color(0xFF0B1727)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ).createShader(Offset.zero & s),
+    final box = _boxes[art] ?? _boxes['mount']!;
+    final rect = Rect.fromLTWH(
+      box.left * s.width,
+      box.top * s.height,
+      box.width * s.width,
+      box.height * s.height,
     );
-    final grid = Paint()
-      ..color = const Color(0xFF7196C2).withValues(alpha: .1)
-      ..strokeWidth = 1;
-    for (double x = 0; x < s.width; x += 24) {
-      canvas.drawLine(Offset(x, 0), Offset(x, s.height), grid);
-    }
-    for (double y = 0; y < s.height; y += 24) {
-      canvas.drawLine(Offset(0, y), Offset(s.width, y), grid);
-    }
-    canvas.save();
-    canvas.translate(s.width / 2, s.height / 2);
-    final scale = min(s.width / 300, s.height / 200);
-    canvas.scale(scale);
-    canvas.rotate(-.2);
-    final part = Path()
-      ..moveTo(-78, -42)
-      ..lineTo(36, -42)
-      ..lineTo(79, -8)
-      ..lineTo(79, 42)
-      ..lineTo(-78, 42)
-      ..close();
-    canvas.drawShadow(part, Colors.black, 14, true);
-    canvas.drawPath(
-      part,
-      Paint()
-        ..shader = const LinearGradient(
-          colors: [Color(0xFFE0E9F0), Color(0xFF70879D), Color(0xFFAFC2D3)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ).createShader(const Rect.fromLTWH(-80, -45, 160, 90)),
+    final line = Paint()
+      ..color = red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    final halo = Paint()
+      ..color = Colors.white.withValues(alpha: .85)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(6)),
+      halo,
     );
-    canvas.drawPath(
-      part,
-      Paint()
-        ..color = const Color(0xFFDDE8F1)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2,
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(6)),
+      line,
     );
-    for (final x in [-49.0, 42.0]) {
-      canvas.drawCircle(
-        Offset(x, 6),
-        13,
-        Paint()..color = const Color(0xFF27394C),
-      );
-      canvas.drawCircle(
-        Offset(x, 6),
-        15,
-        Paint()
-          ..color = const Color(0xFFEBF2F7)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2,
-      );
-    }
-    if (defect) {
-      canvas.drawLine(
-        const Offset(10, -30),
-        const Offset(37, -14),
-        Paint()
-          ..color = const Color(0xFF572832)
-          ..strokeWidth = 3,
-      );
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          const Rect.fromLTWH(0, -40, 49, 41),
-          const Radius.circular(5),
+    final label = TextPainter(
+      text: const TextSpan(
+        text: ' DEFECT 0.82 mm ',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          letterSpacing: .3,
         ),
-        Paint()
-          ..color = red
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2,
-      );
-    }
-    canvas.restore();
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    final origin = Offset(
+      (rect.right - label.width).clamp(0, s.width - label.width),
+      (rect.top - label.height - 6).clamp(0, s.height - label.height),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(origin & label.size, const Radius.circular(5)),
+      Paint()..color = red,
+    );
+    label.paint(canvas, origin + const Offset(0, 0));
   }
 
   @override
-  bool shouldRepaint(_PartPainter old) => old.defect != defect;
+  bool shouldRepaint(_DefectMarker old) => old.art != art;
 }

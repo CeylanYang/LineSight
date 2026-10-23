@@ -65,7 +65,7 @@ class _AuthPageState extends State<AuthPage> {
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                               const SizedBox(height: 40),
-                              const PartPreview(height: 260),
+                              const PartPreview(height: 260, part: 'cover'),
                               const SizedBox(height: 24),
                               Wrap(
                                 spacing: 10,

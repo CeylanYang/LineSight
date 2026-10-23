@@ -366,6 +366,7 @@ class _StationPageState extends State<StationPage> {
           child: PartPreview(
             defect: latest != null && !latest.passed,
             height: 280,
+            part: partArtKey(station.name),
           ),
         ),
         const SizedBox(height: 16),
