@@ -1,0 +1,1 @@
+{"api_health": true, "live_provider_discovery": true, "temporary_restore_databases_remaining": 0, "temporary_identity_listener_remaining": false, "only_production_containers_running": true, "temporary_export_key_removed": true, "timer_active": true, "manual_scheduled_backup_result": "success", "next_run": "Sun 2026-10-25 03:20:05 CST", "private_permissions_verified": true}

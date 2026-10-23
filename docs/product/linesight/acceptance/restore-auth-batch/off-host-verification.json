@@ -1,0 +1,20 @@
+{
+  "backup": "20261023T194606218579Z",
+  "off_host_copy_verified": true,
+  "encryption": "AES-256-GCM",
+  "authentication_tag_verified": true,
+  "archive_sha256": "01604656d98d8310cacb9bda9072ff3d48153be462eee31a60fad2a706c6a8ef",
+  "archive_bytes": 5625389,
+  "all_file_hashes_verified": true,
+  "files": 104,
+  "sqlite_tables": 31,
+  "sqlite_rows_identical": true,
+  "foreign_keys_valid": true,
+  "provider_dump_hash_verified": true,
+  "provider_tables_in_manifest": 101,
+  "media_files_verified": 28,
+  "identity_runtime_files_verified": 2,
+  "private_keys_or_databases_in_public_delivery": false,
+  "decrypted_archive_retained": false,
+  "off_host_restore_boot_exercised": false
+}

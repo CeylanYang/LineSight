@@ -1,0 +1,8 @@
+{
+  "verified_extraction": true,
+  "files_identical_to_original": 104,
+  "private_permissions_verified": true,
+  "temporary_export_key_removed": true,
+  "production_cutover": false,
+  "off_host_restore_boot_exercised": false
+}

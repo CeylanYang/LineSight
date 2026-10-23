@@ -1,0 +1,8 @@
+{
+  "backup": "20261023T194606218579Z",
+  "encryption": "AES-256-GCM",
+  "archive_sha256": "01604656d98d8310cacb9bda9072ff3d48153be462eee31a60fad2a706c6a8ef",
+  "archive_bytes": 5625389,
+  "files": 104,
+  "key_in_archive": false
+}

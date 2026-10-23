@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-24",
+  "batch": "cloud recovery",
+  "app_version_unchanged": "1.1.38+8062",
+  "backup": "20261023T194606218579Z",
+  "isolated_real_identity_restore_verified": true,
+  "encrypted_off_host_copy_verified": true,
+  "verified_extraction": true,
+  "guard_tests_passed": 7,
+  "gallery_png_unchanged": 171,
+  "production_cutover_exercised": false,
+  "off_host_provider_boot_exercised": false,
+  "full_nfc_login_exercised": false,
+  "automatic_off_host_replication_configured": false,
+  "retention_configured": false,
+  "private_material_in_public_delivery": false
+}

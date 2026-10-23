@@ -1,0 +1,32 @@
+{
+  "restored_admin_login": true,
+  "restored_demo_password_login": true,
+  "restored_demo_subject_and_workspace_preserved": true,
+  "native_pkce_login": true,
+  "native_probe_created_in_clone_only": true,
+  "real_bearer_jwt_and_introspection": true,
+  "demo_jobs_records_report_read": true,
+  "authorized_photo_bytes_identical": true,
+  "viewer_write_status": 403,
+  "outsider_status": 404,
+  "removed_member_photo_and_report_status": 404,
+  "native_and_demo_refresh_rotation": true,
+  "native_and_demo_logout_access_and_refresh_revoked": true,
+  "restored_nfc_spi_loaded": true,
+  "nfc_login_exercised": false,
+  "identity_transport": "Host loopback HTTP; canonical HTTPS issuer preserved; no public clone listener",
+  "force_authenticate_used": false,
+  "production_users_or_sessions_modified": false,
+  "container_image_id": "817e41712252d6d3a2a61ac5d2a011be561d7942cee8227ee418ababa5f52b9a",
+  "backup": "20261023T194606218579Z",
+  "sqlite_tables": 31,
+  "provider_tables": 101,
+  "media_files": 28,
+  "rows_identical_before_login": true,
+  "identity_runtime_files": {
+    "realm/linesight-realm.json": "fc45a52d4e724fb28bb1c2f581c1ec750a7d754850849773bde4a51e4bd52a55",
+    "providers/linesight-nfc-provider.jar": "211eb6ff2be421a475e8a03a62d9a37793718f6016469ab577e32c7c09852935"
+  },
+  "temporary_container_and_database_removed": true,
+  "production_replaced": false
+}

@@ -89,14 +89,17 @@ class Provider:
             if exporter.returncode:
                 raise RuntimeError('Provider snapshot transaction failed')
 
-    def restore(self, dump, database):
+    def restore(self, dump, database, exercise=None):
         if not re.fullmatch(r'linesight_restore_[0-9a-z_]+', database) or database == self.database:
             raise ValueError('Restore target must be a dedicated rehearsal database')
         self.sql(self.database, f'CREATE DATABASE "{database}";')
         try:
             with dump.open('rb') as stream:
                 subprocess.run(self.command('pg_restore', '-d', database, '--exit-on-error', '--no-owner', '--no-acl'), stdin=stream, check=True)
-            return self.manifest(database)
+            restored = self.manifest(database)
+            if exercise is not None:
+                exercise(database)
+            return restored
         finally:
             self.sql(self.database, f'DROP DATABASE "{database}";')
 
@@ -198,12 +201,23 @@ def main():
     shutil.copy2('/etc/linesight/linesight.env', backup / 'linesight.env')
     for name in ['identity.env', 'compose.yaml']:
         shutil.copy2(Path('/opt/linesight-identity') / name, backup / name)
+    identity_files = {}
+    for name in ['realm', 'providers']:
+        source = Path('/opt/linesight-identity') / name
+        if source.exists():
+            shutil.copytree(source, backup / name)
+            for file in (backup / name).rglob('*'):
+                if file.is_file():
+                    identity_files[file.relative_to(backup).as_posix()] = sha(file)
     shutil.copy2(Path(__file__).resolve(), backup / 'rehearse_cloud_restore.py')
+    identity_rehearsal = Path(__file__).with_name('rehearse_restored_identity.py')
+    if identity_rehearsal.exists():
+        shutil.copy2(identity_rehearsal, backup / identity_rehearsal.name)
     provider = Provider()
     identity_manifest = provider.backup(backup / 'identity.dump')
-    manifest = {'sqlite':expected, 'provider':identity_manifest, 'media':{name:sha(media_path(media,name)) for name in sorted(files)}}
+    manifest = {'sqlite':expected, 'provider':identity_manifest, 'media':{name:sha(media_path(media,name)) for name in sorted(files)}, 'identity_runtime_files':identity_files}
     (backup / 'private-manifest.json').write_text(json.dumps(manifest, indent=2))
-    report = {'at':stamp, 'backup':str(backup), 'mode':'backup' if args.backup_only else 'restore_rehearsal', 'sqlite_tables':len(expected), 'provider_tables':len(identity_manifest), 'media_files':len(files), 'backup_permissions':'0700 directory / 0600 private files', 'production_replaced':False, 'artifacts_sha256':{name:sha(backup/name) for name in ['linesight.sqlite3','identity.dump','private-manifest.json']}}
+    report = {'at':stamp, 'backup':str(backup), 'mode':'backup' if args.backup_only else 'restore_rehearsal', 'sqlite_tables':len(expected), 'provider_tables':len(identity_manifest), 'media_files':len(files), 'identity_runtime_files':identity_files, 'backup_permissions':'0700 directory / 0600 private files', 'production_replaced':False, 'artifacts_sha256':{name:sha(backup/name) for name in ['linesight.sqlite3','identity.dump','private-manifest.json']}}
     if not args.backup_only:
         restored = backup / 'restored'; restored.mkdir()
         shutil.copy2(backup / 'linesight.sqlite3', restored / 'linesight.sqlite3')
