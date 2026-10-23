@@ -5,6 +5,8 @@ urlpatterns = [
     path("auth/register/", api.register), path("auth/login/", api.login),
     path("workspaces/", api.workspaces), path("workspaces/create/", api.create_workspace),
     path("workspaces/<int:workspace_id>/members/", api.members),
+    path("workspaces/<int:workspace_id>/members/<str:username>/", api.manage_member),
+    path("workspaces/<int:workspace_id>/leave/", api.leave_workspace),
     path("workspaces/<int:workspace_id>/printer-profiles/", api.printer_profiles),
     path("workspaces/<int:workspace_id>/legacy-inspections/", api.legacy_inspections),
     path("workspaces/redeem/", api.redeem), path("workspaces/<int:workspace_id>/invite/", api.invite),

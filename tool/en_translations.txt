@@ -958,3 +958,178 @@
 957|Flag exception
 958|Return to inspection
 959|Resolve and close
+960|Sign in to a local engineer or administrator account before importing.
+961|Local authorization expired
+962|Remove member?
+963|Change member role?
+964|Removing {0} immediately revokes their access to this team.
+965|Change the role of {0} to {1}. The change takes effect immediately.
+966|Leave team?
+967|Leaving revokes your access to this team. A new invitation is required to rejoin.
+968|Leave team
+969|Manage member
+970|Remove member
+971|Only team administrators can manage members
+972|Use Leave team; you cannot directly change your own role
+973|Invalid member role
+974|The team must retain at least one administrator
+975|Make another member an administrator before leaving
+976|Saved on this device
+977|Add example records to the workspace; remove them any time
+978|Quality management
+979|Quality workflow
+980|Station overview
+981|Production management
+982|{0} tasks in progress
+983|Production and inspection
+984|Account settings
+985|{0} will use {1} for future inspections.
+986|Start a station to run inspections and create records. Pausing it stops new records.
+987|Guide and app information
+988|Every detail, in sight.
+989|LineSight · Quality workspace
+990|For shop-floor quality teams
+991|App version · {0}
+992|Track every key result across production jobs and quality reviews.
+993|Open a station and select Start inspection to create a record.
+994|Inspection workflow · results are saved to your workspace
+995|Start a station to run an inspection and create a record.
+996|Completed inspection records appear here.
+997|Clear the filters or start an inspection from a station.
+998|View records, run inspections, and start or pause stations
+999|Adjust the date or station, or run an inspection.
+1000|Choose a station on the workbench, confirm its recipe, and start it. Inspection results and recipe snapshots are saved automatically.
+1001|Start inspection
+1002|Inspection records are saved to the workspace
+1003|Analyzing image…
+1004|Start the station to record an inspection result.
+1005|Records appear here after an inspection.
+1006|Adjust sensitivity and confidence thresholds to set defect detection ranges.
+1007|Defect illustration
+1008|Inspection results, review details, and activity records are saved to the workspace.
+1009|Clear filters to view all records.
+1010|Part preview
+1011|View workflows and feature information
+1012|View records, add inspection results, and start or pause stations
+1013|Currently {0} example records.
+1014|Example records are marked. Cleanup removes all inspection records marked as examples.
+1015|This deletes {0} example records, including archived records. Recipes, members and activity logs are retained.
+1016|Choose a station on the workbench, confirm its recipe, and start the station. Inspection results and recipe snapshots are saved automatically.
+1017|06 Data and privacy
+1018|Accounts and inspection records are stored on this device. Business backups are unencrypted; store them securely. Example records are always marked.
+1019|Adjust the date or station range to view the corresponding statistics.
+1020|Remove example records; retain activity logs
+1021|Part preview with the defect marked at the upper right
+1022|Part surface preview
+1023|Profile source
+1024|Profile version
+1025|Add team profile
+1026|Device name
+1027|Profile note
+1028|Save profile
+1029|Profile source HTTPS URL
+1030|Import device inspection records?
+1031|This creates copies in the team workspace. Device records remain unchanged.
+1032|Records: {0}
+1033|Passed: {0} · Issues: {1}
+1034|Include example records
+1035|Import records
+1036|Import device inspection records · {0} already in team
+1037|Imported {0}; skipped {1}
+1038|Imported inspections ({0})
+1039|Inspection record
+1040|Inspection result
+1041|Team workspace
+1042|Connect to a team workspace, shared jobs, and member invitations
+1043|Create or join a team to follow production jobs and quality issues together.
+1044|Connect to a team workspace
+1045|Sign in or join a team workspace
+1046|Team and device accounts are separate. Your device records are not uploaded when you join.
+1047|Service address
+1048|Use the service address provided by your workspace administrator
+1049|Password (at least 12 characters)
+1050|Already have a team account? Sign in
+1051|Create a team account
+1052|Create account and sign in
+1053|Sign in to team account
+1054|Your teams
+1055|You have not joined a team yet. Create a workspace or enter an invitation code.
+1056|Team role: {0}
+1057|Team admin
+1058|Operator
+1059|View only
+1060|Team members
+1061|New team name
+1062|Invitation code
+1063|Sign out of team account
+1064|Owner
+1065|Operator
+1066|Viewer
+1067|Create team workspace
+1068|Workspace name
+1069|Invite a team member
+1070|Member permissions
+1071|Can edit
+1072|View only
+1073|Generate invitation
+1074|Invitation created
+1075|This invitation can be used once and expires after 48 hours.
+1076|Copy code
+1077|Team jobs and inspection records are available to workspace members.
+1078|Invite members
+1079|New team job
+1080|Retry creating job
+1081|Retry the pending job before switching teams.
+1082|No team jobs yet
+1083|Create a job for your team to follow together.
+1084|Resolution
+1085|Resolution details
+1086|Describe the issue for review
+1087|Issue details
+1088|Send back for inspection
+1089|Resolve and close
+1090|Add inspection photo
+1091|Use a PNG/JPEG image up to 10 MB and 16 MP.
+1092|Retry upload
+1093|Record a quality issue
+1094|Assign to
+1095|Leave unassigned
+1096|Submit issue
+1097|Team sign-in has expired. Please sign in again.
+1098|View photo and edge reference #{0}
+1099|Edge reference preview
+1100|Use this preview as a visual aid; you decide the inspection result.
+1101|Issue
+1102|Action could not be completed. Please try again.
+1103|Enter a valid HTTP or HTTPS service address
+1104|Cannot reach the service. Check the address and connection, then retry.
+1105|Connection interrupted. Please retry.
+1106|Upload failed. Check the connection and retry.
+1107|Could not open the image evidence
+1108|Team services must use HTTPS
+1109|Usernames need at least 3 characters and passwords at least 12.
+1110|That username is already in use
+1111|The username or password is incorrect
+1112|Enter a workspace name
+1113|You have already joined this workspace
+1114|This invitation is invalid or has already been used
+1115|This invitation has expired
+1116|Check the job name, printer, and quantity
+1117|Only workspace owners can invite members
+1118|Only workspace owners can manage printer profiles
+1119|This printer profile is unavailable in the selected workspace
+1120|Enter a profile name, version, and HTTPS source
+1121|This member has view-only access
+1122|Photos can be added after the job reaches inspection
+1123|Use a PNG or JPEG image up to 16 MP
+1124|Choose an image up to 10 MB
+1125|This image could not be read. Choose a PNG or JPEG file.
+1126|Issues can be submitted after the job reaches inspection
+1127|Describe the issue for review
+1128|Enter the resolution
+1129|This job cannot move to that status
+1130|The invitation role is invalid
+1131|The import must contain between 1 and 5,000 records
+1132|The import exceeds 5 MB. Import a smaller batch.
+1133|An imported record has an invalid format
+1134|An imported record is missing a valid ID or timestamp

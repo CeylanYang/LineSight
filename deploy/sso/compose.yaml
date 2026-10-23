@@ -1,0 +1,48 @@
+name: linesight-identity
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?Generate identity.env first}
+    volumes:
+      - identity-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 256m
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: ["start", "--import-realm"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?Generate identity.env first}
+      KC_HOSTNAME: ${KEYCLOAK_PUBLIC_URL:?Set the public HTTPS issuer origin}
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_HOST: 0.0.0.0
+      KC_HTTP_PORT: "8080"
+      KC_HTTP_RELATIVE_PATH: /sso
+      KC_PROXY_HEADERS: xforwarded
+      KC_HEALTH_ENABLED: "true"
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:?Generate identity.env first}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Generate identity.env first}
+      JAVA_OPTS_KC_HEAP: -XX:MaxRAMPercentage=60 -XX:InitialRAMPercentage=30
+    ports:
+      - 127.0.0.1:8081:8080
+    volumes:
+      - ./realm:/opt/keycloak/data/import:ro
+    mem_limit: 768m
+
+volumes:
+  identity-db:

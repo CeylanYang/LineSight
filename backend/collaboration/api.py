@@ -85,6 +85,60 @@ def members(request, workspace_id):
     return Response([{"username": row.user.username, "role": row.role} for row in rows])
 
 
+@api_view(["PATCH", "DELETE"])
+@permission_classes([IsAuthenticated])
+def manage_member(request, workspace_id, username):
+    # Serialize administration within a workspace, including simultaneous owners
+    # leaving. Membership is read afresh on every API request, never from a token.
+    with transaction.atomic():
+        member = membership(request, workspace_id)
+        Workspace.objects.select_for_update().get(pk=workspace_id)
+        member = membership(request, workspace_id)
+        if member.role != Membership.OWNER:
+            raise PermissionDenied("仅团队管理员可管理成员")
+        try:
+            target = Membership.objects.select_related("user").get(
+                workspace_id=workspace_id, user__username=username)
+        except Membership.DoesNotExist as exc:
+            raise Http404 from exc
+        if target.user_id == request.user.pk:
+            return Response({"detail": "请使用离开团队操作；不可直接修改自己的权限"}, status=409)
+        role = request.data.get("role")
+        if request.method == "PATCH" and role not in dict(Membership.ROLES):
+            return Response({"detail": "成员角色无效"}, status=400)
+        if target.role == Membership.OWNER and (request.method == "DELETE" or role != Membership.OWNER):
+            if not Membership.objects.filter(workspace_id=workspace_id, role=Membership.OWNER).exclude(pk=target.pk).exists():
+                return Response({"detail": "团队必须保留至少一位管理员"}, status=409)
+        before = target.role
+        if request.method == "DELETE":
+            target.delete()
+            action = "member.removed"
+        else:
+            target.role = role
+            target.save(update_fields=["role"])
+            action = "member.role"
+        AuditEvent.objects.create(workspace=member.workspace, user=request.user,
+            action=action, object_id=str(target.user_id))
+    return Response({"username": username, "previous_role": before,
+                     "role": role if request.method == "PATCH" else None})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def leave_workspace(request, workspace_id):
+    with transaction.atomic():
+        member = membership(request, workspace_id)
+        Workspace.objects.select_for_update().get(pk=workspace_id)
+        member = membership(request, workspace_id)
+        if member.role == Membership.OWNER and not Membership.objects.filter(
+                workspace_id=workspace_id, role=Membership.OWNER).exclude(pk=member.pk).exists():
+            return Response({"detail": "请先将另一位成员设为管理员，再离开团队"}, status=409)
+        AuditEvent.objects.create(workspace=member.workspace, user=request.user,
+            action="member.left", object_id=str(request.user.pk))
+        member.delete()
+    return Response(status=204)
+
+
 STARTER_PROFILES = [
     {"id": "starter:a1", "name": "Bambu Lab A1", "version": "starter-v1", "source": "https://bambulab.com/en/a1", "note": "Printer profile reference"},
     {"id": "starter:p2s", "name": "Bambu Lab P2S", "version": "starter-v1", "source": "https://bambulab.com/en/p2s", "note": "Printer profile reference"},

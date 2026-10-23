@@ -1,0 +1,29 @@
+Installing build\app\outputs\apk\debug\app-debug.apk...          2,155ms
+D/FlutterJNI( 7228): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:64527/GTWkn4knxP4=/
+VMServiceFlutterDriver: Isolate found with number: 2019794826836675
+VMServiceFlutterDriver: Isolate 2019794826836675 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 7228): 00:00 +0: DEMO local import gate and real member revocation
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 7228): Skipped 32 frames!  The application may be doing too much work on its main thread.
+D/InsetsController( 7228): hide(ime())
+I/ImeTracker( 7228): com.example.linesight_flutter:c11692ad: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 7228): Installing profile for com.example.linesight_flutter
+VMServiceFlutterDriver: request_data message is taking a long time to complete...
+D/FlutterJNI( 7228): Sending viewport metrics to the engine.
+W/nesight_flutter( 7228): userfaultfd: MOVE ioctl seems unsupported: Connection timed out
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): io.flutter.embedding.android.FlutterActivity$1@f5d43e0
+I/nesight_flutter( 7228): NativeAlloc concurrent mark compact GC freed 401KB AllocSpace bytes, 9(1048KB) LOS objects, 49% free, 2628KB/5256KB, paused 779us,9.008ms total 24.428ms
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@2b2efd5
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): io.flutter.embedding.android.FlutterActivity$1@f5d43e0
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@2b2efd5
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): io.flutter.embedding.android.FlutterActivity$1@f5d43e0
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@2b2efd5
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): io.flutter.embedding.android.FlutterActivity$1@f5d43e0
+D/WindowOnBackDispatcher( 7228): setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@2b2efd5
+I/flutter ( 7228): 00:16 +1: (tearDownAll)
+I/flutter ( 7228): 00:16 +2: All tests passed!
+All tests passed.
+Leaving the application running.

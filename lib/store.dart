@@ -207,7 +207,7 @@ class AppStore extends ChangeNotifier {
   void _require({bool elevated = false, bool owner = false}) {
     checkAutoLock();
     if (!ready || startupError != null) throw StateError('本机工作区尚未打开');
-    if (user == null) throw StateError('请先登录');
+    if (user == null || !user!.enabled) throw StateError('请先登录');
     if (owner && !admin || elevated && !engineer) {
       throw StateError('当前账户没有此操作权限');
     }
@@ -1292,6 +1292,21 @@ class AppStore extends ChangeNotifier {
     return CsvSnapshot(records, {
       for (final s in data.stations) s.id: s.name,
     }, english: languageCode == 'en');
+  }
+
+  /// The team account cannot grant access to local records. Authorize before
+  /// reading even counts, and isolate preview data from mutable workspace state.
+  List<Inspection> captureTeamImport() {
+    _require(elevated: true);
+    return List.unmodifiable(
+      data.inspections
+          .where((r) => !r.archived)
+          .map(
+            (r) => Inspection.fromJson(
+              Json.from(jsonDecode(jsonEncode(r.toJson()))),
+            ),
+          ),
+    );
   }
 
   // Compatibility helper for small in-memory callers; UI exports use a worker.

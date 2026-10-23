@@ -34,3 +34,4 @@ backend/local.sqlite3
 .DS_Store
 Thumbs.db
 *.log
+/.artifact-work/

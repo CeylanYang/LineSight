@@ -1,0 +1,17 @@
+00:00 +0: loading C:/Users/29668/LineSight-workspaces/product-plan/test/local_import_authorization_test.dart
+00:00 +0: C:/Users/29668/LineSight-workspaces/product-plan/test/local_import_authorization_test.dart: cloud identity cannot authorize local preview or export
+00:00 +1: C:/Users/29668/LineSight-workspaces/product-plan/test/local_import_authorization_test.dart: authorized snapshot excludes archived and does not mutate source
+00:00 +2: C:/Users/29668/LineSight-workspaces/product-plan/test/workspace_test.dart: seed and empty workspace are valid and round trip without data loss
+00:00 +3: C:/Users/29668/LineSight-workspaces/product-plan/test/workspace_test.dart: backup validator rejects duplicate IDs, broken associations and invalid parameters
+00:00 +4: C:/Users/29668/LineSight-workspaces/product-plan/test/workspace_test.dart: review does not change original verdict and archived records leave pending queue
+00:00 +5: C:/Users/29668/LineSight-workspaces/product-plan/test/workspace_test.dart: CSV is escaped, formula neutralized, and export requires elevated role
+00:01 +6: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: team workspace customer labels have English counterparts
+00:01 +7: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: CSV header follows captured language while multilingual data stays unchanged
+00:01 +8: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English defect searches preserve canonical records
+00:01 +9: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: every translation preserves placeholders and contains English text
+00:01 +10: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: login language menu switches immediately and retains input
+00:02 +11: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English labels and service messages preserve user arguments
+00:02 +12: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: Profile contains a working language setting for both directions
+00:03 +13: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English audit filters use canonical actions and retain original prose
+00:03 +14: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:06 +15: All tests passed!

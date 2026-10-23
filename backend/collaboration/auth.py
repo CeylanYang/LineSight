@@ -5,6 +5,10 @@ from rest_framework.exceptions import AuthenticationFailed
 
 
 class BearerAuthentication(BaseAuthentication):
+    def authenticate_header(self, request):
+        # DRF otherwise turns AuthenticationFailed into 403.
+        return "Bearer"
+
     def authenticate(self, request):
         header = request.headers.get("Authorization", "")
         if not header.startswith("Bearer "):

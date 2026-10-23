@@ -1,0 +1,104 @@
+00:00 +0: loading C:/Users/29668/LineSight-workspaces/product-plan/test/app_theme_reuse_test.dart
+00:00 +0: C:/Users/29668/LineSight-workspaces/product-plan/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:05 +1: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: small file sizes retain their nonzero byte count
+00:05 +2: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: compact backup preserves all audit extensions and export metadata
+00:06 +3: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: old schema 1 backups without metadata or structured targets still load
+00:06 +4: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: equal totals expose added, removed and modified objects independently
+00:06 +5: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: audit preview separates new, identical and conflicting event IDs
+00:06 +6: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: backup read and write limits count UTF-8 bytes and reject unsupported size
+00:06 +7: C:/Users/29668/LineSight-workspaces/product-plan/test/backup_test.dart: invalid audit targets and change payloads are rejected
+00:07 +8: C:/Users/29668/LineSight-workspaces/product-plan/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:09 +9: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:09 +10: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:10 +11: C:/Users/29668/LineSight-workspaces/product-plan/test/brand_startup_test.dart: ready early prebuilds login without exposing it or restarting reveal
+00:10 +12: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:10 +13: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:10 +14: C:/Users/29668/LineSight-workspaces/product-plan/test/brand_startup_test.dart: saved haptics off and reduced motion suppress brand vibration
+00:10 +15: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: all four CSV entry points preserve their exact selection and scope
+00:10 +16: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: all four CSV entry points preserve their exact selection and scope
+00:11 +17: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_layout_test.dart: all four CSV entry points preserve their exact selection and scope
+00:14 +18: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: CSV snapshot freezes scalar fields, station names and selection order
+00:14 +19: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: CSV preserves BOM, all 15 fields, embedded delimiters and UTC precision
+00:14 +20: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: spreadsheet formula protection includes leading whitespace
+00:14 +21: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: worker writes more than 20 MiB without losing rows or order
+00:19 +22: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: CSV limits and early, mid-write and completion cancellation clean files
+00:19 +23: C:/Users/29668/LineSight-workspaces/product-plan/test/csv_test.dart: empty CSV retains headings and invalid selections fail explicitly
+00:20 +24: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:22 +25: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +26: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +27: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +28: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +29: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +30: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +31: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:23 +32: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:24 +33: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: login language menu switches immediately and retains input
+00:24 +34: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=true
+00:24 +35: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=true
+00:26 +36: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: Profile contains a working language setting for both directions
+00:26 +37: C:/Users/29668/LineSight-workspaces/product-plan/test/layout_test.dart: onboarding at narrow width and tablet
+00:26 +38: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English audit filters use canonical actions and retain original prose
+00:26 +39: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:26 +40: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:26 +41: C:/Users/29668/LineSight-workspaces/product-plan/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:33 +42: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: canonical state validates once and requires no migration writes
+00:33 +43: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: worker returns sendable complete startup state
+00:33 +44: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: legacy migration preserves exact sources and unknown fields; reopen is stable
+00:33 +45: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: restore point without metadata uses already validated point summary
+00:33 +46: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: invalid workspace, undo, metadata, receipts, archives or settings reject startup
+00:33 +47: C:/Users/29668/LineSight-workspaces/product-plan/test/local_state_test.dart: preserved archive timestamp and timezone text are still checked
+00:34 +48: C:/Users/29668/LineSight-workspaces/product-plan/test/production_job_test.dart: production jobs survive workspace persistence and validate
+00:34 +49: C:/Users/29668/LineSight-workspaces/product-plan/test/production_job_test.dart: legacy workspace data without jobs remains readable
+00:34 +50: C:/Users/29668/LineSight-workspaces/product-plan/test/production_job_test.dart: production job audit targets are accepted by workspace validation
+00:34 +51: C:/Users/29668/LineSight-workspaces/product-plan/test/production_job_test.dart: invalid production quantity is rejected
+00:36 +52: C:/Users/29668/LineSight-workspaces/product-plan/test/record_query_test.dart: all filters preserve original search, order and timestamp ties
+00:36 +53: C:/Users/29668/LineSight-workspaces/product-plan/test/record_query_test.dart: reuses normalized queries, retains only the last result
+00:36 +54: C:/Users/29668/LineSight-workspaces/product-plan/test/record_query_test.dart: identity, length, revision and session invalidate independently
+00:36 +55: C:/Users/29668/LineSight-workspaces/product-plan/test/record_query_test.dart: in-place review, note edits, archive and reordering need revision
+00:36 +56: C:/Users/29668/LineSight-workspaces/product-plan/test/record_query_test.dart: calendar boundaries are inclusive start and exclusive next day
+00:36 +57: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_test.dart: removed records return a clear error before accessing storage
+00:36 +58: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_test.dart: review version detects changes to every persisted evidence field
+00:36 +59: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_test.dart: equivalent serialized records keep their review version
+00:36 +60: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_test.dart: review note validation follows existing trimmed and UTF-16 limits
+00:36 +61: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:38 +62: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:38 +63: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:38 +64: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:38 +65: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:39 +66: C:/Users/29668/LineSight-workspaces/product-plan/test/record_review_ui_test.dart: locking clears an unsaved review route without a discard dialog
+00:39 +67: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:39 +68: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:39 +69: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:39 +70: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +71: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +72: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +73: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +74: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +75: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +76: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +77: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +78: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +79: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:40 +80: C:/Users/29668/LineSight-workspaces/product-plan/test/record_search_work_test.dart: selection, pagination and theme updates reuse search results
+00:41 +81: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +82: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +83: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +84: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +85: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +86: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +87: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +88: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +89: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +90: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +91: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +92: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +93: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +94: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +95: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +96: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +97: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +98: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +99: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +100: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +101: C:/Users/29668/LineSight-workspaces/product-plan/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:45 +102: All tests passed!
