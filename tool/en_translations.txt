@@ -1187,3 +1187,69 @@
 1186|Resolve all open issues first.
 1187|The issue or task has changed. Refresh it and try again.
 1188|Return to workbench
+1189|Checklists
+1190|checks
+1191|Required
+1192|Optional
+1193|Publish checklist
+1194|Publish new version
+1195|Checklist name
+1196|Checks, one per line (3–6)
+1197|Publish
+1198|Team and permissions
+1199|Create team
+1200|Join team
+1201|Enter invitation code
+1202|Invitation role
+1203|Create invitation
+1204|Copy invitation
+1205|Update member role
+1206|Batch
+1207|Assignee
+1208|Track each serial number
+1209|Serial numbers, one per line
+1210|Scrap
+1211|N/A
+1212|View photo
+1213|Photo evidence
+1214|Original
+1215|Edge reference
+1216|Take photo
+1217|Choose from gallery
+1218|Quality insights and reports
+1219|First pass rate
+1220|Final release rate
+1221|First inspected pieces
+1222|Released pieces
+1223|Failed pieces
+1224|Scrapped pieces
+1225|Last 7 days
+1226|Print quality report
+1227|Quality report
+1228|Export CSV
+1229|To do
+1230|Awaiting reinspection
+1231|Pending
+1232|Before photos
+1233|After photos
+1234|Passed pieces
+1235|Failed pieces
+1236|Scrapped pieces
+1237|Issue category
+1238|Severity
+1239|Surface
+1240|Dimension
+1241|Crack
+1242|Deformation
+1243|Assembly
+1244|Other
+1245|Minor
+1246|Major
+1247|Critical
+1248|Add inspection photo
+1249|Save draft
+1250|Draft saved
+1251|Unable to restore draft. Retry.
+1252|Unable to save draft. Retry.
+1253|Copy trace ID
+1254|Search parts, batches or inspectors

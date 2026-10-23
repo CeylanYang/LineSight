@@ -68,6 +68,11 @@ class InvitationRedemption(models.Model):
         constraints = [models.UniqueConstraint(fields=["invitation", "user"], name="unique_invitation_redeemer")]
 
 class ProductionJob(models.Model):
+    batch_code = models.CharField(max_length=80, blank=True)
+    assignee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_jobs')
+    template = models.ForeignKey('CheckTemplate', on_delete=models.PROTECT, null=True, blank=True)
+    tracking_mode = models.CharField(max_length=10, default='batch')
+    serial_numbers = models.JSONField(default=list, blank=True)
     version = models.PositiveIntegerField(default=1)
     STATUSES = [(s, s) for s in ("queued", "printing", "inspection", "exception", "closed")]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -121,6 +126,10 @@ class LegacyInspection(models.Model):
 
 
 class ExceptionCase(models.Model):
+    inspection = models.ForeignKey('QualityInspection', on_delete=models.PROTECT, null=True, blank=True, related_name='issues')
+    category = models.CharField(max_length=30, default='other')
+    severity = models.CharField(max_length=12, default='major')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, related_name="exceptions")
     note = models.CharField(max_length=500)
     status = models.CharField(max_length=12, default="open")
@@ -131,6 +140,14 @@ class ExceptionCase(models.Model):
 
 
 class QualityInspection(models.Model):
+    round_no = models.PositiveIntegerField(default=1)
+    inspected_qty = models.PositiveIntegerField(null=True, blank=True)
+    pass_qty = models.PositiveIntegerField(null=True, blank=True)
+    fail_qty = models.PositiveIntegerField(null=True, blank=True)
+    scrap_qty = models.PositiveIntegerField(null=True, blank=True)
+    template_snapshot = models.JSONField(default=dict, blank=True)
+    answers = models.JSONField(default=list, blank=True)
+    serial_results = models.JSONField(default=dict, blank=True)
     VERDICTS = [("pass", "Pass"), ("fail", "Fail")]
     job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, related_name="quality_inspections")
     inspector = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
@@ -140,6 +157,11 @@ class QualityInspection(models.Model):
 
 
 class Evidence(models.Model):
+    inspection = models.ForeignKey(QualityInspection, on_delete=models.PROTECT, null=True, blank=True, related_name='photos')
+    issue = models.ForeignKey(ExceptionCase, on_delete=models.PROTECT, null=True, blank=True, related_name='photos')
+    stage = models.CharField(max_length=12, default='inspection')
+    uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    content_hash = models.CharField(max_length=64, blank=True)
     job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE, related_name="evidence")
     image = models.ImageField(upload_to=evidence_upload_path)
     edge_preview = models.ImageField(upload_to=preview_upload_path)
@@ -168,3 +190,23 @@ class JobMutation(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["job", "key"], name="unique_job_mutation_key")]
+
+
+class CheckTemplate(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=100)
+    version = models.PositiveIntegerField(default=1)
+    items = models.JSONField(default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['workspace', 'name', 'version'], name='unique_template_version')]
+
+
+class PieceSerial(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
+    job = models.ForeignKey(ProductionJob, on_delete=models.CASCADE)
+    serial = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['workspace', 'serial'], name='unique_workspace_piece_serial')]

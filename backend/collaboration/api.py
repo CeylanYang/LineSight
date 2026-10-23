@@ -14,7 +14,7 @@ from django.conf import settings
 from django.core import signing
 from django.core.files.base import ContentFile
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import Http404
 from django.http import FileResponse
 from django.utils import timezone
@@ -24,7 +24,7 @@ from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, AuthenticationFailed
-from .models import AuditEvent, ExceptionCase, Evidence, Invitation, InvitationRedemption, JobProfileMetadata, JobRequest, LegacyInspection, Membership, PrinterProfile, ProductionJob, QualityInspection, Workspace
+from .models import AuditEvent, CheckTemplate, ExceptionCase, Evidence, Invitation, InvitationRedemption, JobProfileMetadata, JobRequest, LegacyInspection, Membership, PieceSerial, PrinterProfile, ProductionJob, QualityInspection, Workspace
 
 
 def membership(request, workspace_id, write=False):
@@ -117,7 +117,7 @@ def account(request):
 def members(request, workspace_id):
     member = membership(request, workspace_id)
     rows = Membership.objects.filter(workspace=member.workspace).select_related("user", "user__cloud_identity").order_by("user__username")
-    return Response([{"username": row.user.username, "role": row.role,
+    return Response([{"id": row.user_id, "username": row.user.username, "role": row.role,
         "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username} for row in rows])
 
 
@@ -318,9 +318,27 @@ def jobs(request, workspace_id):
     if profile:
         printer = profile["name"]
     request_id = request.headers.get("Idempotency-Key", "")
+    batch = str(d.get('batch_code', '')).strip()
+    mode, serials = d.get('tracking_mode', 'batch'), d.get('serial_numbers', [])
+    if len(batch) > 80 or mode not in ('batch', 'serial') or not isinstance(serials, list):
+        return Response({'detail': '批次或追溯模式无效'}, status=400)
+    if mode == 'serial':
+        if len(serials) != quantity or any(not isinstance(s, str) or not s.strip() or len(s) > 100 for s in serials) or len(set(serials)) != len(serials):
+            return Response({'detail': 'SN需要与工件数量一致且不能重复'}, status=400)
+    elif serials:
+        return Response({'detail': '批次模式不可混入SN记录'}, status=400)
+    assignee_id = d.get('assignee_id')
+    if assignee_id is not None and not Membership.objects.filter(workspace=member.workspace, user_id=assignee_id).exists():
+        return Response({'detail': '负责人不属于当前团队'}, status=400)
+    template = None
+    if d.get('template_id') is not None:
+        template = CheckTemplate.objects.filter(Q(workspace=member.workspace) | Q(workspace__isnull=True), pk=d['template_id']).first()
+        if template is None:
+            return Response({'detail': '检查模板不存在'}, status=400)
     note = str(d.get("note", ""))[:500]
     payload = json.dumps({"part_name": part, "printer": printer, "quantity": quantity, "note": note,
-                          "profile_id": profile_id}, sort_keys=True, ensure_ascii=False)
+                          "profile_id": profile_id, 'batch_code': batch, 'tracking_mode': mode,
+                          'serial_numbers': serials, 'assignee_id': assignee_id, 'template_id': template.pk if template else None}, sort_keys=True, ensure_ascii=False)
     payload_hash = hashlib.sha256(payload.encode()).hexdigest()
     if request_id:
         if not 16 <= len(request_id) <= 64:
@@ -338,8 +356,13 @@ def jobs(request, workspace_id):
                 if prior.request_hash != payload_hash:
                     return Response({"detail": "任务请求标识已用于其他内容"}, status=409)
                 return Response(job_json(prior.job), status=200)
+        if mode == 'serial' and PieceSerial.objects.filter(workspace=member.workspace, serial__in=serials).exists():
+            return Response({'detail': 'SN已属于其他任务，不可重复统计'}, status=409)
         job = ProductionJob.objects.create(workspace=member.workspace, part_name=part, printer=printer,
-                                           quantity=quantity, note=note)
+            quantity=quantity, note=note, batch_code=batch, tracking_mode=mode, serial_numbers=serials,
+            assignee_id=assignee_id, template=template)
+        if mode == 'serial':
+            PieceSerial.objects.bulk_create([PieceSerial(workspace=member.workspace, job=job, serial=serial) for serial in serials])
         if profile:
             JobProfileMetadata.objects.create(job=job, version=profile["version"], source_url=profile["source"])
         if request_id:
@@ -350,15 +373,21 @@ def jobs(request, workspace_id):
 
 
 def job_json(job):
+    from .product import inspection_json, person, template_json
     profile = getattr(job, "profile_metadata", None)
     return {"id": str(job.pk), "version": job.version, "part_name": job.part_name, "printer": job.printer, "quantity": job.quantity,
             "note": job.note, "status": job.status, "created_at": job.created_at.isoformat(),
+            'updated_at': job.updated_at.isoformat(), 'batch_code': job.batch_code, 'tracking_mode': job.tracking_mode,
+            'serial_numbers': job.serial_numbers, 'assignee_id': job.assignee_id, 'assignee': person(job.assignee),
+            'template': template_json(job.template) if job.template_id else None,
             "profile_version": profile.version if profile else "", "profile_source": profile.source_url if profile else "",
             "exceptions": [{"id": x.pk, "note": x.note, "status": x.status, "assignee": x.assignee,
-                            "resolution": x.resolution} for x in job.exceptions.order_by("-created_at")],
-            "inspections": [{"id": x.pk, "verdict": x.verdict, "note": x.note,
-                             "created_at": x.created_at.isoformat()} for x in job.quality_inspections.order_by("-created_at")],
-            "evidence": [{"id": x.pk, "created_at": x.created_at.isoformat()} for x in job.evidence.order_by("-created_at")]}
+                            "resolution": x.resolution, 'category': x.category, 'severity': x.severity,
+                            'inspection_id': x.inspection_id, 'creator': person(x.creator), 'created_at': x.created_at.isoformat(),
+                            'resolved_at': x.resolved_at.isoformat() if x.resolved_at else None} for x in job.exceptions.order_by("-created_at")],
+            "inspections": [inspection_json(x) for x in job.quality_inspections.order_by('-round_no', '-created_at')],
+            "evidence": [{"id": x.pk, "created_at": x.created_at.isoformat(), 'stage': x.stage,
+                          'inspection_id': x.inspection_id, 'issue_id': x.issue_id} for x in job.evidence.order_by("-created_at")]}
 
 
 
@@ -374,18 +403,29 @@ def upload_evidence(request, workspace_id, job_id):
         job = member.workspace.jobs.get(pk=job_id)
     except ProductionJob.DoesNotExist as exc:
         raise Http404 from exc
-    if job.status != "inspection":
-        return Response({"detail": "任务进入质检后才能添加图片"}, status=409)
-    file = request.FILES.get("image")
+    stage = request.data.get('stage', 'inspection')
+    issue, inspection = None, None
+    if stage not in ('inspection', 'before', 'after'):
+        return Response({'detail': '证据阶段无效'}, status=400)
+    file = request.FILES.get('image')
     if file is None or file.size > 10 * 1024 * 1024:
-        return Response({"detail": "请选择不超过 10 MB 的图片"}, status=400)
-    idempotency_key = request.headers.get("Idempotency-Key", "")
-    if idempotency_key:
-        if len(idempotency_key) != 64 or any(c not in "0123456789abcdef" for c in idempotency_key.lower()):
-            return Response({"detail": "上传标识无效，请重新选择图片"}, status=400)
-        prior = Evidence.objects.filter(job=job, idempotency_key=idempotency_key).first()
+        return Response({'detail': '请选择不超过 10 MB 的图片'}, status=400)
+    raw = file.read()
+    digest = hashlib.sha256(raw).hexdigest()
+    file.seek(0)
+    idempotency_key = request.headers.get('Idempotency-Key', '')
+    if idempotency_key and (len(idempotency_key) != 64 or any(c not in '0123456789abcdef' for c in idempotency_key.lower())):
+        return Response({'detail': '上传标识无效，请重新选择图片'}, status=400)
+    def prior_receipt():
+        prior = Evidence.objects.filter(idempotency_key=idempotency_key).first() if idempotency_key else None
         if prior:
-            return Response({"id": prior.pk, "preview": "available", "verdict": "由操作人员确认", "reused": True}, status=200)
+            if prior.job_id != job.pk or prior.content_hash != digest or prior.stage != stage or str(prior.issue_id or '') != str(request.data.get('issue_id') or '') or prior.uploader_id != request.user.pk:
+                return Response({'detail': '上传标识已用于其他内容'}, status=409)
+            return Response({'id': prior.pk, 'preview': 'available', 'reused': True})
+        return None
+    prior = prior_receipt()
+    if prior is not None:
+        return prior
     try:
         raw = file.read()
         image = Image.open(io.BytesIO(raw))
@@ -409,12 +449,36 @@ def upload_evidence(request, workspace_id, job_id):
             raise ValueError("preview failed")
     except (UnidentifiedImageError, OSError, ValueError):
         return Response({"detail": "图片内容无法识别，请重新选择 PNG 或 JPEG 文件"}, status=400)
-    original_name = file.name.rsplit("/", 1)[-1].rsplit("\\", 1)[-1][:120]
-    evidence = Evidence(job=job, idempotency_key=idempotency_key or None)
-    evidence.image.save(original_name, ContentFile(raw), save=False)
-    evidence.edge_preview.save("edge.png", ContentFile(encoded.tobytes()), save=False)
-    evidence.save()
-    return Response({"id": evidence.pk, "preview": "available", "verdict": "由操作人员确认", "reused": False}, status=201)
+    original_name = 'photo.png' if image.format == 'PNG' else 'photo.jpg'
+    evidence = None
+    try:
+        with transaction.atomic():
+            ProductionJob.objects.filter(pk=job.pk).update(updated_at=F('updated_at'))
+            job.refresh_from_db()
+            prior = prior_receipt()
+            if prior is not None:
+                return prior
+            if job.status not in ('inspection', 'exception') or (stage == 'inspection' and job.status != 'inspection'):
+                return Response({'detail': '当前任务状态不能添加图片'}, status=409)
+            if stage in ('before', 'after'):
+                issue = ExceptionCase.objects.filter(pk=request.data.get('issue_id'), job=job, status='open').first()
+                if issue is None:
+                    return Response({'detail': '请选择当前任务的未处理异常'}, status=400)
+                inspection = issue.inspection
+            evidence = Evidence(job=job, idempotency_key=idempotency_key or None, stage=stage, issue=issue,
+                inspection=inspection, uploader=request.user, content_hash=digest)
+            evidence.image.save(original_name, ContentFile(raw), save=False)
+            evidence.edge_preview.save('edge.png', ContentFile(encoded.tobytes()), save=False)
+            evidence.save()
+            AuditEvent.objects.create(workspace=member.workspace, user=request.user, job=job, version=job.version,
+                action='evidence.uploaded', object_id=str(evidence.pk), details={'stage': stage, 'inspection_id': evidence.inspection_id, 'issue_id': evidence.issue_id})
+    except BaseException:
+        if evidence:
+            evidence.image.delete(save=False)
+            evidence.edge_preview.delete(save=False)
+        raise
+    return Response({'id': evidence.pk, 'preview': 'available', 'reused': False}, status=201)
+
 
 
 @api_view(["GET"])

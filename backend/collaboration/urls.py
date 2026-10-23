@@ -1,5 +1,5 @@
 from django.urls import path
-from . import api, workflow
+from . import api, workflow, product
 
 urlpatterns = [
     path("auth/register/", api.register), path("auth/login/", api.login),
@@ -12,6 +12,11 @@ urlpatterns = [
     path("workspaces/<int:workspace_id>/legacy-inspections/", api.legacy_inspections),
     path("workspaces/redeem/", api.redeem), path("workspaces/<int:workspace_id>/invite/", api.invite),
     path("workspaces/<int:workspace_id>/jobs/", api.jobs),
+    path('workspaces/<int:workspace_id>/templates/', product.templates),
+    path('workspaces/<int:workspace_id>/records/', product.records),
+    path('workspaces/<int:workspace_id>/metrics/', product.metrics),
+    path('workspaces/<int:workspace_id>/report/', product.report),
+    path('workspaces/<int:workspace_id>/notifications/', product.notifications),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/", workflow.task),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/history/", workflow.history),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/inspection/", workflow.inspect),

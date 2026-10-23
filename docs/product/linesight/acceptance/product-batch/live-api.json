@@ -1,0 +1,10 @@
+{
+  "job_id": "af04e1fb-168c-465e-b77a-fec1d1854653",
+  "template_version": 1,
+  "two_rounds": true,
+  "stage_photos": 3,
+  "first_pass_rate": 0.8,
+  "final_release_rate": 1,
+  "csv_matches_metrics": true,
+  "demo_only": true
+}

@@ -1,0 +1,20 @@
+{
+  "flutter_tests": 113,
+  "django_tests": 32,
+  "analyze": "No issues found",
+  "android_product_journey": true,
+  "android_screenshots": 15,
+  "live_api": "live-api.json",
+  "database_migrations": [
+    "0004",
+    "0005"
+  ],
+  "normal_main_apk": "1.1.22+8032",
+  "camera_real_phone": "not yet exercised",
+  "pdf_system_print": "not yet exercised on real phone",
+  "product_plan_complete": false,
+  "normal_main_upgrade_install": true,
+  "normal_main_demo_login": true,
+  "secure_namespace_session_restore": true,
+  "system_print_preview_android_emulator": true
+}

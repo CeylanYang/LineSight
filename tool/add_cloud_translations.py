@@ -37,6 +37,13 @@ messages = {
     '无法恢复登录，请检查网络后重试': 'Unable to restore your session. Check your connection and retry.',
     '请先登录': 'Please sign in first', '无法加载成员，请重试': 'Unable to load members. Please retry.',
 }
+messages.update({
+'复制追溯号':'Copy trace ID', '搜索零件、批次或检验人':'Search parts, batches or inspectors', '检查模板':'Checklists', '检查项':'checks', '必填':'Required', '选填':'Optional', '发布检查模板':'Publish checklist', '发布新版本':'Publish new version', '模板名称':'Checklist name', '检查项，每行一项（3至6项）':'Checks, one per line (3–6)', '发布':'Publish',
+'团队与权限':'Team and permissions', '创建团队':'Create team', '加入团队':'Join team', '输入邀请码':'Enter invitation code', '邀请成员权限':'Invitation role', '生成邀请码':'Create invitation', '复制邀请码':'Copy invitation', '更新成员权限':'Update member role', '移除成员':'Remove member', '离开团队':'Leave team',
+'批次号':'Batch', '负责人':'Assignee', '逐件SN追踪':'Track each serial number', 'SN，每行一个':'Serial numbers, one per line', '报废':'Scrap', '不适用':'N/A', '查看证据':'View photo', '图片证据':'Photo evidence', '原图':'Original', '边缘参考':'Edge reference', '拍照':'Take photo', '从相册选择':'Choose from gallery',
+'质量洞察与报告':'Quality insights and reports', '首次通过率':'First pass rate', '最终放行率':'Final release rate', '首次送检工件':'First inspected pieces', '最终放行工件':'Released pieces', '异常工件':'Failed pieces', '报废工件':'Scrapped pieces', '最近7天':'Last 7 days', '打印质量报告':'Print quality report', '质量报告':'Quality report', '导出CSV':'Export CSV',
+'待办提醒':'To do', '待复检':'Awaiting reinspection', '待处理':'Pending', '处置前照片':'Before photos', '处置后照片':'After photos', '合格数量':'Passed pieces', '异常数量':'Failed pieces', '报废数量':'Scrapped pieces', '问题说明':'Issue description', '异常类别':'Issue category', '严重程度':'Severity', '表面':'Surface', '尺寸':'Dimension', '裂纹':'Crack', '变形':'Deformation', '装配':'Assembly', '其他':'Other', '轻微':'Minor', '主要':'Major', '严重':'Critical', '添加检验照片':'Add inspection photo', '保存草稿':'Save draft', '草稿已保存':'Draft saved', '无法恢复草稿，请重试':'Unable to restore draft. Retry.', '草稿保存失败，请重试':'Unable to save draft. Retry.',
+})
 path = Path('tool/l10n_source.json')
 source = json.loads(path.read_text(encoding='utf-8'))
 existing = set(source.values())

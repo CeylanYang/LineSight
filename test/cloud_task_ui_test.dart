@@ -80,6 +80,8 @@ void main() {
   testWidgets(
     'inspection requires issue note and sends stable versioned command',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       await open(
         tester,
         CloudTaskCommandPage(
@@ -90,17 +92,28 @@ void main() {
       );
       await tester.tap(find.text('异常'));
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('确认提交'));
       await tester.tap(find.text('确认提交'));
       await tester.pumpAndSettle();
       expect(account.submitted, isNull);
       expect(find.text('请填写处理或异常说明'), findsOneWidget);
-      await tester.enterText(find.byType(TextField), 'Crack on edge');
+      await tester.enterText(find.byType(TextField).last, 'Crack on edge');
+      await tester.ensureVisible(find.text('确认提交'));
       await tester.tap(find.text('确认提交'));
       await tester.pumpAndSettle();
       expect(account.submitted, {
         'version': 2,
         'verdict': 'fail',
         'note': 'Crack on edge',
+        'inspected_qty': 10,
+        'pass_qty': 0,
+        'fail_qty': 10,
+        'scrap_qty': 0,
+        'answers': [],
+        'serial_results': {},
+        'category': 'other',
+        'severity': 'major',
+        'evidence_ids': [],
       });
       expect(account.submittedKey!.length, greaterThanOrEqualTo(16));
     },
@@ -109,6 +122,8 @@ void main() {
     'version conflict retains notes and disables silent resubmission',
     (tester) async {
       account.conflict = true;
+      await tester.binding.setSurfaceSize(const Size(800, 1800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       await open(
         tester,
         CloudTaskCommandPage(
@@ -117,7 +132,8 @@ void main() {
           action: 'inspect',
         ),
       );
-      await tester.enterText(find.byType(TextField), 'Inspector notes');
+      await tester.enterText(find.byType(TextField).last, 'Inspector notes');
+      await tester.ensureVisible(find.text('确认提交'));
       await tester.tap(find.text('确认提交'));
       await tester.pumpAndSettle();
       expect(find.text('Inspector notes'), findsOneWidget);

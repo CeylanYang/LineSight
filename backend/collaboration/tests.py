@@ -59,7 +59,7 @@ class WorkflowApiTests(TestCase):
     def test_members_list_is_workspace_scoped(self):
         response = self.client.get(f"/api/v1/workspaces/{self.ws}/members/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, [{"username": "owner", "display_name": "owner", "role": "owner"}])
+        self.assertEqual(response.data, [{"id": self.owner.pk, "username": "owner", "display_name": "owner", "role": "owner"}])
 
     def test_starter_profiles_are_versioned_and_workspace_overrides_are_owner_only(self):
         url = f"/api/v1/workspaces/{self.ws}/printer-profiles/"
@@ -151,3 +151,61 @@ class WorkflowApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
         anonymous.credentials(HTTP_AUTHORIZATION=f"Bearer {response.data['access']}")
         self.assertEqual(anonymous.get("/api/v1/workspaces/").status_code, 200)
+
+
+class ProductBatchTests(TestCase):
+    setUp = WorkflowApiTests.setUp
+    to_inspection = WorkflowApiTests.to_inspection
+    def test_template_snapshot_piece_metrics_serials_and_scoped_reports(self):
+        from .models import CheckTemplate
+        base = f'/api/v1/workspaces/{self.ws}/'
+        templates = self.client.get(base + 'templates/').data
+        self.assertEqual(len(templates), 3)
+        template = templates[0]
+        body = {'part_name': 'Batch fixture', 'printer': 'A1', 'quantity': 2,
+                'batch_code': 'B-24', 'tracking_mode': 'serial', 'serial_numbers': ['SN-A', 'SN-B'],
+                'template_id': template['id']}
+        created = self.client.post(base + 'jobs/', body, format='json')
+        self.assertEqual(created.status_code, 201, created.data)
+        job = created.data['id']; url = base + f'jobs/{job}/inspection/'
+        duplicate = self.client.post(base + 'jobs/', body, format='json')
+        self.assertEqual(duplicate.status_code, 409)
+        self.to_inspection(job)
+        answers = [{'id': item['id'], 'result': 'pass', 'note': ''} for item in template['items']]
+        check = {'verdict': 'pass', 'template_id': template['id'], 'answers': answers,
+                 'inspected_qty': 2, 'pass_qty': 2, 'fail_qty': 0, 'scrap_qty': 0,
+                 'serial_results': {'SN-A': 'pass', 'SN-B': 'pass'}}
+        self.assertEqual(self.client.post(url, {**check, 'pass_qty': 3}, format='json').status_code, 400)
+        self.assertEqual(self.client.post(url, {**check, 'answers': []}, format='json').status_code, 400)
+        self.assertEqual(self.client.post(url, {**check, 'evidence_ids': [{}]}, format='json').status_code, 400)
+        completed = self.client.post(url, check, format='json')
+        self.assertEqual(completed.status_code, 201, completed.data)
+        records = self.client.get(base + 'records/').data
+        self.assertEqual(records[0]['round_no'], 1)
+        self.assertEqual(records[0]['template_snapshot']['items'], template['items'])
+        CheckTemplate.objects.filter(pk=template['id']).update(name='Changed fixture')
+        self.assertEqual(self.client.get(base + 'records/').data[0]['template_snapshot']['name'], template['name'])
+        metrics = self.client.get(base + 'metrics/').data
+        self.assertEqual(metrics['first_inspected_pieces'], 2)
+        self.assertEqual(metrics['first_pass_rate'], 1)
+        self.assertEqual(metrics['final_release_rate'], 1)
+        self.assertEqual(self.client.get(base + 'report/?download=csv').status_code, 200)
+        self.assertEqual(self.client.get(base + 'metrics/?q=absent').data['first_pass_rate'], None)
+        self.assertEqual(self.client.get(base + 'records/?q=B-24').data[0]['id'], records[0]['id'])
+        stranger = APIClient(); stranger.force_authenticate(get_user_model().objects.create_user(username='outsider'))
+        for endpoint in ['records/', 'metrics/', 'templates/', 'report/', 'notifications/']:
+            self.assertEqual(stranger.get(base + endpoint).status_code, 404)
+
+    def test_upload_receipt_checks_content_stage_actor_and_cross_job(self):
+        job = self.client.post(f'/api/v1/workspaces/{self.ws}/jobs/', {'part_name': 'Photo', 'printer': 'A1', 'quantity': 1}, format='json').data['id']
+        self.to_inspection(job)
+        stream = io.BytesIO(); Image.new('RGB', (20, 20), 'white').save(stream, format='PNG')
+        data = stream.getvalue(); key = 'a' * 64
+        url = f'/api/v1/workspaces/{self.ws}/jobs/{job}/evidence/'
+        def upload(raw=data, stage='inspection'):
+            return self.client.post(url, {'image': SimpleUploadedFile('x.png', raw, content_type='image/png'), 'stage': stage}, format='multipart', HTTP_IDEMPOTENCY_KEY=key)
+        first = upload(); self.assertEqual(first.status_code, 201, first.data)
+        self.assertEqual(upload().data['id'], first.data['id'])
+        self.assertEqual(upload(stage='after').status_code, 409)
+        changed = io.BytesIO(); Image.new('RGB', (20,20), 'red').save(changed, format='PNG')
+        self.assertEqual(upload(changed.getvalue()).status_code, 409)

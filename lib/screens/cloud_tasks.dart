@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../cloud_account.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
 import '../ui.dart';
 import '../time.dart' show zonedStamp;
+import 'cloud_business.dart';
 
 String cloudTimestamp(Object? value) {
   final parsed = DateTime.tryParse('$value');
@@ -157,13 +159,87 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   final name = TextEditingController(),
       printer = TextEditingController(),
       quantity = TextEditingController(text: '1'),
-      note = TextEditingController();
+      note = TextEditingController(),
+      batch = TextEditingController(),
+      serials = TextEditingController();
+  int? templateId, assigneeId;
+  List<Map<String, dynamic>> teamMembers = [];
+  bool serialMode = false;
   final key = 'cloud-${uid()}';
   bool busy = false;
   String? error;
+  String? draftStorageKey;
+  bool draftLoaded = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!draftLoaded) {
+      draftLoaded = true;
+      final account = CloudScope.of(context);
+      draftStorageKey = account.draftKey('create');
+      loadMembers(account);
+      if (draftStorageKey != null) restoreDraft(account);
+    }
+  }
+
+  Future<void> loadMembers(CloudAccount account) async {
+    if (account.activeWorkspace == null) return;
+    try {
+      final rows =
+          (await account.request(
+                    'GET',
+                    'workspaces/${account.activeWorkspace!['id']}/members/',
+                  )
+                  as List)
+              .cast<Map<String, dynamic>>();
+      if (mounted) setState(() => teamMembers = rows);
+    } catch (_) {}
+  }
+
+  Future<void> restoreDraft(CloudAccount account) async {
+    try {
+      final data = await account.readDraft(draftStorageKey!);
+      if (!mounted || data == null) return;
+      setState(() {
+        name.text = '${data['name'] ?? ''}';
+        printer.text = '${data['printer'] ?? ''}';
+        quantity.text = '${data['quantity'] ?? '1'}';
+        note.text = '${data['note'] ?? ''}';
+        batch.text = '${data['batch'] ?? ''}';
+        serials.text = '${data['serials'] ?? ''}';
+        serialMode = data['serialMode'] == true;
+        templateId = data['templateId'] as int?;
+      });
+    } catch (failure) {
+      if (mounted) setState(() => error = '无法恢复草稿，请重试');
+    }
+  }
+
+  Future<void> saveDraft() async {
+    final account = CloudScope.of(context);
+    if (draftStorageKey == null ||
+        draftStorageKey != account.draftKey('create')) {
+      return;
+    }
+    try {
+      await account.saveDraft(draftStorageKey!, {
+        'name': name.text,
+        'printer': printer.text,
+        'quantity': quantity.text,
+        'note': note.text,
+        'batch': batch.text,
+        'serials': serials.text,
+        'serialMode': serialMode,
+        'templateId': templateId,
+      });
+    } catch (failure) {
+      if (mounted) setState(() => error = '草稿保存失败，请重试');
+    }
+  }
+
   @override
   void dispose() {
-    for (final controller in [name, printer, quantity, note]) {
+    for (final controller in [name, printer, quantity, note, batch, serials]) {
       controller.dispose();
     }
     super.dispose();
@@ -188,8 +264,20 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
           'printer': printer.text.trim(),
           'quantity': int.parse(quantity.text),
           'note': note.text.trim(),
+          'batch_code': batch.text.trim(),
+          if (assigneeId != null) 'assignee_id': assigneeId,
+          'tracking_mode': serialMode ? 'serial' : 'batch',
+          'serial_numbers': serialMode
+              ? serials.text
+                    .split(RegExp(r'[\s,，]+'))
+                    .where((s) => s.isNotEmpty)
+                    .toList()
+              : [],
+          if (templateId != null || account.templates.isNotEmpty)
+            'template_id': templateId ?? account.templates.first['id'],
         },
       );
+      if (draftStorageKey != null) await account.deleteDraft(draftStorageKey!);
       await account.reload();
       if (mounted) Navigator.pop(context);
     } on CollaborationApiException catch (failure) {
@@ -207,6 +295,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
           children: [
             Form(
               key: form,
+              onChanged: saveDraft,
               child: Column(
                 children: [
                   TextFormField(
@@ -239,6 +328,70 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                         : null,
                   ),
                   TextFormField(
+                    controller: batch,
+                    enabled: !busy,
+                    maxLength: 80,
+                    decoration: InputDecoration(labelText: tr(context, '批次号')),
+                  ),
+                  if (CloudScope.of(context).templates.isNotEmpty)
+                    DropdownButtonFormField<int>(
+                      initialValue:
+                          templateId ??
+                          CloudScope.of(context).templates.first['id'] as int,
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        labelText: tr(context, '检查模板'),
+                      ),
+                      items: CloudScope.of(context).templates
+                          .map(
+                            (t) => DropdownMenuItem<int>(
+                              value: t['id'] as int,
+                              child: Text('${t['name']} · v${t['version']}'),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: busy
+                          ? null
+                          : (value) => setState(() => templateId = value),
+                    ),
+                  if (teamMembers.isNotEmpty)
+                    DropdownButtonFormField<int>(
+                      initialValue: assigneeId,
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        labelText: tr(context, '负责人'),
+                      ),
+                      items: teamMembers
+                          .map(
+                            (m) => DropdownMenuItem<int>(
+                              value: m['id'] as int,
+                              child: Text(
+                                '${m['display_name'] ?? m['username']}',
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: busy
+                          ? null
+                          : (value) => setState(() => assigneeId = value),
+                    ),
+                  SwitchListTile(
+                    title: Text(tr(context, '逐件SN追踪')),
+                    value: serialMode,
+                    onChanged: busy
+                        ? null
+                        : (value) => setState(() => serialMode = value),
+                  ),
+                  if (serialMode)
+                    TextFormField(
+                      controller: serials,
+                      minLines: 2,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelText: tr(context, 'SN，每行一个'),
+                      ),
+                    ),
+                  TextFormField(
                     controller: note,
                     enabled: !busy,
                     maxLength: 500,
@@ -248,6 +401,18 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
                   ),
                 ],
               ),
+            ),
+            TextButton.icon(
+              icon: const Icon(Icons.save_outlined),
+              label: Text(tr(context, '保存草稿')),
+              onPressed: busy
+                  ? null
+                  : () async {
+                      await saveDraft();
+                      if (context.mounted && error == null) {
+                        toast(context, '草稿已保存');
+                      }
+                    },
             ),
             if (error != null)
               Text(
@@ -345,6 +510,14 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
       title: '${job['part_name']}',
       actions: [
         IconButton(
+          icon: const Icon(Icons.copy),
+          tooltip: tr(context, '复制追溯号'),
+          onPressed: () async {
+            await Clipboard.setData(ClipboardData(text: '${job['id']}'));
+            if (context.mounted) toast(context, '已复制');
+          },
+        ),
+        IconButton(
           onPressed: busy ? null : load,
           icon: const Icon(Icons.refresh),
           tooltip: tr(context, '刷新'),
@@ -417,6 +590,14 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                 ),
                 const SizedBox(height: 12),
                 Text('${tr(context, '工件数量')}：${job['quantity']}'),
+                Text('${tr(context, '批次号')}：${job['batch_code'] ?? ''}'),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.description_outlined),
+                  label: Text(tr(context, '质量报告')),
+                  onPressed: () =>
+                      openPage(context, CloudReportPage(jobId: '${job['id']}')),
+                ),
+                Text('${tr(context, '负责人')}：${job['assignee'] ?? ''}'),
                 const SizedBox(height: 8),
                 Text(
                   '${tr(context, '创建时间')}：${cloudTimestamp(job['created_at'])}',
@@ -468,6 +649,12 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
           for (var i = 0; i < checks.length; i++)
             GlassPanel(
               child: ListTile(
+                onTap: () => openPage(
+                  context,
+                  CloudInspectionDetailPage(
+                    record: Map<String, dynamic>.from(checks[i] as Map),
+                  ),
+                ),
                 contentPadding: EdgeInsets.zero,
                 leading: Icon(
                   checks[i]['verdict'] == 'pass'
@@ -476,7 +663,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                   color: checks[i]['verdict'] == 'pass' ? green : red,
                 ),
                 title: Text(
-                  '${tr(context, '检验轮次')} ${checks.length - i} · ${tr(context, checks[i]['verdict'] == 'pass' ? '合格' : '异常')}',
+                  '${tr(context, '检验轮次')} ${checks[i]['round_no'] ?? checks.length - i} · ${tr(context, checks[i]['verdict'] == 'pass' ? '合格' : '异常')}',
                 ),
                 subtitle: Text(
                   '${cloudTimestamp(checks[i]['created_at'])}\n${checks[i]['note']}',
@@ -501,6 +688,61 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                   ),
                   const SizedBox(height: 12),
                   Text('${issue['note']}'),
+                  Text(
+                    '${tr(context, '负责人')}：${issue['assignee'] ?? ''} · ${tr(context, switch (issue['severity']) {
+                      'critical' => '严重',
+                      'minor' => '轻微',
+                      _ => '主要',
+                    })}',
+                  ),
+                  if (canEdit && issue['status'] == 'open')
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        for (final stage in {
+                          'before': '处置前照片',
+                          'after': '处置后照片',
+                        }.entries)
+                          TextButton.icon(
+                            icon: const Icon(Icons.add_a_photo),
+                            label: Text(tr(context, stage.value)),
+                            onPressed: () async {
+                              try {
+                                await cloudPickPhoto(
+                                  context,
+                                  job,
+                                  issue: Map<String, dynamic>.from(
+                                    issue as Map,
+                                  ),
+                                  stage: stage.key,
+                                );
+                                if (mounted) await load();
+                              } catch (failure) {
+                                if (mounted) setState(() => error = '$failure');
+                              }
+                            },
+                          ),
+                      ],
+                    ),
+                  for (final photo in (job['evidence'] as List? ?? []).where(
+                    (p) => p['issue_id'] == issue['id'],
+                  ))
+                    TextButton.icon(
+                      icon: const Icon(Icons.photo),
+                      label: Text(
+                        tr(
+                          context,
+                          photo['stage'] == 'after' ? '处置后照片' : '处置前照片',
+                        ),
+                      ),
+                      onPressed: () => openPage(
+                        context,
+                        CloudEvidencePage(
+                          jobId: '${job['id']}',
+                          photo: Map<String, dynamic>.from(photo as Map),
+                        ),
+                      ),
+                    ),
                   if ('${issue['resolution']}'.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
@@ -532,7 +774,13 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
             (event) => GlassPanel(
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.history),
+                leading: CircleAvatar(
+                  child: Text(
+                    '${event['actor'] ?? ''}'.isEmpty
+                        ? 'L'
+                        : '${event['actor']}'.characters.first,
+                  ),
+                ),
                 title: Text(
                   tr(context, switch (event['action']) {
                     'job.created' => '创建任务',
@@ -575,13 +823,39 @@ class CloudTaskCommandPage extends StatefulWidget {
 class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
   final note = TextEditingController();
   final key = 'cloud-${uid()}';
-  String verdict = 'pass';
+  String verdict = 'pass', category = 'other', severity = 'major';
+  Map<String, dynamic>? template;
+  final Map<String, String> answers = {}, answerNotes = {}, serialResults = {};
+  final List<int> evidence = [];
+  final passed = TextEditingController(),
+      failed = TextEditingController(text: '0'),
+      scrapped = TextEditingController(text: '0');
+  bool initialized = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!initialized) {
+      initialized = true;
+      final account = CloudScope.of(context);
+      template =
+          widget.job['template'] as Map<String, dynamic>? ??
+          (account.templates.isEmpty ? null : account.templates.first);
+      passed.text = '${widget.job['quantity']}';
+      for (final sn in widget.job['serial_numbers'] as List? ?? []) {
+        serialResults['$sn'] = 'pass';
+      }
+    }
+  }
+
   bool busy = false;
   String? error;
   Map<String, dynamic>? conflict;
   @override
   void dispose() {
     note.dispose();
+    passed.dispose();
+    failed.dispose();
+    scrapped.dispose();
     super.dispose();
   }
 
@@ -610,6 +884,26 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           if (action == 'inspect') ...{
             'verdict': verdict,
             'note': note.text.trim(),
+            'inspected_qty':
+                (int.tryParse(passed.text) ?? 0) +
+                (int.tryParse(failed.text) ?? 0) +
+                (int.tryParse(scrapped.text) ?? 0),
+            'pass_qty': int.tryParse(passed.text) ?? -1,
+            'fail_qty': int.tryParse(failed.text) ?? -1,
+            'scrap_qty': int.tryParse(scrapped.text) ?? -1,
+            if (template != null) 'template_id': template!['id'],
+            'answers': [
+              for (final item in template?['items'] as List? ?? [])
+                {
+                  'id': item['id'],
+                  'result': answers['${item['id']}'],
+                  'note': answerNotes['${item['id']}'] ?? '',
+                },
+            ],
+            'serial_results': serialResults,
+            'category': category,
+            'severity': severity,
+            'evidence_ids': evidence,
           },
           if (action == 'resolve') ...{
             'resolution': note.text.trim(),
@@ -668,9 +962,155 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
             selected: {verdict},
             onSelectionChanged: busy
                 ? null
-                : (value) => setState(() => verdict = value.first),
+                : (value) => setState(() {
+                    verdict = value.first;
+                    if (serialResults.isEmpty) {
+                      passed.text = verdict == 'pass'
+                          ? '${widget.job['quantity']}'
+                          : '0';
+                      failed.text = verdict == 'fail'
+                          ? '${widget.job['quantity']}'
+                          : '0';
+                      scrapped.text = '0';
+                    }
+                  }),
           ),
           const SizedBox(height: 16),
+          for (final item in template?['items'] as List? ?? [])
+            GlassPanel(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${item['label']}'),
+                  Wrap(
+                    spacing: 6,
+                    children: [
+                      for (final result in {
+                        'pass': '合格',
+                        'fail': '异常',
+                        if (item['allow_na'] == true) 'na': '不适用',
+                      }.entries)
+                        ChoiceChip(
+                          label: Text(tr(context, result.value)),
+                          selected: answers['${item['id']}'] == result.key,
+                          onSelected: busy
+                              ? null
+                              : (_) => setState(() {
+                                  answers['${item['id']}'] = result.key;
+                                  if (result.key == 'fail') verdict = 'fail';
+                                }),
+                        ),
+                    ],
+                  ),
+                  if (answers['${item['id']}'] == 'fail')
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: tr(context, '问题说明'),
+                      ),
+                      onChanged: (value) =>
+                          answerNotes['${item['id']}'] = value,
+                    ),
+                ],
+              ),
+            ),
+          for (final field in <TextEditingController, String>{
+            passed: '合格数量',
+            failed: '异常数量',
+            scrapped: '报废数量',
+          }.entries)
+            TextField(
+              controller: field.key,
+              enabled: !busy && serialResults.isEmpty,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: tr(context, field.value)),
+            ),
+          for (final sn in serialResults.keys)
+            DropdownButtonFormField<String>(
+              initialValue: serialResults[sn],
+              decoration: InputDecoration(labelText: sn),
+              items: [
+                for (final e in {
+                  'pass': '合格',
+                  'fail': '异常',
+                  'scrap': '报废',
+                }.entries)
+                  DropdownMenuItem(
+                    value: e.key,
+                    child: Text(tr(context, e.value)),
+                  ),
+              ],
+              onChanged: busy
+                  ? null
+                  : (value) => setState(() {
+                      serialResults[sn] = value!;
+                      passed.text =
+                          '${serialResults.values.where((v) => v == 'pass').length}';
+                      failed.text =
+                          '${serialResults.values.where((v) => v == 'fail').length}';
+                      scrapped.text =
+                          '${serialResults.values.where((v) => v == 'scrap').length}';
+                      verdict =
+                          int.parse(failed.text) + int.parse(scrapped.text) > 0
+                          ? 'fail'
+                          : 'pass';
+                    }),
+            ),
+          if (verdict == 'fail') ...[
+            DropdownButtonFormField<String>(
+              initialValue: category,
+              decoration: InputDecoration(labelText: tr(context, '异常类别')),
+              items: [
+                for (final e in {
+                  'surface': '表面',
+                  'dimension': '尺寸',
+                  'crack': '裂纹',
+                  'deformation': '变形',
+                  'assembly': '装配',
+                  'other': '其他',
+                }.entries)
+                  DropdownMenuItem(
+                    value: e.key,
+                    child: Text(tr(context, e.value)),
+                  ),
+              ],
+              onChanged: busy ? null : (v) => category = v!,
+            ),
+            DropdownButtonFormField<String>(
+              initialValue: severity,
+              decoration: InputDecoration(labelText: tr(context, '严重程度')),
+              items: [
+                for (final e in {
+                  'minor': '轻微',
+                  'major': '主要',
+                  'critical': '严重',
+                }.entries)
+                  DropdownMenuItem(
+                    value: e.key,
+                    child: Text(tr(context, e.value)),
+                  ),
+              ],
+              onChanged: busy ? null : (v) => severity = v!,
+            ),
+          ],
+          OutlinedButton.icon(
+            icon: const Icon(Icons.add_a_photo),
+            label: Text('${tr(context, '添加检验照片')} (${evidence.length})'),
+            onPressed: busy
+                ? null
+                : () async {
+                    setState(() => busy = true);
+                    try {
+                      final id = await cloudPickPhoto(context, widget.job);
+                      if (id != null && mounted) {
+                        setState(() => evidence.add(id));
+                      }
+                    } catch (failure) {
+                      if (mounted) setState(() => error = '$failure');
+                    } finally {
+                      if (mounted) setState(() => busy = false);
+                    }
+                  },
+          ),
         ],
         if (widget.action == 'inspect' || widget.action == 'resolve')
           TextField(

@@ -46,15 +46,41 @@ abstract interface class CloudTokenVault {
   Future<void> clear();
 }
 
+const cloudSecureStorage = FlutterSecureStorage(
+  aOptions: AndroidOptions(
+    storageNamespace: 'linesight_cloud_v1',
+    resetOnError: false,
+  ),
+);
+
 class SecureCloudTokenVault implements CloudTokenVault {
-  static const _storage = FlutterSecureStorage();
+  static const _storage = cloudSecureStorage;
   static const _key = 'linesight.oidc.session.v1';
   @override
-  Future<String?> read() => _storage.read(key: _key);
+  Future<String?> read() async {
+    final current = await _storage.read(key: _key);
+    if (current != null ||
+        await _storage.read(key: 'session_migrated_v1') != null) {
+      return current;
+    }
+    String? legacy;
+    try {
+      legacy = await const FlutterSecureStorage().read(key: _key);
+    } catch (_) {
+      /* Reauthenticate if the old Android keystore cannot decrypt this session. */
+    }
+    if (legacy != null) await _storage.write(key: _key, value: legacy);
+    await _storage.write(key: 'session_migrated_v1', value: '1');
+    return legacy;
+  }
+
   @override
   Future<void> write(String value) => _storage.write(key: _key, value: value);
   @override
-  Future<void> clear() => _storage.delete(key: _key);
+  Future<void> clear() async {
+    await _storage.write(key: 'session_migrated_v1', value: '1');
+    await _storage.delete(key: _key);
+  }
 }
 
 abstract interface class CloudIdentityGateway {
@@ -230,6 +256,8 @@ class CloudAccount extends ChangeNotifier {
   CloudTokens? _tokens;
   Map<String, dynamic>? profile, activeWorkspace;
   List<Map<String, dynamic>> workspaces = [], jobs = [];
+  List<Map<String, dynamic>> templates = [], records = [], notifications = [];
+  Map<String, dynamic> metrics = {};
   bool busy = false, restoring = true;
   String? error;
   int _epoch = 0, _workspaceEpoch = 0;
@@ -245,6 +273,10 @@ class CloudAccount extends ChangeNotifier {
     activeWorkspace = null;
     workspaces = [];
     jobs = [];
+    templates = [];
+    records = [];
+    notifications = [];
+    metrics = {};
     _workspaceEpoch++;
   }
 
@@ -382,11 +414,29 @@ class CloudAccount extends ChangeNotifier {
     final epoch = ++_workspaceEpoch;
     activeWorkspace = workspace;
     jobs = [];
+    templates = [];
+    records = [];
+    notifications = [];
+    metrics = {};
     notifyListeners();
-    final rows =
-        (await request('GET', 'workspaces/${workspace['id']}/jobs/') as List)
-            .cast<Map<String, dynamic>>();
-    if (epoch == _workspaceEpoch) jobs = rows;
+    final base = 'workspaces/${workspace['id']}/';
+    final data = await Future.wait([
+      for (final path in [
+        'jobs/',
+        'templates/',
+        'records/',
+        'metrics/',
+        'notifications/',
+      ])
+        request('GET', '$base$path'),
+    ]);
+    if (epoch == _workspaceEpoch) {
+      jobs = (data[0] as List).cast<Map<String, dynamic>>();
+      templates = (data[1] as List).cast<Map<String, dynamic>>();
+      records = (data[2] as List).cast<Map<String, dynamic>>();
+      metrics = Map<String, dynamic>.from(data[3] as Map);
+      notifications = (data[4] as List).cast<Map<String, dynamic>>();
+    }
   }
 
   Future<void> updateDisplayName(String value) => _operation(() async {
@@ -394,6 +444,115 @@ class CloudAccount extends ChangeNotifier {
       await request('PATCH', 'auth/me/', body: {'display_name': value}) as Map,
     );
   });
+
+  String? draftKey(String kind) =>
+      signedIn && profile?['id'] != null && activeWorkspace != null
+      ? 'linesight.draft.${profile!['id']}.${activeWorkspace!['id']}.$kind'
+      : null;
+  Future<Map<String, dynamic>?> readDraft(String key) async {
+    final raw = await cloudSecureStorage.read(key: key);
+    return raw == null
+        ? null
+        : Map<String, dynamic>.from(jsonDecode(raw) as Map);
+  }
+
+  Future<void> saveDraft(String key, Map<String, dynamic> value) =>
+      cloudSecureStorage.write(key: key, value: jsonEncode(value));
+  Future<void> deleteDraft(String key) => cloudSecureStorage.delete(key: key);
+
+  Future<List<int>> download(String path) async {
+    final epoch = _epoch;
+    if (_tokens == null) throw const CollaborationApiException(401, '请先登录');
+    if (_tokens!.expiresAt.isBefore(
+      DateTime.now().add(const Duration(seconds: 30)),
+    )) {
+      await _refresh();
+    }
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 10);
+    try {
+      final req = await client.getUrl(Uri.parse(apiUrl).resolve(path));
+      req.headers.set(
+        HttpHeaders.authorizationHeader,
+        'Bearer ${_tokens!.access}',
+      );
+      final response = await req.close().timeout(const Duration(seconds: 25));
+      if (response.statusCode == 401) {
+        await _expired();
+        throw const CollaborationApiException(401, '登录已过期，请重新登录');
+      }
+      if (response.statusCode != 200) {
+        throw CollaborationApiException(response.statusCode, '无法读取文件，请重试');
+      }
+      final data = await response
+          .fold<List<int>>([], (bytes, part) => bytes..addAll(part))
+          .timeout(const Duration(seconds: 30));
+      if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
+      return data;
+    } finally {
+      client.close(force: true);
+    }
+  }
+
+  Future<Map<String, dynamic>> uploadPhoto(
+    String path,
+    List<int> bytes,
+    String key,
+    Map<String, String> fields,
+  ) async {
+    final epoch = _epoch;
+    if (_tokens == null) throw const CollaborationApiException(401, '请先登录');
+    if (_tokens!.expiresAt.isBefore(
+      DateTime.now().add(const Duration(seconds: 30)),
+    )) {
+      await _refresh();
+    }
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 10);
+    final boundary = 'linesight${DateTime.now().microsecondsSinceEpoch}';
+    try {
+      final req = await client.postUrl(Uri.parse(apiUrl).resolve(path));
+      req.headers.set(
+        HttpHeaders.authorizationHeader,
+        'Bearer ${_tokens!.access}',
+      );
+      req.headers.set('Idempotency-Key', key);
+      req.headers.set(
+        HttpHeaders.contentTypeHeader,
+        'multipart/form-data; boundary=$boundary',
+      );
+      for (final entry in fields.entries) {
+        req.add(
+          utf8.encode(
+            '--$boundary\r\nContent-Disposition: form-data; name="${entry.key}"\r\n\r\n${entry.value}\r\n',
+          ),
+        );
+      }
+      req.add(
+        utf8.encode(
+          '--$boundary\r\nContent-Disposition: form-data; name="image"; filename="photo.jpg"\r\nContent-Type: image/jpeg\r\n\r\n',
+        ),
+      );
+      req.add(bytes);
+      req.add(utf8.encode('\r\n--$boundary--\r\n'));
+      final response = await req.close().timeout(const Duration(seconds: 60));
+      final body = Map<String, dynamic>.from(
+        jsonDecode(await utf8.decoder.bind(response).join()) as Map,
+      );
+      if (response.statusCode == 401) await _expired();
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw CollaborationApiException(
+          response.statusCode,
+          '${body['detail'] ?? '上传失败，请重试'}',
+        );
+      }
+      if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
+      return body;
+    } finally {
+      client.close(force: true);
+    }
+  }
+
   Future<void> signOut() => _operation(() async {
     final previous = _tokens;
     if (previous == null || !await identity.signOut(previous)) return;

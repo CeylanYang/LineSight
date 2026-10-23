@@ -5,6 +5,7 @@ import '../liquid_glass_bar.dart';
 import '../ui.dart';
 import '../language_selector.dart';
 import 'cloud_tasks.dart';
+import 'cloud_business.dart';
 
 class CloudShell extends StatefulWidget {
   const CloudShell({super.key});
@@ -32,8 +33,8 @@ class _CloudShellState extends State<CloudShell> {
     final wide = MediaQuery.sizeOf(context).width >= 900;
     final pages = [
       _workbench(context, account),
-      _records(context, account),
-      _templates(context, account),
+      const CloudRecordsPage(),
+      const CloudTemplatesPage(),
       _profile(context, account),
     ];
     void select(int tab) {
@@ -171,7 +172,13 @@ class _CloudShellState extends State<CloudShell> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(tr(context, entry.value)),
+                      TextButton(
+                        onPressed: () => openPage(
+                          context,
+                          CloudTaskListPage(status: entry.key),
+                        ),
+                        child: Text(tr(context, entry.value)),
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         '${account.jobs.where((j) => j['status'] == entry.key).length}',
@@ -184,6 +191,50 @@ class _CloudShellState extends State<CloudShell> {
           ],
         ),
         const SizedBox(height: 20),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.analytics_outlined),
+          label: Text(tr(context, '质量洞察与报告')),
+          onPressed: () => openPage(context, const CloudReportPage()),
+        ),
+        if (account.notifications.isNotEmpty)
+          GlassPanel(
+            child: Column(
+              children: [
+                SectionHeading(tr(context, '待办提醒')),
+                ...account.notifications
+                    .take(5)
+                    .map(
+                      (notice) => ListTile(
+                        leading: const Icon(Icons.notifications_outlined),
+                        title: Text('${notice['part_name']}'),
+                        subtitle: Text(
+                          tr(
+                            context,
+                            notice['reinspection'] == true
+                                ? '待复检'
+                                : taskStatusLabels[notice['status']] ?? '待处理',
+                          ),
+                        ),
+                        onTap: () {
+                          final matches = account.jobs.where(
+                            (j) => '${j['id']}' == '${notice['task_id']}',
+                          );
+                          if (matches.isNotEmpty) {
+                            openPage(
+                              context,
+                              CloudTaskPage(
+                                job: matches.first,
+                                workspaceId:
+                                    account.activeWorkspace!['id'] as int,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+              ],
+            ),
+          ),
         Row(
           children: [
             Expanded(child: SectionHeading(tr(context, '生产任务'))),
@@ -208,73 +259,6 @@ class _CloudShellState extends State<CloudShell> {
           ),
         ...account.jobs.take(8).map((job) => CloudTaskTile(job: job)),
       ],
-    ],
-  );
-
-  Widget _records(BuildContext context, CloudAccount account) {
-    final records = [
-      for (final job in account.jobs)
-        for (final record in (job['inspections'] as List? ?? []))
-          {
-            ...Map<String, dynamic>.from(record as Map),
-            'part_name': job['part_name'],
-          },
-    ];
-    records.sort(
-      (a, b) => '${b['created_at']}'.compareTo('${a['created_at']}'),
-    );
-    return PageBody(
-      children: [
-        _workspace(context, account),
-        const SizedBox(height: 24),
-        Text(
-          tr(context, '检测记录'),
-          style: Theme.of(context).textTheme.headlineLarge,
-        ),
-        const SizedBox(height: 16),
-        if (!account.signedIn)
-          _loginState(context)
-        else if (records.isEmpty)
-          EmptyState(
-            title: tr(context, '暂无检验记录'),
-            subtitle: tr(context, '完成检验后可在这里查看记录。'),
-          ),
-        ...records.map(
-          (r) => GlassPanel(
-            child: ListTile(
-              title: Text('${r['part_name']}'),
-              subtitle: Text(
-                '${cloudTimestamp(r['created_at'])}\n${r['note']}',
-              ),
-              leading: Icon(
-                r['verdict'] == 'pass'
-                    ? Icons.check_circle_outline
-                    : Icons.warning_amber_rounded,
-                color: r['verdict'] == 'pass' ? green : red,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _templates(BuildContext context, CloudAccount account) => PageBody(
-    children: [
-      _workspace(context, account),
-      const SizedBox(height: 24),
-      Text(
-        tr(context, '配方中心'),
-        style: Theme.of(context).textTheme.headlineLarge,
-      ),
-      const SizedBox(height: 16),
-      if (!account.signedIn)
-        _loginState(context)
-      else
-        EmptyState(
-          title: tr(context, '暂无检查模板'),
-          subtitle: tr(context, '当前工作区还没有检查模板。'),
-        ),
     ],
   );
 
@@ -331,7 +315,7 @@ class _CloudShellState extends State<CloudShell> {
             trailing: const Icon(Icons.chevron_right),
             onTap: account.activeWorkspace == null
                 ? null
-                : () => openPage(context, const CloudMembersPage()),
+                : () => openPage(context, const CloudTeamPage()),
           ),
         ),
       ],

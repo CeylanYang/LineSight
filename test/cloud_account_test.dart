@@ -57,6 +57,8 @@ void main() {
       final path = request.uri.path;
       final Object body = status != 200
           ? {'detail': 'server rejection'}
+          : path.endsWith('metrics/')
+          ? <String, dynamic>{}
           : path.endsWith('auth/me/')
           ? {'display_name': 'Engineer', 'home_workspace_id': 1}
           : path.endsWith('workspaces/')

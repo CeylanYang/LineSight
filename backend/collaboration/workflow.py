@@ -10,7 +10,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .api import membership, job_json
-from .models import AuditEvent, ExceptionCase, JobMutation, Membership, ProductionJob, QualityInspection
+from .models import AuditEvent, CheckTemplate, Evidence, ExceptionCase, JobMutation, Membership, ProductionJob, QualityInspection
 
 
 class AbortMutation(Exception):
@@ -112,9 +112,65 @@ def inspection_command(request, job, *, exception_only=False):
         return Response({'detail': '请描述需要复核的问题'}, status=400)
     if len(note) > 500:
         return Response({'detail': '备注不能超过500个字符'}, status=400)
-    check = QualityInspection.objects.create(job=job, inspector=request.user, verdict=verdict, note=note)
+    values = request.data
+    inspected = values.get('inspected_qty', job.quantity)
+    passed = values.get('pass_qty', job.quantity if verdict == 'pass' else 0)
+    failed = values.get('fail_qty', job.quantity if verdict == 'fail' else 0)
+    scrapped = values.get('scrap_qty', 0)
+    if any(type(value) is not int or value < 0 for value in (inspected, passed, failed, scrapped)) or not 1 <= inspected <= job.quantity or passed + failed + scrapped != inspected:
+        return Response({'detail': '送检数量必须等于合格、异常与报废数量之和，且不超过计划数量'}, status=400)
+    if (verdict == 'pass' and (failed or scrapped or inspected != job.quantity)) or (verdict == 'fail' and failed + scrapped == 0):
+        return Response({'detail': '检验结论与工件数量不一致'}, status=400)
+    template_id = job.template_id or values.get('template_id')
+    template = CheckTemplate.objects.filter(Q(workspace=job.workspace) | Q(workspace__isnull=True), pk=template_id).first() if template_id else None
+    if template_id and template is None:
+        return Response({'detail': '检查模板不存在'}, status=400)
+    answers, snapshot = values.get('answers', []), {}
+    if template:
+        if not isinstance(answers, list) or any(not isinstance(answer, dict) for answer in answers):
+            return Response({'detail': '检查项格式无效'}, status=400)
+        if any(not isinstance(answer.get('id'), str) for answer in answers):
+            return Response({'detail': '检查项编号无效'}, status=400)
+        by_id = {answer.get('id'): answer for answer in answers}
+        known = {item['id'] for item in template.items}
+        if len(by_id) != len(answers) or not set(by_id).issubset(known):
+            return Response({'detail': '检查项编号重复或不属于模板'}, status=400)
+        for item in template.items:
+            answer = by_id.get(item['id'], {})
+            result = answer.get('result')
+            if result is None and not item['required']:
+                continue
+            if result not in ('pass', 'fail', 'na') or (result == 'na' and not item['allow_na']):
+                return Response({'detail': '请完成所有必填检查项'}, status=400)
+            if result == 'fail' and (not str(answer.get('note', '')).strip() or verdict != 'fail'):
+                return Response({'detail': '不合格项需要问题说明，并选择异常结论'}, status=400)
+        snapshot = {'id': template.pk, 'name': template.name, 'version': template.version, 'items': template.items}
+    serial_results = values.get('serial_results', {})
+    if job.tracking_mode == 'serial':
+        if not isinstance(serial_results, dict) or set(serial_results) != set(job.serial_numbers) or any(value not in ('pass', 'fail', 'scrap') for value in serial_results.values()):
+            return Response({'detail': '请为任务内每个SN填写唯一检验结论'}, status=400)
+        counts = [list(serial_results.values()).count(result) for result in ('pass', 'fail', 'scrap')]
+        if counts != [passed, failed, scrapped]:
+            return Response({'detail': 'SN结果与工件数量不一致'}, status=400)
+    elif serial_results:
+        return Response({'detail': '批次检验不可混入SN记录'}, status=400)
+    photo_ids = values.get('evidence_ids', [])
+    if not isinstance(photo_ids, list) or any(type(value) is not int for value in photo_ids) or len(photo_ids) != len(set(photo_ids)):
+        return Response({'detail': '证据编号无效'}, status=400)
+    photos = Evidence.objects.filter(job=job, pk__in=photo_ids, inspection__isnull=True, stage='inspection')
+    if photos.count() != len(photo_ids):
+        return Response({'detail': '图片不属于当前检验或已绑定其他轮次'}, status=400)
+    category, severity = values.get('category', 'other'), values.get('severity', 'major')
+    if category not in ('surface', 'dimension', 'crack', 'deformation', 'assembly', 'other') or severity not in ('minor', 'major', 'critical'):
+        return Response({'detail': '异常类别或严重度无效'}, status=400)
+    check = QualityInspection.objects.create(job=job, inspector=request.user, verdict=verdict, note=note,
+        round_no=job.quality_inspections.count() + 1, inspected_qty=inspected, pass_qty=passed,
+        fail_qty=failed, scrap_qty=scrapped, answers=answers, template_snapshot=snapshot, serial_results=serial_results)
+    photos.update(inspection=check)
     if verdict == 'fail':
-        case = ExceptionCase.objects.create(job=job, note=note, assignee=str(request.data.get('assignee', ''))[:100])
+        from .product import person
+        case = ExceptionCase.objects.create(job=job, note=note, assignee=str(request.data.get('assignee') or person(job.assignee) or person(request.user))[:100],
+            inspection=check, category=category, severity=severity, creator=request.user)
         event(request, job, 'exception.created', case.pk, inspection_id=check.pk)
     job.status = 'closed' if verdict == 'pass' else 'exception'
     job.save(update_fields=['status', 'updated_at'])
