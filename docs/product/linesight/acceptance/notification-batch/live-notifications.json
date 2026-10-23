@@ -1,0 +1,25 @@
+{
+  "demo_only": true,
+  "workspace_id": 5,
+  "task_id": "cdcad4ce-7a76-42cc-9eb5-4cbcc71ccd52",
+  "created_task_only_modified": true,
+  "original_jobs_unchanged": true,
+  "assigned_queued_notified": true,
+  "assigned_printing_notified": true,
+  "read_replay_same_receipt": true,
+  "old_receipt_does_not_hide_new_version": true,
+  "read_persists_across_real_identity_sessions": true,
+  "new_task_update_unread_again": true,
+  "final_notice": {
+    "id": "cdcad4ce-7a76-42cc-9eb5-4cbcc71ccd52",
+    "task_id": "cdcad4ce-7a76-42cc-9eb5-4cbcc71ccd52",
+    "version": 3,
+    "read": false,
+    "part_name": "DEMO · 通知派工",
+    "status": "inspection",
+    "updated_at": "2026-10-23T21:15:14.630336+00:00",
+    "reinspection": false
+  },
+  "final_status": "inspection",
+  "final_version": 3
+}

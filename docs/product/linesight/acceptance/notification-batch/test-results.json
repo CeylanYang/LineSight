@@ -1,0 +1,9 @@
+{
+  "full_flutter": "00:35 +270: All tests passed!",
+  "notification_flutter": "00:02 +16: All tests passed!",
+  "analyze": "No issues found! (ran in 20.5s)",
+  "backend": "Ran 59 tests; OK",
+  "full_suite_before_final_button_font_inheritance_change": true,
+  "notification_suite_after_final_change": true,
+  "component_png_visually_reviewed": true
+}

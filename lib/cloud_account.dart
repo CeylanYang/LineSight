@@ -359,7 +359,9 @@ class CloudAccount extends ChangeNotifier {
   bool get canEdit =>
       signedIn &&
       const {'owner', 'operator'}.contains(activeWorkspace?['role']);
+  int _notificationEpoch = 0;
   void _resetViews() {
+    _notificationEpoch++;
     workspaceDataLoaded = false;
     workspaceLoading = false;
     workspaceFailure = null;
@@ -556,6 +558,7 @@ class CloudAccount extends ChangeNotifier {
     await _load();
   });
   void _beginWorkspaceRead() {
+    _notificationEpoch++;
     workspaceDataLoaded = false;
     workspaceLoading = true;
     workspaceFailure = null;
@@ -638,6 +641,45 @@ class CloudAccount extends ChangeNotifier {
       }
       rethrow;
     }
+  }
+
+  final Map<String, Future<void>> _notificationReads = {};
+
+  Future<void> reloadNotifications(String scope) async {
+    requireAccess(scope);
+    final ticket = ++_notificationEpoch;
+    final workspace = activeWorkspace!['id'];
+    final rows =
+        (await request('GET', 'workspaces/$workspace/notifications/') as List)
+            .map((row) => Map<String, dynamic>.from(row as Map))
+            .toList();
+    requireAccess(scope);
+    if (ticket != _notificationEpoch) return;
+    notifications = rows;
+    notifyListeners();
+  }
+
+  Future<void> markNotificationRead(Map<String, dynamic> notice, String scope) {
+    requireAccess(scope);
+    final id = notice['task_id'], version = notice['version'];
+    if (id is! String || id.isEmpty || version is! int || version < 1) {
+      throw const CollaborationApiException(400, '请刷新通知后重试');
+    }
+    final key = '$scope/$id/$version';
+    return _notificationReads.putIfAbsent(key, () async {
+      try {
+        final workspace = activeWorkspace!['id'];
+        await request(
+          'POST',
+          'workspaces/$workspace/notifications/$id/read/',
+          body: {'version': version},
+        );
+        requireAccess(scope);
+        await reloadNotifications(scope);
+      } finally {
+        _notificationReads.remove(key);
+      }
+    });
   }
 
   Future<void> updateDisplayName(String value) => _operation(() async {

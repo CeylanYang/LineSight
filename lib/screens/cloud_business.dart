@@ -7,6 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../cloud_account.dart';
+import '../cloud_notifications.dart';
 import '../cloud_outbox.dart';
 import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
@@ -3427,10 +3428,11 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
                           FilledButton.tonalIcon(
                             style: FilledButton.styleFrom(
                               minimumSize: const Size(0, 38),
-                              textStyle: const TextStyle(
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w800,
-                              ),
+                              textStyle: Theme.of(context).textTheme.labelLarge
+                                  ?.copyWith(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                             ),
                             onPressed: busy
                                 ? null
@@ -3588,8 +3590,78 @@ class _CloudSyncPageState extends State<CloudSyncPage> {
   }
 }
 
-class CloudNotificationsPage extends StatelessWidget {
+class CloudNotificationsPage extends StatefulWidget {
   const CloudNotificationsPage({super.key});
+  @override
+  State<CloudNotificationsPage> createState() => _CloudNotificationsPageState();
+}
+
+class _CloudNotificationsPageState extends State<CloudNotificationsPage> {
+  String? binding;
+  bool refreshing = false;
+  Object? refreshFailure;
+  final pending = <String>{};
+  final failures = <String, Object>{};
+  String noticeKey(Map<String, dynamic> notice) =>
+      '${notice['task_id']}/${notice['version']}';
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final next = CloudScope.of(context).accessScope;
+    if (next != binding) {
+      binding = next;
+      refreshing = false;
+      refreshFailure = null;
+      pending.clear();
+      failures.clear();
+    }
+  }
+
+  Future<void> refresh() async {
+    final account = CloudScope.of(context), scope = binding;
+    if (!account.retainsAccess(scope) || refreshing) return;
+    setState(() {
+      refreshing = true;
+      refreshFailure = null;
+    });
+    try {
+      await account.reloadNotifications(scope!);
+      if (mounted && account.retainsAccess(scope)) {
+        setState(failures.clear);
+      }
+    } catch (failure) {
+      if (mounted && account.retainsAccess(scope)) {
+        setState(() => refreshFailure = failure);
+      }
+    } finally {
+      if (mounted && account.retainsAccess(scope)) {
+        setState(() => refreshing = false);
+      }
+    }
+  }
+
+  Future<void> markRead(Map<String, dynamic> notice) async {
+    final account = CloudScope.of(context),
+        scope = binding,
+        key = noticeKey(notice);
+    if (!account.retainsAccess(scope) || pending.contains(key)) return;
+    setState(() {
+      pending.add(key);
+      failures.remove(key);
+    });
+    try {
+      await account.markNotificationRead(notice, scope!);
+    } catch (failure) {
+      if (mounted && account.retainsAccess(scope)) {
+        setState(() => failures[key] = failure);
+      }
+    } finally {
+      if (mounted && account.retainsAccess(scope)) {
+        setState(() => pending.remove(key));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
@@ -3609,10 +3681,13 @@ class CloudNotificationsPage extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.refresh, size: 21),
           tooltip: tr(context, '刷新'),
-          onPressed: () => account.reload(),
+          onPressed: refreshing ? null : refresh,
         ),
       ],
       children: [
+        if (refreshing) const CloudLoadingPanel(),
+        if (refreshFailure != null)
+          CloudFailurePanel(failure: refreshFailure!, onRetry: refresh),
         GlassPanel(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -3685,7 +3760,7 @@ class CloudNotificationsPage extends StatelessWidget {
             ),
           )
         else
-          for (final notice in notices)
+          for (final notice in notices) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Material(
@@ -3693,20 +3768,7 @@ class CloudNotificationsPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(18),
-                  onTap: () {
-                    final matches = account.jobs.where(
-                      (j) => '${j['id']}' == '${notice['task_id']}',
-                    );
-                    if (matches.isNotEmpty) {
-                      openPage(
-                        context,
-                        CloudTaskPage(
-                          job: matches.first,
-                          workspaceId: account.activeWorkspace!['id'] as int,
-                        ),
-                      );
-                    }
-                  },
+                  onTap: () => openCloudNotification(context, notice),
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -3788,26 +3850,25 @@ class CloudNotificationsPage extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                               ),
-                              textStyle: const TextStyle(
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w800,
+                              textStyle: Theme.of(context).textTheme.labelLarge
+                                  ?.copyWith(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                            ),
+                            onPressed:
+                                refreshing ||
+                                    pending.contains(noticeKey(notice))
+                                ? null
+                                : () => markRead(notice),
+                            child: Text(
+                              tr(
+                                context,
+                                pending.contains(noticeKey(notice))
+                                    ? '正在加载'
+                                    : '标为已读',
                               ),
                             ),
-                            child: Text(tr(context, '标为已读')),
-                            onPressed: () async {
-                              try {
-                                await account.request(
-                                  'POST',
-                                  'workspaces/${account.activeWorkspace!['id']}/notifications/${notice['task_id']}/read/',
-                                  body: {'version': notice['version']},
-                                );
-                                await account.reload();
-                              } catch (_) {
-                                if (context.mounted) {
-                                  toast(context, '更新通知失败，请重试');
-                                }
-                              }
-                            },
                           ),
                       ],
                     ),
@@ -3815,6 +3876,12 @@ class CloudNotificationsPage extends StatelessWidget {
                 ),
               ),
             ),
+            if (failures[noticeKey(notice)] != null)
+              CloudFailurePanel(
+                failure: failures[noticeKey(notice)]!,
+                onRetry: refresh,
+              ),
+          ],
       ],
     );
   }

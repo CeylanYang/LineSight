@@ -226,7 +226,10 @@ def report(request, workspace_id):
 @permission_classes([IsAuthenticated])
 def notifications(request, workspace_id):
     member = membership(request, workspace_id)
-    rows = member.workspace.jobs.filter(Q(assignee=request.user) | Q(assignee__isnull=True)).filter(status__in=['inspection', 'exception']).order_by('-updated_at')
+    rows = member.workspace.jobs.filter(
+        Q(assignee=request.user, status__in=['queued', 'printing', 'inspection', 'exception']) |
+        Q(assignee__isnull=True, status__in=['inspection', 'exception'])
+    ).order_by('-updated_at')
     seen = dict(NotificationReceipt.objects.filter(user=request.user, job__workspace=member.workspace).values_list('job_id', 'version'))
     return Response([{'id': str(job.pk), 'task_id': str(job.pk), 'version': job.version, 'read': seen.get(job.pk, 0) >= job.version, 'part_name': job.part_name,
         'status': job.status, 'updated_at': job.updated_at.isoformat(),

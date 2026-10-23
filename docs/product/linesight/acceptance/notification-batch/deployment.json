@@ -1,0 +1,9 @@
+{
+  "deployed": true,
+  "before_sha256": "f4d749d810c9c3ba91d058e48981ddfd2650defb3693c44d36c9f1c299628cbe",
+  "after_sha256": "16950b6cbe63a39b66e1465b19739aba6388c22710c6c55dd9303a883da8229c",
+  "backup": "/var/backups/linesight/notifications/20261023T211123Z",
+  "api_health": true,
+  "database_schema_changed": false,
+  "identity_configuration_changed": false
+}

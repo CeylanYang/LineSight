@@ -249,6 +249,36 @@ class NotificationTests(TestCase):
         self.assertEqual(other.post(url, {'version': 1}, format='json').status_code, 404)
         self.assertEqual(self.client.post(url, {'version': True}, format='json').status_code, 400)
 
+    def test_assignments_include_queued_and_printing_without_unassigned_noise(self):
+        base = f'/api/v1/workspaces/{self.ws}/'
+        expected = set()
+        for state in ['queued', 'printing', 'inspection', 'exception', 'closed']:
+            assigned = ProductionJob.objects.create(workspace_id=self.ws, part_name=state, printer='A1', quantity=1, status=state, assignee=self.owner)
+            unassigned = ProductionJob.objects.create(workspace_id=self.ws, part_name='Shared '+state, printer='A1', quantity=1, status=state)
+            if state != 'closed': expected.add(str(assigned.pk))
+            if state in ['inspection', 'exception']: expected.add(str(unassigned.pk))
+        rows = self.client.get(base+'notifications/').data
+        self.assertEqual({row['task_id'] for row in rows}, expected)
+        self.assertTrue(all(row['read'] is False for row in rows))
+
+    def test_reassignment_removes_previous_recipients_access_to_read_receipt(self):
+        from .models import NotificationReceipt
+        base = f'/api/v1/workspaces/{self.ws}/'
+        job = ProductionJob.objects.create(workspace_id=self.ws, part_name='Assigned', printer='A1', quantity=1, status='queued', assignee=self.owner)
+        new_user = get_user_model().objects.create_user(username='next-recipient')
+        Membership.objects.create(workspace_id=self.ws, user=new_user, role='operator')
+        url = base+f'notifications/{job.pk}/read/'
+        self.assertEqual(self.client.post(url, {'version': 1}, format='json').status_code, 200)
+        ProductionJob.objects.filter(pk=job.pk).update(assignee=new_user, version=2)
+        self.assertEqual(self.client.get(base+'notifications/').data, [])
+        self.assertEqual(self.client.post(url, {'version': 1}, format='json').status_code, 404)
+        next_client = APIClient(); next_client.force_authenticate(new_user)
+        self.assertFalse(next_client.get(base+'notifications/').data[0]['read'])
+        for unused in range(2):
+            self.assertEqual(next_client.post(url, {'version': 2}, format='json').status_code, 200)
+        self.assertEqual(NotificationReceipt.objects.filter(user=new_user, job=job).count(), 1)
+        self.assertTrue(next_client.get(base+'notifications/').data[0]['read'])
+
 
 class QueryScopeTests(TestCase):
     setUp = WorkflowApiTests.setUp

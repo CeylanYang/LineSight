@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_notifications.dart';
 import '../cloud_feedback.dart';
 import '../cloud_navigation.dart';
 import '../cloud_workbench.dart';
@@ -288,20 +289,7 @@ class _CloudShellState extends State<CloudShell> {
   ) => Material(
     type: MaterialType.transparency,
     child: InkWell(
-      onTap: () {
-        final matches = account.jobs.where(
-          (j) => '${j['id']}' == '${notice['task_id']}',
-        );
-        if (matches.isNotEmpty) {
-          openPage(
-            context,
-            CloudTaskPage(
-              job: matches.first,
-              workspaceId: account.activeWorkspace!['id'] as int,
-            ),
-          );
-        }
-      },
+      onTap: () => openCloudNotification(context, notice),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         child: Row(

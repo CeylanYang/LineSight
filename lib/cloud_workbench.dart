@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cloud_account.dart';
 import 'cloud_feedback.dart';
+import 'cloud_notifications.dart';
 import 'l10n.dart';
 import 'screens/cloud_tasks.dart';
 import 'ui.dart';
@@ -109,22 +110,7 @@ class CloudWorkbenchSummary extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             trailing: const Icon(Icons.chevron_right),
-                            onTap: () {
-                              final jobs = account.jobs.where(
-                                (j) => '${j['id']}' == '${notice['task_id']}',
-                              );
-                              if (jobs.isNotEmpty &&
-                                  account.activeWorkspace != null) {
-                                openPage(
-                                  context,
-                                  CloudTaskPage(
-                                    job: jobs.first,
-                                    workspaceId:
-                                        account.activeWorkspace!['id'] as int,
-                                  ),
-                                );
-                              }
-                            },
+                            onTap: () => openCloudNotification(context, notice),
                           ),
                       ],
                     );

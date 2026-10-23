@@ -195,7 +195,12 @@ class CloudTraceCodePage extends StatelessWidget {
 
 class CloudTracePage extends StatefulWidget {
   final String link;
-  const CloudTracePage({super.key, required this.link});
+  final String? requiredAccessScope;
+  const CloudTracePage({
+    super.key,
+    required this.link,
+    this.requiredAccessScope,
+  });
   @override
   State<CloudTracePage> createState() => _CloudTracePageState();
 }
@@ -211,7 +216,16 @@ class _CloudTracePageState extends State<CloudTracePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final next = identityOf(CloudScope.of(context));
+    final account = CloudScope.of(context);
+    final next = identityOf(account);
+    if (widget.requiredAccessScope != null &&
+        !account.retainsAccess(widget.requiredAccessScope)) {
+      generation++;
+      job = null;
+      busy = false;
+      error = const CollaborationApiException(403, '账户或团队已切换，请重新打开页面');
+      return;
+    }
     if (next != identity) {
       identity = next;
       job = null;
@@ -232,6 +246,9 @@ class _CloudTracePageState extends State<CloudTracePage> {
       job = null;
     });
     try {
+      if (widget.requiredAccessScope != null) {
+        account.requireAccess(widget.requiredAccessScope);
+      }
       final data = Map<String, dynamic>.from(
         await account.request(
               'GET',
@@ -240,6 +257,9 @@ class _CloudTracePageState extends State<CloudTracePage> {
             as Map,
       );
       if (captured != identityOf(account)) return;
+      if (widget.requiredAccessScope != null) {
+        account.requireAccess(widget.requiredAccessScope);
+      }
       if (account.activeWorkspace?['id'] != trace.workspaceId) {
         final matches = account.workspaces.where(
           (workspace) => workspace['id'] == trace.workspaceId,
