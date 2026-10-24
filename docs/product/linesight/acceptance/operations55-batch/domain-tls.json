@@ -1,0 +1,1 @@
+{"99ai.pronhubcn.com": {"tls_verified": true, "protocol": "TLSv1.3", "not_after": "Jan 22 05:27:20 2027 GMT", "subject_alt_names": [["DNS", "99ai.pronhubcn.com"]], "https_health": 200}, "mail.99ai.pronhubcn.com": {"tls_verified": true, "protocol": "TLSv1.3", "not_after": "Jan 22 05:27:17 2027 GMT", "subject_alt_names": [["DNS", "mail.99ai.pronhubcn.com"]], "https_health": 200}}

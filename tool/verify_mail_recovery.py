@@ -45,14 +45,15 @@ def main():
     status, _, production = kc.call(kc.origin+'/admin/realms/linesight', token=token)
     assert status == 200 and production['registrationAllowed'] is False
     original_smtp = production.get('smtpServer', {})
+    smtp_config = {'host':'10.89.0.1','port':'2525',
+        'from':'noreply@99ai.pronhubcn.com','fromDisplayName':'LineSight',
+        'auth':'false','ssl':'false','starttls':'false'}
     status, _, existing = kc.call(realm_url, token=token)
     if status == 404:
         status, _, _ = kc.call(kc.origin+'/admin/realms', {
             'realm':realm_name, 'enabled':True, 'registrationAllowed':False,
             'resetPasswordAllowed':True, 'loginWithEmailAllowed':True,
-            'smtpServer':{'host':'10.89.0.1', 'port':'1025',
-                          'from':'noreply@example.invalid', 'fromDisplayName':'LineSight mail validation',
-                          'auth':'false', 'ssl':'false', 'starttls':'false'}}, token)
+            'smtpServer':smtp_config}, token)
         assert status == 201
         assert kc.call(realm_url+'/clients', {'clientId':'linesight-android', 'enabled':True,
             'publicClient':True, 'standardFlowEnabled':True, 'directAccessGrantsEnabled':False,
@@ -60,6 +61,7 @@ def main():
     else:
         assert status == 200 and existing['registrationAllowed'] is False
         assert existing['smtpServer']['host'] == '10.89.0.1'
+        assert kc.call(realm_url,{'smtpServer':smtp_config},token,method='PUT')[0] == 204
     kc.issuer = kc.origin+'/realms/'+realm_name
     username = 'mail-probe-'+uuid.uuid4().hex
     address = username+'@example.invalid'
@@ -99,6 +101,10 @@ def main():
                 break
             time.sleep(1)
         assert mail, 'Reset email not received'
+        with urlopen('http://127.0.0.1:18025/api/v1/message/'+match['ID']+'/headers',timeout=5) as r:
+            headers=json.load(r)
+        signature=headers.get('Dkim-Signature',headers.get('DKIM-Signature',[]))
+        assert signature and 'd=99ai.pronhubcn.com' in str(signature)
         links = Page(); links.feed(mail['HTML'])
         link = next(html.unescape(u) for u in links.links if u.startswith(kc.issuer+'/login-actions/'))
         change = page(client, link)
@@ -118,6 +124,8 @@ def main():
         _, _, after = kc.call(kc.origin+'/admin/realms/linesight',token=token)
         assert after['registrationAllowed'] is False and after.get('smtpServer',{}) == original_smtp
         result = {'isolated_realm':realm_name,'open_source_smtp':'Mailpit v1.32.0',
+            'mail_transport':'Keycloak -> Postfix + OpenDKIM -> Mailpit',
+            'domain_dkim_signature_present':True,
             'official_keycloak_reset_email_received':True,'reset_link_completed':True,
             'old_password_rejected':True,'new_password_pkce_login':True,'reset_link_reuse_rejected':True,
             'production_smtp_unchanged':True,'public_registration_closed':True,

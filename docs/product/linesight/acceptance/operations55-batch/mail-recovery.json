@@ -1,6 +1,8 @@
 {
   "isolated_realm": "linesight-mail-validation",
   "open_source_smtp": "Mailpit v1.32.0",
+  "mail_transport": "Keycloak -> Postfix + OpenDKIM -> Mailpit",
+  "domain_dkim_signature_present": true,
   "official_keycloak_reset_email_received": true,
   "reset_link_completed": true,
   "old_password_rejected": true,
