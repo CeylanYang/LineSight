@@ -1,0 +1,156 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 4,
+  "channel": "production",
+  "avd": "LineSightProductionFreshValidation",
+  "first_install_time": "2026-10-24 08:42:22",
+  "last_update_time": "2026-10-24 08:42:22",
+  "app_data_cleared": false,
+  "app_reinstalled": false,
+  "team": "independent demo",
+  "task_submitted": false,
+  "all_roles_verified": false,
+  "real_nfc_verified": false,
+  "emulator_host_exit_count": 1,
+  "host_exit_root_cause_proven": false,
+  "checks": [
+    {
+      "name": "353-secondary66-configuration-emulator",
+      "required_labels": [
+        "配方中心",
+        "打印配置",
+        "检查模板"
+      ],
+      "png_sha256": "b5de45e02891eb3a7876be7d1ca41fb9019e14f6f30f87e744d7c04b64cb1f92",
+      "xml_sha256": "4d8daf25a73f482102b619cbb839a86134692686e58819627a5348984faee198"
+    },
+    {
+      "name": "354-secondary66-profile-detail-emulator",
+      "required_labels": [
+        "Bambu Lab A1",
+        "starter-v1",
+        "使用此配置创建任务"
+      ],
+      "png_sha256": "5e6dbcbfd2ffed5c65915e9e916d199faee2135cac98deacb57d1a86ce8d2435",
+      "xml_sha256": "fa8cbf994cdb77296291608adae828ff2927a924a0fd5246990c65046f86aefd"
+    },
+    {
+      "name": "355-secondary66-prefilled-create-emulator",
+      "required_labels": [
+        "新建任务",
+        "Bambu Lab A1",
+        "尺寸与装配检查 · v1"
+      ],
+      "png_sha256": "03bbf54542fca7799718e5e17330f6bca65fec7d9a6242d6dc619723d615b4cd",
+      "xml_sha256": "40af3d35891b1bc87280d893765f8507429694c370afda739fd249772ce9ccd5"
+    },
+    {
+      "name": "356-secondary66-create-return-emulator",
+      "required_labels": [
+        "Bambu Lab A1",
+        "使用此配置创建任务"
+      ],
+      "png_sha256": "1b67f0b88c5f7c59f687b81db8855920b3037c77c06883c23f1c816848b4ed27",
+      "xml_sha256": "fa8cbf994cdb77296291608adae828ff2927a924a0fd5246990c65046f86aefd"
+    },
+    {
+      "name": "357-secondary66-templates-emulator",
+      "required_labels": [
+        "检查模板",
+        "3 个模板",
+        "通用外观检查"
+      ],
+      "png_sha256": "3551615ebc4c931187e57607c4ec44c0aabe0930e98dd8a6c23f1db8ccf10b89",
+      "xml_sha256": "488955c93ddc2e8bd831a2b6b03b8e86989988314a2ba9f63337fd9d9c325434"
+    },
+    {
+      "name": "358-secondary66-template-detail-emulator",
+      "required_labels": [
+        "尺寸与装配检查",
+        "4 检查项",
+        "允许不适用"
+      ],
+      "png_sha256": "f10677ae46f168403a47740910edfbfc3ac74e49eeb73436e66bf2ec59a7d4dd",
+      "xml_sha256": "8ab5fc0ef6c3933486cb852b8cfb60cc93255b20856f64a5a4030fc92925021a"
+    },
+    {
+      "name": "359-secondary66-account-emulator",
+      "required_labels": [
+        "账户与安全",
+        "LineSight Demo",
+        "我的卡片"
+      ],
+      "png_sha256": "dea8cb6ac55f011ff4c5e060cce7bdb12d224db58b92b137e2a1f2dbb02263b7",
+      "xml_sha256": "627f08d14fb1e11f654082a9e73cee16429ece0d888ad1d1598b145834899129"
+    },
+    {
+      "name": "360-secondary66-cards-emulator",
+      "required_labels": [
+        "我的卡片",
+        "还没有绑定卡片"
+      ],
+      "png_sha256": "59f835fd6ed3c688aa6297f3499e4a6b41282291e2712e524cd7e8564f0c7c89",
+      "xml_sha256": "706b4fa4152960077db8a7f1511bc7c707df7769d5142a34da7998c302d53db9"
+    },
+    {
+      "name": "361-secondary66-nfc-unavailable-emulator",
+      "required_labels": [
+        "绑定卡片",
+        "此手机不支持NFC",
+        "取消"
+      ],
+      "png_sha256": "0c1ebde42acd333c52405d19be27cf2aed36561ecc01ad8d7384123f2a742120",
+      "xml_sha256": "15ff21599889aca852fbbae125dcc19e6c604754c063fe3e0fdc330c2ddf8d24"
+    },
+    {
+      "name": "362-secondary66-nfc-cancel-return-emulator",
+      "required_labels": [
+        "我的卡片",
+        "还没有绑定卡片"
+      ],
+      "png_sha256": "5170cd1471b96111ad590e9f0933806e1a609818b297b30142e18bfd9fc40e71",
+      "xml_sha256": "706b4fa4152960077db8a7f1511bc7c707df7769d5142a34da7998c302d53db9"
+    },
+    {
+      "name": "363-secondary66-local-import-gate-emulator",
+      "required_labels": [
+        "目标团队 · 演示团队",
+        "授权读取记录",
+        "授权并预览"
+      ],
+      "png_sha256": "832c7963f00ff367d57e46898e38dfa1c038da1fee162d905337a98ad9077d46",
+      "xml_sha256": "f67e3dd52dd1d2e614e1b80044a6e1d3d8b6f73dc0cf8624e6112c67055f6456"
+    },
+    {
+      "name": "364-secondary66-team-emulator",
+      "required_labels": [
+        "团队与权限",
+        "1 名成员",
+        "操作成员"
+      ],
+      "png_sha256": "126e4fe02d0aca5a7d872f2ca644e24be4ae8f48a4413ee2e573a195622c9cba",
+      "xml_sha256": "153aa34e40c120b7cc65f9c81da5fcfb4e41a5456472104d9c0b6d19ee59edf9"
+    },
+    {
+      "name": "365-secondary66-content4-emulator",
+      "required_labels": [
+        "LineSight 1.1.54",
+        "内容版本 4",
+        "已是最新内容"
+      ],
+      "png_sha256": "9be1ec4e01aed4e5debbf1991c431f4a9c492bcdd6ed0a962ae2ef3c0147f95c",
+      "xml_sha256": "61879d90940120284459b7b848e84df9aac64329f06f3e546bbca24f89748a32"
+    },
+    {
+      "name": "366-secondary66-final-workbench-emulator",
+      "required_labels": [
+        "演示团队",
+        "待质检 13",
+        "异常处理中 3",
+        "已关闭 13"
+      ],
+      "png_sha256": "c387a7100962d336cddc40a8f9b9700ee72d0c5eac78c53d421ab06487566fd0",
+      "xml_sha256": "392121394de868d8ebfebac111d135f6e24298f8813faea610b34699448b64a1"
+    }
+  ]
+}

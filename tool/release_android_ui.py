@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 import re
 import subprocess
+import uuid
 import xml.etree.ElementTree as ET
 
 parser=argparse.ArgumentParser(description=__doc__)
@@ -14,10 +15,22 @@ args=parser.parse_args()
 if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*-batch',args.batch): parser.error('Use a simple acceptance batch directory name')
 adb=[r'C:\Users\29668\AppData\Local\Android\Sdk\platform-tools\adb.exe','-s','emulator-5554']
 def run(*parts): return subprocess.check_output(adb+list(parts),timeout=45)
+
+def dump_ui():
+    # A failed dump can return status 0 ("null root node") and leave yesterday's
+    # XML intact. Never use a previous capture as evidence of the current page.
+    remote='/sdcard/linesight-release-ui-'+uuid.uuid4().hex+'.xml'
+    try:
+        run('shell','uiautomator','dump',remote)
+        raw=run('exec-out','cat',remote)
+        assert ET.fromstring(raw).tag=='hierarchy', 'Invalid current UI hierarchy'
+        return raw
+    finally:
+        run('shell','rm','-f',remote)
+
 assert run('shell','getprop','ro.kernel.qemu').strip()==b'1'
 if args.action in ('inspect','tap'):
-    run('shell','uiautomator','dump','/sdcard/linesight-release-ui.xml')
-    raw=run('exec-out','cat','/sdcard/linesight-release-ui.xml')
+    raw=dump_ui()
     Path('.artifact-work/release/current-window.xml').write_bytes(raw)
     nodes=list(ET.fromstring(raw).iter('node'))
     if args.action=='inspect':
@@ -37,10 +50,11 @@ elif args.action=='capture':
     name=args.value
     if not re.fullmatch(r'[a-zA-Z0-9-]+-emulator',name or ''): parser.error('Use a simple filename ending in -emulator')
     folder=Path('docs/product/linesight/acceptance')/args.batch/'png';folder.mkdir(parents=True,exist_ok=True)
-    (folder/(name+'.png')).write_bytes(run('exec-out','screencap','-p'))
-    run('shell','uiautomator','dump','/sdcard/linesight-release-ui.xml')
+    raw=dump_ui()
+    picture=run('exec-out','screencap','-p')
+    (folder/(name+'.png')).write_bytes(picture)
     xml_folder=folder.parent/'ui';xml_folder.mkdir(parents=True,exist_ok=True)
-    (xml_folder/(name+'.xml')).write_bytes(run('exec-out','cat','/sdcard/linesight-release-ui.xml'))
+    (xml_folder/(name+'.xml')).write_bytes(raw)
 elif args.action=='back': run('shell','input','keyevent','4')
 elif args.action=='swipe':
     # Respect the device's current size, including any wm size override.
