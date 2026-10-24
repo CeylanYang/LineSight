@@ -9,6 +9,7 @@ import subprocess
 import sys
 
 from export_cloud_backup import verify
+from backup_retention import expire
 
 ROOT = Path(__file__).resolve().parents[1]
 PRIVATE = Path.home() / 'LineSight-private' / 'cloud-backups'
@@ -58,8 +59,15 @@ def execute():
         verification = destination / 'verification.json'
         verify(archive, key, verification)
         result = json.loads(verification.read_text())
+        # A server recovery point may expire only after receipt of an actually
+        # verified off-host copy. Failed/partial transfers never create receipts.
+        run(scp + [str(verification), f'{HOST}:{report["backup"]}/offhost-verified.json'])
+        remote_retention = json.loads(run(ssh + [
+            f'/opt/linesight/venv/bin/python {REMOTE}/backup_retention.py --server --apply']))
+        local_retention = expire(PRIVATE, apply=True)
         result.update(completed_at=dt.datetime.now(dt.timezone.utc).isoformat(),
-                      automatic_offhost_copy=True, retention='Preserve all recovery points; no deletion')
+                      automatic_offhost_copy=True, local_retention=local_retention,
+                      remote_retention=remote_retention)
         latest = PRIVATE / 'last-success.json'
         temp = latest.with_suffix('.tmp'); temp.write_text(json.dumps(result, indent=2), encoding='utf-8')
         temp.replace(latest)

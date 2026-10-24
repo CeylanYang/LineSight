@@ -25,7 +25,9 @@ journalctl -u linesight-cloud-backup.service --since yesterday
 
 本机位置`~/LineSight-private/cloud-backups/`，用户及SYSTEM ACL；每个恢复点的密钥在`keys/<时间戳>.bin`，服务器临时导出密钥用后删除。最近成功状态`last-success.json`，失败不会覆盖；任务状态通过`Get-ScheduledTaskInfo -TaskName LineSight-Encrypted-Offhost-Backup`查看。重装任务：`tool/install_offhost_backup.ps1`。本机未登录或关机时不能执行，服务器原每日备份继续独立运行。
 
-当前保留全部恢复点、不自动删除；有期限的清理策略、容量告警、签名/备份密钥异地托管及另一台服务器恢复启动仍待完成。凭据、私有清单、原始数据库和图片不得放入客户安装包或公开证据目录。
+已接入保留策略：保留最近30天、8个周锚点、12个月锚点及至少7个不同日期的已验证恢复点。只有本机完整校验成功、服务器收到对应副本校验回执后，才允许清理过期的对应恢复点。恢复演练、损坏/缺少校验的副本、未知本机文件、符号链接/重解析点均跳过。每次成功复制后运行两端清理，磁盘空闲低于2GiB或15%时在`last-success.json`的`capacity_warning`报告告警；目前没有外部告警推送。
+
+`tool/backup_retention.py`默认只预览，`--apply`才执行清理，`--server`选择服务器标准备份根目录。测试已覆盖稀疏历史、多年锚点、实际临时目录清理与损坏/未校验/演练副本保留；生产首次运行无到期恢复点，没有删除历史备份。签名/备份密钥异地托管及另一台服务器恢复启动仍待完成。凭据、私有清单、原始数据库和图片不得放入客户安装包或公开证据目录。
 
 ## 隔离恢复演练
 
