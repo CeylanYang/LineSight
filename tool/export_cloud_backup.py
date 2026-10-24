@@ -9,6 +9,7 @@ import hashlib
 import io
 import json
 import os
+import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 import sqlite3
 import tarfile
@@ -51,13 +52,17 @@ def encrypt(backup, key_file):
         raise RuntimeError('Encryption runs only on the root backup host')
     backup=backup_path(backup)
     key_file=key_file.resolve()
-    if key_file.parent!=Path('/root/linesight-restore-private') or key_file.name!='export-key.bin':
+    if key_file.parent!=Path('/root/linesight-restore-private') or not re.fullmatch(r'export-key(?:-\d{8}T\d{12}Z)?\.bin',key_file.name):
         raise ValueError('Use the private temporary export key path')
     key=key_file.read_bytes()
     assert len(key)==32
     members=['linesight.sqlite3','identity.dump','private-manifest.json','linesight.env',
         'identity.env','compose.yaml','rehearse_cloud_restore.py','rehearse_restored_identity.py',
-        'report.json','identity-rehearsal-report.json','backend','media','realm','providers']
+        'report.json','backend','media','realm','providers']
+    # Daily snapshots have not necessarily been used for an identity rehearsal.
+    # Include that evidence only when it actually exists.
+    if (backup/'identity-rehearsal-report.json').is_file():
+        members.append('identity-rehearsal-report.json')
     files={}
     for name in members:
         path=backup/name

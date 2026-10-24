@@ -21,7 +21,11 @@ journalctl -u linesight-cloud-backup.service --since yesterday
 
 每个成功备份包含SQLite、该快照引用的原图/边缘图、后端源码、业务环境配置、身份部署配置、PostgreSQL自定义格式转储、realm初始化文件、NFC身份插件JAR、恢复脚本及私有逐表/逐文件清单。业务库使用在线一致性快照；身份库的转储及源数据指纹共享同一PostgreSQL导出快照。两个系统分别取快照，没有分布式原子快照保证。
 
-日常备份不清理历史。2026-10-24已完成一次AES-256-GCM加密的本机异机副本及完整校验；自动异机复制、密钥异地托管及保留周期尚未配置。凭据、私有清单、原始数据库和图片不得放入客户安装包或公开证据目录。
+日常备份不清理历史。2026-10-24已部署本机任务`LineSight-Encrypted-Offhost-Backup`：用户登录期间每天04:15及登录时运行；错过后补跑，失败每15分钟重试最多两次。执行`tool/offhost_backup.py`创建新的服务端快照、使用独立随机密钥AES-256-GCM加密、经SSH复制到本机私有目录，并验证认证标签、全部文件指纹、业务库逐表行指纹、外键及身份库转储指纹。已分别完成直接运行与Windows定时任务实际运行，任务退出码0。
+
+本机位置`~/LineSight-private/cloud-backups/`，用户及SYSTEM ACL；每个恢复点的密钥在`keys/<时间戳>.bin`，服务器临时导出密钥用后删除。最近成功状态`last-success.json`，失败不会覆盖；任务状态通过`Get-ScheduledTaskInfo -TaskName LineSight-Encrypted-Offhost-Backup`查看。重装任务：`tool/install_offhost_backup.ps1`。本机未登录或关机时不能执行，服务器原每日备份继续独立运行。
+
+当前保留全部恢复点、不自动删除；有期限的清理策略、容量告警、签名/备份密钥异地托管及另一台服务器恢复启动仍待完成。凭据、私有清单、原始数据库和图片不得放入客户安装包或公开证据目录。
 
 ## 隔离恢复演练
 
