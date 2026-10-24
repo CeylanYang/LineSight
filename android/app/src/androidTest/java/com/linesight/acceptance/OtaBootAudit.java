@@ -43,18 +43,18 @@ final class OtaBootAudit {
             try (FileOutputStream output = new FileOutputStream(new File(context.getCacheDir(), "ota67-fault-mode.txt"))) {
                 output.write(mode.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             }
-            // Frozen production 8078 R8 mapping is checked by the host verifier.
-            Class<?> type = context.getClassLoader().loadClass("o3.n");
+            // Supplied names must be checked against this candidate's R8 map by the host.
+            Class<?> type = context.getClassLoader().loadClass(arguments.getString("otaManagerClass", "o3.n"));
             Constructor<?> constructor = type.getDeclaredConstructors()[0];
             constructor.setAccessible(true);
             Object manager = constructor.newInstance(context, null);
-            Method apply = type.getDeclaredMethod("b", Map.class);
+            Method apply = type.getDeclaredMethod(arguments.getString("otaApplyMethod", "b"), Map.class);
             apply.setAccessible(true);
             Map<String,Object> values = new HashMap<>();
             values.put("version", "local-ota67-" + mode);
             values.put("patchUrl", staged.toURI().toString());
             values.put("md5", md5.toString());
-            values.put("targetVersionCode", 8078L);
+            values.put("targetVersionCode", Long.parseLong(arguments.getString("otaTargetVersionCode", "8078")));
             Object installed = apply.invoke(manager, values);
             result.put("install_result", installed.toString());
         }
@@ -62,6 +62,9 @@ final class OtaBootAudit {
         String blacklist = context.getSharedPreferences("flutter_patcher_prefs", Context.MODE_PRIVATE)
             .getString("patch_blacklist", "[]");
         result.put("blacklist", new JSONArray(blacklist));
+        String diagnostic = context.getSharedPreferences("flutter_patcher_prefs", Context.MODE_PRIVATE)
+            .getString("last_boot_diagnostic", "{}");
+        result.put("boot_diagnostic", new JSONObject(diagnostic));
         result.put("customer_accounts_used", false).put("public_patch_published", false);
         return result;
     }

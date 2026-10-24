@@ -1,5 +1,9 @@
 # LineSight
 
+当前开发交付：**1.1.55+8079，内容版本 5（验收包）**。功能清单、测试依据及后续事项见 [2026-10-24 开发收尾报告](docs/product/linesight/CLOSEOUT_20261024.md)。官网 https://99ai.pronhubcn.com/ 当前发布版本仍为 1.1.54+8078。
+
+以下为 1.1.20 及更早版本的历史说明；其中旧版本的本地认证、模拟相机或无云功能描述不代表当前版本，当前能力以收尾报告为准。
+
 Current release: **1.1.20** — [2.8-second particle brand reveal](docs/BRAND_REVEAL.md),
 without diagonal reflection stripes, with synchronized Android touch envelopes
 and concurrent storage initialization/login layout preloading. Based on 1.1.19.

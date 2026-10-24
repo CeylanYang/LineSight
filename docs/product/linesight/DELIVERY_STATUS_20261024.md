@@ -1,5 +1,7 @@
 # LineSight 交付状态（2026-10-24）
 
+按用户最新要求，当前开发阶段已收尾；完整功能及未验收事项见 [当前版本开发收尾](CLOSEOUT_20261024.md)。交付验收包为 1.1.55+8079，官网已发布基线仍为 1.1.54+8078，二者区分记录。
+
 客户端交付基线为 **1.1.54+8078，内容版本 5**。新增 OTA 模块启动异常报告过滤，保留开屏等待上限与此前会话修复；已有 8078 不需要重新安装 APK。当前官网为 https://99ai.pronhubcn.com/ ，同时保留 `/linesight/`。App API、Keycloak issuer 和原生 OAuth 回调未迁移。
 
 ## 本次新增完成
@@ -10,6 +12,7 @@
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
+| 8079 Dart OTA 故障回退 | 正式候选与故障 APK 除 Dart AOT 外指纹完全一致。真实框架/异步故障的固定错误类别到达原生诊断，补丁移除、拉黑、拒绝重复应用、基础工作台恢复通过；对应进程日志无测试敏感标记。第一次界面转储临时失败后从同一存活框架故障继续，未重装该故障补丁。临时 root 已撤销，线上 OTA 未修改；未覆盖 8079 原生 SIGSEGV/ANR | acceptance/ota79-batch/validation.json、fault-results.json、4 组配对 PNG/XML |
 | 四角色原生配置/团队导航 | 1.1.55+8079 兼容签名、API34、AMD 显卡后端：管理员/主管/操作/只读分别由 App 二级登录→真实浏览器→AppAuth 回调，选择独立团队；每角色 6 组配置/模板/团队页面，入口权限及返回账户页通过。24 组配对 PNG/XML；各角色退出成功，4 个临时身份、4 个 API 用户、5 个工作区已清理。未提交任务/模板、未修改客户团队。该次完整运行无宿主崩溃，不等于所有设备稳定性已证明 | acceptance/roles78-batch/validation.json、各角色 pages.json、cleanup.json |
 | 兼容签名候选升级 | 原 API34 AVD 中 8078→8079 覆盖安装成功，首次安装时间不变；演示会话及 13/3/13 任务保留，强制停止后冷启动仍保留；版本页实际显示 1.1.55 / 内容版本 5。使用 AMD 显卡后端，未清除数据或卸载，官网及线上 OTA 未修改 | acceptance/upgrade77-batch/upgrade.json、4 组配对 PNG/XML |
 | 原生插件日志修复候选 | release R8 及正式打包 DEX 检查：旧内容 5 APK 保留 1,656 处 Log、24 处 printStackTrace；1.1.55+8079 两种签名候选均归零，474 项完整 Flutter 测试通过。8 张版本号差异截图逐一审阅并按版本归档，旧证据未覆盖；两签名 native/资源/资产/引擎指纹相同。两种签名的升级保留、冷启动、版本页及浏览器回调已补验，兼容签名四角色配置/模板/团队导航已补验；剩余二级页及候选回退未完成。候选未发布，8078 线上基线和 OTA 未修改 | acceptance/privacy74-batch/validation.json、full-test-result.txt；upgrade75-batch/upgrade.json；upgrade77-batch/upgrade.json；roles78-batch/validation.json |

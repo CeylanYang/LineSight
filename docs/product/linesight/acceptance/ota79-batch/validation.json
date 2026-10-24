@@ -1,0 +1,56 @@
+{
+  "version": "1.1.55+8079",
+  "track": "production",
+  "avd": "LineSightOtaFaultValidation",
+  "api": 34,
+  "abi": "x86_64",
+  "candidate_apk_sha256": "546e621026c6e0196e7c50e9ec2a74708c6dec68924ea868017a901ecb432b4d",
+  "fault_apk_sha256": "e076489774143f0ad5de22c1c4aabd6743d7f53309734b5de0ce541c05c59191",
+  "fault_aot_sha256": "9c687005b4354c41cbe14414f4428da03bae46b1c736f252b7486eefb65630b7",
+  "fault_native_assets_engine_match_candidate": true,
+  "cases": [
+    {
+      "mode": "framework",
+      "boot_diagnostic_before_instrumentation": {
+        "status": "DROPPED_CIRCUIT_BREAKER",
+        "patchVersion": "local-ota67-framework",
+        "appVersionCode": 8079,
+        "crashCount": 1,
+        "message": "1 Dart boot failure(s); blacklisted (version=local-ota67-framework); LINESIGHT_ERROR source=framework category=state",
+        "recordedAt": 1792842545373
+      },
+      "sanitized_category_observed": "LINESIGHT_ERROR source=framework category=state",
+      "raw_canary_in_process_logs": false,
+      "patch_removed": true,
+      "blacklisted": true,
+      "same_patch_reapply_rejected": true,
+      "base_navigation_recovered": true
+    },
+    {
+      "mode": "asynchronous",
+      "boot_diagnostic_before_instrumentation": {
+        "status": "DROPPED_CIRCUIT_BREAKER",
+        "patchVersion": "local-ota67-asynchronous",
+        "appVersionCode": 8079,
+        "crashCount": 1,
+        "message": "1 Dart boot failure(s); blacklisted (version=local-ota67-asynchronous); LINESIGHT_ERROR source=asynchronous category=platform",
+        "recordedAt": 1792842627300
+      },
+      "sanitized_category_observed": "LINESIGHT_ERROR source=asynchronous category=platform",
+      "raw_canary_in_process_logs": false,
+      "patch_removed": true,
+      "blacklisted": true,
+      "same_patch_reapply_rejected": true,
+      "base_navigation_recovered": true
+    }
+  ],
+  "data_cleared": false,
+  "uninstall_used": false,
+  "first_install_time_retained": true,
+  "customer_accounts_used": false,
+  "public_patch_changed": false,
+  "native_sigsegv_reverified": false,
+  "anr_reverified": false,
+  "resumed_live_framework_after_transient_ui_failure": true,
+  "root_access": "dedicated userdebug emulator only; reverted in finally"
+}

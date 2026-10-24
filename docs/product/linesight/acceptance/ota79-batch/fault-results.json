@@ -1,0 +1,36 @@
+[
+  {
+    "mode": "framework",
+    "boot_diagnostic_before_instrumentation": {
+      "status": "DROPPED_CIRCUIT_BREAKER",
+      "patchVersion": "local-ota67-framework",
+      "appVersionCode": 8079,
+      "crashCount": 1,
+      "message": "1 Dart boot failure(s); blacklisted (version=local-ota67-framework); LINESIGHT_ERROR source=framework category=state",
+      "recordedAt": 1792842545373
+    },
+    "sanitized_category_observed": "LINESIGHT_ERROR source=framework category=state",
+    "raw_canary_in_process_logs": false,
+    "patch_removed": true,
+    "blacklisted": true,
+    "same_patch_reapply_rejected": true,
+    "base_navigation_recovered": true
+  },
+  {
+    "mode": "asynchronous",
+    "boot_diagnostic_before_instrumentation": {
+      "status": "DROPPED_CIRCUIT_BREAKER",
+      "patchVersion": "local-ota67-asynchronous",
+      "appVersionCode": 8079,
+      "crashCount": 1,
+      "message": "1 Dart boot failure(s); blacklisted (version=local-ota67-asynchronous); LINESIGHT_ERROR source=asynchronous category=platform",
+      "recordedAt": 1792842627300
+    },
+    "sanitized_category_observed": "LINESIGHT_ERROR source=asynchronous category=platform",
+    "raw_canary_in_process_logs": false,
+    "patch_removed": true,
+    "blacklisted": true,
+    "same_patch_reapply_rejected": true,
+    "base_navigation_recovered": true
+  }
+]
