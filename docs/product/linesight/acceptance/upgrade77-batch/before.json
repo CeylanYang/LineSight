@@ -1,0 +1,14 @@
+{
+  "package": {
+    "version_code": 8078,
+    "version_name": "1.1.54",
+    "first_install_time": "2026-10-23 23:31:29",
+    "last_update_time": "2026-10-24 05:44:43"
+  },
+  "demo": {
+    "workspace": "演示团队",
+    "awaiting": 13,
+    "exception": 3,
+    "closed": 13
+  }
+}

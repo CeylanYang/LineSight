@@ -1,0 +1,19 @@
+{
+  "role": "manager",
+  "native_hosted_login_identity_verified": true,
+  "workspace_selected": true,
+  "task_creation_control": true,
+  "production_configuration_controls": true,
+  "invite_and_member_menu": false,
+  "return_to_profile_verified": true,
+  "task_or_template_submitted": false,
+  "screenshots": [
+    "436-roles78-manager-workbench-emulator",
+    "437-roles78-manager-profiles-emulator",
+    "438-roles78-manager-profile-detail-emulator",
+    "439-roles78-manager-templates-emulator",
+    "440-roles78-manager-template-detail-emulator",
+    "441-roles78-manager-team-emulator"
+  ],
+  "resumed_template_after_host_exit": false
+}

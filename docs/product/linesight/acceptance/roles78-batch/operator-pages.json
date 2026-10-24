@@ -1,0 +1,19 @@
+{
+  "role": "operator",
+  "native_hosted_login_identity_verified": true,
+  "workspace_selected": true,
+  "task_creation_control": true,
+  "production_configuration_controls": false,
+  "invite_and_member_menu": false,
+  "return_to_profile_verified": true,
+  "task_or_template_submitted": false,
+  "screenshots": [
+    "442-roles78-operator-workbench-emulator",
+    "443-roles78-operator-profiles-emulator",
+    "444-roles78-operator-profile-detail-emulator",
+    "445-roles78-operator-templates-emulator",
+    "446-roles78-operator-template-detail-emulator",
+    "447-roles78-operator-team-emulator"
+  ],
+  "resumed_template_after_host_exit": false
+}

@@ -1,0 +1,19 @@
+{
+  "role": "viewer",
+  "native_hosted_login_identity_verified": true,
+  "workspace_selected": true,
+  "task_creation_control": false,
+  "production_configuration_controls": false,
+  "invite_and_member_menu": false,
+  "return_to_profile_verified": true,
+  "task_or_template_submitted": false,
+  "screenshots": [
+    "448-roles78-viewer-workbench-emulator",
+    "449-roles78-viewer-profiles-emulator",
+    "450-roles78-viewer-profile-detail-emulator",
+    "451-roles78-viewer-templates-emulator",
+    "452-roles78-viewer-template-detail-emulator",
+    "453-roles78-viewer-team-emulator"
+  ],
+  "resumed_template_after_host_exit": false
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_version_code": 8079,
+  "track": "preview",
+  "completed_roles": [
+    "owner",
+    "manager",
+    "operator",
+    "viewer"
+  ],
+  "all_four_roles_passed": true,
+  "failure_stage": null,
+  "failure_type": null,
+  "customer_data_modified": false,
+  "cleanup_evidence": "cleanup.json",
+  "raw_credentials_saved_in_evidence": false
+}

@@ -1,0 +1,19 @@
+{
+  "role": "owner",
+  "native_hosted_login_identity_verified": true,
+  "workspace_selected": true,
+  "task_creation_control": true,
+  "production_configuration_controls": true,
+  "invite_and_member_menu": true,
+  "return_to_profile_verified": true,
+  "task_or_template_submitted": false,
+  "screenshots": [
+    "430-roles78-owner-workbench-emulator",
+    "431-roles78-owner-profiles-emulator",
+    "432-roles78-owner-profile-detail-emulator",
+    "433-roles78-owner-templates-emulator",
+    "434-roles78-owner-template-detail-emulator",
+    "435-roles78-owner-team-emulator"
+  ],
+  "resumed_template_after_host_exit": false
+}

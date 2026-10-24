@@ -1,0 +1,35 @@
+{
+  "track": "preview",
+  "before": {
+    "package": {
+      "version_code": 8078,
+      "version_name": "1.1.54",
+      "first_install_time": "2026-10-23 23:31:29",
+      "last_update_time": "2026-10-24 05:44:43"
+    },
+    "demo": {
+      "workspace": "演示团队",
+      "awaiting": 13,
+      "exception": 3,
+      "closed": 13
+    }
+  },
+  "after_package": {
+    "version_code": 8079,
+    "version_name": "1.1.55",
+    "first_install_time": "2026-10-23 23:31:29",
+    "last_update_time": "2026-10-24 11:29:36"
+  },
+  "demo_session_and_29_task_counts_retained": true,
+  "data_cleared": false,
+  "uninstall_used": false,
+  "browser_login_callback_verified": true,
+  "preview_upgrade_verified": true,
+  "ota_crash_guard_reverified": false,
+  "cold_start_demo_session_retained": true,
+  "version_page_verified": true,
+  "version_page": "LineSight 1.1.55 / 内容版本 5",
+  "runtime_gpu": "host AMD Radeon 780M",
+  "public_release_changed": false,
+  "browser_login_callback_evidence": "../roles78-batch/validation.json"
+}
