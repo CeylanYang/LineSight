@@ -17,11 +17,13 @@ import 'cloud_account.dart';
 import 'cloud_navigation.dart';
 import 'cloud_trace.dart';
 import 'screens/cloud_shell.dart';
+import 'ota_update.dart';
 
 Future<void> main() async {
   final trace = startupTraceEnabled ? StartupTrace() : null;
   trace?.mark('dart-main');
   WidgetsFlutterBinding.ensureInitialized();
+  await OtaUpdates.instance.initialize();
   trace?.mark('binding-ready');
   if (trace != null) {
     var recordedFrames = 0;
@@ -56,6 +58,8 @@ Future<void> main() async {
     ),
   );
   trace?.mark('run-app');
+  // Download alongside startup work; activation requires a later cold start.
+  OtaUpdates.instance.check();
   if (trace != null) {
     WidgetsBinding.instance.waitUntilFirstFrameRasterized.then(
       (_) => trace.mark('first-frame-rasterized'),

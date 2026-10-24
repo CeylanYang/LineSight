@@ -264,6 +264,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_patcher:
+    dependency: "direct main"
+    description:
+      name: flutter_patcher
+      sha256: "2dba7dce8cedea6d7cb70d016c9bb63ce1216e3cf8329fa64f43b791d28237c3"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.4"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

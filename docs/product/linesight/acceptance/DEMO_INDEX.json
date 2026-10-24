@@ -1,7 +1,103 @@
 {
-  "screenshots": 334,
+  "screenshots": 340,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
+    {
+      "file": "ota54-batch/png/322-ota-base-emulator.png",
+      "title": "322-ota-base-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "e780810095c5168cf8304dde1d8376c932fdb88bedc0a1d49aac9ad56989af8a",
+      "batch_notes": "ota54-batch/README.md"
+    },
+    {
+      "file": "ota54-batch/png/323-ota-ready-emulator.png",
+      "title": "323-ota-ready-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "987be2340397e8ba36570aa4599f87421f69012cfa84c81f220a6de126bba146",
+      "batch_notes": "ota54-batch/README.md"
+    },
+    {
+      "file": "ota54-batch/png/324-ota-account-retained-emulator.png",
+      "title": "324-ota-account-retained-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "8628f7cfa147683ab40d17e6015d4cd81365804ceb6fbd4b8f88b794d820d1b0",
+      "batch_notes": "ota54-batch/README.md"
+    },
+    {
+      "file": "ota54-batch/png/325-ota-applied-emulator.png",
+      "title": "325-ota-applied-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "2149b378b3921711c67e1a0cea6f211e749add0008931266d2c2497fb8d37709",
+      "batch_notes": "ota54-batch/README.md"
+    },
+    {
+      "file": "ota54-batch/png/326-ota-rollback-emulator.png",
+      "title": "326-ota-rollback-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "e647b8719561115f7b7b4caa2c3cc00dc2b549daed39b67780ca9485500d2b8f",
+      "batch_notes": "ota54-batch/README.md"
+    },
+    {
+      "file": "ota54-batch/png/327-ota-auto-restored-emulator.png",
+      "title": "327-ota-auto-restored-emulator",
+      "batch": "ota54-batch",
+      "batch_requirement_ids": [
+        "OTA-01",
+        "OTA-02",
+        "OTA-03",
+        "REL-01"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "4d3a6a915165679716b20c783a61aa73567d76520c084a2fc59c588ebe9bcf8b",
+      "batch_notes": "ota54-batch/README.md"
+    },
     {
       "file": "team53-batch/png/317-checkcheck-workbench-emulator.png",
       "title": "317-checkcheck-workbench-emulator",
@@ -546,7 +642,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "0096baac09e59804f793673edd9d28cc70d2de58fbbed5d7bcd3217903612b2c",
+      "sha256": "c62d89c2eb9e3284e9b447891c6166e342e848d8eb45ad40f0a9d2e07757885d",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -563,7 +659,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "d46521a0a7272a741fb1171c9422f384cb083283b1141625bf175bae90046afe",
+      "sha256": "7d739d152d71806797728d17717bdae3d62e30f1ed68ad37e9c8a889d0210a71",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -580,7 +676,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "6ccd91ab7d1e7936a8f4d522e33d869737b9d9a0671c6cf84b95e0a11c46d2fb",
+      "sha256": "46e8c4dce104e2db847bed6de4309ce26830b201a367fb08b67b7cae32327f30",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -597,7 +693,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "46f6f75403320e6ba11a3477fce0d1e2cf7efe5b411aa270955d01da20d41a9e",
+      "sha256": "f4915b68ead76ef92e1e0db02a97055251ff92c6763b2250cb6573c64327ebad",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -614,7 +710,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "9564dcd2da270c8ffa2448669d00110190ac3cdb249dc8f3be883a853c7a5fe8",
+      "sha256": "40223081d05245b856c074f1bd9d8c9c7fb9c46023faf9c2658c60e5a48ab048",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -631,7 +727,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "2c50c93c7dc9154c585b420668631d7005962b7dcfe77dcf51948cdee2199d9e",
+      "sha256": "3796b04df1f4f0d75b46df72d0308abef2059f0387ca8a1a71f7683154feb8b2",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -3463,7 +3559,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "9ebaa21a40fb6ea3563b43a73d362ee0bbef98dcdf17b6ddd731157ee9634e5d",
+      "sha256": "34c722a5e3a504cbcf81337cf56840aae6d57d3b4b52cb6cc2981eb70e7da671",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -3481,7 +3577,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "6b3d85a507c79cede73b91dd7a1d9f68fb53808f8d452ae82dccc54865f56f0a",
+      "sha256": "39d1b19b9aafd9ce00ab7bd9f95a3040c01a6e6218040c6e3ea043f025e7545b",
       "batch_notes": "template-batch/README.md"
     },
     {

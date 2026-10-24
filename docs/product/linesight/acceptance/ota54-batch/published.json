@@ -1,0 +1,24 @@
+[
+  {
+    "abi": "arm64-v8a",
+    "action": "patch",
+    "base": 8078,
+    "expires": "2027-01-22T05:52:40.740079+00:00",
+    "schema": 1,
+    "sequence": 3,
+    "sha256": "f1915e3b41126d1380c8daa40f27f98f427a3d150290296d0b2e48c5f49c2e1e",
+    "size": 11207568,
+    "track": "preview"
+  },
+  {
+    "abi": "x86_64",
+    "action": "patch",
+    "base": 8078,
+    "expires": "2027-01-22T05:52:40.770640+00:00",
+    "schema": 1,
+    "sequence": 3,
+    "sha256": "05e1860ba80dc6314f384e792ee30fe96749334a455053356ca9050c2489cebd",
+    "size": 11469712,
+    "track": "preview"
+  }
+]

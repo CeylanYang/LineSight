@@ -1,6 +1,7 @@
 param(
     [ValidateSet('preview','production')][string]$Track = 'production',
     [switch]$WithAudit,
+    [ValidatePattern('^[0-9]+$')][string]$OtaRevision = '0',
     [ValidatePattern('^[a-z0-9-]+$')][string]$EvidenceBatch = 'release'
 )
 $ErrorActionPreference = 'Stop'
@@ -22,7 +23,7 @@ $taskBuildNumber = $taskVersionMatch.Groups[2].Value
 $displayVersionMatch = [regex]::Match((Get-Content lib/ui.dart -Raw), "const appVersion = '([^']+)';")
 if (-not $displayVersionMatch.Success -or $displayVersionMatch.Groups[1].Value -ne $taskVersion) { throw 'Displayed app version must match pubspec.yaml before building' }
 $ErrorActionPreference = 'Continue'
-& 'C:\Users\29668\flutter\bin\flutter.bat' build apk --release --config-only --no-pub --target lib/main.dart --target-platform android-arm64,android-x64 --build-number $taskBuildNumber --dart-define-from-file=.artifact-work/sso/demo-build.json *> ".artifact-work/sso/$EvidenceBatch-$Track-config.log"
+& 'C:\Users\29668\flutter\bin\flutter.bat' build apk --release --config-only --no-pub --target lib/main.dart --target-platform android-arm64,android-x64 --build-number $taskBuildNumber --dart-define-from-file=.artifact-work/sso/demo-build.json "--dart-define=LINESIGHT_OTA_TRACK=$Track" "--dart-define=LINESIGHT_OTA_REVISION=$OtaRevision" *> ".artifact-work/sso/$EvidenceBatch-$Track-config.log"
 $configurationExitCode = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
 if ($configurationExitCode -ne 0) { throw 'Flutter release configuration failed' }
@@ -31,6 +32,8 @@ $registration = Get-Content $registrant -Raw
 $registration = [regex]::Replace($registration, '(?s)    try \{\s*flutterEngine\.getPlugins\(\)\.add\(new dev\.flutter\.plugins\.integration_test\.IntegrationTestPlugin\(\)\);\s*\} catch \(Exception e\) \{\s*Log\.e\(TAG, "Error registering plugin integration_test,[^\r\n]*\r?\n    \}\r?\n', '')
 [IO.File]::WriteAllText((Join-Path (Get-Location) $registrant), $registration, [Text.UTF8Encoding]::new($false))
 $cloudConfig = Get-Content .artifact-work/sso/demo-build.json -Raw | ConvertFrom-Json
+$cloudConfig | Add-Member -NotePropertyName LINESIGHT_OTA_TRACK -NotePropertyValue $Track -Force
+$cloudConfig | Add-Member -NotePropertyName LINESIGHT_OTA_REVISION -NotePropertyValue $OtaRevision -Force
 $cloudDefines = ($cloudConfig.PSObject.Properties | ForEach-Object { [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($_.Name + '=' + $_.Value)) }) -join ','
 $gradleArguments = @('-p','android','-I','../tool/gradle_mirrors.init.gradle','-Dhttp.proxyHost=','-Dhttps.proxyHost=','-Ptarget-platform=android-arm64,android-x64','-Ptarget=lib/main.dart',"-Pdart-defines=$cloudDefines",'--no-daemon','--max-workers=2')
 if ($Track -eq 'preview') { $gradleArguments += '-PlinesightPreviewSigning=true' }

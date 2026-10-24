@@ -19,6 +19,7 @@ import 'cloud_business.dart';
 import 'cloud_nfc.dart';
 import 'cloud_sessions.dart';
 import 'settings.dart' show HelpPage;
+import 'app_updates.dart';
 import '../nfc_reader.dart';
 
 class CloudShell extends StatefulWidget {
@@ -742,6 +743,13 @@ class _CloudShellState extends State<CloudShell> {
                   subtitle: tr(context, '记录检测结果、生产任务与质量复核。'),
                   icon: Icons.help_outline,
                   onTap: () => openPage(context, const HelpPage()),
+                ),
+                const Divider(height: 1, indent: 64, endIndent: 14),
+                MenuTile(
+                  title: tr(context, '应用更新'),
+                  subtitle: tr(context, '自动下载更新，下次启动生效。'),
+                  icon: Icons.system_update_outlined,
+                  onTap: () => openPage(context, const AppUpdatesPage()),
                 ),
                 const Divider(height: 1, indent: 64, endIndent: 14),
                 MenuTile(

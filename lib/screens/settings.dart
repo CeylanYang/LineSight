@@ -14,6 +14,7 @@ import 'storage_recovery.dart';
 import 'csv_export.dart';
 import '../language_selector.dart';
 import 'team_workspace.dart';
+import 'app_updates.dart';
 
 export 'audit.dart' show AuditPage;
 export 'restore.dart' show RestorePreviewPage;
@@ -81,6 +82,15 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
         SectionHeading(tr(context, "账户与安全")),
+        GlassPanel(
+          padding: EdgeInsets.zero,
+          child: SettingsTile(
+            icon: Icons.system_update_outlined,
+            title: tr(context, '应用更新'),
+            subtitle: tr(context, '自动下载更新，下次启动生效。'),
+            onTap: () => openPage(context, const AppUpdatesPage()),
+          ),
+        ),
         GlassPanel(
           padding: EdgeInsets.zero,
           child: Column(

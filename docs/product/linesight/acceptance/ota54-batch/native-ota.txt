@@ -1,0 +1,12 @@
+10-24 05:52:58.193  4459  4459 D FlutterPatcher/AutoInit: auto init via ContentProvider.onCreate()
+10-24 05:52:58.246  4459  4459 I FlutterPatcher/Guard: previous session ended without crash (USER_REQUESTED)
+10-24 05:52:58.247  4459  4459 D FlutterPatcher/App: no usable patch, boot with built-in libapp.so
+10-24 05:52:58.279  4459  4459 D FlutterPatcher/Diag: record status=NO_PATCH patch=null msg=null
+10-24 05:53:05.786  4459  4548 D FlutterPatcher/Sig: signature empty, skip Ed25519 check
+10-24 05:53:05.793  4459  4548 D FlutterPatcher/Mgr: patch ota-3 ready, takes effect on next cold start
+10-24 05:53:28.849  4608  4608 D FlutterPatcher/AutoInit: auto init via ContentProvider.onCreate()
+10-24 05:53:28.873  4608  4608 D FlutterPatcher/Sig: signature empty, skip Ed25519 check
+10-24 05:53:28.878  4608  4608 D FlutterPatcher/Hook: FlutterLoader patched via field 'flutterLoader' -> /data/user/0/com.example.linesight_flutter/files/flutter_patcher/libapp_patch.so
+10-24 05:53:28.881  4608  4608 D FlutterPatcher/Diag: record status=PATCHED patch=ota-3 msg=null
+10-24 05:53:28.896  4608  4608 D FlutterPatcher/Loader: load patch: so=/data/user/0/com.example.linesight_flutter/files/flutter_patcher/libapp_patch.so assets=<built-in>
+10-24 05:53:28.912  4608  4608 D FlutterPatcher/Loader: load patch: so=/data/user/0/com.example.linesight_flutter/files/flutter_patcher/libapp_patch.so assets=<built-in>

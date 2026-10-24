@@ -1744,3 +1744,14 @@
 1743|Track inspection results, production tasks and quality reviews.
 1744|Team supervisor
 1745|Job title
+1746|App updates
+1747|Checking for updates
+1748|Downloading update
+1749|Update ready. Applies on next launch.
+1750|Unable to check for updates. Try again later.
+1751|Update was not applied. Your current version is ready to use.
+1752|Automatic updates are unavailable in this build.
+1753|Your content is up to date
+1754|Updates download automatically and apply on the next launch.
+1755|Content version {0}
+1756|Check for updates
