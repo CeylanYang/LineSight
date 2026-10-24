@@ -1,0 +1,16 @@
+{
+  "production_check_passed": true,
+  "service_health": 200,
+  "live_invalid_auth": 401,
+  "live_unknown_route": 404,
+  "journal_canary_absent": true,
+  "request_ids_correlated": 3,
+  "only_url_templates_logged": true,
+  "production_database_migrated": false,
+  "app_binary_changed": false,
+  "backup": "/var/backups/linesight/private-logs/20261024T070222Z",
+  "source_sha256": [
+    "e926dec5d1609d2a56908bdd8b2678119d406914a17a48bc1d2e253872b31803",
+    "9c19980acefd1ddec1cfaf9f1cfb4c4a2f53fd0f0d386a3849565f72c43e02ba"
+  ]
+}

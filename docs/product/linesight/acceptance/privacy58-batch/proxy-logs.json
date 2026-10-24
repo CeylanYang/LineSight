@@ -1,0 +1,9 @@
+{
+  "official_caddy_filter_encoder": true,
+  "isolated_upstream_failure_status": 502,
+  "url_query_authorization_cookie_canary_absent": true,
+  "error_status_and_location_retained": true,
+  "public_api_and_portal_https": 200,
+  "backup": "/var/backups/linesight/private-logs/20261024T070350Z",
+  "test_proxy_stopped": true
+}

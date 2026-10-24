@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "linesight.privacy_log.RequestDiagnosticsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -109,7 +110,8 @@ CSRF_TRUSTED_ORIGINS = ["https://47.111.81.94"]
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "formatters": {"private": {"()": "linesight.privacy_log.PrivateFormatter"}},
+    "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "private"}},
     "root": {"handlers": ["console"], "level": "INFO"},
     "loggers": {
         "django.request": {"handlers": ["console"], "level": "WARNING", "propagate": False},
