@@ -1,0 +1,42 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 2,
+  "device": "Android API34 x86_64 emulator, 412x824",
+  "channel": "preview",
+  "workspace": "independent demo team",
+  "captures": [
+    "332-native60-demo-workbench-emulator.png",
+    "333-native60-insights-emulator.png",
+    "334-native60-report-preview-emulator.png",
+    "335-native60-csv-save-dialog-emulator.png",
+    "336-native60-print-preview-emulator.png",
+    "337-native60-sync-emulator.png",
+    "338-native60-diagnostics-emulator.png",
+    "339-native60-english-profile-emulator.png",
+    "340-native60-english-guide-emulator.png",
+    "341-native60-english-sync-emulator.png",
+    "342-native60-english-notifications-emulator.png"
+  ],
+  "exports": {
+    "LineSight-quality.pdf": {
+      "bytes": 760012,
+      "sha256": "b43d2f16ad8c320c94623f214d588b0ac64eae5d61c91506dcdf1af2035978f7"
+    },
+    "LineSight-quality.csv": {
+      "bytes": 3355,
+      "sha256": "64885e304475eca71c21dc52eed8c8de484ac3c697abfc4067605be7cb4f86b8"
+    }
+  },
+  "csv_pdf_ui_metrics_agree": true,
+  "pdf_pages": 9,
+  "pdf_render_review": "Nine rendered pages inspected; no unreadable glyphs or overlapping text. Task sections may continue across pages.",
+  "report_return_after_export_observed": true,
+  "english_secondary_pages_observed": true,
+  "language_restored_to_chinese": true,
+  "customer_business_data_modified": false,
+  "app_reinstalled": false,
+  "app_data_cleared": false,
+  "full_native_role_matrix_complete": false,
+  "physical_hardware_verified": false,
+  "production_runtime_verified": false
+}

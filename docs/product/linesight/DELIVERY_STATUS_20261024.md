@@ -7,6 +7,7 @@
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
 | 邮件找回密码 | 正式 Keycloak → 自托管 Postfix → 163 SMTP465 → 真实邮箱。重置、新密码 PKCE 登录、旧密码拒绝、重置链接重放拒绝通过 | acceptance/mail57-batch/production-reset.json |
+| 内容版本 2 原生补验 | 演示团队登录、CSV 保存、9 页 PDF 系统打印、导出返回、同步诊断及部分英文二级页；11 组截图/XML 与导出指标校验通过 | acceptance/native60-batch/validation.json |
 | 失效会话恢复 | 修复 AppAuth 旧错误字段读取问题。真实模拟器由通用失败恢复为“登录已过期”，点击进入二级登录页；预览 OTA4、正式 OTA1 已发布 | acceptance/refresh59-batch/validation.json |
 | 关闭注册 | 正式邮件配置后仍关闭，原有账号密码未更改，一次性验收账号已删除 | acceptance/mail57-batch/production-smtp.json |
 | 即时撤权 | 真实 PKCE 四角色矩阵，降权旧令牌 401、新只读令牌写入 403、移除后 404，最后管理员离组 409 | acceptance/roles56-batch/live-role-matrix.json |
@@ -31,6 +32,6 @@
 | 灾备 | 第二台主机完整恢复启动和生产切换演练；APK/OTA 签名密钥及备份解密钥需独立异地托管 |
 | OTA 扩展验收 | 正式渠道运行、物理 ARM 设备与故意坏补丁的自动崩溃回滚 |
 
-用户目前未提供真机。本阶段继续处理可独立完成的软件及模拟器验收，以上项目保留在台账，不计作完成。
+测试收件人已确认收到“LineSight 邮件服务连接测试”。用户目前未提供真机。本阶段继续处理可独立完成的软件及模拟器验收，以上项目保留在台账，不计作完成。最新 native60 补验覆盖部分二级页及导出路径，未将“所有页面与角色”整体标记通过。
 
 Excel 主表本次仅更新 SEC-05、COL-01、COL-02、REL-01、REL-02、REL-04、QA-02、QA-04、SSO-03 的状态及证据。28 个值变更通过 OOXML 对比；工作表结构、样式、公式、验证及其他原生部分保持，CSV 同步。未将“待验收”改写成“没有实现”。

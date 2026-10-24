@@ -1,0 +1,40 @@
+﻿metric,value
+first_inspected_pieces,63
+first_pass_pieces,35
+first_pass_rate,0.5555555555555556
+final_planned_pieces,63
+final_released_pieces,61
+final_release_rate,0.9682539682539683
+latest_fail_pieces,2
+latest_scrap_pieces,0
+workspace,演示团队
+source,cloud
+report_id,LS-74FA2208AF625C0E
+generated_at,2026-10-24T07:41:37.133634+00:00
+filters,{}
+
+task_id,part_name,batch_code,status,assignee,round_no,inspector,verdict,inspected_qty,pass_qty,fail_qty,scrap_qty
+2257d644-f637-45c1-b81e-073e7f6818cb,Native51-Section-Focus,NATIVE51-FOCUS,exception,,1,LineSight Demo,fail,1,0,1,0
+0c23f42c-369e-4ea0-88fc-32982b2eff6f,Native50-Quality-Bracket,NATIVE50-20261024,closed,,1,LineSight Demo,fail,2,0,2,0
+0c23f42c-369e-4ea0-88fc-32982b2eff6f,Native50-Quality-Bracket,NATIVE50-20261024,closed,,2,LineSight Demo,pass,2,2,0,0
+eb1b970c-28a3-4f68-907b-84d4851dbaf2,DEMO · 会话恢复检验,DEMO-REAUTH-6bee2104,closed,,1,LineSight Demo,pass,2,2,0,0
+5fbdb05c-a951-43f9-8d39-5cf671f93945,DEMO · 会话恢复检验,DEMO-REAUTH-c4b1c52b,closed,,1,LineSight Demo,pass,2,2,0,0
+a89b1e97-5124-4c20-b4f1-501bfd867f80,DEMO · 支架终检,DEMO-REVIEW-d65911dd,closed,,1,LineSight Demo,pass,2,2,0,0
+608e72c3-7591-45d7-a86d-8ddfc7d8abbd,DEMO · Closure photo comparison,DEMO-CLOSURE-b04f4ecf,closed,,1,LineSight Demo,fail,1,0,1,0
+608e72c3-7591-45d7-a86d-8ddfc7d8abbd,DEMO · Closure photo comparison,DEMO-CLOSURE-b04f4ecf,closed,,2,LineSight Demo,pass,1,1,0,0
+7cb7c513-17fb-4e46-aa22-bd098aa893be,DEMO · Closure photo comparison,DEMO-CLOSURE-32d0b48a,exception,,1,LineSight Demo,fail,1,0,1,0
+5327299a-6201-4fdf-abba-f2037fc89712,DEMO · SN inspection history,DEMO-HISTORY-a86a7fcd5b,closed,,1,LineSight Demo,fail,2,1,1,0
+5327299a-6201-4fdf-abba-f2037fc89712,DEMO · SN inspection history,DEMO-HISTORY-a86a7fcd5b,closed,,2,LineSight Demo,pass,2,2,0,0
+1a4775aa-3c5d-404d-a5c8-cec0fd5528a4,DEMO · 离线检验 1792755383152,DEMO-OFFLINE,closed,,1,LineSight Demo,pass,10,10,0,0
+e66a61d3-7cb8-49cc-83ac-dd13c34e1c1a,DEMO · 离线检验 1792755183010,DEMO-OFFLINE,closed,,1,LineSight Demo,pass,10,10,0,0
+cb8f3a2e-f0f0-4b8f-9b98-aee5efc19712,DEMO · 手机检验 1792752711821,,closed,,1,LineSight Demo,fail,10,0,10,0
+cb8f3a2e-f0f0-4b8f-9b98-aee5efc19712,DEMO · 手机检验 1792752711821,,closed,,2,LineSight Demo,pass,10,10,0,0
+8ea81f11-111a-4ffb-83ea-900a8a673e38,DEMO · 手机检验 1792752479117,,closed,,1,LineSight Demo,fail,10,0,10,0
+8ea81f11-111a-4ffb-83ea-900a8a673e38,DEMO · 手机检验 1792752479117,,closed,,2,LineSight Demo,pass,10,10,0,0
+af04e1fb-168c-465e-b77a-fec1d1854653,DEMO · 证据与数量批次验收,DEMO-20261023,closed,,1,LineSight Demo,fail,10,8,2,0
+af04e1fb-168c-465e-b77a-fec1d1854653,DEMO · 证据与数量批次验收,DEMO-20261023,closed,,2,LineSight Demo,pass,10,10,0,0
+9f10ba28-4eee-4f4e-b4eb-05c5a26971a6,DEMO · 手机检验 1792750090533,,closed,,1,LineSight Demo,fail,,,,
+9f10ba28-4eee-4f4e-b4eb-05c5a26971a6,DEMO · 手机检验 1792750090533,,closed,,2,LineSight Demo,pass,,,,
+b2b5cdc9-7436-4fa7-84bd-3616c48d0df3,DEMO · 手机检验 1792749961116,,exception,,1,LineSight Demo,fail,,,,
+bd0f0766-7ec7-4a64-8b35-f5e55f4b2ede,DEMO · 状态与并发验收,,closed,,1,LineSight Demo,fail,,,,
+bd0f0766-7ec7-4a64-8b35-f5e55f4b2ede,DEMO · 状态与并发验收,,closed,,2,LineSight Demo,pass,,,,
