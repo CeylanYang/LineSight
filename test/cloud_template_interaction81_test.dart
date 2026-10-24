@@ -100,6 +100,13 @@ void main() {
   }
 
   Future<void> tap(WidgetTester tester, Finder target) async {
+    if (target.evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        target,
+        220,
+        scrollable: find.byType(Scrollable).first,
+      );
+    }
     await tester.ensureVisible(target);
     await tester.pumpAndSettle();
     await tester.tap(target);
@@ -112,7 +119,7 @@ void main() {
     await expectLater(
       find.byType(Scaffold).last,
       matchesGoldenFile(
-        '../docs/product/linesight/acceptance/templates81-batch/png/$name.png',
+        '../docs/product/linesight/acceptance/${name.startsWith('81-catalogue') ? 'cloud82-batch' : 'templates81-batch'}/png/$name.png',
       ),
     );
   }

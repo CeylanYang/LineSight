@@ -2,6 +2,7 @@ from django.urls import path
 from . import api, workflow, product, vision, nfc, ota
 
 urlpatterns = [
+    path('app-config/', ota.runtime_config),
     path('ota/<str:track>/<int:base>/<str:abi>/<str:name>', ota.artifact),
     path('auth/nfc/credentials/',nfc.credentials),
     path('auth/nfc/credentials/<uuid:credential_id>/',nfc.credentials),

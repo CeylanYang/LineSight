@@ -41,3 +41,17 @@ class OtaDistributionTests(SimpleTestCase):
     def test_manifest_size_bounded(self):
         (self.folder / 'manifest.json').write_bytes(b'x' * 16385)
         self.assertEqual(self.client.get(self.url + 'manifest.json').status_code, 503)
+
+    def test_runtime_configuration_is_bounded_read_only_and_not_cached(self):
+        target = Path(self.temp.name) / 'app-config.json'
+        with patch.dict(os.environ, LINESIGHT_RUNTIME_CONFIG=str(target)):
+            url = '/api/v1/app-config/'
+            self.assertEqual(self.client.get(url).status_code, 204)
+            self.assertEqual(self.client.post(url, {}).status_code, 405)
+            target.write_bytes(b'{"payload":"signed"}')
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response['Cache-Control'], 'no-store')
+            self.assertEqual(b''.join(response.streaming_content), target.read_bytes())
+            target.write_bytes(b'x' * (256 * 1024 + 1))
+            self.assertEqual(self.client.get(url).status_code, 503)

@@ -5,6 +5,7 @@ import '../cloud_feedback.dart';
 import '../ui.dart';
 import 'cloud_business.dart';
 import 'cloud_tasks.dart';
+import 'quality_document_library.dart';
 
 class CloudInspectionHub extends StatefulWidget {
   final int initialTab;
@@ -35,7 +36,7 @@ class _CloudInspectionHubState extends State<CloudInspectionHub> {
     return Column(
       children: [
         CloudSectionTabs(
-          labels: const ['待检任务', '检测记录', '质量报告'],
+          labels: const ['待检任务', '检测记录', '质量报告', '作业文件'],
           selected: tab,
           onSelected: (value) => setState(() {
             tab = value;
@@ -57,6 +58,10 @@ class _CloudInspectionHubState extends State<CloudInspectionHub> {
                 const SizedBox.shrink(),
               if (visited.contains(2))
                 const CloudReportPage(embedded: true)
+              else
+                const SizedBox.shrink(),
+              if (visited.contains(3))
+                const PageBody(children: [QualityDocumentLinks()])
               else
                 const SizedBox.shrink(),
             ],

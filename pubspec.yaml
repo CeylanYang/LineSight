@@ -1,7 +1,7 @@
 name: linesight_flutter
 description: A Flutter quality inspection app for factory production lines.
 publish_to: none
-version: 1.1.57+8081
+version: 1.1.58+8082
 
 environment:
   sdk: '>=3.10.0 <4.0.0'
@@ -29,6 +29,7 @@ dependencies:
   flutter_patcher:
     hosted: https://pub.flutter-io.cn
     version: 0.1.4
+  url_launcher: 6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -42,5 +43,8 @@ flutter:
   assets:
     - assets/brand/reveal_logo.png
     - assets/fonts/NotoSansSC.ttf
+    - assets/fonts/NotoSansSC-Regular.ttf
+    - assets/fonts/NotoSansSC-SemiBold.ttf
     - assets/fonts/OFL-NotoSansSC.txt
     - assets/parts/
+    - assets/templates/

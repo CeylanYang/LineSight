@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../l10n.dart';
 import '../ota_update.dart';
 import '../ui.dart';
+import '../runtime_content.dart';
+import '../official_website.dart';
 
 class AppUpdatesPage extends StatelessWidget {
   const AppUpdatesPage({super.key});
@@ -12,7 +14,7 @@ class AppUpdatesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(tr(context, '应用更新'))),
       body: ListenableBuilder(
-        listenable: updates,
+        listenable: Listenable.merge([updates, RuntimeContent.instance]),
         builder: (context, _) {
           final busy = {
             OtaStatus.checking,
@@ -44,6 +46,11 @@ class AppUpdatesPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(tr(context, '内容版本 {0}', [otaRevision])),
+                    Text(
+                      tr(context, '配置版本 {0}', [
+                        RuntimeContent.instance.revision,
+                      ]),
+                    ),
                     const SizedBox(height: 20),
                     Text(tr(context, message)),
                     if (busy) ...[
@@ -56,9 +63,21 @@ class AppUpdatesPage extends StatelessWidget {
                     ],
                     const SizedBox(height: 20),
                     FilledButton.icon(
-                      onPressed: busy ? null : updates.check,
+                      onPressed: busy
+                          ? null
+                          : () async {
+                              await Future.wait([
+                                updates.check(),
+                                RuntimeContent.instance.refresh(),
+                              ]);
+                            },
                       icon: const Icon(Icons.refresh),
                       label: Text(tr(context, '检查更新')),
+                    ),
+                    TextButton.icon(
+                      onPressed: () => openOfficialWebsite(context),
+                      icon: const Icon(Icons.language),
+                      label: Text(tr(context, 'LineSight 官网')),
                     ),
                   ],
                 ),

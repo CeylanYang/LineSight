@@ -1,0 +1,24 @@
+{
+  "revision": 2,
+  "signature_verified": true,
+  "public_https": true,
+  "config_sha256": "7dc6193641894acf7d63a50f9d9a6be15b97a53e1f4b9a114d59c1d3294c473e",
+  "images": [
+    {
+      "url": "https://47.111.81.94/content/13e1daf7948afc4fc297fe738470a96843c336c79aef8ac8fc005c7e00d461a6.png",
+      "sha256": "13e1daf7948afc4fc297fe738470a96843c336c79aef8ac8fc005c7e00d461a6",
+      "bytes": 376492
+    },
+    {
+      "url": "https://47.111.81.94/content/1dd9343dad7ed3c393bec7d531c2a363014de8303914e11fda136edcf7e87480.png",
+      "sha256": "1dd9343dad7ed3c393bec7d531c2a363014de8303914e11fda136edcf7e87480",
+      "bytes": 367815
+    },
+    {
+      "url": "https://47.111.81.94/content/9725f1f812249639735400095ea1ed71ed462c2d7eac4cbc9482688501453479.png",
+      "sha256": "9725f1f812249639735400095ea1ed71ed462c2d7eac4cbc9482688501453479",
+      "bytes": 262521
+    }
+  ],
+  "vantage": "local Windows host via curl, public DNS and trusted HTTPS"
+}

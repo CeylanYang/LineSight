@@ -1776,3 +1776,70 @@
 1775|{0} templates
 1776|No matching templates
 1777|Show all templates
+1778|Special edition
+1779|Large text edition
+1780|Work instructions
+1781|Export PDF
+1782|Export inspection record
+1783|Print
+1784|Reset checks
+1785|Original document
+1786|Inspection record
+1787|Product / batch
+1788|Inspector
+1789|Inspection preparation
+1790|Inspection record not found
+1791|LineSight website
+1792|Unable to open the website right now
+1793|Configuration revision {0}
+1794|Aluminum housing visual inspection work instruction
+1795|Production line changeover checklist
+1796|Quality department
+1797|Production / Quality
+1798|Inspection references
+1799|Product drawings, inspection specifications and approved visual limit samples
+1800|Inspection tools
+1801|Inspection lighting and calipers; measuring tools must have valid calibration
+1802|Inspection conditions
+1803|Clean the inspection table and use the specified lighting conditions
+1804|Sampling requirements
+1805|Follow the work order or inspection plan sampling quantity; confirm first articles separately
+1806|Inspection items
+1807|Entire housing surface
+1808|Visually inspect for oil, chips and foreign matter affecting use or subsequent processes
+1809|Appearance surfaces A / B
+1810|Assess cracks, dents, scratches, burrs and oxidation against approved limit samples
+1811|Drawing dimension references
+1812|Measure at the drawing locations and check against drawing tolerances
+1813|Hole and edge references
+1814|Check hole locations against the drawing; assess burrs using the drawing or inspection specification
+1815|Identification / packaging
+1816|Product, batch and quantity must match the work order; protection and packaging must meet requirements
+1817|Pre-changeover checks
+1818|Line / station
+1819|Confirm the work order model matches the target recipe name and version
+1820|Material rack / feeder
+1821|Count and handle previous materials, labels and work in progress as specified
+1822|Equipment / fixture references
+1823|Confirm equipment safety and tooling/fixture compatibility with the target product
+1824|PLC / recipe number
+1825|Load target parameters and verify the recipe number and version
+1826|Camera / inspection station
+1827|Confirm camera, lighting, inspection region and positioning settings
+1828|First article confirmation
+1829|Sample reference
+1830|Appearance and assembly must match drawings and limit samples
+1831|Inspection station / region
+1832|Confirm target defect classes, inspection regions and verdicts
+1833|Measure as specified in the drawing or inspection plan and confirm compliance
+1834|First article record reference
+1835|Retain the first article batch, inspection results and required images
+1836|Record issue codes, locations and disposition; confirm release after resolution and review.
+1837|Isolate and label nonconforming parts; assess, resolve and review them through the nonconformance process before release.
+1838|Final inspection / aluminum housing
+1839|Identification / packaging area
+1840|Check product code, batch, quantity and specified protective packaging
+1841|Stop transfer, isolate and label nonconforming parts. Record defect codes, locations, quantities and batch. Notify the quality lead for assessment, disposition and review before continuing.
+1842|Production line model, material or inspection recipe changes
+1843|Visual inspection guide
+1844|Changeover checklist

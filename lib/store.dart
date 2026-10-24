@@ -96,6 +96,7 @@ class AppStore extends ChangeNotifier {
   bool get glass => preferences['glass'] != false;
   bool get haptics => preferences['haptics'] != false;
   bool get reduceMotion => preferences['reduceMotion'] == true;
+  bool get specialEdition => preferences['specialEdition'] == true;
   bool get autoLock => preferences['autoLock'] != false;
   String get languageCode => preferences['language'] == 'en' ? 'en' : 'zh';
   List<Inspection> get records =>
@@ -784,6 +785,26 @@ class AppStore extends ChangeNotifier {
       );
       preferences = next;
       feedback();
+      notifyListeners();
+    });
+    _preferenceWrites = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace __) {},
+    );
+    return operation;
+  }
+
+  /// Edition is a device preference, available with either cloud or local identity.
+  Future<void> setSpecialEdition(bool enabled) {
+    final operation = _preferenceWrites.then((_) async {
+      if (initializing) throw StateError('正在读取或保存，请稍后重试');
+      final next = {...preferences, 'specialEdition': enabled};
+      if (ready) {
+        await db.transaction(
+          (tx) => StateStorage.write(tx, 'preferences', jsonEncode(next)),
+        );
+      }
+      preferences = next;
       notifyListeners();
     });
     _preferenceWrites = operation.then<void>(

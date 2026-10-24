@@ -12,6 +12,17 @@ from django.views.decorators.http import require_GET
 
 
 @require_GET
+def runtime_config(request):
+    target = Path(os.environ.get('LINESIGHT_RUNTIME_CONFIG', '/var/lib/linesight/runtime/app-config.json'))
+    if not target.is_file():
+        return HttpResponse(status=204, headers={'Cache-Control': 'no-store'})
+    if target.stat().st_size > 256 * 1024:
+        return HttpResponse(status=503)
+    return FileResponse(target.open('rb'), content_type='application/json', headers={
+        'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff'})
+
+
+@require_GET
 def artifact(request, track, base, abi, name):
     if (track not in {"preview", "production"} or not 1 <= base <= 2147483647
             or abi not in {"arm64-v8a", "x86_64"}

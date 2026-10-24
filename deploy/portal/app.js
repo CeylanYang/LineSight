@@ -16,7 +16,7 @@ const cards = [
     "title": "质量工作台",
     "category": "工作台 / 一眼掌握",
     "caption": "工位、检测概览与异常入口",
-    "detail": "查看工位运行情况、近期记录和待复核异常。",
+    "detail": "常用功能集中在首屏：在线质检、扫码追溯、新建任务、质量报告与待办直达。",
     "image_type": "产品界面"
   },
   {
@@ -72,7 +72,7 @@ const cards = [
     "title": "质量洞察",
     "category": "统计洞察 / 数字说话",
     "caption": "检测量、合格率与缺陷分布",
-    "detail": "按日期和工位查看统计，并从统计项进入相关记录。",
+    "detail": "按范围查看统计并导出 PDF、打印或 CSV；报告包含逐项检查结果、影像、文档编号与 LineSight 团队签印。",
     "image_type": "产品界面"
   },
   {
@@ -80,7 +80,7 @@ const cards = [
     "title": "数据管理",
     "category": "导出备份 / 留好副本",
     "caption": "CSV 导出 · 备份 · 恢复预览",
-    "detail": "业务备份可预览新增、修改和移除对象，并支持本机撤销点。",
+    "detail": "支持筛选导出、专业质量报告及备份恢复；作业文件提供外观检验指导书和换型核对表。",
     "image_type": "Android 历史界面，能力延续"
   },
   {
@@ -103,8 +103,8 @@ const cards = [
     "id": "start",
     "title": "开始使用",
     "category": "下载中心 / Android",
-    "caption": "安装 LineSight 1.1.54 · 内容版本 5",
-    "detail": "首次安装选择正式版；已安装旧体验版请在下载中心选择兼容升级。安装后进入「我的」登录，账号由团队管理员提供。",
+    "caption": "安装 LineSight 1.1.58 · 内容版本 8",
+    "detail": "首次安装选择正式版；已安装旧体验版请在下载中心选择兼容升级。安装后在工作台直接登录，账号由团队管理员提供。设置中默认使用大字版，可切换特供版。",
     "image_type": "统一登录 · 团队协作"
   }
 ];
@@ -162,7 +162,7 @@ function openCard(index){
   const caption=document.createElement('p');caption.textContent=card.caption;
   const detail=document.createElement('p');detail.textContent=card.detail;
   const note=document.createElement('p');note.className='source-note';note.textContent=card.image_type;
-  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.54-content5-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.54':'进入网页演示 →';
+  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.58-content8-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.58':'进入网页演示 →';
   if(index===11)link.setAttribute('download','');
   const banner=document.createElement('div');banner.className='detail-banner';banner.textContent='★ LineSight 产线视界 · 看见每一步 ★';
   content.append(title,caption,detail,note,link,banner);container.append(img,content);

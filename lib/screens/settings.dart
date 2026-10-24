@@ -1,4 +1,5 @@
 import '../l10n.dart';
+import '../editions/edition_host.dart';
 import 'backup_transfer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -155,6 +156,7 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
         SectionHeading(tr(context, "外观与交互")),
+        const GlassPanel(padding: EdgeInsets.zero, child: EditionSwitch()),
         GlassPanel(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Column(

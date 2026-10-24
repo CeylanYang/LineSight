@@ -27,7 +27,7 @@ with tempfile.TemporaryDirectory(prefix='linesight-log-audit-') as tmp:
             for line in output.splitlines():
                 if 'invoke-' not in line:
                     continue
-                log = re.search(r'Landroid/util/Log;\.(v|d|i|w|e|println):', line)
+                log = re.search(r'Landroid/util/Log;\.(v|d|i|w|e|wtf|println):', line)
                 if log:
                     calls['android.util.Log.' + log[1]] += 1
                 if re.search(r'L[^;]+;\.printStackTrace:\(', line):
@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix='linesight-log-audit-') as tmp:
 report = {'apk_sha256': hashlib.sha256(args.apk.read_bytes()).hexdigest(),
           'dex_files': len(dex_names), 'direct_call_counts': dict(sorted(calls.items())),
           'direct_calls_absent': not calls,
-          'scope': 'Direct DEX Log v/d/i/w/e/println and printStackTrace calls; excludes native libraries, reflection, other logging APIs and OS crash output',
+          'scope': 'Direct DEX Log v/d/i/w/e/wtf/println and printStackTrace calls; excludes native libraries, reflection, other logging APIs and OS crash output',
           'raw_disassembly_saved': False}
 args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(json.dumps(report, indent=2) + '\n')

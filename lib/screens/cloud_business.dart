@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+import '../quality_documents.dart';
+import 'quality_document_library.dart';
 import '../cloud_account.dart';
 import '../cloud_notifications.dart';
 import '../cloud_outbox.dart';
@@ -93,6 +92,29 @@ class CloudReportSnapshotPage extends StatelessWidget {
     return DetailScaffold(
       title: tr(context, '报告预览'),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.download_outlined),
+          tooltip: tr(context, '导出 PDF'),
+          onPressed: () async {
+            final scope = account.accessScope;
+            try {
+              final bytes = await buildQualityReport(
+                snapshot: snapshot,
+                images: images,
+                scopeLabel: cloudScopeLabel(context, filters),
+              );
+              if (!context.mounted || !account.retainsAccess(scope)) return;
+              await deliverQualityPdf(
+                bytes,
+                "LineSight-${snapshot['report_id']}.pdf",
+              );
+            } catch (error) {
+              if (context.mounted && account.retainsAccess(scope)) {
+                toast(context, '$error');
+              }
+            }
+          },
+        ),
         IconButton(
           icon: const Icon(Icons.copy, size: 20),
           tooltip: tr(context, '复制追溯码'),
@@ -592,6 +614,7 @@ class _CloudTemplatesPageState extends State<CloudTemplatesPage> {
               ),
           ],
         ),
+        const QualityDocumentLinks(compact: true),
         if (!account.signedIn)
           EmptyState(
             icon: Icons.lock_outline,
@@ -1184,6 +1207,61 @@ class CloudInspectionDetailPage extends StatefulWidget {
 }
 
 class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
+  bool exporting = false;
+  Future<void> exportInspection({bool print = false}) async {
+    final account = CloudScope.of(context), scope = binding;
+    if (exporting || !account.retainsAccess(scope)) return;
+    setState(() => exporting = true);
+    try {
+      final workspace = account.activeWorkspace!;
+      final record = widget.record;
+      final job = Map<String, dynamic>.from(
+        await account.request(
+              'GET',
+              'workspaces/${workspace['id']}/jobs/${record['task_id']}/',
+            )
+            as Map,
+      );
+      if (!mounted || !account.retainsAccess(scope)) return;
+      final checks = (job['inspections'] as List)
+          .where((check) => check['id'] == record['id'])
+          .toList();
+      if (checks.length != 1) {
+        throw const CollaborationApiException(404, '检验记录不存在');
+      }
+      job['inspections'] = checks;
+      job['evidence'] = (job['evidence'] as List)
+          .where((photo) => photo['inspection_id'] == record['id'])
+          .toList();
+      job['exceptions'] = (job['exceptions'] as List)
+          .where((issue) => issue['inspection_id'] == record['id'])
+          .toList();
+      final snapshot = {
+        'kind': 'inspection',
+        'report_id': "LS-INSP-${record['id']}",
+        'workspace': workspace['name'],
+        'workspace_id': workspace['id'],
+        'generated_at': DateTime.now().toUtc().toIso8601String(),
+        'jobs': [job],
+      };
+      final images = await cloudReportImages(account, snapshot);
+      final bytes = await buildQualityReport(
+        snapshot: snapshot,
+        images: images,
+      );
+      if (!mounted || !account.retainsAccess(scope)) return;
+      await deliverQualityPdf(
+        bytes,
+        "LineSight-inspection-${record['id']}.pdf",
+        print: print,
+      );
+    } catch (error) {
+      if (mounted && account.retainsAccess(scope)) toast(context, '$error');
+    } finally {
+      if (mounted) setState(() => exporting = false);
+    }
+  }
+
   String? binding;
   bool bound = false;
   @override
@@ -1210,6 +1288,24 @@ class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
     return DetailScaffold(
       title: partName,
       children: [
+        Wrap(
+          spacing: 10,
+          runSpacing: 8,
+          children: [
+            FilledButton.icon(
+              onPressed: exporting ? null : () => exportInspection(),
+              icon: const Icon(Icons.download_outlined),
+              label: Text(tr(context, '导出检验记录')),
+            ),
+            OutlinedButton.icon(
+              onPressed: exporting ? null : () => exportInspection(print: true),
+              icon: const Icon(Icons.print_outlined),
+              label: Text(tr(context, '打印')),
+            ),
+          ],
+        ),
+        if (exporting) const LinearProgressIndicator(),
+        const SizedBox(height: 12),
         PartArt(
           partName: partName,
           defect: !passed,
@@ -1677,6 +1773,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
     );
 
     Future<void> exportCsv() async {
+      final scope = account.accessScope;
       setState(() {
         busy = true;
         error = null;
@@ -1685,6 +1782,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
         final bytes = await account.download(
           'workspaces/${account.activeWorkspace!['id']}/report/${query.isEmpty ? '?' : '$query&'}download=csv',
         );
+        if (!mounted || !account.retainsAccess(scope)) return;
         await FilePicker.platform.saveFile(
           fileName: 'LineSight-quality.csv',
           type: FileType.custom,
@@ -1699,6 +1797,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
     }
 
     Future<void> preview() async {
+      final scope = account.accessScope;
       setState(() {
         busy = true;
         error = null;
@@ -1707,7 +1806,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
         final snapshot = await reportSnapshot();
         if (snapshot == null) return;
         final images = await cloudReportImages(account, snapshot);
-        if (context.mounted) {
+        if (context.mounted && account.retainsAccess(scope)) {
           openPage(
             context,
             CloudReportSnapshotPage(snapshot: snapshot, images: images),
@@ -1720,92 +1819,34 @@ class _CloudReportPageState extends State<CloudReportPage> {
       }
     }
 
-    Future<void> printReport() async {
+    Future<void> printReport({bool print = true}) async {
+      final scope = account.accessScope;
+      final label = cloudScopeLabel(context, filters);
       setState(() {
         busy = true;
         error = null;
       });
       try {
         final snapshot = await reportSnapshot();
-        if (snapshot == null || !context.mounted) return;
+        if (snapshot == null || !mounted || !account.retainsAccess(scope)) {
+          return;
+        }
         final images = await cloudReportImages(account, snapshot);
-        final font = pw.Font.ttf(
-          await rootBundle.load('assets/fonts/NotoSansSC.ttf'),
+        final bytes = await buildQualityReport(
+          snapshot: snapshot,
+          images: images,
+          scopeLabel: label,
         );
-        if (!context.mounted) return;
-        final document = pw.Document(
-          theme: pw.ThemeData.withFont(base: font, bold: font),
+        if (!mounted || !account.retainsAccess(scope)) return;
+        await deliverQualityPdf(
+          bytes,
+          "LineSight-${snapshot['report_id']}.pdf",
+          print: print,
         );
-        final data = snapshot['metrics'] as Map;
-        document.addPage(
-          pw.MultiPage(
-            pageFormat: PdfPageFormat.a4,
-            maxPages: 200,
-            build: (_) => [
-              pw.Text(
-                'LineSight · ${tr(context, '质量报告')}',
-                style: const pw.TextStyle(fontSize: 24),
-              ),
-              pw.SizedBox(height: 12),
-              pw.Text(
-                '${snapshot['workspace']} · ${tr(context, '云端数据')}\n${snapshot['report_id']}\n${snapshot['generated_at']}\n${cloudScopeLabel(context, filters)}',
-              ),
-              pw.SizedBox(height: 20),
-              pw.TableHelper.fromTextArray(
-                data: [
-                  [tr(context, '首次通过率'), rate(data['first_pass_rate'])],
-                  [tr(context, '最终放行率'), rate(data['final_release_rate'])],
-                  [tr(context, '首次送检工件'), '${data['first_inspected_pieces']}'],
-                  [tr(context, '最终放行工件'), '${data['final_released_pieces']}'],
-                  [tr(context, '异常工件'), '${data['latest_fail_pieces']}'],
-                  [tr(context, '报废工件'), '${data['latest_scrap_pieces']}'],
-                ],
-              ),
-              for (final task in snapshot['jobs'] as List? ?? []) ...[
-                pw.SizedBox(height: 16),
-                pw.Text(
-                  '${task['part_name']} · ${task['batch_code'] ?? ''}',
-                  style: const pw.TextStyle(fontSize: 16),
-                ),
-                pw.Text('${task['id']} · v${task['version']}'),
-                pw.Text(
-                  '${tr(context, '打印设备')}: ${task['printer']} · ${tr(context, '工件数量')}: ${task['quantity']}',
-                ),
-                for (final check in task['inspections'] as List? ?? []) ...[
-                  pw.SizedBox(height: 8),
-                  pw.Text(
-                    '${tr(context, '检验轮次')} ${check['round_no']} · ${check['inspector']} · ${cloudTimestamp(check['created_at'])}',
-                  ),
-                  pw.Text(
-                    '${tr(context, check['verdict'] == 'pass' ? '合格' : '异常')} · ${check['note']}',
-                  ),
-                  pw.Text(
-                    '${check['template_snapshot']?['name'] ?? ''} · v${check['template_snapshot']?['version'] ?? ''}',
-                  ),
-                ],
-                for (final issue in task['exceptions'] as List? ?? [])
-                  pw.Text(
-                    '${issue['assignee']} · ${issue['note']} · ${issue['resolution']}',
-                  ),
-                for (final photo in task['evidence'] as List? ?? []) ...[
-                  pw.Text(
-                    '${tr(context, '图片证据')} #${photo['id']} · ${tr(context, {'inspection': '检验照片', 'before': '整改前', 'after': '整改后'}[photo['stage']] ?? '${photo['stage']}')}',
-                  ),
-                  if (images[photo['id']] != null)
-                    pw.Image(
-                      pw.MemoryImage(images[photo['id']]!),
-                      width: 180,
-                      height: 120,
-                      fit: pw.BoxFit.contain,
-                    ),
-                ],
-              ],
-            ],
-          ),
-        );
-        await Printing.layoutPdf(onLayout: (_) => document.save());
       } catch (failure) {
-        if (mounted) setState(() => error = failure);
+        if (mounted && account.retainsAccess(scope)) {
+          setState(() => error = failure);
+        }
       } finally {
         if (mounted) setState(() => busy = false);
       }
@@ -1861,6 +1902,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
                       if (value == 'csv') exportCsv();
                       if (value == 'preview') preview();
                       if (value == 'pdf') printReport();
+                      if (value == 'save-pdf') printReport(print: false);
                     },
                     itemBuilder: (context) => [
                       PopupMenuItem(
@@ -1870,6 +1912,10 @@ class _CloudReportPageState extends State<CloudReportPage> {
                       PopupMenuItem(
                         value: 'preview',
                         child: Text(tr(context, '报告预览')),
+                      ),
+                      PopupMenuItem(
+                        value: 'save-pdf',
+                        child: Text(tr(context, '导出 PDF')),
                       ),
                       PopupMenuItem(
                         value: 'pdf',

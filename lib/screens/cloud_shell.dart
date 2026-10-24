@@ -22,6 +22,8 @@ import 'cloud_sessions.dart';
 import 'settings.dart' show HelpPage;
 import 'app_updates.dart';
 import '../nfc_reader.dart';
+import '../editions/edition_host.dart';
+import '../official_website.dart';
 
 class CloudShell extends StatefulWidget {
   const CloudShell({super.key});
@@ -807,6 +809,8 @@ class _CloudShellState extends State<CloudShell> {
             ),
           ),
           SectionHeader(tr(context, '偏好设置'), icon: Icons.tune),
+          const GlassPanel(padding: EdgeInsets.zero, child: EditionSwitch()),
+          const SizedBox(height: 10),
           GlassPanel(
             padding: EdgeInsets.zero,
             child: MenuTile(
@@ -834,6 +838,13 @@ class _CloudShellState extends State<CloudShell> {
                   subtitle: tr(context, '自动下载更新，下次启动生效。'),
                   icon: Icons.system_update_outlined,
                   onTap: () => openPage(context, const AppUpdatesPage()),
+                ),
+                const Divider(height: 1, indent: 64, endIndent: 14),
+                MenuTile(
+                  title: tr(context, 'LineSight 官网'),
+                  subtitle: '99ai.pronhubcn.com',
+                  icon: Icons.language_outlined,
+                  onTap: () => openOfficialWebsite(context),
                 ),
                 const Divider(height: 1, indent: 64, endIndent: 14),
                 MenuTile(

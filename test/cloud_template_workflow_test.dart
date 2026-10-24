@@ -437,7 +437,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/templates81-batch/template-batch/png/180-checklist-$state-$language-desktop-render.png',
+            '../docs/product/linesight/acceptance/${state == 'catalogue' ? 'cloud82-batch' : 'templates81-batch'}/template-batch/png/180-checklist-$state-$language-desktop-render.png',
           ),
         );
       });

@@ -19,6 +19,8 @@ import 'cloud_trace.dart';
 import 'screens/cloud_shell.dart';
 import 'ota_update.dart';
 import 'runtime_errors.dart';
+import 'runtime_content.dart';
+import 'editions/edition_host.dart';
 
 Future<void> main() async {
   installRuntimeErrorPrivacy();
@@ -26,6 +28,7 @@ Future<void> main() async {
   trace?.mark('dart-main');
   WidgetsFlutterBinding.ensureInitialized();
   await OtaUpdates.instance.initialize();
+  await RuntimeContent.instance.initialize();
   trace?.mark('binding-ready');
   if (trace != null) {
     var recordedFrames = 0;
@@ -62,6 +65,7 @@ Future<void> main() async {
   trace?.mark('run-app');
   // Download alongside startup work; activation requires a later cold start.
   OtaUpdates.instance.check();
+  RuntimeContent.instance.refresh();
   if (trace != null) {
     WidgetsBinding.instance.waitUntilFirstFrameRasterized.then(
       (_) => trace.mark('first-frame-rasterized'),
@@ -178,14 +182,17 @@ class _LineSightAppState extends State<LineSightApp>
         state == AppLifecycleState.hidden) {
       widget.store.backgrounded();
     }
-    if (state == AppLifecycleState.resumed) widget.store.resumed();
+    if (state == AppLifecycleState.resumed) {
+      widget.store.resumed();
+      RuntimeContent.instance.refresh();
+    }
   }
 
   @override
   Widget build(BuildContext context) => AppScope(
     store: widget.store,
     child: ListenableBuilder(
-      listenable: widget.store,
+      listenable: Listenable.merge([widget.store, RuntimeContent.instance]),
       builder: (context, _) {
         final s = widget.store;
         _openPendingTrace();
@@ -226,7 +233,7 @@ class _LineSightAppState extends State<LineSightApp>
                           child: ExcludeFocus(
                             excluding: !_revealFinished,
                             child: widget.cloud != null
-                                ? const CloudShell()
+                                ? const EditionHost(child: CloudShell())
                                 : s.user == null
                                 ? const AuthPage()
                                 : const AppShell(),

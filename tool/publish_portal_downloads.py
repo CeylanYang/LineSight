@@ -127,6 +127,8 @@ def publish(args):
         sources = {'index.html': repo / 'deploy/portal/index.html',
                    'app.js': repo / 'deploy/portal/app.js',
                    'assets/product/screen-12-content4.webp': repo / 'deploy/portal/screen-12-content4.webp'}
+        for code in ['WI-QC-014', 'CL-PR-006']:
+            sources['downloads/LineSight-' + code + '.pdf'] = delivery / ('LineSight-' + code + '.pdf')
         for artifact in receipt['artifacts']:
             source = delivery / artifact['file']
             assert digest(source) == artifact['sha256'] and source.stat().st_size == artifact['bytes']
