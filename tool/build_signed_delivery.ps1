@@ -4,6 +4,13 @@ param(
     [ValidatePattern('^[a-z0-9-]+$')][string]$EvidenceBatch = 'release'
 )
 $ErrorActionPreference = 'Stop'
+# AppAuth must return into the task containing the pending Flutter login.
+[xml]$taskManifest = Get-Content 'android/app/src/main/AndroidManifest.xml' -Raw
+$taskAndroidNamespace = 'http://schemas.android.com/apk/res/android'
+$taskMainActivity = @($taskManifest.manifest.application.activity) | Where-Object { $_.GetAttribute('name', $taskAndroidNamespace).EndsWith('.MainActivity') }
+if ($null -eq $taskMainActivity -or ($taskMainActivity.HasAttribute('taskAffinity', $taskAndroidNamespace) -and $taskMainActivity.GetAttribute('taskAffinity', $taskAndroidNamespace) -eq '')) {
+    throw 'Empty MainActivity taskAffinity breaks AppAuth browser callbacks.'
+}
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
 $taskOutput = Join-Path (Get-Location) '.artifact-work/release'

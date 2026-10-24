@@ -1,0 +1,27 @@
+{
+  "version": "1.1.52+8076",
+  "flutter_full_tests_passed": 445,
+  "flutter_analyze_clean": true,
+  "native_password_login_verified": true,
+  "native_sso_login_verified": true,
+  "native_logout_and_relogin_verified": true,
+  "native_cold_session_restore_verified": true,
+  "native_ordinary_username": "lsuser01",
+  "native_apk_track": "preview",
+  "native_png": 5,
+  "manifest_verification": [
+    {
+      "path": "android\\app\\src\\main\\AndroidManifest.xml",
+      "shared_task_affinity": "com.example.linesight_flutter",
+      "callback_receiver_verified": false
+    },
+    {
+      "path": "build\\app\\intermediates\\merged_manifests\\release\\processReleaseManifest\\AndroidManifest.xml",
+      "shared_task_affinity": "com.example.linesight_flutter",
+      "callback_receiver_verified": true
+    }
+  ],
+  "backend_source_unchanged": true,
+  "accounts_and_passwords_unchanged": true,
+  "physical_devices_verified": false
+}
