@@ -22,8 +22,10 @@ import java.util.Collections;
 /** Separate, same-certificate instrumentation APK. Never packaged in the app. */
 public final class StorageAuditInstrumentation extends Instrumentation {
     private boolean seed;
+    private boolean privacy;
     @Override public void onCreate(Bundle arguments) {
         seed = arguments != null && "true".equals(arguments.getString("seed"));
+        privacy = arguments != null && "true".equals(arguments.getString("privacy"));
         start();
     }
     private static String hex(byte[] value) {
@@ -87,6 +89,11 @@ public final class StorageAuditInstrumentation extends Instrumentation {
     @Override public void onStart() {
         Bundle output = new Bundle();
         try {
+            if (privacy) {
+                output.putString("stream", "LINESIGHT_NATIVE_PRIVACY=" + NativePrivacyAudit.run(getTargetContext()) + "\n");
+                finish(Activity.RESULT_OK, output);
+                return;
+            }
             Context context = getTargetContext();
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             JSONObject report = new JSONObject().put("version_name", info.versionName)

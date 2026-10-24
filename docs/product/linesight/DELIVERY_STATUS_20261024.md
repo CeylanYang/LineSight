@@ -12,6 +12,7 @@
 | 关闭注册 | 正式邮件配置后仍关闭，原有账号密码未更改，一次性验收账号已删除 | acceptance/mail57-batch/production-smtp.json |
 | 即时撤权 | 真实 PKCE 四角色矩阵，降权旧令牌 401、新只读令牌写入 403、移除后 404，最后管理员离组 409 | acceptance/roles56-batch/live-role-matrix.json |
 | 服务端日志 | Django 不记录原始错误消息、请求凭据、查询及正文。生产探针的敏感标记未入 journal，保留请求编号及代码位置 | acceptance/privacy58-batch/live-logs.json |
+| 原生认证故障日志补验 | 冻结 8078 中的 AppAuth：invalid_grant、非 JSON、网络 IOException 三类内存模拟故障，回调包含测试标记，进程 29 行日志未出现标记 | acceptance/privacy61-batch/native-appauth.json |
 | 反向代理日志 | Caddy 官方 filter encoder；不可达上游 502 试验未记录请求敏感值，生产官网及 API HTTPS 正常 | acceptance/privacy58-batch/proxy-logs.json |
 | 异机备份与保留 | 自动 AES-256-GCM 备份、逐文件及数据库校验、30 天及周/月保留。部署配置包括 SMTP 授权与 DKIM 私钥，公开证据不含密钥 | acceptance/mail57-batch/relay-config-backup.json |
 
@@ -25,7 +26,7 @@
 | --- | --- |
 | 最终 APK 页面及权限 | 在 8078 上覆盖剩余二级页、中英文小屏、所有角色的入口/返回/撤权；历史页面和 API 测试不能代替全部原生验收 |
 | APK 邮件往返 | 从 App 找回密码，经外部邮箱打开链接，再回 App 登录；服务端和 PKCE 流程已通过 |
-| 原生日志 | Android 系统和第三方插件异常输出的实际抓取审计；本批服务端过滤不代表这些日志已完成验收 |
+| 原生日志 | AppAuth 三类令牌故障在当前模拟器日志级别下通过。仍需 Flutter 未捕获错误、其他插件、系统崩溃及真实设备日志审计 |
 | NFC/摄像头/扫码/触觉 | 需要真实 Android 手机及实际卡片。模拟器和服务器测试不能证明硬件工作正常 |
 | 双真机协作 | 两部手机跨账号完成创建、指派、检验、异常、复检、报告及权限一致性验证 |
 | 外部用户试用 | 至少 10 名外部用户完成任务及反馈复测 |

@@ -1,0 +1,42 @@
+{
+  "pid": 4529,
+  "cases": [
+    {
+      "mode": "oauth",
+      "callback_error_received": true,
+      "callback_contains_synthetic_marker": true,
+      "error_type": 2,
+      "error_code": 2002
+    },
+    {
+      "mode": "malformed",
+      "callback_error_received": true,
+      "callback_contains_synthetic_marker": true,
+      "error_type": 0,
+      "error_code": 5
+    },
+    {
+      "mode": "transport",
+      "callback_error_received": true,
+      "callback_contains_synthetic_marker": true,
+      "error_type": 0,
+      "error_code": 3
+    }
+  ],
+  "transport": "in-memory; no external network",
+  "customer_accounts_used": false,
+  "persistent_data_written": false,
+  "installed_apk_sha256": "696c584bd55287c40395826b493cceeef196e9f842d932b5b6f865f36e7da753",
+  "frozen_native_assets_match": true,
+  "installed_version": "1.1.54",
+  "last_update_time": "2026-10-24 05:44:43",
+  "captured_process_log_lines": 29,
+  "canary_occurrences": {
+    "oauth": 0,
+    "malformed": 0,
+    "transport": 0
+  },
+  "raw_logs_saved": false,
+  "passed": true,
+  "scope": "Shipped R8 AppAuth 0.11.1 token error handling under current emulator log levels; not Dart unhandled errors, all plugins, elevated debug logging, or OS crash dumps"
+}
