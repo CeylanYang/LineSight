@@ -18,8 +18,10 @@ import 'cloud_navigation.dart';
 import 'cloud_trace.dart';
 import 'screens/cloud_shell.dart';
 import 'ota_update.dart';
+import 'runtime_errors.dart';
 
 Future<void> main() async {
+  installRuntimeErrorPrivacy();
   final trace = startupTraceEnabled ? StartupTrace() : null;
   trace?.mark('dart-main');
   WidgetsFlutterBinding.ensureInitialized();
