@@ -1,0 +1,73 @@
+{
+  "status": "partial",
+  "role": "owner",
+  "login_method": "App secondary login, hosted Keycloak and AppAuth callback",
+  "evidence": [
+    {
+      "capture": "378-roles69-owner-profile-emulator",
+      "verified_labels": [
+        "@native69-f3e70fc5a1-owner",
+        "Role56 Native69 f3e70fc5a1"
+      ],
+      "xml_sha256": "916825b67b11fb0f82984a69506065d67a013cade95ae5a5457727a15414fd2e",
+      "png_sha256": "7a6aadfa0aeb44200c519d70a13ccd3867f19c9d28a30b0b47728baf11abf379"
+    },
+    {
+      "capture": "379-roles69-owner-team-emulator",
+      "verified_labels": [
+        "生成邀请码",
+        "显示菜单"
+      ],
+      "xml_sha256": "647c426707e762c52adaf4f81d69bec5e144e199adbdb2dccda8e7c3256e38df",
+      "png_sha256": "610d3ae7be0a4c2cb65d949eb70985cb06f5ab60094a50b4359a95ff8c92d526"
+    },
+    {
+      "capture": "380-roles69-owner-workbench-emulator",
+      "verified_labels": [
+        "新建任务"
+      ],
+      "xml_sha256": "d33e6a9d2712ceb133cb2b4b93aa2b7a105e127342ae3036ad0c20a5a03accef",
+      "png_sha256": "43d6c4d86ce56764246e8c9a782921d012eb2408f94adacefe0bdce7449d1faf"
+    },
+    {
+      "capture": "381-roles69-owner-profiles-emulator",
+      "verified_labels": [
+        "创建打印配置"
+      ],
+      "xml_sha256": "83ad3862ff8cddc8657798ee810f4c1a62e5243174cc01a8e51d815792933de2",
+      "png_sha256": "7a1c23d3151d33ed05c43046e96b74e012621e8ecd002c1ed6327f19601f1a0f"
+    },
+    {
+      "capture": "382-roles69-owner-profile-detail-emulator",
+      "verified_labels": [
+        "复制打印配置",
+        "使用此配置创建任务"
+      ],
+      "xml_sha256": "26ceb67df1aa84129120b5b04d1f6ad51ce41dcd210f5569d801436a8c37e4c3",
+      "png_sha256": "ca0b8b83812180f44ab409520791f6eb2a263f7c408e473140c18210b0ad7e18"
+    },
+    {
+      "capture": "383-roles69-owner-templates-emulator",
+      "verified_labels": [
+        "发布检查模板"
+      ],
+      "xml_sha256": "3efb75ffa4c954f4aa4f1e0767bea5d40dd0f439946e95f8ba3406de040c9253",
+      "png_sha256": "91ef83c224311976762d2f7a9124176464c66b97bced015e3f26185d1b12f2c1"
+    }
+  ],
+  "cleanup": {
+    "disposable_api_users_deleted": 4,
+    "disposable_workspaces_deleted": 5,
+    "customer_teams_modified": false,
+    "disposable_identity_accounts_deleted": 4
+  },
+  "interruption": "Emulator host exited twice; subsequent adb reported offline. Cause undetermined.",
+  "remaining": [
+    "owner template detail and return path",
+    "manager pages",
+    "operator pages",
+    "viewer pages",
+    "native live revocation"
+  ],
+  "all_roles_passed": false
+}

@@ -6,6 +6,7 @@
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
+| 原生管理员权限补验（部分） | 实际 App 二级登录 → Keycloak → AppAuth 回调，确认临时管理员身份和独立团队；6 组页面 XML/PNG 校验覆盖团队邀请/成员菜单、任务创建、打印配置及模板发布入口。模拟器宿主两次退出，四角色整体验收未通过；4 个临时身份、4 个 API 用户及 5 个工作区已清理，未修改客户团队 | acceptance/roles69-batch/partial-validation.json、cleanup.json |
 | 原生崩溃后的 OTA 回退 | 独立 API34 x86_64：正常 force-stop 保留补丁；首帧完成后对精确 App PID 注入 SIGSEGV，Android 记录 reason=5/status=11。下一次启动移除、拉黑、拒绝再次应用并恢复工作台。未修改线上或客户数据 | acceptance/native68-batch/validation.json、exit-and-ui-evidence.json |
 | OTA 启动异常报告与故障回退 | 修复开源模块先于 App 过滤器向原生传递原始异常的问题。独立 API34 x86_64 实际加载框架/异步故障 AOT：固定类别到达原生、移除、拉黑、再次应用同补丁拒绝、冷启动恢复；无原始标记。正常正式 OTA4 内容 5 生效及演示登录保留；466 测试通过 | acceptance/ota67-batch/validation.json、delivery.json |
 | 正式内容 4 二级页 | 配方/打印配置/配置预填新建任务/模板/账户/卡片/无 NFC 提示及取消/本机导入授权入口/操作成员团队页面；14 组原生截图/XML。未提交任务，未改客户数据 | acceptance/secondary66-batch/validation.json |
