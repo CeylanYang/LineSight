@@ -51,7 +51,7 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
       (a, b) => (b['version'] as int).compareTo(a['version'] as int),
     );
     final latest = versions.first;
-    final owner = account.activeWorkspace?['role'] == 'owner';
+    final owner = account.canManageProduction;
     final items = selected['items'] as List;
     void published(Map<String, dynamic> result) {
       if (mounted && account.retainsAccess(binding)) {
@@ -343,7 +343,7 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
       newest = null;
     });
     try {
-      account.requireAccess(binding, write: true, owner: true);
+      account.requireAccess(binding, write: true, manageProduction: true);
       final result = Map<String, dynamic>.from(
         await account.request(
               'POST',
@@ -395,10 +395,7 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
     if (!account.signedIn) return cloudAccessRequired(context);
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     final locked =
-        busy ||
-        refreshing ||
-        receipt != null ||
-        account.activeWorkspace?['role'] != 'owner';
+        busy || refreshing || receipt != null || !account.canManageProduction;
     final conflict =
         failure is CollaborationApiException &&
         (failure as CollaborationApiException).status == 409;

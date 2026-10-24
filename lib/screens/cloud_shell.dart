@@ -1,3 +1,4 @@
+import '../cloud_avatar.dart';
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
 import '../cloud_notifications.dart';
@@ -551,6 +552,7 @@ class _CloudShellState extends State<CloudShell> {
     final role = '${account.activeWorkspace?['role'] ?? ''}';
     final roleLabel = switch (role) {
       'owner' => tr(context, '团队管理员'),
+      'manager' => tr(context, '团队主管'),
       'operator' => tr(context, '操作成员'),
       'viewer' => tr(context, '只读成员'),
       _ => tr(context, '成员'),
@@ -574,26 +576,30 @@ class _CloudShellState extends State<CloudShell> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      Container(
-                        width: 56,
-                        height: 56,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                      CloudAvatar(
+                        data: account.profile?['avatar_data'],
+                        size: 56,
+                        fallback: Container(
+                          width: 56,
+                          height: 56,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                            ),
+                            shape: BoxShape.circle,
                           ),
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          account.displayName.isEmpty
-                              ? 'L'
-                              : account.displayName.characters.first,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w800,
+                          alignment: Alignment.center,
+                          child: Text(
+                            account.displayName.isEmpty
+                                ? 'L'
+                                : account.displayName.characters.first,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
                       ),
@@ -1001,24 +1007,28 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                CloudAvatar(
+                  data: account.profile?['avatar_data'],
+                  size: 48,
+                  fallback: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                      ),
+                      shape: BoxShape.circle,
                     ),
-                    shape: BoxShape.circle,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    account.displayName.isEmpty
-                        ? 'L'
-                        : account.displayName.characters.first,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w800,
+                    alignment: Alignment.center,
+                    child: Text(
+                      account.displayName.isEmpty
+                          ? 'L'
+                          : account.displayName.characters.first,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                 ),
@@ -1062,6 +1072,11 @@ class _CloudProfilePageState extends State<CloudProfilePage> {
                     prefixIcon: const Icon(Icons.person_outline, size: 19),
                   ),
                 ),
+                if ('${account.profile?['job_title'] ?? ''}'.isNotEmpty)
+                  InfoRow(
+                    tr(context, '岗位'),
+                    '${account.profile!['job_title']}',
+                  ),
                 if (!account.demoAccount)
                   FilledButton(
                     onPressed: account.busy
@@ -1196,13 +1211,18 @@ class _CloudMembersPageState extends State<CloudMembersPage> {
             ...?_members?.map(
               (member) => GlassPanel(
                 child: ListTile(
-                  leading: const Icon(Icons.person_outline),
+                  leading: CloudAvatar(
+                    data: member['avatar_data'],
+                    size: 38,
+                    fallback: const Icon(Icons.person_outline),
+                  ),
                   title: Text(
                     '${member['display_name'] ?? member['username']}',
                   ),
                   subtitle: Text(
                     tr(context, switch (member['role']) {
                       'owner' => '团队管理员',
+                      'manager' => '团队主管',
                       'operator' => '操作成员',
                       _ => '只读成员',
                     }),

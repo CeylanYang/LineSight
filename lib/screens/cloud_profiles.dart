@@ -141,7 +141,7 @@ class _ProfilesState extends State<CloudProfilesPage> {
     return DetailScaffold(
       title: tr(context, widget.picking ? '选择打印配置' : '打印配置'),
       actions: [
-        if (account.activeWorkspace?['role'] == 'owner')
+        if (account.canManageProduction)
           IconButton(
             tooltip: tr(context, '创建打印配置'),
             icon: const Icon(Icons.add),
@@ -287,7 +287,7 @@ class _ProfileDetailState extends State<CloudProfileDetailPage> {
               }
             },
           ),
-        if (account.activeWorkspace?['role'] == 'owner')
+        if (account.canManageProduction)
           Wrap(
             spacing: 10,
             runSpacing: 8,

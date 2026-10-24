@@ -27,6 +27,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, AuthenticationFailed
 from .models import AuditEvent, CheckTemplate, ExceptionCase, Evidence, Invitation, InvitationRedemption, JobProfileMetadata, JobRequest, LegacyInspection, Membership, PieceSerial, PrinterProfile, ProductionJob, QualityInspection, Workspace
+from .avatars import portrait
 
 
 def membership(request, workspace_id, write=False):
@@ -111,6 +112,7 @@ def account(request):
         identity.save(update_fields=["display_name"])
     return Response({"id": str(identity.pk), "username": request.auth.get("preferred_username", ""),
         "display_name": identity.display_name, "is_demo": identity.is_demo,
+        "avatar_data": portrait(identity.avatar_seed), "job_title": identity.job_title,
         "home_workspace_id": identity.home_workspace_id, "provider": "keycloak"})
 
 
@@ -120,7 +122,9 @@ def members(request, workspace_id):
     member = membership(request, workspace_id)
     rows = Membership.objects.filter(workspace=member.workspace).select_related("user", "user__cloud_identity").order_by("user__username")
     return Response([{"id": row.user_id, "username": row.user.username, "role": row.role, "active": row.user.is_active, "is_self": row.user_id == request.user.pk,
-        "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username} for row in rows])
+        "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username,
+        "avatar_data": portrait(identity.avatar_seed) if identity else '',
+        "job_title": identity.job_title if identity else ''} for row in rows])
 
 
 @api_view(["PATCH", "DELETE"])
@@ -215,7 +219,7 @@ def printer_profiles(request, workspace_id):
         overrides = PrinterProfile.objects.filter(workspace=member.workspace).select_related('default_template').order_by("name")
         return Response([{**p, "revision": 0, "default_template_id": None, "default_template": None} for p in STARTER_PROFILES]
             + [profile_json(p) for p in overrides])
-    if member.role != Membership.OWNER:
+    if member.role not in (Membership.OWNER, Membership.MANAGER):
         raise PermissionDenied("仅工作区所有者可维护打印机配置")
     d = request.data
     key = request.headers.get('Idempotency-Key', '')
@@ -331,7 +335,7 @@ def invite(request, workspace_id):
     if member.role != Membership.OWNER:
         raise PermissionDenied("仅工作区所有者可邀请成员")
     role = request.data.get("role", Membership.OPERATOR)
-    if role not in (Membership.OPERATOR, Membership.VIEWER):
+    if role not in (Membership.MANAGER, Membership.OPERATOR, Membership.VIEWER):
         return Response({"detail": "邀请角色无效"}, status=400)
     token = secrets.token_urlsafe(24)
     Invitation.objects.create(workspace=member.workspace, token_hash=Invitation.digest(token), role=role,
@@ -345,6 +349,8 @@ def redeem(request):
     if isinstance(request.auth, dict) and request.auth.get("is_demo"):
         raise PermissionDenied("演示账号仅使用演示团队")
     token = request.data.get("code", "")
+    if not isinstance(token, str) or not 16 <= len(token) <= 128:
+        return Response({"detail": "邀请无效或已使用"}, status=400)
     with transaction.atomic():
         try:
             inv = Invitation.objects.select_for_update().get(token_hash=Invitation.digest(token), redeemed_at__isnull=True)
@@ -397,7 +403,7 @@ def jobs(request, workspace_id):
     assignee_id = d.get('assignee_id')
     if assignee_id is not None and (type(assignee_id) is not int or not 1 <= assignee_id <= 2**63-1 or not Membership.objects.filter(
             workspace=member.workspace, user_id=assignee_id, user__is_active=True,
-            role__in=[Membership.OWNER, Membership.OPERATOR]).exists()):
+            role__in=[Membership.OWNER, Membership.MANAGER, Membership.OPERATOR]).exists()):
         return Response({'detail': '负责人不属于当前团队'}, status=400)
     template = None
     if d.get('template_id') is not None:

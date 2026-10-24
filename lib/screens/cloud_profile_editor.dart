@@ -118,7 +118,7 @@ class _ProfileEditorState extends State<CloudProfileEditor> {
       current = null;
     });
     try {
-      account.requireAccess(binding, write: true, owner: true);
+      account.requireAccess(binding, write: true, manageProduction: true);
       final result = Map<String, dynamic>.from(
         await account.request(
               'POST',
@@ -165,7 +165,7 @@ class _ProfileEditorState extends State<CloudProfileEditor> {
     final account = CloudScope.of(context);
     if (!account.signedIn) return cloudAccessRequired(context);
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
-    final owner = account.activeWorkspace?['role'] == 'owner';
+    final owner = account.canManageProduction;
     if (!owner) return cloudScopeChanged(context);
     final rows = <int, Map<String, dynamic>>{
       for (final t in account.templates) t['id'] as int: t,

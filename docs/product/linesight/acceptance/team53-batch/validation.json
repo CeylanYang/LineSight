@@ -1,0 +1,20 @@
+{
+  "version": "1.1.53+8077",
+  "flutter_full_tests_passed": 448,
+  "backend_tests_passed": 93,
+  "flutter_analyze_clean": true,
+  "team_initialization_verified": true,
+  "all_12_pkce_login_verified": true,
+  "existing_7_passwords_unchanged": true,
+  "registration_closed": true,
+  "native_default_team_and_portraits_verified": true,
+  "native_track": "preview",
+  "native_all_roles_verified": false,
+  "physical_devices_verified": false,
+  "new_png": 5,
+  "tasks": 24,
+  "inspection_records": 20,
+  "audit_events": 124,
+  "shared_workspace_id": 30,
+  "seeded_history_provenance_preserved": true
+}

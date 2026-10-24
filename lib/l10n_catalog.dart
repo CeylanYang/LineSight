@@ -1744,4 +1744,6 @@ const englishMessages = <String, String>{
   "普通用户与团队成员使用同一登录入口。登录后在“我的”切换团队、管理成员或绑定NFC卡片；绑定后可在登录页刷卡登录。本机工作区使用独立的本机认证，恢复码仅用于本机账户。": "Users and team members share one sign-in page. After signing in, use My account to switch teams, manage members or bind an NFC card, then scan it on the sign-in page. The local workspace has separate authentication; recovery codes apply only to local accounts.",
   "团队账户、任务与检验记录由云端服务管理；待提交草稿和待上传照片保存在当前账户的本机空间，可在同步页面查看与重试。本机工作区的数据独立保存，只有主动导入的记录才会上传到所选团队。": "Cloud services manage team accounts, tasks and inspection records. Pending drafts and photos stay in the current account’s local storage; view and retry them in Sync. Local workspace data stays separate and uploads to the selected team only when explicitly imported.",
   "记录检测结果、生产任务与质量复核。": "Track inspection results, production tasks and quality reviews.",
+  "团队主管": "Team supervisor",
+  "岗位": "Job title",
 };

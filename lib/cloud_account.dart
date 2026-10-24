@@ -346,10 +346,12 @@ class CloudAccount extends ChangeNotifier {
     String? captured, {
     bool write = false,
     bool owner = false,
+    bool manageProduction = false,
   }) {
     if (!retainsAccess(captured) ||
         (write && !canEdit) ||
-        (owner && activeWorkspace?['role'] != 'owner')) {
+        (owner && activeWorkspace?['role'] != 'owner') ||
+        (manageProduction && !canManageProduction)) {
       throw const CollaborationApiException(403, '账户或团队已切换，请重新打开页面');
     }
   }
@@ -358,7 +360,9 @@ class CloudAccount extends ChangeNotifier {
   String get displayName => '${profile?['display_name'] ?? ''}';
   bool get canEdit =>
       signedIn &&
-      const {'owner', 'operator'}.contains(activeWorkspace?['role']);
+      const {'owner', 'manager', 'operator'}.contains(activeWorkspace?['role']);
+  bool get canManageProduction =>
+      signedIn && const {'owner', 'manager'}.contains(activeWorkspace?['role']);
   int _notificationEpoch = 0;
   void _resetViews() {
     _notificationEpoch++;

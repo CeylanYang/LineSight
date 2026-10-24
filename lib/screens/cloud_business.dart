@@ -1,3 +1,4 @@
+import '../cloud_avatar.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -523,9 +524,7 @@ class CloudTemplatesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    final owner =
-        account.workspaceDataReady &&
-        account.activeWorkspace?['role'] == 'owner';
+    final owner = account.workspaceDataReady && account.canManageProduction;
     final capturedScope = account.accessScope;
     void openTemplate(Widget page) {
       if (account.retainsAccess(capturedScope)) openPage(context, page);
@@ -801,12 +800,14 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
   String roleLabel(BuildContext context, Object? role) =>
       tr(context, switch (role) {
         'owner' => '团队管理员',
+        'manager' => '团队主管',
         'operator' => '操作成员',
         _ => '只读成员',
       });
 
   Color roleColor(Object? role) => switch (role) {
     'owner' => amber,
+    'manager' => const Color(0xFF8366AA),
     'operator' => blue,
     _ => muted,
   };
@@ -929,6 +930,10 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                       ),
                       items: [
                         DropdownMenuItem(
+                          value: 'manager',
+                          child: Text(tr(context, '团队主管')),
+                        ),
+                        DropdownMenuItem(
                           value: 'operator',
                           child: Text(tr(context, '操作成员')),
                         ),
@@ -1015,27 +1020,31 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                       horizontal: 14,
                       vertical: 2,
                     ),
-                    leading: Container(
-                      width: 38,
-                      height: 38,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            roleColor(
-                              members[i]['role'],
-                            ).withValues(alpha: .75),
-                            roleColor(members[i]['role']),
-                          ],
+                    leading: CloudAvatar(
+                      data: members[i]['avatar_data'],
+                      size: 38,
+                      fallback: Container(
+                        width: 38,
+                        height: 38,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              roleColor(
+                                members[i]['role'],
+                              ).withValues(alpha: .75),
+                              roleColor(members[i]['role']),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        memberName(members[i]).characters.first.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                        child: Text(
+                          memberName(members[i]).characters.first.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -1055,6 +1064,21 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                             roleLabel(context, members[i]['role']),
                             color: roleColor(members[i]['role']),
                           ),
+                          if ('${members[i]['job_title'] ?? ''}'
+                              .isNotEmpty) ...[
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                '${members[i]['job_title']}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: muted,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -1100,6 +1124,7 @@ class _CloudTeamPageState extends State<CloudTeamPage> {
                             itemBuilder: (_) => [
                               for (final e in {
                                 'owner': '团队管理员',
+                                'manager': '团队主管',
                                 'operator': '操作成员',
                                 'viewer': '只读成员',
                                 'remove': '移除成员',

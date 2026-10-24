@@ -1742,3 +1742,5 @@
 1741|Users and team members share one sign-in page. After signing in, use My account to switch teams, manage members or bind an NFC card, then scan it on the sign-in page. The local workspace has separate authentication; recovery codes apply only to local accounts.
 1742|Cloud services manage team accounts, tasks and inspection records. Pending drafts and photos stay in the current account’s local storage; view and retry them in Sync. Local workspace data stays separate and uploads to the selected team only when explicitly imported.
 1743|Track inspection results, production tasks and quality reviews.
+1744|Team supervisor
+1745|Job title

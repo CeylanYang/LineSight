@@ -22,9 +22,10 @@ class Workspace(models.Model):
 
 class Membership(models.Model):
     OWNER = "owner"
+    MANAGER = "manager"
     OPERATOR = "operator"
     VIEWER = "viewer"
-    ROLES = [(OWNER, "Owner"), (OPERATOR, "Operator"), (VIEWER, "Viewer")]
+    ROLES = [(OWNER, "Owner"), (MANAGER, "Manager"), (OPERATOR, "Operator"), (VIEWER, "Viewer")]
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="memberships")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role = models.CharField(max_length=12, choices=ROLES)
@@ -41,6 +42,8 @@ class CloudIdentity(models.Model):
     is_demo = models.BooleanField(default=False)
     home_workspace = models.ForeignKey(Workspace, on_delete=models.SET_NULL, null=True)
     display_name = models.CharField(max_length=100, blank=True)
+    avatar_seed = models.CharField(max_length=64, blank=True)
+    job_title = models.CharField(max_length=80, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

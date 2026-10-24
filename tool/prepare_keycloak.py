@@ -21,7 +21,7 @@ def realm_document(demo_password, api_secret=None):
     }
     return {
         "realm": "linesight", "enabled": True, "displayName": "LineSight",
-        "sslRequired": "external", "registrationAllowed": True,
+        "sslRequired": "external", "registrationAllowed": False,
         "registrationEmailAsUsername": False, "resetPasswordAllowed": True,
         "loginWithEmailAllowed": True, "duplicateEmailsAllowed": False,
         "bruteForceProtected": True, "failureFactor": 5,

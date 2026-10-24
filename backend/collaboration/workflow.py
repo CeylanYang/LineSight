@@ -203,7 +203,7 @@ def assign(request, workspace_id, job_id):
             return Response({'detail': '负责人编号无效'}, status=400)
         target = Membership.objects.select_related('user', 'user__cloud_identity').filter(
             workspace=member.workspace, user_id=selected, user__is_active=True,
-            role__in=[Membership.OWNER, Membership.OPERATOR]).first() if selected is not None else None
+            role__in=[Membership.OWNER, Membership.MANAGER, Membership.OPERATOR]).first() if selected is not None else None
         if selected is not None and target is None:
             return Response({'detail': '请选择当前团队可处理任务的成员'}, status=400)
         if selected == job.assignee_id:

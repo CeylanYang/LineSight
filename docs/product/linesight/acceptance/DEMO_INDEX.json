@@ -1,7 +1,97 @@
 {
-  "screenshots": 329,
+  "screenshots": 334,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
+    {
+      "file": "team53-batch/png/317-checkcheck-workbench-emulator.png",
+      "title": "317-checkcheck-workbench-emulator",
+      "batch": "team53-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-03",
+        "COL-04",
+        "SSO-04",
+        "QC-01",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "ba94c1ad438fd543c736e7765d1d54d8f59335f452a0f79a309721e8fa639b39",
+      "batch_notes": "team53-batch/README.md"
+    },
+    {
+      "file": "team53-batch/png/318-checkcheck-owner-profile-emulator.png",
+      "title": "318-checkcheck-owner-profile-emulator",
+      "batch": "team53-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-03",
+        "COL-04",
+        "SSO-04",
+        "QC-01",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "fb5262da8acc93de21cd9c4b66a7ef3f65400d94c87ceb6d3d6cae49b1700983",
+      "batch_notes": "team53-batch/README.md"
+    },
+    {
+      "file": "team53-batch/png/319-checkcheck-staff-emulator.png",
+      "title": "319-checkcheck-staff-emulator",
+      "batch": "team53-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-03",
+        "COL-04",
+        "SSO-04",
+        "QC-01",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "148ef0237e208fd333c1bae2c4cd01de249b6f493fa7baad900a6d92c903ff1d",
+      "batch_notes": "team53-batch/README.md"
+    },
+    {
+      "file": "team53-batch/png/320-checkcheck-staff-more-emulator.png",
+      "title": "320-checkcheck-staff-more-emulator",
+      "batch": "team53-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-03",
+        "COL-04",
+        "SSO-04",
+        "QC-01",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "8694a720bfcfcb5355a8b753b976e1cfa57088d1d7653fe41c901336f4db6f47",
+      "batch_notes": "team53-batch/README.md"
+    },
+    {
+      "file": "team53-batch/png/321-checkcheck-inspection-records-emulator.png",
+      "title": "321-checkcheck-inspection-records-emulator",
+      "batch": "team53-batch",
+      "batch_requirement_ids": [
+        "COL-01",
+        "COL-03",
+        "COL-04",
+        "SSO-04",
+        "QC-01",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "228be78946d6b97a1f91ade4ebaa40dc3572a092f2ee40ba08e0dc8aa90c705c",
+      "batch_notes": "team53-batch/README.md"
+    },
     {
       "file": "callback52-batch/png/312-old-browser-login-emulator.png",
       "title": "312-old-browser-login-emulator",
@@ -456,7 +546,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "0ee9e54ca159cc9aa890e6436e70e0959ec89bcc0b6f61720719256fbec5ace5",
+      "sha256": "0096baac09e59804f793673edd9d28cc70d2de58fbbed5d7bcd3217903612b2c",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -473,7 +563,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "003aaacc2ccea9bbc2ac51e59fe4f874928e8e9cf4293bc6db347e1d1288cc74",
+      "sha256": "d46521a0a7272a741fb1171c9422f384cb083283b1141625bf175bae90046afe",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -490,7 +580,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "7837c71c27433f3e955c8f6e604192ccb9f26af21c92187ea2bfb372ee90f096",
+      "sha256": "6ccd91ab7d1e7936a8f4d522e33d869737b9d9a0671c6cf84b95e0a11c46d2fb",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -507,7 +597,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "cf2094fb0fe1468f5fd252b50eb9f8c9e0beab6be17d1d9bcaa1bea3e49cd550",
+      "sha256": "46f6f75403320e6ba11a3477fce0d1e2cf7efe5b411aa270955d01da20d41a9e",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -524,7 +614,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "a7ab23551787b7b3d0fe391077321dce54e611ee0bbb8969083e2f62ac51526c",
+      "sha256": "9564dcd2da270c8ffa2448669d00110190ac3cdb249dc8f3be883a853c7a5fe8",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -541,7 +631,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "40eaf7047ff569bceb5d1eb9814b3f81b3754466a8611740eb69d3c923cbe0aa",
+      "sha256": "2c50c93c7dc9154c585b420668631d7005962b7dcfe77dcf51948cdee2199d9e",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -3373,7 +3463,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "6dd995cb157ff68dda8a4fcfe0d7b48d87e2eb3aa1d1c348b63bc556303b1e50",
+      "sha256": "9ebaa21a40fb6ea3563b43a73d362ee0bbef98dcdf17b6ddd731157ee9634e5d",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -3391,7 +3481,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "24ec6abad4a8e4381a994e8357dd683e42abbec010e6b4e9cd60ac533cf38e0b",
+      "sha256": "6b3d85a507c79cede73b91dd7a1d9f68fb53808f8d452ae82dccc54865f56f0a",
       "batch_notes": "template-batch/README.md"
     },
     {

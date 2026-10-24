@@ -1,0 +1,82 @@
+[
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-healthy-en-component.png",
+    "changed_bbox": [
+      117,
+      79,
+      125,
+      91
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-healthy-zh-component.png",
+    "changed_bbox": [
+      117,
+      79,
+      125,
+      91
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-help-en-component.png",
+    "changed_bbox": [
+      174,
+      165,
+      181,
+      174
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-help-zh-component.png",
+    "changed_bbox": [
+      120,
+      165,
+      127,
+      174
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-offline-en-component.png",
+    "changed_bbox": [
+      117,
+      79,
+      125,
+      91
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/diagnostics-batch/png/293-offline-zh-component.png",
+    "changed_bbox": [
+      117,
+      79,
+      125,
+      91
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/template-batch/png/181-unified-login-en-desktop-render.png",
+    "changed_bbox": [
+      215,
+      809,
+      220,
+      818
+    ],
+    "change": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/template-batch/png/181-unified-login-zh-desktop-render.png",
+    "changed_bbox": [
+      215,
+      763,
+      220,
+      772
+    ],
+    "change": "displayed version only"
+  }
+]

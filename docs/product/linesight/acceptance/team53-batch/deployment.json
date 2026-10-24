@@ -1,0 +1,25 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/team53/20261024T051230Z",
+  "before_sha256": {
+    "collaboration/api.py": "969d1c870352772865a6b79d6ccd02c243754418f9dc6b3a0d15e183f7161daa",
+    "collaboration/models.py": "aacb77b774883b1888fde7aa442a55ee8fa7b15c7eef8a4700e35d80bf6323a5",
+    "collaboration/product.py": "057a4c043a0b229b2332244baf3e20a73ff2f91e7d7b0e949ce9b70cf53b2434",
+    "collaboration/workflow.py": "baa3d27a6346253ad0ded4beb61aec74dd62c98d4f31628288f31bf4a6147105",
+    "collaboration/avatars.py": null,
+    "collaboration/migrations/0010_member_profiles_and_manager.py": null
+  },
+  "after_sha256": {
+    "collaboration/api.py": "75dfbc6f2a55e02ec6021a959f48edccf27b8d788c8c7f509fe1dff465d988ab",
+    "collaboration/models.py": "77c45142f7aa3fef0da964c4a713c3ea977c03a00091b638827a35d604eeb11e",
+    "collaboration/product.py": "f8759fdf60f0c079c628a296458260055bc94be6233b3bef040dc5dd1b7dfd94",
+    "collaboration/workflow.py": "8081fa99f31aad31f6edf0c1c6e9382b48e9ba248811f696ac5a0a5a39da66b5",
+    "collaboration/avatars.py": "6325df1e29aa1e40e6589624b6d1f606d31ebfeee00f8e5c349715eb3ae611b5",
+    "collaboration/migrations/0010_member_profiles_and_manager.py": "a904bdebe96cbddfb7e2e240f48c3eaf499fc764bcaa911835f91c55f6e8e33e"
+  },
+  "schema_migration": "0010_member_profiles_and_manager",
+  "existing_tables_checked": 31,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false
+}

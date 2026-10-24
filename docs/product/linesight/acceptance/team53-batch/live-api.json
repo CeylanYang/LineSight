@@ -1,0 +1,100 @@
+{
+  "team_name": "checkcheck",
+  "workspace_id": 30,
+  "members": [
+    {
+      "username": "lsuser01",
+      "display_name": "顾承泽",
+      "role": "owner",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser02",
+      "display_name": "林知远",
+      "role": "manager",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser03",
+      "display_name": "周沐然",
+      "role": "manager",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser04",
+      "display_name": "陈嘉宁",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser05",
+      "display_name": "许景行",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser06",
+      "display_name": "沈亦安",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser07",
+      "display_name": "唐予川",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser08",
+      "display_name": "宋思齐",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser09",
+      "display_name": "叶星澜",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser10",
+      "display_name": "陆清和",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser11",
+      "display_name": "程书言",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    },
+    {
+      "username": "lsuser12",
+      "display_name": "苏予宁",
+      "role": "operator",
+      "avatar_verified": true,
+      "default_team_verified": true
+    }
+  ],
+  "unique_portraits": 12,
+  "all_12_have_inspection_history": true,
+  "records": 20,
+  "registration_page_entry_absent": true,
+  "direct_provider_registration_denied": true,
+  "legacy_registration_closed": true,
+  "anonymous_members_denied": true,
+  "manager_and_operator_admin_denied": true,
+  "passwords_unchanged_for_original_7": true,
+  "physical_devices_verified": false
+}

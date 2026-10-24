@@ -34,7 +34,7 @@ def templates(request, workspace_id):
     if request.method == 'GET':
         rows = CheckTemplate.objects.filter(Q(workspace=member.workspace) | Q(workspace__isnull=True)).order_by('name', '-version')
         return Response([template_json(item) for item in rows])
-    if member.role != Membership.OWNER:
+    if member.role not in (Membership.OWNER, Membership.MANAGER):
         raise PermissionDenied('仅团队管理员可发布模板')
     key = request.headers.get('Idempotency-Key', '')
     cloud = isinstance(request.auth, dict) and bool(request.auth.get('iss'))

@@ -1,0 +1,50 @@
+{
+  "workspace_id": 30,
+  "team_name": "checkcheck",
+  "members": 12,
+  "roles": {
+    "owner": 1,
+    "manager": 2,
+    "operator": 9
+  },
+  "tasks": 24,
+  "checks": 20,
+  "audit_events": 124,
+  "task_counts": {
+    "queued": 2,
+    "printing": 3,
+    "inspection": 4,
+    "exception": 3,
+    "closed": 12
+  },
+  "templates": 3,
+  "printer_profiles": 3,
+  "internal_data_origin": "team_initialization",
+  "backup": "/var/backups/linesight/team53/20261024T051527Z-before-seed",
+  "jobs": [
+    "e11de3b3-b55c-4148-88b3-2f073df620cc",
+    "2700019f-4065-4dd7-a2a2-6b20d2c5521e",
+    "fbd4fbf7-87c0-4150-99eb-e7ba17c4d3a5",
+    "5e88c44c-f577-4bc9-9568-d0bc8a156c25",
+    "4ddf80fe-1632-4e67-8fa8-2bb33599a315",
+    "9dfa8f13-b91c-4fca-88d6-e3f44bd31088",
+    "f5cc6665-380e-4123-ac07-558ef4d443fe",
+    "54d250fe-93c1-4cea-afb6-28a1cb03d18d",
+    "77bad1d0-c789-4033-833a-982c962b9391",
+    "aa80e508-48bd-46fb-8cb8-9ba020ed378e",
+    "528acd4a-9bbc-4f8d-8768-02faf2ea02cc",
+    "6328e9b7-fe35-4133-9a15-8fd43532cf0a",
+    "771a13ae-ad93-40dd-900b-bfac5cbe6e56",
+    "22f1508d-189c-4c20-87e8-9bc13b000a71",
+    "1771e1f6-2ad8-4b40-a4b1-a5566abcfdfe",
+    "6bf63000-d06d-4cfe-a6df-91328687d597",
+    "4cc49b50-282f-4359-b1ef-96912fa8a091",
+    "59959bee-9ef2-4827-a21e-562910b09381",
+    "ffac9803-d196-4360-947b-2211f2068f14",
+    "4831cd3c-a274-4104-a3b8-b02d51da15b9",
+    "b1abb832-8096-42a6-a2d8-71556aa87922",
+    "30fcd9ad-79a9-4336-80dd-3a569d54a7d7",
+    "c9740021-7266-4ac7-9c2a-9e0d75de28b5",
+    "9534a448-3904-4140-9f7f-264680a253d7"
+  ]
+}
