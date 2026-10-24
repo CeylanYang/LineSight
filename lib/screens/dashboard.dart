@@ -292,7 +292,7 @@ class DashboardPage extends StatelessWidget {
         if (s.records.isEmpty)
           EmptyState(
             title: tr(context, "第一条记录，从这里开始"),
-            subtitle: tr(context, "进入任一工位，点击「开始检测」即可生成记录。"),
+            subtitle: tr(context, "进入任一工位，点击「添加示例记录」即可生成示例。"),
           ),
         ...s.records
             .take(4)
@@ -379,7 +379,7 @@ class _StationPageState extends State<StationPage> {
                   Expanded(
                     child: Text(
                       scanning
-                          ? tr(context, "正在分析画面…")
+                          ? tr(context, "正在生成示例记录…")
                           : latest == null
                           ? tr(context, "等待首次检测")
                           : latest.passed
@@ -407,7 +407,7 @@ class _StationPageState extends State<StationPage> {
               const SizedBox(height: 10),
               Text(
                 latest == null
-                    ? tr(context, "启动工位后可开始检测并生成记录。")
+                    ? tr(context, "启动工位后可添加示例记录。")
                     : tr(context, "{0}\n{1} · 置信度 {2}%", [
                         latest.serial,
                         stamp(latest.at),
@@ -421,7 +421,7 @@ class _StationPageState extends State<StationPage> {
                 runSpacing: 10,
                 children: [
                   BusyButton(
-                    label: tr(context, "开始检测"),
+                    label: tr(context, "添加示例记录"),
                     icon: Icons.center_focus_strong,
                     onPressed: !station.running
                         ? null

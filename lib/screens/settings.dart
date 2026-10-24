@@ -1010,7 +1010,7 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) => DetailScaffold(
     title: tr(context, "使用说明与应用信息"),
     children: [
-      const BrandMark(size: 64),
+      const Align(alignment: Alignment.centerLeft, child: BrandMark(size: 64)),
       const SizedBox(height: 22),
       PageHeading(
         eyebrow: tr(context, '应用版本 · {0}', [appVersion]),
@@ -1021,12 +1021,15 @@ class HelpPage extends StatelessWidget {
         child: Column(
           children: [
             ExpansionTile(
-              title: Text(tr(context, "01  开始一次检测")),
+              title: Text(tr(context, "01  任务与检验")),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    tr(context, "在工作台选择工位，确认当前配方并启动工位。检测结果与配方快照会自动保存。"),
+                    tr(
+                      context,
+                      "在工作台打开生产任务，按状态开始打印或送检。进入任务详情的质检页，填写检查项、数量和备注，添加照片后提交；检验结果与当时的检查标准一同保存。",
+                    ),
                     style: const TextStyle(height: 1.8),
                   ),
                 ),
@@ -1040,7 +1043,7 @@ class HelpPage extends StatelessWidget {
                   child: Text(
                     tr(
                       context,
-                      "从异常待办或检测记录打开详情，查看缺陷与置信度。工程师和管理员可填写复核依据并放行或判退。原始结果保留，每次复核变更写入日志。",
+                      "从任务详情的异常页查看问题、负责人和照片。填写处理说明并添加整改证据后送复检；复检会新增一轮记录，原检验结论保留。更改负责人时可同时交接未完成异常。",
                     ),
                     style: const TextStyle(height: 1.8),
                   ),
@@ -1055,7 +1058,7 @@ class HelpPage extends StatelessWidget {
                   child: Text(
                     tr(
                       context,
-                      "在配方中心新增、编辑或复制配方。换型时选择工位、目标配方并填写原因。新配置只影响后续检测，历史快照保持不变。正在使用的配方不能删除。",
+                      "在配方中心查看配置与检查模板。创建任务时选择配置和模板；已提交检验保留当时的版本。进入本机工作区后，可管理本机工位、配方和换型记录。",
                     ),
                     style: const TextStyle(height: 1.8),
                   ),
@@ -1070,7 +1073,7 @@ class HelpPage extends StatelessWidget {
                   child: Text(
                     tr(
                       context,
-                      "记录支持搜索、日期范围、工位和判定筛选。已处理的记录可归档并恢复。CSV 可用于分析；JSON 可恢复业务数据。账户不随备份迁移，恢复前自动保留一个还原点。",
+                      "团队记录可按任务、日期、人员、批次和结论筛选，并从任务详情查看或导出质量报告。本机数据的备份与恢复位于本机工作区的数据管理中，执行前需完成本机认证。",
                     ),
                     style: const TextStyle(height: 1.8),
                   ),
@@ -1078,14 +1081,14 @@ class HelpPage extends StatelessWidget {
               ],
             ),
             ExpansionTile(
-              title: Text(tr(context, "05  账户与恢复码")),
+              title: Text(tr(context, "05  登录与团队")),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
                     tr(
                       context,
-                      "首个账户为管理员。管理员可添加成员、设置角色或停用账户。登录连续失败会触发短暂锁定。忘记密码时使用创建账户时保存的恢复码。每次冷启动都需登录。",
+                      "普通用户与团队成员使用同一登录入口。登录后在“我的”切换团队、管理成员或绑定NFC卡片；绑定后可在登录页刷卡登录。本机工作区使用独立的本机认证，恢复码仅用于本机账户。",
                     ),
                     style: const TextStyle(height: 1.8),
                   ),
@@ -1100,7 +1103,7 @@ class HelpPage extends StatelessWidget {
                   child: Text(
                     tr(
                       context,
-                      "账户与检测数据保存在应用的本机数据库中，密码经过加盐派生处理。应用没有云账户和同步服务。业务备份为明文 JSON，请选择合适的保存位置。示例记录始终有标记。",
+                      "团队账户、任务与检验记录由云端服务管理；待提交草稿和待上传照片保存在当前账户的本机空间，可在同步页面查看与重试。本机工作区的数据独立保存，只有主动导入的记录才会上传到所选团队。",
                     ),
                     style: const TextStyle(height: 1.8),
                   ),

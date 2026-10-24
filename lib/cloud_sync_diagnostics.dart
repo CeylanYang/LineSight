@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'cloud_account.dart';
 import 'cloud_outbox.dart';
+import 'cloud_feedback.dart';
 import 'collaboration_api.dart';
 import 'l10n.dart';
 import 'ui.dart';
 import 'screens/cloud_tasks.dart';
 
 class CloudDiagnosticsPage extends StatefulWidget {
-  const CloudDiagnosticsPage({super.key});
+  final DateTime Function() now;
+  const CloudDiagnosticsPage({super.key, this.now = DateTime.now});
   @override
   State<CloudDiagnosticsPage> createState() => _CloudDiagnosticsPageState();
 }
@@ -18,17 +20,21 @@ class CloudDiagnosticsPage extends StatefulWidget {
 class _CloudDiagnosticsPageState extends State<CloudDiagnosticsPage> {
   String? scope;
   bool busy = false;
-  String? error;
+  Object? failure;
+  bool localReadFailed = false;
   Map<String, dynamic>? report;
   int generation = 0;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final next = CloudScope.of(context).draftKey('diagnostics');
+    final next = CloudScope.of(context).accessScope;
     if (scope != next) {
       scope = next;
       report = null;
-      error = null;
+      failure = null;
+      localReadFailed = false;
+      busy = false;
+      generation++;
       if (next != null) check();
     }
   }
@@ -37,19 +43,26 @@ class _CloudDiagnosticsPageState extends State<CloudDiagnosticsPage> {
     final account = CloudScope.of(context),
         captured = scope,
         ticket = ++generation;
+    if (!account.retainsAccess(captured)) return;
     setState(() {
       busy = true;
-      error = null;
+      failure = null;
     });
     final next = <String, dynamic>{
       'app_version': appVersion,
       'platform': Platform.operatingSystem,
-      'checked_at': DateTime.now().toUtc().toIso8601String(),
+      'checked_at': widget.now().toUtc().toIso8601String(),
       'workspace_id': account.activeWorkspace?['id'],
     };
+    bool localFailed = false;
+    Object? cloudFailure;
+    bool currentScope() =>
+        mounted && ticket == generation && account.retainsAccess(captured);
     try {
       final photos = await CloudOutbox(account).list();
+      if (!currentScope()) return;
       final drafts = await account.listDrafts();
+      if (!currentScope()) return;
       next['pending_photos'] = photos
           .where((photo) => photo['state'] != 'uploaded')
           .length;
@@ -57,6 +70,11 @@ class _CloudDiagnosticsPageState extends State<CloudDiagnosticsPage> {
           .where((photo) => photo['state'] == 'uploaded')
           .length;
       next['drafts'] = drafts.length;
+    } catch (_) {
+      localFailed = true;
+    }
+    if (!currentScope()) return;
+    try {
       await account.request(
         'GET',
         'workspaces/${next['workspace_id']}/metrics/',
@@ -64,24 +82,31 @@ class _CloudDiagnosticsPageState extends State<CloudDiagnosticsPage> {
       next['status'] = 200;
     } on CollaborationApiException catch (failure) {
       next['status'] = failure.status;
-    } catch (_) {
+      cloudFailure = failure;
+    } catch (error) {
       next['status'] = 0;
+      cloudFailure = error;
     }
-    if (!mounted ||
-        ticket != generation ||
-        captured != account.draftKey('diagnostics')) {
-      return;
-    }
+    if (!currentScope()) return;
+    next['local_storage'] = localFailed ? 'unavailable' : 'readable';
     setState(() {
       report = next;
       busy = false;
-      if (next['status'] != 200) error = '连接未完成，请检查网络或重新登录';
+      failure = cloudFailure;
+      localReadFailed = localFailed;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!CloudScope.of(context).signedIn) return cloudAccessRequired(context);
+    final account = CloudScope.of(context);
+    if (!account.signedIn) return cloudAccessRequired(context);
+    if (account.activeWorkspace == null) {
+      return DetailScaffold(
+        title: tr(context, '同步诊断'),
+        children: [CloudWorkspaceStatus(account: account)],
+      );
+    }
     final data = report;
     return DetailScaffold(
       title: tr(context, '同步诊断'),
@@ -109,15 +134,21 @@ class _CloudDiagnosticsPageState extends State<CloudDiagnosticsPage> {
           ),
           Text('${tr(context, '检查时间')} · ${data['checked_at']}'),
         ],
-        if (error != null)
-          Text(tr(context, error!), style: const TextStyle(color: red)),
-        FilledButton.icon(
-          onPressed: busy ? null : check,
-          icon: const Icon(Icons.refresh),
-          label: Text(tr(context, '检查连接')),
-        ),
+        if (localReadFailed)
+          Text(
+            tr(context, '未能读取本机待上传图片与草稿，请重新检查。'),
+            style: const TextStyle(color: red),
+          ),
+        if (failure != null)
+          CloudFailurePanel(failure: failure!, onRetry: check),
+        if (failure == null)
+          FilledButton.icon(
+            onPressed: busy ? null : check,
+            icon: const Icon(Icons.refresh),
+            label: Text(tr(context, '检查连接')),
+          ),
         OutlinedButton.icon(
-          onPressed: data == null
+          onPressed: data == null || busy
               ? null
               : () async {
                   await Clipboard.setData(

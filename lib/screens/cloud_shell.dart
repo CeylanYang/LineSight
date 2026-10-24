@@ -17,6 +17,7 @@ import 'cloud_profiles.dart';
 import 'cloud_business.dart';
 import 'cloud_nfc.dart';
 import 'cloud_sessions.dart';
+import 'settings.dart' show HelpPage;
 import '../nfc_reader.dart';
 
 class CloudShell extends StatefulWidget {
@@ -728,11 +729,22 @@ class _CloudShellState extends State<CloudShell> {
           const SizedBox(height: 10),
           GlassPanel(
             padding: const EdgeInsets.symmetric(vertical: 6),
-            child: MenuTile(
-              title: tr(context, '质量洞察与报告'),
-              subtitle: tr(context, '团队质量趋势与导出'),
-              icon: Icons.insights_outlined,
-              onTap: () => openPage(context, const CloudReportPage()),
+            child: Column(
+              children: [
+                MenuTile(
+                  title: tr(context, '使用说明与应用信息'),
+                  subtitle: tr(context, '记录检测结果、生产任务与质量复核。'),
+                  icon: Icons.help_outline,
+                  onTap: () => openPage(context, const HelpPage()),
+                ),
+                const Divider(height: 1, indent: 64, endIndent: 14),
+                MenuTile(
+                  title: tr(context, '质量洞察与报告'),
+                  subtitle: tr(context, '团队质量趋势与导出'),
+                  icon: Icons.insights_outlined,
+                  onTap: () => openPage(context, const CloudReportPage()),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 18),

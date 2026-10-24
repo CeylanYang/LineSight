@@ -1,7 +1,109 @@
 {
-  "screenshots": 300,
+  "screenshots": 306,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
+    {
+      "file": "diagnostics-batch/png/293-healthy-en-component.png",
+      "title": "293-healthy-en-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "dc6249893b462320c71b7fb252c3dc3513d9b2ee20d66cd1264a75988b72bfc4",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
+    {
+      "file": "diagnostics-batch/png/293-healthy-zh-component.png",
+      "title": "293-healthy-zh-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "e33c8d2191c0ac8f13dad3b88fc43063fcc39a4e91f84582b7ab4937418b0fb9",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
+    {
+      "file": "diagnostics-batch/png/293-help-en-component.png",
+      "title": "293-help-en-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "a80d559497a7a040dff4cc63404696c5fbeb1e97c94a4238732483684c66b612",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
+    {
+      "file": "diagnostics-batch/png/293-help-zh-component.png",
+      "title": "293-help-zh-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9a9aae6c702f063199822a1d54fbcd9531908e9b44caaf49e345c4cf4d69134c",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
+    {
+      "file": "diagnostics-batch/png/293-offline-en-component.png",
+      "title": "293-offline-en-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "c7794a14dfb4096cc898f09ab960a533efd484216edb802ab7b16ea97b9d3d5c",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
+    {
+      "file": "diagnostics-batch/png/293-offline-zh-component.png",
+      "title": "293-offline-zh-component",
+      "batch": "diagnostics-batch",
+      "batch_requirement_ids": [
+        "REL-04",
+        "UI-08",
+        "UI-11",
+        "UI-12",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "8306897aadbee3594fc90d58fd0d1d44c7f61fdc3b69a862396948478b5c0b41",
+      "batch_notes": "diagnostics-batch/README.md"
+    },
     {
       "file": "assignment-batch/png/291-assignment-conflict-en-component.png",
       "title": "291-assignment-conflict-en-component",
@@ -2831,7 +2933,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "b51517fce47e048605061544c9220a5e462f9d53357386beade9c5b71abc8670",
+      "sha256": "5cbd123c22231b22cf03249210843e393f13c77fc387b7709f822124f4f0143a",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -2849,7 +2951,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "5708f768b331d38a083326566b4cd32c1d12c519fb706efcfa86a1297e9e603e",
+      "sha256": "6d040ee231227737519b63df400cd5a8a8643a10b832c6bb149587c634fab1ac",
       "batch_notes": "template-batch/README.md"
     },
     {

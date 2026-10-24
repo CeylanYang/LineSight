@@ -8,6 +8,7 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1] / 'docs/product/linesight/acceptance'
 groups = {
+    'diagnostics-batch': ['REL-04','UI-08','UI-11','UI-12','QA-04'],
     'assignment-batch': ['COL-03','QC-06','UI-03','UI-08','UI-11','SEC-04','QA-04'],
     'sso': ['SSO-01','SSO-02','SSO-04'],
     'product-batch': ['UI-03','QC-01','QC-02','QC-05','REP-03'],

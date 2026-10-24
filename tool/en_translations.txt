@@ -1728,3 +1728,17 @@
 1727|Choose a member who can handle tasks in this team
 1728|Assignee has not changed
 1729|Issue handover needs a note of 1 to 500 characters
+1730|Add example record
+1731|Generating example record…
+1732|Open a station and tap Add example record to create an example.
+1733|Start the station to add example records.
+1734|Unable to read local pending photos and drafts. Check again.
+1735|01  Tasks and inspections
+1736|Open Production tasks from the workbench. Start printing or send a task for inspection as its status allows. In the task inspection page, complete checks, quantities and notes, add photos, then submit. Results retain the standards used at submission.
+1737|Open Issues in task details to view the problem, assignee and photos. Enter the action taken and add repair evidence before sending for reinspection. Reinspection adds a new round and retains the original result. Reassigning the task also hands over its open issues.
+1738|Browse configurations and check templates in Recipe center. Select them when creating a task; submitted inspections retain their original versions. In the local workspace, manage local stations, recipes and changeovers.
+1739|Filter team records by task, date, inspector, batch and result. View or export quality reports from task details. Back up and restore local data in the local workspace Data management page after local authentication.
+1740|05  Sign-in and teams
+1741|Users and team members share one sign-in page. After signing in, use My account to switch teams, manage members or bind an NFC card, then scan it on the sign-in page. The local workspace has separate authentication; recovery codes apply only to local accounts.
+1742|Cloud services manage team accounts, tasks and inspection records. Pending drafts and photos stay in the current account’s local storage; view and retry them in Sync. Local workspace data stays separate and uploads to the selected team only when explicitly imported.
+1743|Track inspection results, production tasks and quality reviews.

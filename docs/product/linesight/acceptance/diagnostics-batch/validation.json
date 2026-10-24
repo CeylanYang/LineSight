@@ -1,0 +1,51 @@
+{
+  "version": "1.1.50+8074",
+  "flutter_full_tests_passed": 442,
+  "new_tests": 17,
+  "new_behavior_tests": 11,
+  "new_component_png": 6,
+  "flutter_analyze_clean": true,
+  "backend_source_unchanged": true,
+  "previous_backend_tests_passed": 87,
+  "backend_evidence": "../assignment-batch/validation.json",
+  "diagnostics_recovery_and_scope_verified": true,
+  "diagnostics_export_allowlist_verified": true,
+  "help_entry_return_and_cloud_copy_verified": true,
+  "local_sample_action_explicit": true,
+  "native_final_apk_verified": false,
+  "physical_devices_verified": false,
+  "business_cloud_writes_this_batch": false,
+  "product_plan_complete": false,
+  "screenshots": [
+    {
+      "file": "png/293-healthy-en-component.png",
+      "sha256": "dc6249893b462320c71b7fb252c3dc3513d9b2ee20d66cd1264a75988b72bfc4",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/293-healthy-zh-component.png",
+      "sha256": "e33c8d2191c0ac8f13dad3b88fc43063fcc39a4e91f84582b7ab4937418b0fb9",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/293-help-en-component.png",
+      "sha256": "a80d559497a7a040dff4cc63404696c5fbeb1e97c94a4238732483684c66b612",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/293-help-zh-component.png",
+      "sha256": "9a9aae6c702f063199822a1d54fbcd9531908e9b44caaf49e345c4cf4d69134c",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/293-offline-en-component.png",
+      "sha256": "c7794a14dfb4096cc898f09ab960a533efd484216edb802ab7b16ea97b9d3d5c",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/293-offline-zh-component.png",
+      "sha256": "8306897aadbee3594fc90d58fd0d1d44c7f61fdc3b69a862396948478b5c0b41",
+      "origin": "desktop-component-render"
+    }
+  ]
+}

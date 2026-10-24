@@ -1,0 +1,22 @@
+[
+  {
+    "file": "docs/product/linesight/acceptance/template-batch/png/181-unified-login-en-desktop-render.png",
+    "changed_bbox": [
+      209,
+      809,
+      220,
+      818
+    ],
+    "scope": "displayed version only"
+  },
+  {
+    "file": "docs/product/linesight/acceptance/template-batch/png/181-unified-login-zh-desktop-render.png",
+    "changed_bbox": [
+      209,
+      763,
+      220,
+      772
+    ],
+    "scope": "displayed version only"
+  }
+]
