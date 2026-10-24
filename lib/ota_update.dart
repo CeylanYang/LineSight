@@ -11,6 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'collaboration_api.dart';
 import 'ota_key.dart';
+import 'runtime_errors.dart';
 
 const otaTrack = String.fromEnvironment(
   'LINESIGHT_OTA_TRACK',
@@ -112,6 +113,10 @@ class OtaUpdates extends ChangeNotifier {
       runningPatch = await FlutterPatcher.currentVersion;
     } catch (_) {
       status = OtaStatus.unavailable;
+    } finally {
+      // flutter_patcher installs boot hooks that send error.toString() to
+      // Android. Preserve its rollback signal without forwarding private data.
+      sanitizeInstalledRuntimeErrorHandlers();
     }
   }
 

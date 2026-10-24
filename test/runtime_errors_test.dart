@@ -17,6 +17,76 @@ class UnprintableStack implements StackTrace {
 }
 
 void main() {
+  test(
+    'plugin boot hooks get sanitized framework failure and keep reporting',
+    () {
+      final previous = FlutterError.onError;
+      final previousAsync = PlatformDispatcher.instance.onError;
+      final output = <String>[];
+      final reports = <String>[];
+      try {
+        installRuntimeErrorPrivacy(enabled: true, sink: output.add);
+        final privateHandler = FlutterError.onError!;
+        FlutterError.onError = (details) {
+          reports.add(details.exception.toString());
+          expect(details.stack.toString(), isEmpty);
+          expect(details.context, isNull);
+          expect(details.informationCollector, isNull);
+          privateHandler(details);
+        };
+        sanitizeInstalledRuntimeErrorHandlers(enabled: true);
+        FlutterError.reportError(
+          FlutterErrorDetails(
+            exception: UnprintableFailure(),
+            stack: UnprintableStack(),
+            context: ErrorDescription('private-context'),
+            informationCollector: () => throw StateError('Must never collect'),
+          ),
+        );
+        expect(reports, ['LINESIGHT_ERROR source=framework category=unknown']);
+        expect(output, reports);
+      } finally {
+        FlutterError.onError = previous;
+        PlatformDispatcher.instance.onError = previousAsync;
+      }
+    },
+  );
+
+  test('plugin asynchronous boot hook keeps its signal without raw values', () {
+    final previous = FlutterError.onError;
+    final previousAsync = PlatformDispatcher.instance.onError;
+    final output = <String>[];
+    final reports = <String>[];
+    try {
+      installRuntimeErrorPrivacy(enabled: true, sink: output.add);
+      final privateHandler = PlatformDispatcher.instance.onError!;
+      PlatformDispatcher.instance.onError = (error, stack) {
+        reports.add(error.toString());
+        expect(stack.toString(), isEmpty);
+        return privateHandler(error, stack);
+      };
+      sanitizeInstalledRuntimeErrorHandlers(enabled: true);
+      expect(
+        PlatformDispatcher.instance.onError!(
+          PlatformException(
+            code: 'private-code',
+            message: 'private-token',
+            details: {'password': 'private-password'},
+          ),
+          UnprintableStack(),
+        ),
+        isTrue,
+      );
+      expect(reports, [
+        'LINESIGHT_ERROR source=asynchronous category=platform',
+      ]);
+      expect(output, reports);
+    } finally {
+      FlutterError.onError = previous;
+      PlatformDispatcher.instance.onError = previousAsync;
+    }
+  });
+
   test('framework handler never evaluates messages, stacks or collectors', () {
     final previous = FlutterError.onError;
     final previousAsync = PlatformDispatcher.instance.onError;
