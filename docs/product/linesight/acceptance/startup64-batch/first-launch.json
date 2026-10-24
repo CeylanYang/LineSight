@@ -1,0 +1,8 @@
+{
+  "avd": "LineSightProductionFreshValidation",
+  "first_launch_passed": true,
+  "observed_seconds_until_navigation": 19.95,
+  "observation_count": 4,
+  "cold_relaunch_used": false,
+  "app_data_cleared": false
+}

@@ -1,0 +1,89 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 4,
+  "flutter_tests": 464,
+  "new_startup_reply_timeout_tests": 1,
+  "analyze_clean": true,
+  "source_fix_commit": "2b53114",
+  "native_assets_engine_unchanged": true,
+  "preview_ota6_published": true,
+  "preview_content4_runtime_verified": false,
+  "production_ota3_runtime_verified": true,
+  "production_ota3_published": true,
+  "production_first_launch": {
+    "avd": "LineSightProductionFreshValidation",
+    "first_launch_passed": true,
+    "observed_seconds_until_navigation": 19.95,
+    "observation_count": 4,
+    "cold_relaunch_used": false,
+    "app_data_cleared": false
+  },
+  "demo_session_restored_after_patch": true,
+  "production_runtime_verified": true,
+  "native_fault_injection_of_dart_handlers": false,
+  "observed_last_update_time": "2026-10-24 08:42:22",
+  "app_reinstalled": false,
+  "app_data_cleared": false,
+  "native_plugin_direct_logging_fully_audited": false,
+  "physical_devices_verified": false,
+  "manifests": [
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:40:50.028485+00:00",
+      "schema": 1,
+      "sequence": 6,
+      "sha256": "fd547d48afae43cc41e255f1ac1652902929d9b169de179a092838af4d689b8a",
+      "size": 11207568,
+      "track": "preview"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:40:50.060486+00:00",
+      "schema": 1,
+      "sequence": 6,
+      "sha256": "22103ea366582f979206f9d03af0ed9047a10a5d0110f3f7db2fcd508572b804",
+      "size": 11469712,
+      "track": "preview"
+    },
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:40:59.783254+00:00",
+      "schema": 1,
+      "sequence": 3,
+      "sha256": "1a91706bbb9b080eabe8616f493718edad28ca402657f1d4a0e889fb4e458ca7",
+      "size": 11207568,
+      "track": "production"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:40:59.804480+00:00",
+      "schema": 1,
+      "sequence": 3,
+      "sha256": "e8626f44cca53882aab56606d6205fa6144da339f477e7123291996d39194278",
+      "size": 11469712,
+      "track": "production"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "LineSight-1.1.54-8078-preview.apk",
+      "sha256": "0d4f32f75e3990794429d6a075606df1034bd4683cc5c0fbc69d4480998c42e8",
+      "bytes": 75547520,
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e"
+    },
+    {
+      "file": "LineSight-1.1.54-8078-production.apk",
+      "sha256": "085a869f1c2e158d18cc4cce2f1a95dadb6ecf6d49729c21db763da6fb425292",
+      "bytes": 75547520,
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2"
+    }
+  ]
+}
