@@ -1,0 +1,9 @@
+{
+  "production_smtp_enabled": true,
+  "official_keycloak_smtp_test": true,
+  "reset_password_enabled": true,
+  "public_registration_closed": true,
+  "existing_passwords_changed": false,
+  "external_recipient_confirmed_transport_test": true,
+  "temporary_admin_email_restored": true
+}

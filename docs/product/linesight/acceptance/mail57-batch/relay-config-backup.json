@@ -1,0 +1,41 @@
+{
+  "backup": "20261024T065750536920Z",
+  "off_host_copy_verified": true,
+  "encryption": "AES-256-GCM",
+  "authentication_tag_verified": true,
+  "archive_sha256": "96067cbc25bc018397f162fb44f307898ea0af7a70263d8b971bb4e9fcd7907d",
+  "archive_bytes": 5657728,
+  "all_file_hashes_verified": true,
+  "files": 105,
+  "sqlite_tables": 31,
+  "sqlite_rows_identical": true,
+  "foreign_keys_valid": true,
+  "provider_dump_hash_verified": true,
+  "provider_tables_in_manifest": 101,
+  "media_files_verified": 28,
+  "identity_runtime_files_verified": 2,
+  "deployment_config_files_verified": 13,
+  "private_keys_or_databases_in_public_delivery": false,
+  "decrypted_archive_retained": false,
+  "off_host_restore_boot_exercised": false,
+  "completed_at": "2026-10-24T06:57:57.378944+00:00",
+  "automatic_offhost_copy": true,
+  "local_retention": {
+    "policy": "30 days, 8 weekly, 12 monthly, latest 7 distinct days",
+    "verified_eligible": 7,
+    "expiry_candidates": [],
+    "removed": [],
+    "applied": true,
+    "free_bytes": 182905409536,
+    "capacity_warning": false
+  },
+  "remote_retention": {
+    "policy": "30 days, 8 weekly, 12 monthly, latest 7 distinct days",
+    "verified_eligible": 4,
+    "expiry_candidates": [],
+    "removed": [],
+    "applied": true,
+    "free_bytes": 29977255936,
+    "capacity_warning": false
+  }
+}

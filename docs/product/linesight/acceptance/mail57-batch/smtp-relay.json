@@ -1,0 +1,1 @@
+{"relay": "smtp.163.com:465", "tls_certificate_verification": true, "smtp_auth_verified": true, "sender": "kkk456miao@163.com", "private_test_domain_retained": true, "backup": "/var/backups/linesight/mail/relay-20261024T065648Z", "public_smtp_enabled": false}

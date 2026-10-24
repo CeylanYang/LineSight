@@ -197,6 +197,14 @@ def deployment_config_sources():
             'mail/stage.json':'/etc/linesight-postfix-stage.json',
             'mail/linesight-mailpit.service':'/etc/systemd/system/linesight-mailpit.service',
         })
+    if Path('/etc/linesight-smtp-relay.json').is_file():
+        sources.update({
+            'postfix/sasl_passwd':'/etc/postfix/sasl_passwd',
+            'postfix/sasl_passwd.db':'/etc/postfix/sasl_passwd.db',
+            'postfix/linesight_transport':'/etc/postfix/linesight_transport',
+            'postfix/linesight_transport.db':'/etc/postfix/linesight_transport.db',
+            'mail/relay.json':'/etc/linesight-smtp-relay.json',
+        })
     return sources
 
 

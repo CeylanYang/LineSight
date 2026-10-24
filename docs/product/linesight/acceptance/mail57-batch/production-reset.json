@@ -1,0 +1,13 @@
+{
+  "production_realm": "linesight",
+  "external_reset_email_received": true,
+  "mail_transport": "Keycloak -> Postfix -> SMTP465 -> 163 mailbox",
+  "reset_link_completed": true,
+  "old_password_rejected": true,
+  "new_password_pkce_login": true,
+  "reset_link_reuse_rejected": true,
+  "public_registration_closed": true,
+  "existing_team_passwords_changed": false,
+  "unrelated_mail_downloaded": false,
+  "disposable_account_deleted": true
+}

@@ -1,31 +1,33 @@
-# 自托管密码找回邮件
+# 密码找回邮件
 
-密码重置使用现有Keycloak 26.8.1官方流程，SMTP验收使用[Mailpit](https://github.com/axllent/mailpit) v1.32.0（MIT）。不实现自制重置令牌、验证码或邮件协议。
+身份认证和密码重置使用 Keycloak 26.8.1 官方流程。公开注册保持关闭，App、API 和身份 issuer 地址不变。
 
-当前域名`99ai.pronhubcn.com`及`mail.99ai.pronhubcn.com`已解析至生产服务器，两者`/health`已通过HTTPS证书校验。主域名根路径已接现有`IP/linesight/`官网，同时支持`https://99ai.pronhubcn.com/linesight/`；邮件子域只提供健康响应。未迁移App API、身份issuer或OAuth回调。现阶段是内部邮件测试环境，不能向真实邮箱投递。正式realm的SMTP保持原状，公开注册保持关闭。测试realm `linesight-mail-validation`同样关闭注册，测试用户用后删除。
+## 正式发信
 
-Mailpit官方Linux amd64发布包安装到`/opt/linesight-mailpit/mailpit`，systemd单元见`linesight-mailpit.service`。内存上限96MiB、CPU配额25%，数据库私有目录`/var/lib/linesight-mailpit`，最多保留50封。HTTP界面/API仅监听`127.0.0.1:8025`；SMTP只绑定现有身份容器网关`10.89.0.1:1025`，不开放公网SMTP或邮箱查看入口。网络重建后必须核对网关并同步修改绑定及测试realm配置。
+2026-10-24 已接入现有自托管 Postfix 3.5.8，经 `smtp.163.com:465` 认证中继发送。发件人为 `LineSight <kkk456miao@163.com>`，不冒用自有域名地址。163 中继属于外部邮件服务，Keycloak、Postfix、OpenDKIM、Mailpit 仍由我们自托管。
 
-私有查看：
+阿里云[轻量应用服务器限制](https://help.aliyun.com/zh/simple-application-server/product-overview/limits)明确禁止出站 25 发信，建议使用 465。控制台入站放行 25 无法解除该限制。SMTP465 的 TLS 证书及主机名校验已启用，SASL 使用发行版 cyrus-sasl-plain 模块。
+
+`tool/configure_smtp_relay_remote.py` 从 SSH 标准输入读取本机私有配置，不将授权码放入命令行或公开报告。脚本先验证认证并检查空队列，备份配置再切换，校验失败恢复配置。授权码及 Postfix 哈希表以 0600 保存在服务器，已列入加密异机备份。更换授权码后重新执行配置并验证。
+
+正式 realm 已启用 SMTP 和找回密码，官方 SMTP 测试通过；管理员临时测试邮箱已恢复原值。用户已确认实际收到连接测试邮件。正式 realm 一次性账号已通过真实重置邮件收取、设置新密码、旧密码拒绝、新密码 PKCE 登录、动作链接重放拒绝，并已删除测试账号。验收证据在 `docs/product/linesight/acceptance/mail57-batch/`。现有团队账号密码未更改。找回密码要求对应账号已配置本人可访问的邮箱；测试邮箱不会批量替换成员邮箱。
+
+## 隔离测试环境
+
+[Mailpit](https://github.com/axllent/mailpit) v1.32.0（MIT）用于封闭测试。UI/API 仅监听 `127.0.0.1:8025`，SMTP 绑定 `10.89.0.1:1025`，内存上限 96MiB、最多 50 封。Postfix 只监听 `127.0.0.1:2525` 及 `10.89.0.1:2525`，允许本机和当前 Keycloak 容器 `10.89.0.4/32` 转发，无公网 SMTP 监听。容器 IP 变更后需核对白名单。
+
+`example.invalid` 专用传输表继续路由到 Mailpit，防止一次性测试邮件外发。测试 realm `linesight-mail-validation` 禁止注册。`tool/verify_mail_recovery.py` 已通过官方邮件重置、旧密码拒绝、新密码 PKCE 登录及动作链接重放拒绝。`tool/verify_production_mail_recovery.py` 使用正式 realm 的一次性账号验证真实邮件重置，只按本次测试范围读取邮件，动作链接和密码不进入报告，结束后删除账号。
+
+私有查看邮件：
 
 ```powershell
 ssh -N -L 127.0.0.1:18025:127.0.0.1:8025 -i ~/.ssh/linesight-ali-baot.pem root@47.111.81.94
 ```
 
-随后打开`http://127.0.0.1:18025`。找回邮件含登录凭证，禁止公开端口、保存邮件正文或动作链接到交付证据。`tool/verify_mail_recovery.py`建立独立隧道并使用一次性测试账号，验证正式Keycloak邮件流程，公开报告只记录布尔结果。
+打开 `http://127.0.0.1:18025`。邮件正文及重置链接属于凭据，禁止公开或纳入交付证据。
 
-2026-10-24已完成隔离账号实际重置邮件收取、设置新密码、旧密码拒绝、新密码PKCE登录及动作链接重放拒绝，测试账号已删除。证据：`docs/product/linesight/acceptance/operations55-batch/mail-recovery.json`。生产realm的SMTP、用户密码及关闭注册配置保持原状。
+## 域名与恢复
 
-服务器实际外连探针：外部SMTP的25端口连接失败，465/587成功。直接投递需要先确认云平台出站25端口限制并申请开放；若无法开放，则需要SMTP中继，不能仅靠域名解析解决。
+`99ai.pronhubcn.com`、`mail.99ai.pronhubcn.com` 已解析至生产服务器，HTTPS 证书验证通过。官网为 `https://99ai.pronhubcn.com/` 和 `/linesight/`。SPF、DKIM、DMARC 已发布且与私钥匹配；这是未来自有域名直发的准备，不表示当前 163 From 使用自有域名认证。OpenDKIM 2048 位私钥保存在 `/etc/opendkim/keys/99ai.pronhubcn.com/`，已通过加密副本派生匹配公钥。
 
-正式投递前仍需要：可管理DNS的域名、实际收件邮箱、发信出口；部署Postfix或Stalwart等开源投递服务并配置TLS、SPF、DKIM、DMARC及适用的PTR。确认实际邮箱收到邮件并完成重置后，才在正式realm启用SMTP。Mailpit收件成功不能证明真实邮件投递成功。
-
-## 域名邮件暂存链路
-
-已安装发行版仓库Postfix 3.5.8及OpenDKIM 2.11.0，部署脚本`tool/configure_postfix_remote.py`。Postfix只监听`127.0.0.1:2525`及身份容器网关`10.89.0.1:2525`，允许本机及当前Keycloak容器`10.89.0.4/32`转发，未开放公网SMTP。OpenDKIM只监听`127.0.0.1:8891`；2048位RSA私钥在`/etc/opendkim/keys/99ai.pronhubcn.com/`，opendkim专属权限，不能进入公开交付。
-
-当前relayhost固定为私有Mailpit：Keycloak测试realm → Postfix → OpenDKIM签名 → Mailpit。完整找回测试已通过，捕获邮件存在`d=99ai.pronhubcn.com`签名；尚未用公共DNS验证签名，也尚未验证外部送达。生产realm未启用该链路。
-
-客户三条TXT（SPF、DKIM、DMARC）在`D:/ENT207/deliverables/LineSight-mail-domain/DNSHE-TXT记录.txt`，只含公钥及公开解析信息。三条记录已通过外部解析器1.1.1.1逐字核对，OpenDKIM官方`opendkim-testkey`已验证DNS公钥与私钥匹配（key OK）。无需MX，当前不提供收件邮箱。DKIM selector为`linesight2026`，DMARC先使用`p=none`观测。
-
-出站25端口开放及PTR条件核实后，方可移除Mailpit中继并测试指定真实收件邮箱；最近重测25端口仍不可连接。更改中继前先检查队列，避免测试邮件意外外发。身份容器IP变化需同步白名单；默认失败关闭转发。邮件配置及DKIM密钥已加入加密异机备份，8项配置指纹通过；已从副本私钥派生匹配公钥，第二台主机邮件服务恢复启动仍待验收。
+邮件配置、DKIM 私钥和 SMTP 授权配置共 13 项部署文件已加入 AES-256-GCM 异机备份，哈希验证通过；不输出明文密钥或数据库。第二台主机完整邮件服务恢复启动仍待验收。恢复时需安装同版软件和 SASL 模块，核对 CA 证书路径、私有监听、容器白名单及传输表，先 Mailpit 验证再开正式投递。
