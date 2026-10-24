@@ -2,7 +2,7 @@
 
 密码重置使用现有Keycloak 26.8.1官方流程，SMTP验收使用[Mailpit](https://github.com/axllent/mailpit) v1.32.0（MIT）。不实现自制重置令牌、验证码或邮件协议。
 
-当前域名`99ai.pronhubcn.com`及`mail.99ai.pronhubcn.com`已解析至生产服务器，两者`/health`已通过HTTPS证书校验。新增Caddy站点只提供健康响应，未迁移App API、身份issuer或OAuth回调。现阶段是内部邮件测试环境，不能向真实邮箱投递。正式realm的SMTP保持原状，公开注册保持关闭。测试realm `linesight-mail-validation`同样关闭注册，测试用户用后删除。
+当前域名`99ai.pronhubcn.com`及`mail.99ai.pronhubcn.com`已解析至生产服务器，两者`/health`已通过HTTPS证书校验。主域名根路径已接现有`IP/linesight/`官网，同时支持`https://99ai.pronhubcn.com/linesight/`；邮件子域只提供健康响应。未迁移App API、身份issuer或OAuth回调。现阶段是内部邮件测试环境，不能向真实邮箱投递。正式realm的SMTP保持原状，公开注册保持关闭。测试realm `linesight-mail-validation`同样关闭注册，测试用户用后删除。
 
 Mailpit官方Linux amd64发布包安装到`/opt/linesight-mailpit/mailpit`，systemd单元见`linesight-mailpit.service`。内存上限96MiB、CPU配额25%，数据库私有目录`/var/lib/linesight-mailpit`，最多保留50封。HTTP界面/API仅监听`127.0.0.1:8025`；SMTP只绑定现有身份容器网关`10.89.0.1:1025`，不开放公网SMTP或邮箱查看入口。网络重建后必须核对网关并同步修改绑定及测试realm配置。
 
