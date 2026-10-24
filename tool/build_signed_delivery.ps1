@@ -45,6 +45,8 @@ $buildExitCode = $LASTEXITCODE
 $ErrorActionPreference = 'Stop'
 if ($buildExitCode -ne 0) { throw "Release build failed for $Track" }
 $apk = Join-Path (Get-Location) 'build/app/outputs/apk/release/app-release.apk'
+& python tool/audit_apk_log_calls.py $apk --require-clean --output ".artifact-work/sso/$EvidenceBatch-$Track-native-logs.json"
+if ($LASTEXITCODE -ne 0) { throw 'Customer APK retains direct native log or stack-trace calls' }
 $archive = [IO.Compression.ZipFile]::OpenRead($apk)
 try {
     foreach ($entry in $archive.Entries | Where-Object { $_.FullName -match '\.dex$' }) {

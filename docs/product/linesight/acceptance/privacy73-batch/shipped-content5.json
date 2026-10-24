@@ -1,0 +1,16 @@
+{
+  "apk_sha256": "e9767aabd40c5b3fa6abf5727ff435aa54a6cb4dc29a1184fcd352207f68019d",
+  "dex_files": 1,
+  "direct_call_counts": {
+    "android.util.Log.d": 618,
+    "android.util.Log.e": 350,
+    "android.util.Log.i": 149,
+    "android.util.Log.println": 1,
+    "android.util.Log.v": 49,
+    "android.util.Log.w": 489,
+    "printStackTrace": 24
+  },
+  "direct_calls_absent": false,
+  "scope": "Direct DEX Log v/d/i/w/e/println and printStackTrace calls; excludes native libraries, reflection, other logging APIs and OS crash output",
+  "raw_disassembly_saved": false
+}

@@ -1,0 +1,13 @@
+00:00 +0: loading C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart
+00:00 +0: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: plugin boot hooks get sanitized framework failure and keep reporting
+00:00 +1: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: plugin asynchronous boot hook keeps its signal without raw values
+00:00 +2: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: framework handler never evaluates messages, stacks or collectors
+00:00 +3: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: async handler handles plugin secrets without default raw logging
+00:00 +4: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: known error categories preserve no supplied values
+00:00 +5: C:/Users/29668/LineSight-workspaces/sync-delivery/test/runtime_errors_test.dart: development retains existing framework and async diagnostics
+00:01 +6: C:/Users/29668/LineSight-workspaces/sync-delivery/test/ota_update_test.dart: accepts signed code bound to the installed base and ABI
+00:01 +7: C:/Users/29668/LineSight-workspaces/sync-delivery/test/ota_update_test.dart: rejects altered metadata and unknown signing keys
+00:01 +8: C:/Users/29668/LineSight-workspaces/sync-delivery/test/ota_update_test.dart: rejects other teams of builds, ABIs and expired metadata
+00:01 +9: C:/Users/29668/LineSight-workspaces/sync-delivery/test/ota_update_test.dart: replay cannot override a newer installed command
+00:01 +10: C:/Users/29668/LineSight-workspaces/sync-delivery/test/ota_update_test.dart: rollback is also signed and must advance sequence
+00:01 +11: All tests passed!
