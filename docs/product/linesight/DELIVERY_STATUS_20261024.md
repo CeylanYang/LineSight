@@ -10,7 +10,7 @@
 | 原生崩溃后的 OTA 回退 | 独立 API34 x86_64：正常 force-stop 保留补丁；首帧完成后对精确 App PID 注入 SIGSEGV，Android 记录 reason=5/status=11。下一次启动移除、拉黑、拒绝再次应用并恢复工作台。未修改线上或客户数据 | acceptance/native68-batch/validation.json、exit-and-ui-evidence.json |
 | OTA 启动异常报告与故障回退 | 修复开源模块先于 App 过滤器向原生传递原始异常的问题。独立 API34 x86_64 实际加载框架/异步故障 AOT：固定类别到达原生、移除、拉黑、再次应用同补丁拒绝、冷启动恢复；无原始标记。正常正式 OTA4 内容 5 生效及演示登录保留；466 测试通过 | acceptance/ota67-batch/validation.json、delivery.json |
 | 正式内容 4 二级页 | 配方/打印配置/配置预填新建任务/模板/账户/卡片/无 NFC 提示及取消/本机导入授权入口/操作成员团队页面；14 组原生截图/XML。未提交任务，未改客户数据 | acceptance/secondary66-batch/validation.json |
-| 官网安装包 | 正式版及旧体验版兼容升级包更新为 1.1.54 内容 5；旧 URL 转向兼容升级。服务器侧域名 HTTPS 完整下载与交付哈希一致；本机此前 TLS EOF，独立客户端访问及浏览器布局待验 | acceptance/ota67-batch/public-https.json |
+| 官网安装包 | 正式版及旧体验版兼容升级包更新为 1.1.54 内容 5；旧 URL 转向兼容升级。本机独立 Chrome 正常 TLS 校验：首页及 `/linesight/` 返回 200，桌面正式版/手机尺寸兼容版按钮均下载完整 75,547,520 字节，SHA256 与交付一致；旧路径两下载入口 HEAD 正常。三组页面无脚本异常或横向溢出；手机仍整页缩放、控件偏小，可读性待改善 | acceptance/ota67-batch/public-https.json；acceptance/portal70-batch/browser.json、截图 |
 | 邮件找回密码 | 正式 Keycloak → 自托管 Postfix → 163 SMTP465 → 真实邮箱。重置、新密码 PKCE 登录、旧密码拒绝、重置链接重放拒绝通过 | acceptance/mail57-batch/production-reset.json |
 | 内容版本 2 原生补验 | 演示团队登录、CSV 保存、9 页 PDF 系统打印、导出返回、同步诊断及部分英文二级页；11 组截图/XML 与导出指标校验通过 | acceptance/native60-batch/validation.json |
 | Flutter 未捕获错误日志 | 正式版本框架及根 isolate 异步错误只输出固定来源/类别。463 项测试、静态检查通过，预览 OTA5 冷启动内容 3、演示登录保留；正式 OTA2 已发布 | acceptance/runtime62-batch/validation.json |
@@ -32,6 +32,7 @@
 | 工作 | 当前缺少的验收 |
 | --- | --- |
 | 最终 APK 页面及权限 | 正式内容 4 已补验配置、模板、账户、卡片、本机导入授权入口和操作成员团队页面；仍需剩余二级页、中英文小屏、所有角色的入口/返回/撤权，不能以本批代替全部原生验收 |
+| 官网手机可读性 | 390px 下无横向溢出，下载功能通过；现有整页缩放让正文和下载按钮偏小，需改善手机布局，不能据此视为手机易用性通过 |
 | APK 邮件往返 | 从 App 找回密码，经外部邮箱打开链接，再回 App 登录；服务端和 PKCE 流程已通过 |
 | 原生日志 | AppAuth 三类令牌故障通过；内容 5 已在正式 Android 基础包加载实际框架/异步故障 AOT，覆盖模块报告到原生日志的路径。仍需其他插件直接日志、系统崩溃及真实设备审计 |
 | NFC/摄像头/扫码/触觉 | 需要真实 Android 手机及实际卡片。模拟器和服务器测试不能证明硬件工作正常 |

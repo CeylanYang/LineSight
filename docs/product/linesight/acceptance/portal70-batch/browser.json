@@ -1,0 +1,120 @@
+{
+  "browser": "local Chrome headless",
+  "tls_errors_ignored": false,
+  "pages": [
+    {
+      "name": "desktop",
+      "url": "https://99ai.pronhubcn.com/",
+      "status": 200,
+      "title": "LineSight 产线视界 - 质检大厅 · 工单一站式处理",
+      "download_links": [
+        {
+          "label": "↓ 首次安装正式版",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "旧体验版兼容升级",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-preview.apk"
+        },
+        {
+          "label": "Android 下载",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "兼容升级，保留数据",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-preview.apk"
+        }
+      ],
+      "geometry": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "bodyWidth": 1440
+      },
+      "page_errors": [],
+      "actual_button_download": {
+        "channel": "production",
+        "filename": "LineSight-1.1.54-content5-production.apk",
+        "sha256": "e9767aabd40c5b3fa6abf5727ff435aa54a6cb4dc29a1184fcd352207f68019d",
+        "bytes": 75547520
+      }
+    },
+    {
+      "name": "mobile",
+      "url": "https://99ai.pronhubcn.com/",
+      "status": 200,
+      "title": "LineSight 产线视界 - 质检大厅 · 工单一站式处理",
+      "download_links": [
+        {
+          "label": "↓ 首次安装正式版",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "旧体验版兼容升级",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-preview.apk"
+        },
+        {
+          "label": "Android 下载",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "兼容升级，保留数据",
+          "url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content5-preview.apk"
+        }
+      ],
+      "geometry": {
+        "width": 390,
+        "documentWidth": 390,
+        "bodyWidth": 390
+      },
+      "page_errors": [],
+      "actual_button_download": {
+        "channel": "preview",
+        "filename": "LineSight-1.1.54-content5-preview.apk",
+        "sha256": "e00b9e58ed51f7e018d6892e652f1920f4bc554776febc87afe2b8d40ebaa4ae",
+        "bytes": 75547520
+      }
+    },
+    {
+      "name": "legacy-path",
+      "url": "https://99ai.pronhubcn.com/linesight/",
+      "status": 200,
+      "title": "LineSight 产线视界 - 质检大厅 · 工单一站式处理",
+      "download_links": [
+        {
+          "label": "↓ 首次安装正式版",
+          "url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "旧体验版兼容升级",
+          "url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-preview.apk"
+        },
+        {
+          "label": "Android 下载",
+          "url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-production.apk"
+        },
+        {
+          "label": "兼容升级，保留数据",
+          "url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-preview.apk"
+        }
+      ],
+      "geometry": {
+        "width": 1440,
+        "documentWidth": 1440,
+        "bodyWidth": 1440
+      },
+      "page_errors": [],
+      "legacy_download_head": [
+        {
+          "channel": "production",
+          "status": 200,
+          "bytes": 75547520
+        },
+        {
+          "channel": "preview",
+          "status": 200,
+          "bytes": 75547520
+        }
+      ]
+    }
+  ]
+}
