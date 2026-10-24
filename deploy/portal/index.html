@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#e4eef7">
+<meta name="description" content="LineSight 产线视界：给小型制造与3D打印团队的生产质检工作台。生产任务、检测记录、图片证据、异常处理与团队协作。">
+<title>LineSight 产线视界 - 质检大厅 · 工单一站式处理</title>
+<link rel="icon" href="assets/product/mark.png"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="product.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="banners.css"><link rel="stylesheet" href="vip.css"><link rel="stylesheet" href="casino.css">
+<script src="app.js" defer></script><script src="motion.js" defer></script><script src="banners.js" defer></script><script src="vip.js" defer></script><script src="casino.js" defer></script>
+</head>
+<body class="qc-chrome-on">
+<audio id="qc-music" src="assets/audio/qc-legend.mp3" loop preload="auto"></audio>
+<button class="qc-audio-toggle" id="qc-audio-toggle" type="button" aria-pressed="true" aria-label="关闭背景音乐">♪</button>
+<div class="qc-grain" aria-hidden="true"></div><div class="qc-scanlines" aria-hidden="true"></div><div class="qc-flash" id="qc-flash" aria-hidden="true"></div>
+<div class="qc-chrome qc-chrome-top" aria-hidden="true"><div class="qc-chrome-inner qc-chrome-a"><span class="qc-jitter">质检大厅</span><b>工单一站式处理</b><span class="qc-jitter">打印 · 质检 · 交接 全包</span><em>质检员在线 · 秒接单</em></div></div>
+<div class="qc-chrome qc-chrome-bottom" aria-hidden="true"><div class="qc-chrome-inner qc-chrome-b"><span class="qc-jitter">质检员在线</span><b>通宵打单 · 工单不隔夜</b><span class="qc-jitter">3D打印耗材补给中</span><em>今日已接 8,888 单</em></div></div>
+<a class="qc-corner qc-corner-left" href="#download" aria-label="炽热沙城工单远征，下载LineSight"><img class="qc-corner-art" src="assets/qc/sand-city.webp" alt=""><span class="qc-corner-tag">燃烧吧工单</span><span class="qc-corner-copy"><strong>炽热沙城 · 工单远征</strong><b>耗材补给站已开</b><em>进站开工 ≫</em></span></a>
+<a class="qc-corner qc-corner-right" href="demo/" aria-label="三色骷髅质检天团，进入LineSight"><span class="qc-corner-rays" aria-hidden="true"></span><img class="qc-corner-art" src="assets/qc/skeletons.webp" alt=""><span class="qc-corner-tag">工单 +1</span><span class="qc-corner-copy"><strong>三色骷髅 · 质检天团</strong><b>通宵打单中</b><em>进站验货 ≫</em></span></a>
+<div id="page-viewport"><div id="portal" class="portal">
+<aside class="billboards left-billboards" aria-label="LineSight产品广告">
+<a class="billboard left-1 electric red" href="#jobs" aria-label="生产任务"><img src="assets/retro/side-left-01.webp" alt="LineSight 生产任务 进度看得见"><span class="ad-beam"></span><span class="ad-stars">✦　✧　✦</span></a>
+<a class="billboard left-2 electric green" href="#evidence" aria-label="图片证据"><img src="assets/retro/side-left-02.webp" alt="图片证据 质检有凭据"><span class="ad-beam"></span></a>
+<a class="billboard left-3 electric purple" href="#team" aria-label="团队协作"><img src="assets/retro/side-left-03.webp" alt="团队协作 交接不靠猜"><span class="ad-beam"></span><span class="ad-stars">✧　✦</span></a>
+<a class="billboard left-4 electric blue" href="#download" aria-label="下载Android版"><img src="assets/retro/side-left-04.webp" alt="Android 安装下载"><span class="ad-beam"></span></a>
+</aside>
+<aside class="billboards right-billboards" aria-label="产品功能与Boji推荐广告">
+<a class="billboard right-1 electric purple" href="#records" aria-label="查看检测记录"><img src="assets/retro/side-right-01.webp" alt="检测记录 每一条可追溯"><span class="ad-beam"></span><span class="ad-stars">✦　✧</span></a>
+<a class="billboard right-2 electric gold" href="#issues" aria-label="异常处理"><img src="assets/retro/side-right-02.webp" alt="异常处理 问题有人接手"><span class="ad-beam"></span></a>
+<a class="billboard right-3 electric green" href="#insights" aria-label="质量洞察"><img src="assets/retro/side-right-03.webp" alt="质量洞察 让数字说话"><span class="ad-beam"></span></a>
+<a class="billboard right-4 electric purple" href="demo/" aria-label="Boji推荐LineSight"><img src="assets/retro/side-right-04.webp" alt="BOJI推荐 LineSight 立即体验"><span class="ad-beam"></span><span class="ad-stars">✧　✦</span></a>
+</aside>
+<main class="main-paper">
+<header class="masthead">
+<div class="topline"><strong>♛ LineSight 产线视界 · 质检总站</strong><span class="top-center">产线可视　质检留痕</span><span class="top-right"><i>●</i> 质检员在线 / 工单大厅开放</span></div>
+<div class="ticker"><div class="ticker-track">★ 质检大厅火爆开放！工单一站式处理 ★ 三色骷髅质检天团通宵打单 ★ 炽热沙城耗材补给已到站 ★ 打印 · 质检 · 交接 全包 ★ 工单不隔夜，异常有人接 ★ Android 1.1.54 已到站 ★ 欢迎光临 LineSight 质检大厅 ★</div></div>
+<div class="quickline">您好，欢迎光临 LineSight！　看见产线的每一步　质检员在线 秒接工单　 [ <a href="demo/">网页体验</a> ]　[ <a href="#download">下载新版</a> ]　[ <button class="text-link" id="save-site">收藏本站</button> ]</div>
+<div class="brand"><a href="#" aria-label="LineSight官网首页"><img src="assets/retro/logo.png" alt="LineSight 产线视界 生产质检协作"></a><div class="brand-tagline">小型制造与 3D 打印团队的质量工作台<br><b>★ 任务有进度 · 质检有凭据 ★</b></div></div>
+<nav class="main-nav" aria-label="主导航"><a href="#">首　页</a><em>|</em><a href="#community">产品功能</a><em>|</em><a href="#jobs">生产任务</a><em>|</em><a href="#records">质检记录</a><em>|</em><a href="#team">团队协作</a><em>|</em><a href="#community">界面图库</a><em>|</em><a href="#download">下载中心</a><em>|</em><a href="#guide">使用指南</a><em>|</em><a href="#guestbook">用户留言</a></nav>
+<form id="search-form" class="searchline"><input id="search" aria-label="搜索产品功能" placeholder="搜索 / 产品功能 / 使用指南"><button type="submit">搜一下</button><span>热门：<a href="#jobs">生产任务</a>　<a href="#evidence">图片证据</a>　<a href="#download">1.1.54下载</a></span></form>
+</header>
+<section class="promo-strip" aria-label="产品特别推荐">
+<a href="#download" class="promo promo-red"><small>【质检大厅开服】</small><strong>工单一站式处理</strong><span>打印 · 质检 · 交接 全包</span></a>
+<a href="demo/" class="promo promo-blue"><small>三色骷髅质检天团</small><strong>通宵打单中</strong><span>进站就开工 · 一单一交代</span></a>
+<a href="#team" class="promo promo-yellow"><small>★ 炽热沙城补给站 ★</small><strong>打印机 / 耗材 / 量具</strong><span>一件都不少</span></a>
+</section>
+<section class="news-layout" id="news">
+<aside class="site-sidebar panel"><h2 class="bar">◆ 产品分类导航</h2><div class="directory"><a href="#workbench">质量工作台</a><a href="#jobs">生产任务</a><a href="#records">检测记录</a><a href="#evidence">图片证据</a><a href="#team">团队协作</a><a href="#recipes">配方中心</a><a href="#download">安装下载</a><a href="#guide">使用指南</a></div><h2 class="bar">◆ 官网公告</h2><ul class="announcements"><li>Android 1.1.54 已发布</li><li>统一登录 · 团队协作</li><li>支持中文 / English</li><li>网页体验无需安装</li></ul><div class="visitor"><span>今日到访质检员</span><strong id="casino-visitor">008888</strong><p>Android 1.1.54 · 看见细节</p></div></aside>
+<article class="news-panel panel"><h2 class="bar news-tabs"><a href="#news">【LineSight 要闻】</a>　<a href="#community">产品推荐</a>　 |　 <a href="#download">新版速递</a></h2><div class="news-body"><h1>让每一条产线，都有据可查。</h1><p class="headline-caption">[ 产线视界 ] 生产任务、图片证据、人工质检、团队协作</p><ul class="news-list"><li><a href="#download">[新版发布] LineSight 1.1.54：粒子聚合开屏，新版到站</a><i>HOT!</i></li><li><a href="#workbench">[工作台] 工位、任务和待复核异常，在一个入口看清</a></li><li><a href="#jobs">[生产任务] 从待打印到待质检，每次交接都有迹可循</a><i>NEW</i></li><li><a href="#evidence">[图片证据] 原始照片与蓝色边缘参考，一张图看清细节</a></li><li><a href="#team">[团队协作] 共享任务、成员角色与异常处理说明</a></li><li><a href="#backup">[数据管理] 筛选导出 CSV，备份恢复先预览再确认</a></li><li><a href="demo/">[即刻体验] 不知道从哪开始？先逛一遍网页演示</a></li></ul><p class="hero-footnote">给小型制造与 3D 打印团队的一张清楚工作台。<br>任务有进度，质检有凭据，异常有交代。</p></div></article>
+<aside class="news-right panel"><h2 class="bar">◆ 质检快讯</h2><div class="casino-jackpot"><span class="casino-ribbon">爆单</span><img class="casino-art" src="assets/qc/printer.webp" alt=""><b>今日已质检</b><strong>88,888</strong><span>件 · 工单还在进</span><a href="#download">进站开单 ≫</a></div><div class="casino-winners"><h3>★ 今日打单红榜 ★</h3><ol id="casino-winner-list"><li class="hot"><b>阿强</b><span>整单合格</span><i>刚刚</i></li><li><b>小敏</b><span>加急工单 ×3</span><i>1分钟</i></li><li><b>老周</b><span>耗材补给 ×1</span><i>3分钟</i></li><li><b>阿杰</b><span>复检卡 ×2</span><i>5分钟</i></li><li><b>Mei</b><span>优先排产</span><i>8分钟</i></li></ol></div><div class="mini-promo bottom">打印 · 质检 · 交接</div></aside>
+</section>
+<section class="check-in-strip" id="download"><h2>今天你<span>留痕了吗?</span></h2><strong class="status-blink" id="casino-countdown">抽检剩余 · 02:59:59</strong><a class="retro-button download-link" href="downloads/LineSight-1.1.54-content4-production.apk" download>↓ 首次安装正式版</a><a class="retro-button download-link" href="downloads/LineSight-1.1.54-content4-preview.apk" download>旧体验版兼容升级</a><a class="retro-button" href="demo/">进站开工 →</a></section>
+<section class="stats" aria-label="产品信息"><div><strong>04 个</strong><span>主导航 / 工作台 · 记录 · 配方 · 我的</span></div><div><strong>02 类</strong><span>账号 + NFC / 统一登录</span></div><div><strong>中文 / EN</strong><span>中英双语 / 随手切换</span></div><div><strong>1.1.54</strong><span>Android 安装包 / 72.0 MiB · 内容版本 4</span></div></section>
+<section class="dashboard" id="dashboard"><h2 class="bar dashboard-title">LineSight 产品体验中心<span>流程看得见，记录留得住。<br>从一个任务开始认识 LineSight。</span></h2><div class="dashboard-panels">
+<article class="dashboard-card"><h3>▣ 生产任务，每一步有交代</h3><p>推进一张工单，看看怎么交接。</p><div class="week task-steps"><span class="today">待打印</span><span>打印中</span><span>待质检</span><span>已关闭</span></div><div class="checkin-count"><b id="task-step">1</b> / 4　<span id="task-state">待打印</span></div><button id="advance-task">▶ 开始打印（点一下试试）</button></article>
+<article class="dashboard-card water"><h3>▧ 检查清单，别漏掉细节</h3><p>照片、外观、尺寸、备注，逐项确认。</p><div class="water-amount"><strong id="check-count">0 / 4</strong> 项　已检查</div><div class="water-track"><span id="check-progress"></span></div><div class="button-row"><button id="next-check">✓ 确认一项</button><button class="purple-button" id="view-evidence">看图片证据</button></div><p id="check-hint" class="check-hint">下一项：照片是否齐全？</p></article>
+<article class="dashboard-card training" id="guide"><h3>▷ 一分钟，认识 LineSight</h3><p>从任务到复核，快速走一遍工作流程。</p><select id="training-preset" aria-label="产品导览时长"><option value="60">产品快速导览 · 60 秒</option><option value="30">功能速览 · 30 秒</option><option value="120">慢慢逛一逛 · 120 秒</option></select><div id="timer" class="timer">01:00</div><div class="button-row"><button id="start-timer">▶ 开始导览</button><button id="reset-timer">重置</button></div><p class="training-foot" id="tour-hint">先看工作台，再看任务和图片证据。</p></article>
+</div></section>
+<a class="vip-banner" href="demo/"><img src="assets/retro/vip-banner.webp" alt="LineSight 用户中心 现已开放 生产有记录 质检有凭据 团队有交代"><span class="vip-glitter">✧　✦　　✧　　　　　✦　　✧</span></a>
+<section class="community" id="community"><h2 class="bar community-title">LineSight 产品功能与界面图库<span>产品界面 / 工作流程 / 新版介绍<br>点击卡片查看大图和功能说明</span></h2><div class="community-layout"><div class="gallery" id="gallery"></div><aside class="community-sidebar">
+<form class="guestbook panel" id="guestbook"><h3>留一条，聊聊你的产线</h3><input id="nickname" maxlength="18" placeholder="你的称呼 / 团队" aria-label="昵称"><textarea id="message" maxlength="140" placeholder="最想解决哪个工作问题？" aria-label="留言内容"></textarea><button type="submit">贴到本页留言板 ↗</button><p>工单交接、质检流程，随便聊。质检员在线看单。</p></form>
+<section class="honor panel"><h3>产品快速入口</h3><ol><li><a href="demo/">网页版演示</a><b>即点即看</b></li><li><a class="download-link" href="downloads/LineSight-1.1.54-content4-production.apk" download>Android 下载</a><b>1.1.54</b></li><li><a href="#guide">上手指南</a><b>从任务开始</b></li></ol><p>已装旧体验版？<a href="downloads/LineSight-1.1.54-content4-preview.apk" download>兼容升级，保留数据</a>。新用户选择正式版。</p></section>
+<section class="casino-panel casino-wheel-panel" aria-label="抽检转盘"><h3>★ 抽检转盘 ★</h3><div class="casino-wheel-wrap"><span class="casino-wheel-pointer" aria-hidden="true"></span><button class="casino-wheel" id="casino-wheel" type="button" aria-label="抽检转盘，点击抽检"></button></div><p class="casino-wheel-result" id="casino-wheel-result" aria-live="polite">点一下，抽一单</p><small>今日已抽 3,208 单</small></section>
+<div class="friend-note panel">打单小贴士：登录团队后协同开单，断网时保留本机草稿。照片留痕，蓝色边缘一眼看清。<br><a href="#evidence">看看它怎么工作 →</a></div><div class="boji-note panel"><b>★ BOJI 强推 ★</b><br>产线质检就上 LineSight。<br>任务有进度，质检有凭据。<br><a href="demo/">进站开工 ≫</a></div><div id="guestbook-messages" aria-live="polite"></div>
+</aside></div></section>
+</main>
+<aside class="float-boji floating-ad"><a href="demo/" aria-label="BOJI推荐，体验LineSight"><img src="assets/retro/float-boji.webp" alt="BOJI推荐 LineSight生产质检工作台 立即体验"></a><span class="float-stars">✦　✧　　✦<br>　　✧　　✦</span><span class="float-shine"></span></aside>
+<a class="float-zero floating-ad" href="#download"><img src="assets/retro/float-zero.png" alt="LineSight Android 安装下载"></a>
+<a class="float-bonus floating-ad" href="demo/"><img src="assets/retro/float-bonus.png" alt="BOJI推荐LineSight 质量看得见 立即体验"><span class="bonus-flash"></span></a>
+<div id="stickers" aria-label="LineSight流动产品卡牌"></div>
+<aside class="casino-service" aria-label="质检员在线">
+<button class="casino-service-tab" id="casino-service-toggle" type="button" aria-expanded="false" aria-controls="casino-chat">质检员在线</button>
+<div class="casino-chat" id="casino-chat" hidden>
+<div class="casino-chat-head"><b>♛ 质检客服</b><button id="casino-chat-close" type="button" aria-label="关闭客服">×</button></div>
+<div class="casino-chat-body" id="casino-chat-body"><p class="casino-msg agent">工单、打印、质检、交接，都可以直接问。质检员在线，秒回。</p></div>
+<div class="casino-chat-quick"><button type="button" data-chat-reply="点顶部「下载中心」或右侧「立即体验」，Android 1.1.54 内容版本 4；已装旧体验版请选兼容升级。">怎么开工？</button><button type="button" data-chat-reply="进入「我的」登录；团队与普通用户使用同一入口，账号由团队管理员提供。">团队怎么用？</button><button type="button" data-chat-reply="打印机、耗材、量具都在配方中心和下载中心里，按工单领用。">耗材怎么管？</button></div>
+<form class="casino-chat-form" id="casino-chat-form"><input id="casino-chat-input" maxlength="60" placeholder="输入工单问题" aria-label="输入工单问题"><button type="submit">发送</button></form>
+<small>质检员在线 · 秒回工单</small>
+</div>
+</aside>
+<div class="casino-rain" id="casino-rain" aria-hidden="true"></div>
+<canvas id="sparkles" width="1190" height="2048" aria-hidden="true"></canvas>
+</div></div>
+<div class="casino-entry" id="casino-entry" hidden>
+<div class="casino-entry-card" role="dialog" aria-modal="true" aria-labelledby="casino-entry-title">
+<img class="casino-entry-badge casino-art" src="assets/qc/stamp.webp" alt="">
+<img class="casino-entry-printer casino-art" src="assets/qc/printer.webp" alt="">
+<button class="casino-entry-close" type="button" aria-label="关闭开工弹窗">×</button>
+<p class="casino-entry-kicker">產線視界 · 質檢大廳</p>
+<h2 id="casino-entry-title">恭喜您成为<br><b>第 8,888 位</b> 质检同行</h2>
+<p class="casino-entry-copy">开工工具包已备好：任务模板 ×1、质检清单 ×1、团队工位 ×1。</p>
+<div class="casino-entry-actions"><button class="casino-entry-claim" type="button" data-casino-claim>立即开单</button><button class="casino-entry-enter" type="button" data-casino-enter>直接进场</button></div>
+<small>工单不隔夜 · 质检不留坑 · 打印耗材管够</small>
+</div>
+</div>
+<dialog id="retro-dialog"><div class="dialog-title"><span>LineSight 产线视界 - 产品介绍</span><button id="close-dialog" aria-label="关闭">×</button></div><div id="dialog-content"></div><button id="dialog-ok">确　定</button></dialog>
+<div id="status-message" role="status"></div>
+</body></html>

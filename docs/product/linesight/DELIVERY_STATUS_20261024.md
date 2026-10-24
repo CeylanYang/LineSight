@@ -6,6 +6,7 @@
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
+| 官网安装包 | 正式版及旧体验版兼容升级包更新为 1.1.54 内容 4；旧 URL 转向兼容升级。服务器侧域名 HTTPS 完整下载与交付哈希一致；本机 TLS EOF，独立客户端访问及浏览器布局待验 | acceptance/portal65-batch/public-https.json |
 | 邮件找回密码 | 正式 Keycloak → 自托管 Postfix → 163 SMTP465 → 真实邮箱。重置、新密码 PKCE 登录、旧密码拒绝、重置链接重放拒绝通过 | acceptance/mail57-batch/production-reset.json |
 | 内容版本 2 原生补验 | 演示团队登录、CSV 保存、9 页 PDF 系统打印、导出返回、同步诊断及部分英文二级页；11 组截图/XML 与导出指标校验通过 | acceptance/native60-batch/validation.json |
 | Flutter 未捕获错误日志 | 正式版本框架及根 isolate 异步错误只输出固定来源/类别。463 项测试、静态检查通过，预览 OTA5 冷启动内容 3、演示登录保留；正式 OTA2 已发布 | acceptance/runtime62-batch/validation.json |

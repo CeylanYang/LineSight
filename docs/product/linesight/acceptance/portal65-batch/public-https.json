@@ -1,0 +1,73 @@
+{
+  "verification_vantage": "production server, public domain DNS and trusted HTTPS; not an independent external client",
+  "local_client_https_verified": false,
+  "local_client_failure": "TLS UNEXPECTED_EOF with direct connection and local HTTP proxy",
+  "public_https_hashes_passed": true,
+  "checks": [
+    {
+      "path": "/index.html",
+      "final_url": "https://99ai.pronhubcn.com/index.html",
+      "status": 200,
+      "bytes": 18926,
+      "sha256": "5f9176cff23c77248a9421cf0b4fa022d849427e3d01e76e0dbb2a1bf12e7f60"
+    },
+    {
+      "path": "/app.js",
+      "final_url": "https://99ai.pronhubcn.com/app.js",
+      "status": 200,
+      "bytes": 17020,
+      "sha256": "e25451bd3cadad31387ccecd5346338bffc24190643dd416982fcd05908e6b62"
+    },
+    {
+      "path": "/assets/product/screen-12-content4.webp",
+      "final_url": "https://99ai.pronhubcn.com/assets/product/screen-12-content4.webp",
+      "status": 200,
+      "bytes": 20922,
+      "sha256": "224aa245679a1eddf8c5122c7a31b87680c350ba5ddf9f8fbc7c35554c941d8a"
+    },
+    {
+      "path": "/downloads/LineSight-1.1.54-content4-preview.apk",
+      "final_url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content4-preview.apk",
+      "status": 200,
+      "bytes": 75547520,
+      "sha256": "0d4f32f75e3990794429d6a075606df1034bd4683cc5c0fbc69d4480998c42e8"
+    },
+    {
+      "path": "/downloads/LineSight-1.1.54-content4-production.apk",
+      "final_url": "https://99ai.pronhubcn.com/downloads/LineSight-1.1.54-content4-production.apk",
+      "status": 200,
+      "bytes": 75547520,
+      "sha256": "085a869f1c2e158d18cc4cce2f1a95dadb6ecf6d49729c21db763da6fb425292"
+    },
+    {
+      "path": "/linesight/",
+      "final_url": "https://99ai.pronhubcn.com/linesight/",
+      "status": 200,
+      "bytes": 18926,
+      "sha256": "5f9176cff23c77248a9421cf0b4fa022d849427e3d01e76e0dbb2a1bf12e7f60"
+    },
+    {
+      "path": "/",
+      "final_url": "https://99ai.pronhubcn.com/",
+      "status": 200,
+      "bytes": 18926,
+      "sha256": "5f9176cff23c77248a9421cf0b4fa022d849427e3d01e76e0dbb2a1bf12e7f60"
+    },
+    {
+      "path": "/downloads/LineSight-1.1.20-arm64-v8a.apk",
+      "final_url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-legacy-upgrade.apk",
+      "status": 200,
+      "bytes": 75547520,
+      "sha256": "0d4f32f75e3990794429d6a075606df1034bd4683cc5c0fbc69d4480998c42e8"
+    },
+    {
+      "path": "/linesight/downloads/LineSight-1.1.20-arm64-v8a.apk",
+      "final_url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-legacy-upgrade.apk",
+      "status": 200,
+      "bytes": 75547520,
+      "sha256": "0d4f32f75e3990794429d6a075606df1034bd4683cc5c0fbc69d4480998c42e8"
+    }
+  ],
+  "registration_or_identity_changes": false,
+  "browser_layout_verified": false
+}

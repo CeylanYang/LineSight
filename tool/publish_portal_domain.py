@@ -15,6 +15,8 @@ def main():
     begin='# BEGIN LINESIGHT MAIL DOMAIN';end='# END LINESIGHT MAIL DOMAIN'
     section='''# BEGIN LINESIGHT MAIL DOMAIN
 99ai.pronhubcn.com {
+    redir /downloads/LineSight-1.1.20-arm64-v8a.apk /linesight/downloads/LineSight-legacy-upgrade.apk 302
+    redir /linesight/downloads/LineSight-1.1.20-arm64-v8a.apk /linesight/downloads/LineSight-legacy-upgrade.apk 302
     encode zstd gzip
     header {
         X-Content-Type-Options nosniff
