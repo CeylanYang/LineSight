@@ -1,0 +1,14 @@
+{
+  "isolated_realm": "linesight-mail-validation",
+  "open_source_smtp": "Mailpit v1.32.0",
+  "official_keycloak_reset_email_received": true,
+  "reset_link_completed": true,
+  "old_password_rejected": true,
+  "new_password_pkce_login": true,
+  "reset_link_reuse_rejected": true,
+  "production_smtp_unchanged": true,
+  "public_registration_closed": true,
+  "production_passwords_changed": false,
+  "external_email_delivery_verified": false,
+  "disposable_account_deleted": true
+}

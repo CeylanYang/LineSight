@@ -1,0 +1,30 @@
+[Unit]
+Description=LineSight private Mailpit SMTP acceptance environment
+Requires=linesight-identity.service
+After=linesight-identity.service network-online.target
+
+[Service]
+User=linesight-mailpit
+Group=linesight-mailpit
+StateDirectory=linesight-mailpit
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=10
+Environment=MP_MAX_MESSAGES=50
+Environment=MP_DATABASE=/var/lib/linesight-mailpit/mailpit.db
+Environment=MP_UI_BIND_ADDR=127.0.0.1:8025
+Environment=MP_SMTP_BIND_ADDR=10.89.0.1:1025
+ExecStart=/opt/linesight-mailpit/mailpit
+MemoryMax=96M
+CPUQuota=25%
+TasksMax=128
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
