@@ -14,6 +14,7 @@ import '../cloud_photo_recovery.dart';
 import '../cloud_sync_diagnostics.dart';
 import '../cloud_filters.dart';
 import '../cloud_history.dart';
+import '../cloud_template_preview.dart';
 import '../cloud_vision.dart';
 import '../cloud_feedback.dart';
 import '../collaboration_api.dart';
@@ -519,14 +520,34 @@ Future<String?> cloudTextPrompt(BuildContext context, String title) async {
   return result;
 }
 
-class CloudTemplatesPage extends StatelessWidget {
+class CloudTemplatesPage extends StatefulWidget {
   final bool compact;
   const CloudTemplatesPage({super.key, this.compact = false});
+  @override
+  State<CloudTemplatesPage> createState() => _CloudTemplatesPageState();
+}
+
+class _CloudTemplatesPageState extends State<CloudTemplatesPage> {
+  final search = TextEditingController();
+  String origin = 'all';
+  String? boundScope;
+
+  @override
+  void dispose() {
+    search.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
     final owner = account.workspaceDataReady && account.canManageProduction;
     final capturedScope = account.accessScope;
+    if (boundScope != capturedScope) {
+      boundScope = capturedScope;
+      search.clear();
+      origin = 'all';
+    }
     void openTemplate(Widget page) {
       if (account.retainsAccess(capturedScope)) openPage(context, page);
     }
@@ -540,49 +561,37 @@ class CloudTemplatesPage extends StatelessWidget {
         latest[key] = template;
       }
     }
+    final query = search.text.trim().toLowerCase();
+    final visible = latest.values.where((template) {
+      final builtIn = template['built_in'] == true;
+      if (origin == 'team' && builtIn || origin == 'built-in' && !builtIn) {
+        return false;
+      }
+      final content =
+          '${template['name']} ${(template['items'] as List).map((item) => item['label']).join(' ')}';
+      return query.isEmpty || content.toLowerCase().contains(query);
+    }).toList();
     return PageBody(
       children: [
-        if (compact)
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  tr(context, '检查模板'),
-                  style: const TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w800,
-                  ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                tr(context, '检查模板'),
+                style: const TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-              if (owner)
-                IconButton(
-                  tooltip: tr(context, '发布检查模板'),
-                  onPressed: () => openTemplate(const CloudTemplateEditor()),
-                  icon: const Icon(Icons.add_circle_outline, color: blue),
-                ),
-            ],
-          )
-        else
-          PageHeading(
-            eyebrow: 'CONFIGURATION / TEMPLATES',
-            title: tr(context, '检查模板'),
-            subtitle: tr(context, '统一检查口径，模板版本随检验记录一起归档。'),
-            trailing: owner
-                ? IconButton.filled(
-                    tooltip: tr(context, '发布检查模板'),
-                    onPressed: () => openTemplate(const CloudTemplateEditor()),
-                    icon: const Icon(Icons.add, size: 22),
-                    style: IconButton.styleFrom(
-                      minimumSize: const Size(44, 44),
-                      backgroundColor: blue,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                  )
-                : null,
-          ),
+            ),
+            if (owner)
+              IconButton(
+                tooltip: tr(context, '发布检查模板'),
+                onPressed: () => openTemplate(const CloudTemplateEditor()),
+                icon: const Icon(Icons.add_circle_outline, color: blue),
+              ),
+          ],
+        ),
         if (!account.signedIn)
           EmptyState(
             icon: Icons.lock_outline,
@@ -609,107 +618,72 @@ class CloudTemplatesPage extends StatelessWidget {
                 : null,
           )
         else ...[
-          Row(
-            children: [
-              _CountPill(
-                label: tr(context, '个模板'),
-                value: latest.length,
-                color: blue,
-              ),
-              const Spacer(),
-              Text(
-                tr(context, '按工作区版本管理'),
-                style: const TextStyle(fontSize: 10.5, color: muted),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          ...latest.values.map(
-            (template) => Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: GlassPanel(
-                padding: const EdgeInsets.fromLTRB(13, 13, 8, 13),
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () => openTemplate(
-                      CloudTemplateDetailPage(template: template),
+          const SizedBox(height: 10),
+          TextField(
+            controller: search,
+            onChanged: (_) => setState(() {}),
+            decoration: InputDecoration(
+              hintText: tr(context, '搜索模板或检查项'),
+              prefixIcon: const Icon(Icons.search_rounded),
+              suffixIcon: search.text.isEmpty
+                  ? null
+                  : IconButton(
+                      tooltip: tr(context, '清空搜索'),
+                      onPressed: () => setState(search.clear),
+                      icon: const Icon(Icons.close_rounded),
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: const Icon(
-                            Icons.fact_check_outlined,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '${template['name']}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 14.5,
-                                        fontWeight: FontWeight.w800,
-                                        color: ink,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Tag('v${template['version']}', color: blue),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                '${(template['items'] as List).length} ${tr(context, '检查项')} · ${tr(context, '随检验记录归档')}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: muted,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.chevron_right,
-                          size: 18,
-                          color: Color(0xFFA9B8CC),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
-          if (owner)
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              for (final entry in {
+                'all': '全部',
+                'team': '团队模板',
+                'built-in': '内置模板',
+              }.entries)
+                ChoiceChip(
+                  label: Text(tr(context, entry.value)),
+                  selected: origin == entry.key,
+                  onSelected: (_) => setState(() => origin = entry.key),
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            tr(context, '共 {0} 个模板', [visible.length]),
+            style: const TextStyle(color: muted, fontSize: 12),
+          ),
+          const SizedBox(height: 10),
+          if (visible.isEmpty)
+            EmptyState(
+              icon: Icons.search_off_rounded,
+              title: tr(context, '未找到匹配模板'),
+              subtitle: '',
+              action: TextButton(
+                onPressed: () => setState(() {
+                  search.clear();
+                  origin = 'all';
+                }),
+                child: Text(tr(context, '查看全部模板')),
+              ),
+            ),
+          for (final template in visible)
             Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: OutlinedButton.icon(
-                onPressed: () => openTemplate(const CloudTemplateEditor()),
-                icon: const Icon(Icons.add, size: 18),
-                label: Text(tr(context, '发布检查模板')),
+              padding: const EdgeInsets.only(bottom: 12),
+              child: CloudTemplateCard(
+                template: template,
+                onPreview: () =>
+                    openTemplate(CloudTemplateDetailPage(template: template)),
+                onUse: account.canEdit
+                    ? () => openTemplate(
+                        CloudCreateTaskPage(
+                          initialTemplateId: template['id'] as int,
+                        ),
+                      )
+                    : null,
               ),
             ),
         ],

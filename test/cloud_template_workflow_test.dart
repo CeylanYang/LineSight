@@ -345,6 +345,11 @@ void main() {
       await tap(tester, find.byType(DropdownButtonFormField<int>));
       await tap(tester, find.text('v1').last);
       expect(find.text('Publish new version'), findsNothing);
+      await tester.scrollUntilVisible(
+        find.text('Copy checklist'),
+        250,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Copy checklist'), findsOneWidget);
       account.activeWorkspace!['role'] = 'viewer';
       account.notifyListeners();
@@ -432,7 +437,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/ui80-batch/template-batch/png/180-checklist-$state-$language-desktop-render.png',
+            '../docs/product/linesight/acceptance/templates81-batch/template-batch/png/180-checklist-$state-$language-desktop-render.png',
           ),
         );
       });

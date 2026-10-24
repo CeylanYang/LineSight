@@ -162,7 +162,7 @@ void main() {
     await expectLater(
       find.byType(Scaffold).first,
       matchesGoldenFile(
-        '../docs/product/linesight/acceptance/ui80-batch/png/$name.png',
+        '../docs/product/linesight/acceptance/${name == '05-templates-390-zh' ? 'templates81-batch' : 'ui80-batch'}/png/$name.png',
       ),
     );
   }

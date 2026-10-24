@@ -1755,3 +1755,24 @@
 1754|Updates download automatically and apply on the next launch.
 1755|Content version {0}
 1756|Check for updates
+1757|Back to task
+1758|Production
+1759|Setup
+1760|To inspect
+1761|Switch workspace
+1762|Inspection overview
+1763|Production, inspections and teamwork
+1764|Password and devices
+1765|Interactive preview
+1766|Reset preview
+1767|Pending
+1768|Preview complete
+1769|Inspection progress
+1770|Checked {0} / {1}
+1771|First check
+1772|Next check
+1773|Use for task
+1774|Search templates or checks
+1775|{0} templates
+1776|No matching templates
+1777|Show all templates

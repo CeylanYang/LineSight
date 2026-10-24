@@ -1,0 +1,8 @@
+{
+  "apk_sha256": "c3df5c605564ab2802c05b8caf73aca43403f0964bfad1563c42a1feaae1a531",
+  "dex_files": 1,
+  "direct_call_counts": {},
+  "direct_calls_absent": true,
+  "scope": "Direct DEX Log v/d/i/w/e/println and printStackTrace calls; excludes native libraries, reflection, other logging APIs and OS crash output",
+  "raw_disassembly_saved": false
+}

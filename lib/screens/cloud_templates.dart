@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../cloud_account.dart';
 import '../cloud_feedback.dart';
 import '../cloud_form.dart';
+import '../cloud_template_preview.dart';
 import '../collaboration_api.dart';
 import '../l10n.dart';
 import '../models.dart' show uid;
@@ -78,11 +79,17 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
           : null,
       title: '${selected['name']}',
       children: [
-        HeroBanner(
-          eyebrow: 'CONFIGURATION / TEMPLATES',
-          title: '${selected['name']}',
-          subtitle:
-              '${tr(context, selected['built_in'] == true ? '内置模板' : '团队模板')} · v${selected['version']} · ${items.length} ${tr(context, '检查项')}',
+        Wrap(
+          spacing: 7,
+          runSpacing: 7,
+          children: [
+            Tag(
+              tr(context, selected['built_in'] == true ? '内置模板' : '团队模板'),
+              color: blue,
+            ),
+            Tag('v${selected['version']}', color: green),
+            Tag('${items.length} ${tr(context, '检查项')}', color: muted),
+          ],
         ),
         const SizedBox(height: 14),
         if (versions.length > 1)
@@ -104,40 +111,12 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
               () => selected = versions.firstWhere((t) => t['id'] == id),
             ),
           ),
-        SectionHeader(tr(context, '检查项目'), icon: Icons.checklist_rounded),
-        for (var i = 0; i < items.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: GlassPanel(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${i + 1}. ${items[i]['label']}',
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: [
-                      Tag(
-                        tr(context, items[i]['required'] == true ? '必填' : '选填'),
-                        color: items[i]['required'] == true ? amber : muted,
-                      ),
-                      Tag(
-                        tr(
-                          context,
-                          items[i]['allow_na'] == true ? '允许不适用' : '需作出判定',
-                        ),
-                        color: blue,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+        CloudTemplatePreview(
+          key: ValueKey(
+            'template-preview-${selected['id']}-${selected['version']}',
           ),
+          items: items,
+        ),
         if (owner) ...[
           const SizedBox(height: 10),
           if (selected['built_in'] != true && selected['id'] == latest['id'])
@@ -195,6 +174,27 @@ class _DraftItem {
     'required': required,
     'allow_na': allowNa,
   };
+}
+
+class _DraftPreviewPage extends StatelessWidget {
+  final String? scope;
+  final String name;
+  final List<dynamic> items;
+  const _DraftPreviewPage({
+    required this.scope,
+    required this.name,
+    required this.items,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.signedIn) return cloudAccessRequired(context);
+    if (!account.retainsAccess(scope)) return cloudScopeChanged(context);
+    return DetailScaffold(
+      title: name,
+      children: [CloudTemplatePreview(items: items)],
+    );
+  }
 }
 
 class CloudTemplateEditor extends StatefulWidget {
@@ -408,6 +408,33 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
         if (!didPop) confirmLeave();
       },
       child: DetailScaffold(
+        actions: [
+          IconButton(
+            tooltip: tr(context, '交互预览'),
+            onPressed: busy
+                ? null
+                : () {
+                    if (!validateCloudForm(form)) return;
+                    FocusScope.of(context).unfocus();
+                    openPage(
+                      context,
+                      _DraftPreviewPage(
+                        scope: binding,
+                        name: name.text.trim(),
+                        items: entries.map((entry) => entry.json).toList(),
+                      ),
+                    );
+                  },
+            icon: const Icon(Icons.touch_app_outlined),
+          ),
+        ],
+        bottomBar: receipt != null
+            ? null
+            : FilledButton.icon(
+                onPressed: locked ? null : publish,
+                icon: const Icon(Icons.publish_outlined),
+                label: Text(tr(context, '发布')),
+              ),
         title: tr(
           context,
           updating
@@ -514,10 +541,6 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
                       : null,
                   decoration: InputDecoration(labelText: tr(context, '模板名称')),
                 ),
-              ),
-              Text(
-                tr(context, '历史检验记录保留原模板快照'),
-                style: const TextStyle(color: muted, fontSize: 12),
               ),
               SectionHeader(
                 tr(context, '检查项目'),
@@ -626,11 +649,6 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
                 ),
                 const SizedBox(height: 12),
                 if (busy || refreshing) const LinearProgressIndicator(),
-                FilledButton.icon(
-                  onPressed: locked ? null : publish,
-                  icon: const Icon(Icons.publish_outlined),
-                  label: Text(tr(context, '发布')),
-                ),
               ],
             ],
           ),

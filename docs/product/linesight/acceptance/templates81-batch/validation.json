@@ -1,0 +1,44 @@
+{
+  "version": "1.1.57+8081",
+  "content_revision": 7,
+  "flutter_tests_passed": 495,
+  "analyze_clean": true,
+  "apks": [
+    {
+      "file": "LineSight-1.1.57-8081-production.apk",
+      "sha256": "c3df5c605564ab2802c05b8caf73aca43403f0964bfad1563c42a1feaae1a531",
+      "bytes": 75563904,
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2"
+    },
+    {
+      "file": "LineSight-1.1.57-8081-preview.apk",
+      "sha256": "31c814cf21a9307710465a4d05de2e14fde7c42be842049bd3ce02d234aa5c23",
+      "bytes": 75563904,
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e"
+    }
+  ],
+  "screenshots": "Flutter component tests with test fixtures",
+  "android_runtime_validation": "not run: emulator launch rejected by automatic approval review",
+  "automatic_review_reason": "blocked by policy",
+  "customer_credentials_included": false,
+  "website_and_public_ota_changed": false,
+  "website_published_version": "1.1.54+8078",
+  "validation_logs": [
+    {
+      "file": "flutter-regression.log",
+      "sha256": "7eea575247d1ae0b6941251ededf3f7eb6ed38632ae0642bc0c5562beebad4a7"
+    },
+    {
+      "file": "flutter-analyze.log",
+      "sha256": "1747dfeea83936fe1300354b6a60c65097d4cf621d7e4f3a6b1342d2091c0346"
+    },
+    {
+      "file": "production-signature.log",
+      "sha256": "542a099f5e536c1e648e68db3576dffb85f027aee3a5a9652f681e09a742d617"
+    },
+    {
+      "file": "preview-signature.log",
+      "sha256": "7c9d803c57abff1c763f7f26a086b42f4445d13b00f48f9c7d906bbf9f9ce054"
+    }
+  ]
+}
