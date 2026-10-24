@@ -260,7 +260,8 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         previousRefresh: previous.refresh,
       );
     } on FlutterAppAuthPlatformException catch (error) {
-      if (error.details.error == 'invalid_grant') {
+      if (error.platformErrorDetails.error ==
+          FlutterAppAuthOAuthError.invalidGrant) {
         throw const CollaborationApiException(401, '登录已过期，请重新登录');
       }
       throw const CollaborationApiException(0, '无法恢复登录，请检查网络后重试');
