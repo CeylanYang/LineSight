@@ -1,0 +1,8 @@
+{
+  "backup": "20261024T063055851406Z",
+  "private_key_loaded_from_encrypted_offhost_copy": true,
+  "derived_public_key_matches_published_dns_record": true,
+  "private_key_material_in_public_delivery": false,
+  "decrypted_archive_written_to_disk": false,
+  "whole_mail_service_restore_boot_verified": false
+}

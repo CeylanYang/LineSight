@@ -26,6 +26,6 @@ ssh -N -L 127.0.0.1:18025:127.0.0.1:8025 -i ~/.ssh/linesight-ali-baot.pem root@4
 
 当前relayhost固定为私有Mailpit：Keycloak测试realm → Postfix → OpenDKIM签名 → Mailpit。完整找回测试已通过，捕获邮件存在`d=99ai.pronhubcn.com`签名；尚未用公共DNS验证签名，也尚未验证外部送达。生产realm未启用该链路。
 
-客户待添加的三条TXT（SPF、DKIM、DMARC）在`D:/ENT207/deliverables/LineSight-mail-domain/DNSHE-TXT记录.txt`，只含公钥及公开解析信息。无需MX，当前不提供收件邮箱。DKIM selector为`linesight2026`，DMARC先使用`p=none`观测。
+客户三条TXT（SPF、DKIM、DMARC）在`D:/ENT207/deliverables/LineSight-mail-domain/DNSHE-TXT记录.txt`，只含公钥及公开解析信息。三条记录已通过外部解析器1.1.1.1逐字核对，OpenDKIM官方`opendkim-testkey`已验证DNS公钥与私钥匹配（key OK）。无需MX，当前不提供收件邮箱。DKIM selector为`linesight2026`，DMARC先使用`p=none`观测。
 
-出站25端口开放、TXT生效及PTR条件核实后，方可移除Mailpit中继并测试指定真实收件邮箱。更改中继前先检查队列，避免测试邮件意外外发。身份容器IP变化需同步白名单；默认失败关闭转发。邮件配置、DKIM密钥的完整异机备份与恢复验证还需补入运维流程。
+出站25端口开放及PTR条件核实后，方可移除Mailpit中继并测试指定真实收件邮箱；最近重测25端口仍不可连接。更改中继前先检查队列，避免测试邮件意外外发。身份容器IP变化需同步白名单；默认失败关闭转发。邮件配置及DKIM密钥已加入加密异机备份，8项配置指纹通过；已从副本私钥派生匹配公钥，第二台主机邮件服务恢复启动仍待验收。

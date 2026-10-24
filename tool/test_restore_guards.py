@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from rehearse_cloud_restore import Provider, media_path
+from rehearse_cloud_restore import Provider, media_path, copy_deployment_config
 from rehearse_restored_identity import backup_path, request, LoopbackRedirect
 from export_cloud_backup import archive_members, decrypted_bytes, MAGIC
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -15,6 +15,22 @@ from cryptography.exceptions import InvalidTag
 
 
 class RestoreGuards(unittest.TestCase):
+    def test_deployment_backup_preserves_key_bytes_and_fingerprints(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); backup=root/'snapshot';backup.mkdir()
+            source=root/'key.private';source.write_bytes(b'private-key-fixture')
+            result=copy_deployment_config(backup,{'dkim/key.private':source})
+            target=backup/'deployment/dkim/key.private'
+            self.assertEqual(target.read_bytes(),source.read_bytes())
+            self.assertIn('deployment/dkim/key.private',result)
+
+    def test_deployment_backup_refuses_traversal_or_missing_key(self):
+        for name in ['../outside','safe/key']:
+            with tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);backup=root/'snapshot';backup.mkdir()
+                with self.assertRaises(ValueError):
+                    copy_deployment_config(backup,{name:root/'missing.private'})
+
     def test_encrypted_archive_rejects_wrong_key_and_tampering(self):
         with tempfile.TemporaryDirectory() as directory:
             archive=Path(directory)/'snapshot.lsbk'

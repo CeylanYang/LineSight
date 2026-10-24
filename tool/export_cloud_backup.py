@@ -63,6 +63,8 @@ def encrypt(backup, key_file):
     # Include that evidence only when it actually exists.
     if (backup/'identity-rehearsal-report.json').is_file():
         members.append('identity-rehearsal-report.json')
+    if (backup/'deployment').is_dir():
+        members.append('deployment')
     files={}
     for name in members:
         path=backup/name
@@ -112,8 +114,8 @@ def verify(archive_path, key_file, report_file):
             stream=archive.extractfile(actual[name])
             assert actual[name].size==expected['bytes'] and hashlib.file_digest(stream,'sha256').hexdigest()==expected['sha256'],name
         manifest=json.load(archive.extractfile('private-manifest.json'))
-        for group in ['media','identity_runtime_files']:
-            for name,digest in manifest[group].items():
+        for group in ['media','identity_runtime_files','deployment_files']:
+            for name,digest in manifest.get(group,{}).items():
                 target='media/'+name if group=='media' else name
                 assert inventory['files'][target]['sha256']==digest
         cloud_report=json.load(archive.extractfile('report.json'))
@@ -132,6 +134,7 @@ def verify(archive_path, key_file, report_file):
         'sqlite_tables':len(manifest['sqlite']),'sqlite_rows_identical':True,'foreign_keys_valid':True,
         'provider_dump_hash_verified':True,'provider_tables_in_manifest':len(manifest['provider']),
         'media_files_verified':len(manifest['media']),'identity_runtime_files_verified':len(manifest['identity_runtime_files']),
+        'deployment_config_files_verified':len(manifest.get('deployment_files',{})),
         'private_keys_or_databases_in_public_delivery':False,'decrypted_archive_retained':False,
         'off_host_restore_boot_exercised':False}
     report_file.parent.mkdir(parents=True,exist_ok=True)

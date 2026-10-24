@@ -164,6 +164,42 @@ def verify_restored_api(directory):
     return {'restored_jobs': ProductionJob.objects.count(), 'owner_read': True, 'viewer_read': True, 'viewer_write_status':403, 'outsider_status':404, 'anonymous_status':401, 'authenticated_photo_read':photo_checked, 'oidc_transport':'Membership/API checks use force_authenticate on clone; provider boot/login not exercised.'}
 
 
+def copy_deployment_config(backup, sources):
+    """Copy an explicit configuration allowlist; never follow key-file links."""
+    fingerprints = {}
+    base = (backup/'deployment').resolve()
+    base.mkdir(mode=0o700)
+    for name, source in sources.items():
+        source = Path(source)
+        target = base/name
+        if (Path(name).is_absolute() or '..' in Path(name).parts
+                or not target.resolve().is_relative_to(base)):
+            raise ValueError('Deployment backup path escapes its root')
+        if source.is_symlink() or not source.is_file():
+            raise ValueError('Required deployment configuration missing or linked')
+        target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        shutil.copyfile(source, target); target.chmod(0o600)
+        if sha(source) != sha(target):
+            raise RuntimeError('Deployment configuration changed while copying')
+        fingerprints[target.relative_to(backup).as_posix()] = sha(target)
+    return fingerprints
+
+
+def deployment_config_sources():
+    sources = {'caddy/Caddyfile':'/etc/caddy/Caddyfile'}
+    if Path('/etc/linesight-postfix-stage.json').is_file():
+        sources.update({
+            'postfix/main.cf':'/etc/postfix/main.cf',
+            'postfix/master.cf':'/etc/postfix/master.cf',
+            'opendkim/opendkim.conf':'/etc/opendkim.conf',
+            'opendkim/linesight2026.private':'/etc/opendkim/keys/99ai.pronhubcn.com/linesight2026.private',
+            'opendkim/linesight2026.txt':'/etc/opendkim/keys/99ai.pronhubcn.com/linesight2026.txt',
+            'mail/stage.json':'/etc/linesight-postfix-stage.json',
+            'mail/linesight-mailpit.service':'/etc/systemd/system/linesight-mailpit.service',
+        })
+    return sources
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--backup-only', action='store_true')
@@ -215,7 +251,8 @@ def main():
         shutil.copy2(identity_rehearsal, backup / identity_rehearsal.name)
     provider = Provider()
     identity_manifest = provider.backup(backup / 'identity.dump')
-    manifest = {'sqlite':expected, 'provider':identity_manifest, 'media':{name:sha(media_path(media,name)) for name in sorted(files)}, 'identity_runtime_files':identity_files}
+    deployment_files = copy_deployment_config(backup, deployment_config_sources())
+    manifest = {'sqlite':expected, 'provider':identity_manifest, 'media':{name:sha(media_path(media,name)) for name in sorted(files)}, 'identity_runtime_files':identity_files, 'deployment_files':deployment_files}
     (backup / 'private-manifest.json').write_text(json.dumps(manifest, indent=2))
     report = {'at':stamp, 'backup':str(backup), 'mode':'backup' if args.backup_only else 'restore_rehearsal', 'sqlite_tables':len(expected), 'provider_tables':len(identity_manifest), 'media_files':len(files), 'identity_runtime_files':identity_files, 'backup_permissions':'0700 directory / 0600 private files', 'production_replaced':False, 'artifacts_sha256':{name:sha(backup/name) for name in ['linesight.sqlite3','identity.dump','private-manifest.json']}}
     if not args.backup_only:
