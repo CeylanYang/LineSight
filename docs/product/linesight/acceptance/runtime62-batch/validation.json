@@ -1,0 +1,80 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 3,
+  "flutter_tests": 463,
+  "new_runtime_privacy_tests": 4,
+  "analyze_clean": true,
+  "source_fix_commit": "92c779d",
+  "native_assets_engine_unchanged": true,
+  "preview_ota5_runtime_verified": true,
+  "production_ota2_published": true,
+  "demo_session_restored_after_patch": true,
+  "host_emulator_exit_before_final_capture": -1073741819,
+  "production_runtime_verified": false,
+  "native_fault_injection_of_dart_handlers": false,
+  "observed_last_update_time": "2026-10-24 05:44:43",
+  "app_reinstalled": false,
+  "app_data_cleared": false,
+  "native_plugin_direct_logging_fully_audited": false,
+  "physical_devices_verified": false,
+  "manifests": [
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:12:45.769110+00:00",
+      "schema": 1,
+      "sequence": 5,
+      "sha256": "f756dadf1bf2aa74593cbd7c67f9649813f973f51751ccb58e12d54e39a11a5d",
+      "size": 11207568,
+      "track": "preview"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:12:45.796313+00:00",
+      "schema": 1,
+      "sequence": 5,
+      "sha256": "f1eb96f6fcdbb0ce63b79120a67c95d1db7b52ecb2a67bb04f91a118778f4389",
+      "size": 11469712,
+      "track": "preview"
+    },
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:14:19.573906+00:00",
+      "schema": 1,
+      "sequence": 2,
+      "sha256": "e049958bab1e8fb96f2ddc4988d9eb08af62b5d5298f3b57ef36de540543ec68",
+      "size": 11207568,
+      "track": "production"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T08:14:19.593940+00:00",
+      "schema": 1,
+      "sequence": 2,
+      "sha256": "76905e83e7d856653ca0162752298a1def6f728235706e6313fdaa340d1f8951",
+      "size": 11469712,
+      "track": "production"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "LineSight-1.1.54-8078-preview.apk",
+      "sha256": "7bc78e094eb5bdbe8238eb71cae98f5b65c642b1894584302b3bc0cdbbfb2815",
+      "bytes": 75547520,
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e"
+    },
+    {
+      "file": "LineSight-1.1.54-8078-production.apk",
+      "sha256": "892313bd2ef6f19adcf4c94fa6d1a98cd40f0eb8e46cb6d5c9f485199a999d68",
+      "bytes": 75547520,
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2"
+    }
+  ]
+}

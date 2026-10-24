@@ -1,6 +1,6 @@
 # LineSight 交付状态（2026-10-24）
 
-客户端交付基线为 **1.1.54+8078，内容版本 2**。服务端变更和本次 Dart 会话修复通过 OTA 生效，已有 8078 不需要重新安装 APK。当前官网为 https://99ai.pronhubcn.com/ ，同时保留 `/linesight/`。App API、Keycloak issuer 和原生 OAuth 回调未迁移。
+客户端交付基线为 **1.1.54+8078，内容版本 3**。本次 Dart 错误日志过滤和此前会话修复通过 OTA 生效，已有 8078 不需要重新安装 APK。当前官网为 https://99ai.pronhubcn.com/ ，同时保留 `/linesight/`。App API、Keycloak issuer 和原生 OAuth 回调未迁移。
 
 ## 本次新增完成
 
@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | 邮件找回密码 | 正式 Keycloak → 自托管 Postfix → 163 SMTP465 → 真实邮箱。重置、新密码 PKCE 登录、旧密码拒绝、重置链接重放拒绝通过 | acceptance/mail57-batch/production-reset.json |
 | 内容版本 2 原生补验 | 演示团队登录、CSV 保存、9 页 PDF 系统打印、导出返回、同步诊断及部分英文二级页；11 组截图/XML 与导出指标校验通过 | acceptance/native60-batch/validation.json |
+| Flutter 未捕获错误日志 | 正式版本框架及根 isolate 异步错误只输出固定来源/类别。463 项测试、静态检查通过，预览 OTA5 冷启动内容 3、演示登录保留；正式 OTA2 已发布 | acceptance/runtime62-batch/validation.json |
 | 失效会话恢复 | 修复 AppAuth 旧错误字段读取问题。真实模拟器由通用失败恢复为“登录已过期”，点击进入二级登录页；预览 OTA4、正式 OTA1 已发布 | acceptance/refresh59-batch/validation.json |
 | 关闭注册 | 正式邮件配置后仍关闭，原有账号密码未更改，一次性验收账号已删除 | acceptance/mail57-batch/production-smtp.json |
 | 即时撤权 | 真实 PKCE 四角色矩阵，降权旧令牌 401、新只读令牌写入 403、移除后 404，最后管理员离组 409 | acceptance/roles56-batch/live-role-matrix.json |
@@ -16,7 +17,7 @@
 | 反向代理日志 | Caddy 官方 filter encoder；不可达上游 502 试验未记录请求敏感值，生产官网及 API HTTPS 正常 | acceptance/privacy58-batch/proxy-logs.json |
 | 异机备份与保留 | 自动 AES-256-GCM 备份、逐文件及数据库校验、30 天及周/月保留。部署配置包括 SMTP 授权与 DKIM 私钥，公开证据不含密钥 | acceptance/mail57-batch/relay-config-backup.json |
 
-最近服务端 **101 项测试通过**。内容版本 2 通过 **459 项 Flutter 测试及静态检查**，新增 6 项 AppAuth 错误兼容及会话保留回归。OTA 基线已在 API34 x86_64 模拟器验证后台下载、冷启动生效、签名回滚及登录保留，见 `acceptance/ota54-batch/validation.json`；内容版本 2 又验证实际过期会话及原生登录入口。最新两种签名 APK 位于 `D:/ENT207/deliverables/LineSight-1.1.54-content2/`，保留旧交付作为历史基线。
+最近服务端 **101 项测试通过**。内容版本 3 通过 **463 项 Flutter 测试及静态检查**，新增 4 项错误日志过滤回归，包含此前 6 项 AppAuth 错误兼容及会话保留回归。OTA 基线已在 API34 x86_64 模拟器验证后台下载、冷启动生效、签名回滚及登录保留，见 `acceptance/ota54-batch/validation.json`；内容版本 2 又验证实际过期会话及原生登录入口。内容版本 3 的预览 OTA 已验证原生加载及演示登录保留；最新两种签名 APK 位于 `D:/ENT207/deliverables/LineSight-1.1.54-content3/`，保留旧交付作为历史基线。
 
 163 为外部中继服务；Keycloak、Postfix、Mailpit、OpenDKIM 和 OTA 服务由我们部署。阿里云轻量应用服务器不支持出站 25 发信，因此入站放行 25 不会启用直投。当前发件地址使用授权的 163 邮箱。成员找回密码前须绑定本人可访问的邮箱，不会批量共用测试收件邮箱。
 
@@ -26,7 +27,7 @@
 | --- | --- |
 | 最终 APK 页面及权限 | 在 8078 上覆盖剩余二级页、中英文小屏、所有角色的入口/返回/撤权；历史页面和 API 测试不能代替全部原生验收 |
 | APK 邮件往返 | 从 App 找回密码，经外部邮箱打开链接，再回 App 登录；服务端和 PKCE 流程已通过 |
-| 原生日志 | AppAuth 三类令牌故障在当前模拟器日志级别下通过。仍需 Flutter 未捕获错误、其他插件、系统崩溃及真实设备日志审计 |
+| 原生日志 | AppAuth 三类令牌故障通过；Flutter 未捕获错误过滤已有测试并 OTA 发布。仍需正式 Android 进程 Dart 故障注入、其他插件直接日志、系统崩溃及真实设备审计 |
 | NFC/摄像头/扫码/触觉 | 需要真实 Android 手机及实际卡片。模拟器和服务器测试不能证明硬件工作正常 |
 | 双真机协作 | 两部手机跨账号完成创建、指派、检验、异常、复检、报告及权限一致性验证 |
 | 外部用户试用 | 至少 10 名外部用户完成任务及反馈复测 |
