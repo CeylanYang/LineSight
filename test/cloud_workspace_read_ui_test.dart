@@ -184,7 +184,7 @@ void main() {
 
           await show(CloudWorkbenchSummary(account: account));
           expect(
-            find.byType(StatCard),
+            find.byType(CloudSummaryMetric),
             state == 'empty' ? findsNWidgets(3) : findsNothing,
           );
           expect(find.text('internal transport details'), findsNothing);
@@ -197,7 +197,7 @@ void main() {
           await expectLater(
             find.byType(Scaffold).first,
             matchesGoldenFile(
-              '../docs/product/linesight/acceptance/read-state-batch/png/128-workspace-$state-$locale-desktop-render.png',
+              '../docs/product/linesight/acceptance/ui80-batch/read-state-batch/png/128-workspace-$state-$locale-desktop-render.png',
             ),
           );
           await show(const CloudTemplatesPage());

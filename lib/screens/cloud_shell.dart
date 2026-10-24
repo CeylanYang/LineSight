@@ -1,8 +1,9 @@
 import '../cloud_avatar.dart';
+import '../cloud_layout.dart';
+import 'cloud_inspection_hub.dart';
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
 import '../cloud_notifications.dart';
-import '../cloud_feedback.dart';
 import '../cloud_navigation.dart';
 import '../cloud_workbench.dart';
 import '../cloud_local_import.dart';
@@ -30,6 +31,79 @@ class CloudShell extends StatefulWidget {
 
 class _CloudShellState extends State<CloudShell> {
   int _tab = 0;
+  int _configurationTab = 0;
+  int _inspectionTab = 0;
+  final _visited = <int>{0};
+  final _search = TextEditingController();
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  void _selectTab(int tab) {
+    AppScope.of(context).feedback();
+    setState(() {
+      _tab = tab;
+      _visited.add(tab);
+    });
+    CloudNavigationScope.maybeOf(context)?.value = tab;
+  }
+
+  void _openConfiguration(int tab) {
+    setState(() => _configurationTab = tab);
+    _selectTab(3);
+  }
+
+  void _openInspection(int tab) {
+    setState(() => _inspectionTab = tab);
+    _selectTab(2);
+  }
+
+  Future<void> _chooseWorkspace(CloudAccount account) async {
+    final picked = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Text(
+                tr(context, '切换工作区'),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            for (final workspace in account.workspaces)
+              ListTile(
+                title: Text('${workspace['name']}'),
+                trailing: account.activeWorkspace?['id'] == workspace['id']
+                    ? const Icon(Icons.check, color: blue)
+                    : null,
+                onTap: () => Navigator.pop(context, workspace),
+              ),
+            ListTile(
+              leading: const Icon(Icons.groups_outlined),
+              title: Text(tr(context, '团队成员')),
+              onTap: () {
+                Navigator.pop(context);
+                openPage(this.context, const CloudTeamPage());
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+    if (picked != null && mounted && !account.busy) {
+      await account.selectWorkspace(picked);
+    }
+  }
+
   String? recoveryScope;
   @override
   void didChangeDependencies() {
@@ -60,12 +134,14 @@ class _CloudShellState extends State<CloudShell> {
     final account = CloudScope.of(context), local = AppScope.of(context);
     final labels = [
       tr(context, '工作台'),
-      tr(context, '检测记录'),
-      tr(context, '配方中心'),
+      tr(context, '生产'),
+      tr(context, '质检'),
+      tr(context, '配置'),
       tr(context, '我的'),
     ];
     const icons = [
       Icons.space_dashboard_outlined,
+      Icons.precision_manufacturing_outlined,
       Icons.fact_check_outlined,
       Icons.layers_outlined,
       Icons.person_outline_rounded,
@@ -73,20 +149,53 @@ class _CloudShellState extends State<CloudShell> {
     final wide = MediaQuery.sizeOf(context).width >= 900;
     final navigation = CloudNavigationScope.maybeOf(context);
     final selectedTab = navigation?.value ?? _tab;
+    _visited.add(selectedTab);
+    Widget protected(Widget Function() page) => account.signedIn
+        ? page()
+        : PageBody(
+            children: [
+              _workspace(context, account),
+              const SizedBox(height: 18),
+              _loginState(context),
+            ],
+          );
     final pages = [
       _workbench(context, account),
-      const CloudRecordsPage(),
-      const CloudConfigurationPage(),
-      _profile(context, account),
+      if (_visited.contains(1))
+        protected(
+          () => CloudTaskListPage(
+            key: ValueKey('production/${account.accessScope}'),
+            embedded: true,
+          ),
+        )
+      else
+        const SizedBox.shrink(),
+      if (_visited.contains(2))
+        protected(
+          () => CloudInspectionHub(
+            key: ValueKey('inspection/${account.accessScope}'),
+            initialTab: _inspectionTab,
+            onTabChanged: (tab) => _inspectionTab = tab,
+          ),
+        )
+      else
+        const SizedBox.shrink(),
+      if (_visited.contains(3))
+        protected(
+          () => CloudConfigurationPage(
+            key: ValueKey('configuration/${account.accessScope}'),
+            initialTab: _configurationTab,
+            onTabChanged: (tab) => _configurationTab = tab,
+          ),
+        )
+      else
+        const SizedBox.shrink(),
+      if (_visited.contains(4))
+        _profile(context, account)
+      else
+        const SizedBox.shrink(),
     ];
-    void select(int tab) {
-      local.feedback();
-      if (navigation != null) {
-        navigation.value = tab;
-      } else {
-        setState(() => _tab = tab);
-      }
-    }
+    void select(int tab) => _selectTab(tab);
 
     return PopScope(
       canPop: selectedTab == 0,
@@ -116,7 +225,7 @@ class _CloudShellState extends State<CloudShell> {
                           child: BrandMark(size: 44),
                         ),
                         destinations: List.generate(
-                          4,
+                          labels.length,
                           (i) => NavigationRailDestination(
                             icon: Icon(icons[i]),
                             label: Text(labels[i]),
@@ -130,7 +239,8 @@ class _CloudShellState extends State<CloudShell> {
                     children: [
                       if (account.busy || account.restoring)
                         const LinearProgressIndicator(),
-                      if (account.error != null &&
+                      if (account.signedIn &&
+                          account.error != null &&
                           account.workspaceFailure == null)
                         MaterialBanner(
                           content: Text(trMessage(context, account.error!)),
@@ -232,59 +342,27 @@ class _CloudShellState extends State<CloudShell> {
           ],
         ),
       ),
-      if (account.signedIn)
-        IconButton.filledTonal(
-          tooltip: tr(context, '刷新'),
-          onPressed: account.busy ? null : account.reload,
-          icon: const Icon(Icons.refresh, size: 19),
-          style: IconButton.styleFrom(
-            minimumSize: const Size(40, 40),
-            backgroundColor: Colors.white,
-            foregroundColor: ink,
-            side: const BorderSide(color: hairline),
+      if (account.signedIn) ...[
+        IconButton(
+          tooltip: tr(context, '切换工作区'),
+          onPressed: account.busy ? null : () => _chooseWorkspace(account),
+          icon: const Icon(Icons.expand_more),
+        ),
+        IconButton(
+          tooltip: tr(context, '待办与通知'),
+          onPressed: () => openPage(context, const CloudNotificationsPage()),
+          icon: Badge(
+            isLabelVisible:
+                account.workspaceDataReady &&
+                account.notifications.any((n) => n['read'] != true),
+            child: const Icon(Icons.notifications_none_rounded),
           ),
         ),
+      ],
     ],
   );
 
-  Widget _loginState(BuildContext context) => GlassPanel(
-    padding: const EdgeInsets.fromLTRB(20, 24, 20, 22),
-    child: Column(
-      children: [
-        Container(
-          width: 58,
-          height: 58,
-          decoration: BoxDecoration(
-            color: blue.withValues(alpha: .1),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: const Icon(Icons.shield_outlined, color: blue, size: 29),
-        ),
-        const SizedBox(height: 14),
-        Text(
-          tr(context, '登录后查看任务与检验记录'),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 14.5,
-            fontWeight: FontWeight.w800,
-            color: ink,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          tr(context, '与团队同步质检进度、照片证据与质量报告。'),
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 11.5, color: muted, height: 1.5),
-        ),
-        const SizedBox(height: 16),
-        FilledButton.icon(
-          onPressed: () => openPage(context, const CloudLoginPage()),
-          icon: const Icon(Icons.login, size: 18),
-          label: Text(tr(context, '登录')),
-        ),
-      ],
-    ),
-  );
+  Widget _loginState(BuildContext context) => const CloudLoginPanel();
 
   Widget _noticeRow(
     BuildContext context,
@@ -350,200 +428,185 @@ class _CloudShellState extends State<CloudShell> {
   );
 
   Widget _workbench(BuildContext context, CloudAccount account) {
-    int count(String status) =>
-        account.jobs.where((j) => j['status'] == status).length;
-    final pending = count('inspection'), issues = count('exception');
-    final closed = count('closed');
+    if (!account.signedIn) {
+      return PageBody(
+        children: [
+          _workspace(context, account),
+          const SizedBox(height: 28),
+          const CloudLoginPanel(),
+        ],
+      );
+    }
+    final notices = account.notifications
+        .where((n) => n['status'] == 'inspection' || n['status'] == 'exception')
+        .take(2)
+        .toList();
+    void search() {
+      final query = _search.text.trim();
+      if (query.isNotEmpty) {
+        openPage(context, CloudTaskListPage(filters: {'q': query}));
+      }
+    }
+
     return PageBody(
       children: [
         _workspace(context, account),
-        const SizedBox(height: 18),
-        HeroBanner(
-          eyebrow: 'LINESIGHT · QUALITY OPS',
-          title: tr(context, '工作台'),
-          subtitle: account.signedIn
-              ? !account.workspaceDataReady
-                    ? tr(context, '与团队同步质检进度、照片证据与质量报告。')
-                    : '${tr(context, '待质检')} $pending · ${tr(context, '异常处理中')} $issues · ${tr(context, '已关闭')} $closed'
-              : tr(context, '登录后查看任务与检验记录'),
-          trailing: account.demoAccount
-              ? Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 9,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .16),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: .22),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 5,
-                        height: 5,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFFC55E),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        tr(context, '演示数据'),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 9.5,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : null,
-          actions: account.signedIn
-              ? [
-                  HeroAction(
-                    label: tr(context, '在线质检'),
-                    icon: Icons.videocam_outlined,
-                    onPressed: () =>
-                        openPage(context, const CloudLiveInspectionPage()),
-                  ),
-                  HeroAction(
-                    label: tr(context, '扫码追溯'),
-                    icon: Icons.qr_code_scanner,
-                    onPressed: () => openPage(context, const CloudScanPage()),
-                  ),
-                  HeroAction(
-                    label: tr(context, '输入追溯号'),
-                    icon: Icons.keyboard,
-                    ghost: true,
-                    onPressed: () => openCloudTraceInput(context),
-                  ),
-                  if (account.canEdit)
-                    HeroAction(
-                      label: tr(context, '新建任务'),
-                      icon: Icons.add,
-                      ghost: true,
-                      onPressed: account.busy
-                          ? null
-                          : () =>
-                                openPage(context, const CloudCreateTaskPage()),
-                    ),
-                ]
-              : [
-                  HeroAction(
-                    label: tr(context, '登录'),
-                    icon: Icons.login,
-                    onPressed: () => openPage(context, const CloudLoginPage()),
-                  ),
-                ],
+        const SizedBox(height: 12),
+        TextField(
+          controller: _search,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (_) => search(),
+          decoration: InputDecoration(
+            hintText: tr(context, '任务号、批次或名称'),
+            prefixIcon: const Icon(Icons.search, size: 20),
+            suffixIcon: IconButton(
+              tooltip: tr(context, '搜索'),
+              onPressed: search,
+              icon: const Icon(Icons.arrow_forward, size: 20),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 12,
+            ),
+          ),
         ),
-        if (!account.signedIn)
-          Padding(
-            padding: const EdgeInsets.only(top: 18),
-            child: _loginState(context),
-          )
-        else if (!account.workspaceDataReady) ...[
-          CloudWorkspaceStatus(account: account),
-          TextButton.icon(
-            onPressed: () => openPage(context, const CloudSyncPage()),
-            icon: const Icon(Icons.cloud_sync_outlined),
-            label: Text(tr(context, '同步与草稿')),
-          ),
-        ] else ...[
-          CloudWorkbenchSummary(account: account),
-          SectionHeader(
-            tr(context, '生产任务'),
-            caption: '${account.jobs.length} ${tr(context, '个任务')}',
-            icon: Icons.inventory_2_outlined,
-            action: TextButton(
-              onPressed: () => openPage(context, const CloudTaskListPage()),
-              child: Text(tr(context, '查看全部')),
-            ),
-          ),
-          if (account.jobs.isEmpty && !account.busy)
-            EmptyState(
-              title: tr(context, '暂无生产任务'),
-              subtitle: tr(context, '当前工作区还没有生产任务。'),
-              action: account.canEdit
-                  ? FilledButton.icon(
-                      onPressed: () =>
-                          openPage(context, const CloudCreateTaskPage()),
-                      icon: const Icon(Icons.add),
-                      label: Text(tr(context, '新建任务')),
-                    )
-                  : null,
-            ),
-          ...account.jobs.take(5).map((job) => CloudTaskTile(job: job)),
-          SectionHeader(tr(context, '快捷操作'), icon: Icons.bolt_outlined),
-          AdaptiveGrid(
-            minWidth: 168,
-            children: [
-              QuickAction(
-                title: tr(context, '质量洞察'),
-                caption: tr(context, '通过率与异常趋势'),
-                icon: Icons.insights_outlined,
-                onPressed: () => openPage(context, const CloudReportPage()),
+        const SizedBox(height: 10),
+        GlassPanel(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: CloudShortcutGrid(
+            primary: true,
+            entries: [
+              CloudShortcut(
+                '在线质检',
+                Icons.videocam_outlined,
+                () => openPage(context, const CloudLiveInspectionPage()),
+              ),
+              CloudShortcut(
+                '扫码追溯',
+                Icons.qr_code_scanner,
+                () => openPage(context, const CloudScanPage()),
               ),
               if (account.canEdit)
-                QuickAction(
-                  title: tr(context, '新建任务'),
-                  caption: tr(context, '创建生产质检单'),
-                  icon: Icons.add_task,
+                CloudShortcut(
+                  '新建任务',
+                  Icons.add_task,
+                  () => openPage(context, const CloudCreateTaskPage()),
                   color: green,
-                  onPressed: () =>
-                      openPage(context, const CloudCreateTaskPage()),
+                )
+              else
+                CloudShortcut(
+                  '生产任务',
+                  Icons.precision_manufacturing_outlined,
+                  () => _selectTab(1),
+                  color: green,
                 ),
-              QuickAction(
-                title: tr(context, '待办与通知'),
-                caption:
-                    '${account.notifications.length} ${tr(context, '条提醒')}',
-                icon: Icons.notifications_active_outlined,
-                color: amber,
-                onPressed: () =>
-                    openPage(context, const CloudNotificationsPage()),
-              ),
-              QuickAction(
-                title: tr(context, '同步与草稿'),
-                caption: tr(context, '离线照片与未提交内容'),
-                icon: Icons.cloud_sync_outlined,
-                color: const Color(0xFF7B61D9),
-                onPressed: () => openPage(context, const CloudSyncPage()),
+              CloudShortcut(
+                '质量报告',
+                Icons.analytics_outlined,
+                () => _openInspection(2),
+                color: const Color(0xFF7359CB),
               ),
             ],
           ),
-          if (account.notifications.isNotEmpty) ...[
-            SectionHeader(
-              tr(context, '待办提醒'),
-              caption:
-                  '${account.notifications.where((n) => n['read'] != true).length} ${tr(context, '条未读')}',
-              icon: Icons.notifications_none_rounded,
-              action: TextButton(
+        ),
+        const SizedBox(height: 8),
+        GlassPanel(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: CloudShortcutGrid(
+            entries: [
+              CloudShortcut(
+                '待检任务',
+                Icons.fact_check_outlined,
+                () => _openInspection(0),
+                color: amber,
+              ),
+              CloudShortcut(
+                '异常处理',
+                Icons.build_circle_outlined,
+                () => openPage(
+                  context,
+                  const CloudTaskListPage(status: 'exception'),
+                ),
+                color: red,
+              ),
+              CloudShortcut(
+                '检测记录',
+                Icons.receipt_long_outlined,
+                () => _openInspection(1),
+              ),
+              CloudShortcut(
+                '打印配置',
+                Icons.print_outlined,
+                () => _openConfiguration(0),
+              ),
+              CloudShortcut(
+                '检查模板',
+                Icons.checklist_rounded,
+                () => _openConfiguration(1),
+                color: green,
+              ),
+              CloudShortcut(
+                '团队成员',
+                Icons.groups_outlined,
+                () => openPage(context, const CloudTeamPage()),
+                color: const Color(0xFF7359CB),
+              ),
+              CloudShortcut(
+                '我的卡片',
+                Icons.nfc,
+                () => openPage(context, const CloudNfcCardsPage()),
+              ),
+              CloudShortcut(
+                '同步与草稿',
+                Icons.cloud_sync_outlined,
+                () => openPage(context, const CloudSyncPage()),
+                color: green,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        CloudWorkbenchSummary(account: account),
+        if (account.workspaceDataReady) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  tr(context, '我的待办'),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              TextButton(
                 onPressed: () =>
                     openPage(context, const CloudNotificationsPage()),
                 child: Text(tr(context, '查看全部')),
               ),
-            ),
-            GlassPanel(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Column(
-                children: [
-                  for (
-                    var i = 0;
-                    i < account.notifications.take(3).length;
-                    i++
-                  ) ...[
-                    if (i > 0)
-                      const Divider(height: 1, indent: 58, endIndent: 14),
-                    _noticeRow(context, account, account.notifications[i]),
-                  ],
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
+          GlassPanel(
+            padding: EdgeInsets.zero,
+            child: notices.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      tr(context, '暂无待办'),
+                      style: const TextStyle(color: muted),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      for (var i = 0; i < notices.length; i++) ...[
+                        if (i > 0)
+                          const Divider(height: 1, indent: 58, endIndent: 14),
+                        _noticeRow(context, account, notices[i]),
+                      ],
+                    ],
+                  ),
+          ),
         ],
       ],
     );
@@ -650,6 +713,27 @@ class _CloudShellState extends State<CloudShell> {
               ),
             ),
           ),
+          const SizedBox(height: 12),
+          GlassPanel(
+            padding: EdgeInsets.zero,
+            child: Column(
+              children: [
+                MenuTile(
+                  title: tr(context, '我的卡片'),
+                  subtitle: tr(context, '绑定卡片与刷卡登录'),
+                  icon: Icons.nfc,
+                  onTap: () => openPage(context, const CloudNfcCardsPage()),
+                ),
+                const Divider(height: 1, indent: 64, endIndent: 14),
+                MenuTile(
+                  title: tr(context, '账户与安全'),
+                  subtitle: tr(context, '密码与登录设备'),
+                  icon: Icons.security_outlined,
+                  onTap: () => openPage(context, const CloudProfilePage()),
+                ),
+              ],
+            ),
+          ),
           SectionHeader(tr(context, '团队与账户'), icon: Icons.groups_2_outlined),
           if (account.workspaces.isNotEmpty)
             GlassPanel(
@@ -753,19 +837,20 @@ class _CloudShellState extends State<CloudShell> {
                 ),
                 const Divider(height: 1, indent: 64, endIndent: 14),
                 MenuTile(
-                  title: tr(context, '质量洞察与报告'),
-                  subtitle: tr(context, '团队质量趋势与导出'),
-                  icon: Icons.insights_outlined,
-                  onTap: () => openPage(context, const CloudReportPage()),
+                  title: tr(context, '本机配方与工位'),
+                  subtitle: tr(context, '配方、换型与系统 · 本机'),
+                  icon: Icons.settings_input_component_outlined,
+                  onTap: () =>
+                      openPage(context, const LocalConfigurationGate()),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 18),
-          Center(
+          const Center(
             child: Text(
-              'LineSight $appVersion · ${tr(context, '本地优先的质量追溯')}',
-              style: const TextStyle(fontSize: 10.5, color: Color(0xFF9AA9BD)),
+              'LineSight $appVersion',
+              style: TextStyle(fontSize: 10.5, color: Color(0xFF9AA9BD)),
             ),
           ),
           if (account.signedIn)
@@ -808,167 +893,110 @@ class CloudLoginPage extends StatelessWidget {
   final VoidCallback? onAuthenticated;
   const CloudLoginPage({super.key, this.onAuthenticated});
   @override
+  Widget build(BuildContext context) => DetailScaffold(
+    title: tr(context, '登录'),
+    children: [
+      CloudLoginPanel(
+        onAuthenticated: () {
+          onAuthenticated?.call();
+          if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+        },
+      ),
+    ],
+  );
+}
+
+class CloudLoginPanel extends StatelessWidget {
+  final VoidCallback? onAuthenticated;
+  const CloudLoginPanel({super.key, this.onAuthenticated});
+  @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
-    Future<void> login(bool demo) async {
-      await account.signIn(demo: demo);
+    void accepted() {
       if (context.mounted &&
           account.signedIn &&
           account.profile != null &&
           account.error == null) {
         onAuthenticated?.call();
-        Navigator.pop(context);
       }
     }
 
-    return DetailScaffold(
-      title: tr(context, '登录'),
-      children: [
-        const SizedBox(height: 8),
-        HeroBanner(
-          eyebrow: 'LINESIGHT · ACCOUNT',
-          title: tr(context, '登录工作区'),
-          subtitle: tr(context, '查看生产任务、检验记录与质量报告，继续未完成的工作。'),
-          trailing: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: .16),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: .22)),
-            ),
-            child: const Icon(
-              Icons.shield_outlined,
-              color: Colors.white,
-              size: 21,
-            ),
-          ),
-        ),
-        const SizedBox(height: 18),
-        GlassPanel(
-          padding: const EdgeInsets.fromLTRB(18, 20, 18, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                tr(context, '使用账号继续'),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  color: ink,
-                ),
+    Future<void> login(bool demo) async {
+      await account.signIn(demo: demo);
+      accepted();
+    }
+
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 460),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              tr(context, '登录工作区'),
+              style: const TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.w800,
+                color: ink,
               ),
-              const SizedBox(height: 5),
-              Text(
-                tr(context, '登录后将自动载入当前工作区的任务与通知。'),
-                style: const TextStyle(
-                  fontSize: 11.5,
-                  color: muted,
-                  height: 1.5,
-                ),
-              ),
-              if (account.busy) ...[
-                const SizedBox(height: 14),
-                const LinearProgressIndicator(),
-              ],
-              if (account.error != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 14),
-                  child: Text(
-                    trMessage(context, account.error!),
-                    style: const TextStyle(color: red, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              tr(context, '生产任务、质检与团队协作'),
+              style: const TextStyle(fontSize: 14, color: muted),
+            ),
+            const SizedBox(height: 26),
+            GlassPanel(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (account.busy) const LinearProgressIndicator(),
+                  if (account.error != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: Text(
+                        trMessage(context, account.error!),
+                        style: const TextStyle(color: red),
+                      ),
+                    ),
+                  FilledButton.icon(
+                    onPressed: account.busy ? null : () => login(false),
+                    icon: const Icon(Icons.login),
+                    label: Text(tr(context, '登录')),
                   ),
-                ),
-              const SizedBox(height: 18),
-              FilledButton.icon(
-                onPressed: account.busy ? null : () => login(false),
-                icon: const Icon(Icons.login, size: 19),
-                label: Text(tr(context, '登录')),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    onPressed: account.busy
+                        ? null
+                        : () async {
+                            final card = await Navigator.of(context)
+                                .push<NfcCardRead>(
+                                  appPageRoute<NfcCardRead>(
+                                    context,
+                                    const CloudNfcScanPage(),
+                                  ),
+                                );
+                            if (card == null || !context.mounted) return;
+                            await account.signInNfc(card.code);
+                            accepted();
+                          },
+                    icon: const Icon(Icons.nfc),
+                    label: Text(tr(context, '刷卡登录')),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    onPressed: account.busy ? null : () => login(true),
+                    icon: const Icon(Icons.explore_outlined),
+                    label: Text(tr(context, '进入演示团队')),
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              OutlinedButton.icon(
-                onPressed: account.busy
-                    ? null
-                    : () async {
-                        final card = await Navigator.of(context)
-                            .push<NfcCardRead>(
-                              appPageRoute<NfcCardRead>(
-                                context,
-                                const CloudNfcScanPage(),
-                              ),
-                            );
-                        if (card == null || !context.mounted) return;
-                        await account.signInNfc(card.code);
-                        if (context.mounted &&
-                            account.signedIn &&
-                            account.profile != null &&
-                            account.error == null) {
-                          onAuthenticated?.call();
-                          Navigator.pop(context);
-                        }
-                      },
-                icon: const Icon(Icons.nfc),
-                label: Text(tr(context, '刷卡登录')),
-              ),
-              const SizedBox(height: 10),
-              OutlinedButton.icon(
-                onPressed: account.busy ? null : () => login(true),
-                icon: const Icon(Icons.explore_outlined, size: 19),
-                label: Text(tr(context, '进入演示团队')),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
-        GlassPanel(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          child: Column(
-            children: [
-              MenuTile(
-                title: tr(context, '任务与检验同步'),
-                subtitle: tr(context, '状态、轮次和逐件 SN 实时更新'),
-                icon: Icons.sync_alt,
-                trailing: const Icon(
-                  Icons.check_circle,
-                  color: green,
-                  size: 18,
-                ),
-              ),
-              const Divider(height: 1, indent: 62, endIndent: 4),
-              MenuTile(
-                title: tr(context, '照片证据留存'),
-                subtitle: tr(context, '原图与边缘参考双重归档'),
-                icon: Icons.photo_library_outlined,
-                color: const Color(0xFF7B61D9),
-                trailing: const Icon(
-                  Icons.check_circle,
-                  color: green,
-                  size: 18,
-                ),
-              ),
-              const Divider(height: 1, indent: 62, endIndent: 4),
-              MenuTile(
-                title: tr(context, '团队权限隔离'),
-                subtitle: tr(context, '按工作区隔离数据与操作权限'),
-                icon: Icons.verified_user_outlined,
-                color: green,
-                trailing: const Icon(
-                  Icons.check_circle,
-                  color: green,
-                  size: 18,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 18),
-        const Center(
-          child: Text(
-            'LineSight $appVersion',
-            style: TextStyle(fontSize: 10.5, color: Color(0xFF9AA9BD)),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

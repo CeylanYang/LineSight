@@ -261,7 +261,7 @@ void main() {
       await expectLater(
         find.byKey(const ValueKey('form-evidence')),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/forms-batch/png/114-checklist-validation-$language-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/forms-batch/png/114-checklist-validation-$language-desktop-render.png',
         ),
       );
     });

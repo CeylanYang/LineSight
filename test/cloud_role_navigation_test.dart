@@ -136,7 +136,7 @@ void main() {
           final manage = role == 'owner' || role == 'manager';
           final edit = role != 'viewer';
           await tap(find.text('Configuration origin'));
-          await tap(find.text(label('打印配置')));
+          await tap(find.text(label('打印配置')).first);
           expect(
             find.byTooltip(label('创建打印配置')),
             manage ? findsOneWidget : findsNothing,
@@ -153,7 +153,6 @@ void main() {
           }
           await back();
           expect(find.byType(CloudProfilesPage), findsOneWidget);
-          await back();
           expect(find.byType(CloudConfigurationPage), findsOneWidget);
           await tap(find.text(label('检查模板')));
           expect(
@@ -172,7 +171,6 @@ void main() {
           }
           await back();
           expect(find.byType(CloudTemplatesPage), findsOneWidget);
-          await back();
           await back();
           expect(find.text('Configuration origin'), findsOneWidget);
           await tap(find.text('Team origin'));

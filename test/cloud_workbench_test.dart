@@ -119,19 +119,10 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/workbench-batch/png/60-workbench-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/workbench-batch/png/60-workbench-$locale-desktop-render.png',
         ),
       );
-      await tester.tap(find.byType(ExpansionTile).first);
-      await tester.pumpAndSettle();
-      expect(find.text('Bracket · first inspection'), findsOneWidget);
-      expect(find.text('Bracket · reinspection'), findsNothing);
-      await expectLater(
-        find.byType(Scaffold),
-        matchesGoldenFile(
-          '../docs/product/linesight/acceptance/workbench-batch/png/61-todo-$locale-desktop-render.png',
-        ),
-      );
+      expect(find.byType(ExpansionTile), findsNothing);
       await tester.tap(find.text(label));
       final destination =
           (routes.latest as PageRouteBuilder).pageBuilder(
@@ -142,7 +133,9 @@ void main() {
               as CloudTaskListPage;
       expect(destination.status, 'inspection');
       expect(destination.filters, bounds);
-      final cards = tester.widgetList<StatCard>(find.byType(StatCard)).toList();
+      final cards = tester
+          .widgetList<CloudSummaryMetric>(find.byType(CloudSummaryMetric))
+          .toList();
       expect(cards.map((c) => c.value), ['2', '0', '1']);
       expect(
         bounds['updated_to'],

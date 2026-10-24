@@ -242,8 +242,6 @@ Widget cloudDraftRecoveryFailure(
 Widget cloudScopeChanged(BuildContext context) => DetailScaffold(
   title: tr(context, '工作区已切换'),
   children: [
-    Text(tr(context, '返回工作台后重新打开页面')),
-    const SizedBox(height: 16),
     FilledButton(
       onPressed: () => returnToCloudWorkbench(context),
       child: Text(tr(context, '返回工作台')),
@@ -254,7 +252,13 @@ Widget cloudScopeChanged(BuildContext context) => DetailScaffold(
 class CloudTaskListPage extends StatefulWidget {
   final String? status;
   final Map<String, String> filters;
-  const CloudTaskListPage({super.key, this.status, this.filters = const {}});
+  final bool embedded;
+  const CloudTaskListPage({
+    super.key,
+    this.status,
+    this.filters = const {},
+    this.embedded = false,
+  });
   @override
   State<CloudTaskListPage> createState() => _CloudTaskListPageState();
 }
@@ -338,12 +342,14 @@ class _CloudTaskListPageState extends State<CloudTaskListPage> {
     if (!account.signedIn) return cloudAccessRequired(context);
     if (account.activeWorkspace == null) {
       return DetailScaffold(
+        embedded: widget.embedded,
         title: tr(context, '生产任务'),
         children: [CloudWorkspaceStatus(account: account)],
       );
     }
     final jobs = rows ?? <Map<String, dynamic>>[];
     return DetailScaffold(
+      embedded: widget.embedded,
       title: tr(context, '生产任务'),
       actions: [
         IconButton(
@@ -957,6 +963,54 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
       prefixIcon: Icon(icon, size: 19),
     );
     return DetailScaffold(
+      bottomBar: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(0, 48),
+                textStyle: TextStyle(
+                  fontFamily: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.fontFamily,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              icon: const Icon(Icons.save_outlined, size: 18),
+              label: Text(tr(context, '保存草稿')),
+              onPressed: busy
+                  ? null
+                  : () async {
+                      await saveDraft();
+                      if (context.mounted && error == null) {
+                        toast(context, '草稿已保存');
+                      }
+                    },
+            ),
+          ),
+          const SizedBox(width: 9),
+          Expanded(
+            flex: 2,
+            child: FilledButton.icon(
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(0, 48),
+                textStyle: TextStyle(
+                  fontFamily: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.fontFamily,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: busy || !account.canEdit ? null : submit,
+              icon: const Icon(Icons.check, size: 18),
+              label: Text(tr(context, '创建任务')),
+            ),
+          ),
+        ],
+      ),
       title: tr(context, '新建任务'),
       children: [
         GlassPanel(
@@ -1221,54 +1275,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
           ),
         ),
         const SizedBox(height: 14),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(0, 48),
-                  textStyle: TextStyle(
-                    fontFamily: Theme.of(
-                      context,
-                    ).textTheme.labelLarge?.fontFamily,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                icon: const Icon(Icons.save_outlined, size: 18),
-                label: Text(tr(context, '保存草稿')),
-                onPressed: busy
-                    ? null
-                    : () async {
-                        await saveDraft();
-                        if (context.mounted && error == null) {
-                          toast(context, '草稿已保存');
-                        }
-                      },
-              ),
-            ),
-            const SizedBox(width: 9),
-            Expanded(
-              flex: 2,
-              child: FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(0, 48),
-                  textStyle: TextStyle(
-                    fontFamily: Theme.of(
-                      context,
-                    ).textTheme.labelLarge?.fontFamily,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                onPressed: busy || !account.canEdit ? null : submit,
-                icon: const Icon(Icons.check, size: 18),
-                label: Text(tr(context, '创建任务')),
-              ),
-            ),
-          ],
-        ),
+
         if (error != null)
           Padding(
             padding: const EdgeInsets.only(top: 10),
@@ -1487,7 +1494,17 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
     };
     void primaryAction() {
       if (status == 'exception') {
-        selectSection(2);
+        final open = issues
+            .where((issue) => issue['status'] == 'open')
+            .toList();
+        if (open.length == 1) {
+          command(
+            'resolve',
+            issue: Map<String, dynamic>.from(open.first as Map),
+          );
+        } else {
+          selectSection(2);
+        }
       } else {
         command(
           status == 'inspection'
@@ -1499,7 +1516,48 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
       }
     }
 
+    final actionBar = Row(
+      children: [
+        Expanded(
+          child: OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size(0, 44),
+              textStyle: TextStyle(
+                fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily,
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            icon: const Icon(Icons.description_outlined, size: 17),
+            label: Text(tr(context, '质量报告')),
+            onPressed: () =>
+                openPage(context, CloudReportPage(jobId: '${job['id']}')),
+          ),
+        ),
+        if (canEdit && !busy && error == null && actionLabel != null) ...[
+          const SizedBox(width: 9),
+          Expanded(
+            child: FilledButton.icon(
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(0, 44),
+                textStyle: TextStyle(
+                  fontFamily: Theme.of(
+                    context,
+                  ).textTheme.labelLarge?.fontFamily,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: primaryAction,
+              icon: const Icon(Icons.arrow_forward_rounded, size: 17),
+              label: Text(actionLabel),
+            ),
+          ),
+        ],
+      ],
+    );
     return DetailScaffold(
+      bottomBar: actionBar,
       title: partName,
       actions: [
         if (canEdit && status != 'closed')
@@ -1539,12 +1597,6 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            PartArt(
-              partName: partName,
-              defect: status == 'exception' || openIssues > 0,
-              height: 186,
-              caption: 'CAM 01 · TOP',
-            ),
             const SizedBox(height: 14),
             GlassPanel(
               padding: const EdgeInsets.all(16),
@@ -1623,59 +1675,6 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
                     ),
                   ],
                   const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(0, 44),
-                            textStyle: TextStyle(
-                              fontFamily: Theme.of(
-                                context,
-                              ).textTheme.labelLarge?.fontFamily,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          icon: const Icon(
-                            Icons.description_outlined,
-                            size: 17,
-                          ),
-                          label: Text(tr(context, '质量报告')),
-                          onPressed: () => openPage(
-                            context,
-                            CloudReportPage(jobId: '${job['id']}'),
-                          ),
-                        ),
-                      ),
-                      if (canEdit &&
-                          !busy &&
-                          error == null &&
-                          actionLabel != null) ...[
-                        const SizedBox(width: 9),
-                        Expanded(
-                          child: FilledButton.icon(
-                            style: FilledButton.styleFrom(
-                              minimumSize: const Size(0, 44),
-                              textStyle: TextStyle(
-                                fontFamily: Theme.of(
-                                  context,
-                                ).textTheme.labelLarge?.fontFamily,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            onPressed: primaryAction,
-                            icon: const Icon(
-                              Icons.arrow_forward_rounded,
-                              size: 17,
-                            ),
-                            label: Text(actionLabel),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -2571,19 +2570,27 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     );
 
     return DetailScaffold(
+      bottomBar: SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          style: FilledButton.styleFrom(
+            minimumSize: const Size(0, 52),
+            textStyle: TextStyle(
+              fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily,
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          onPressed: busy || conflict != null || !canEdit ? null : submit,
+          icon: const Icon(Icons.check_circle_outline, size: 20),
+          label: Text(tr(context, '确认提交')),
+        ),
+      ),
       title: tr(context, title),
       children: [
         CloudForm(
           formKey: form,
           children: [
-            PartArt(
-              partName: partName,
-              defect: failing || widget.action == 'resolve',
-              height: 172,
-              caption: widget.action == 'resolve'
-                  ? tr(context, '异常工件')
-                  : tr(context, '待检工件'),
-            ),
             const SizedBox(height: 14),
             GlassPanel(
               padding: const EdgeInsets.all(16),
@@ -3449,7 +3456,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                         padding: const EdgeInsets.only(top: 8),
                         child: OutlinedButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text(tr(context, '返回并刷新任务')),
+                          child: Text(tr(context, '返回任务')),
                         ),
                       ),
                     ],
@@ -3463,30 +3470,8 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                 padding: EdgeInsets.only(bottom: 12),
                 child: LinearProgressIndicator(),
               ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(0, 52),
-                  textStyle: TextStyle(
-                    fontFamily: Theme.of(
-                      context,
-                    ).textTheme.labelLarge?.fontFamily,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                onPressed: busy || conflict != null || !canEdit ? null : submit,
-                icon: const Icon(Icons.check_circle_outline, size: 20),
-                label: Text(tr(context, '确认提交')),
-              ),
-            ),
+
             const SizedBox(height: 8),
-            Text(
-              tr(context, '提交后可在任务历史中查看结果并补充照片。'),
-              textAlign: TextAlign.center,
-              style: hint,
-            ),
           ],
         ),
       ],

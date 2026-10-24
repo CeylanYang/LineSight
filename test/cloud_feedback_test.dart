@@ -290,7 +290,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/feedback-batch/png/66-recovery-states-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/feedback-batch/png/66-recovery-states-$locale-desktop-render.png',
         ),
       );
       account.failure = const CollaborationApiException(0, '网络连接失败，请重试');
@@ -306,7 +306,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/conflict-batch/png/100-task-retry-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/conflict-batch/png/100-task-retry-$locale-desktop-render.png',
         ),
       );
     });

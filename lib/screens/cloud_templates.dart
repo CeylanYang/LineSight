@@ -60,6 +60,22 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
     }
 
     return DetailScaffold(
+      bottomBar: account.canEdit
+          ? FilledButton.icon(
+              onPressed: () {
+                if (account.retainsAccess(binding)) {
+                  openPage(
+                    context,
+                    CloudCreateTaskPage(
+                      initialTemplateId: selected['id'] as int,
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.add_task),
+              label: Text(tr(context, '使用此模板创建任务')),
+            )
+          : null,
       title: '${selected['name']}',
       children: [
         HeroBanner(
@@ -157,19 +173,6 @@ class _TemplateDetailState extends State<CloudTemplateDetailPage> {
             label: Text(tr(context, '复制模板')),
           ),
         ],
-        if (account.canEdit)
-          FilledButton.icon(
-            onPressed: () {
-              if (account.retainsAccess(binding)) {
-                openPage(
-                  context,
-                  CloudCreateTaskPage(initialTemplateId: selected['id'] as int),
-                );
-              }
-            },
-            icon: const Icon(Icons.add_task),
-            label: Text(tr(context, '使用此模板创建任务')),
-          ),
       ],
     );
   }

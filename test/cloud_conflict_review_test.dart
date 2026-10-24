@@ -345,7 +345,7 @@ void main() {
       await expectLater(
         find.byKey(const ValueKey('conflict-review')),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/conflict-batch/png/98-conflict-review-$language-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/conflict-batch/png/98-conflict-review-$language-desktop-render.png',
         ),
       );
     });

@@ -471,7 +471,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold).last,
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/profile-management-batch/png/200-profile-$state-$language-component.png',
+            '../docs/product/linesight/acceptance/ui80-batch/profile-management-batch/png/200-profile-$state-$language-component.png',
           ),
         );
       });

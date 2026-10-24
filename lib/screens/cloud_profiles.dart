@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
+import '../cloud_layout.dart';
 import '../cloud_feedback.dart';
 import '../l10n.dart';
 import '../ui.dart';
@@ -9,58 +10,77 @@ import 'cloud_profile_editor.dart';
 import 'auth.dart';
 import 'modules.dart';
 
-class CloudConfigurationPage extends StatelessWidget {
-  const CloudConfigurationPage({super.key});
+class CloudConfigurationPage extends StatefulWidget {
+  final int initialTab;
+  final ValueChanged<int>? onTabChanged;
+  const CloudConfigurationPage({
+    super.key,
+    this.initialTab = 0,
+    this.onTabChanged,
+  });
   @override
-  Widget build(BuildContext context) => PageBody(
-    children: [
-      PageHeading(
-        eyebrow: 'CONFIGURATION / MODULES',
-        title: tr(context, '配方中心'),
-        subtitle: tr(context, '选择打印配置与检查模板，创建标准化生产任务。'),
-      ),
-      GlassPanel(
-        child: Column(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.print_outlined),
-              title: Text(tr(context, '打印配置')),
-              subtitle: Text(tr(context, '查看设备、配置版本与来源')),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => openPage(context, const CloudProfilesPage()),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings_input_component_outlined),
-              title: Text(tr(context, '本机配方与工位')),
-              subtitle: Text(tr(context, '配方、换型与系统 · 本机')),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => openPage(context, const LocalConfigurationGate()),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.fact_check_outlined),
-              title: Text(tr(context, '检查模板')),
-              subtitle: Text(tr(context, '管理检查项与模板版本')),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => openPage(
-                context,
-                Scaffold(
-                  appBar: AppBar(title: Text(tr(context, '检查模板'))),
-                  body: const Backdrop(child: CloudTemplatesPage()),
-                ),
-              ),
-            ),
-          ],
+  State<CloudConfigurationPage> createState() => _CloudConfigurationState();
+}
+
+class _CloudConfigurationState extends State<CloudConfigurationPage> {
+  late int tab = widget.initialTab;
+  late final visited = <int>{tab};
+  @override
+  void didUpdateWidget(CloudConfigurationPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialTab != oldWidget.initialTab) {
+      tab = widget.initialTab;
+      visited.add(tab);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = CloudScope.of(context);
+    if (!account.workspaceDataReady) {
+      return PageBody(children: [CloudWorkspaceStatus(account: account)]);
+    }
+    return Column(
+      children: [
+        CloudSectionTabs(
+          labels: const ['打印配置', '检查模板'],
+          selected: tab,
+          onSelected: (value) => setState(() {
+            tab = value;
+            visited.add(value);
+            widget.onTabChanged?.call(value);
+          }),
         ),
-      ),
-    ],
-  );
+        Expanded(
+          child: IndexedStack(
+            index: tab,
+            children: [
+              if (visited.contains(0))
+                CloudProfilesPage(
+                  key: ValueKey(account.accessScope),
+                  embedded: true,
+                )
+              else
+                const SizedBox.shrink(),
+              if (visited.contains(1))
+                const CloudTemplatesPage(compact: true)
+              else
+                const SizedBox.shrink(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class CloudProfilesPage extends StatefulWidget {
-  final bool picking;
-  const CloudProfilesPage({super.key, this.picking = false});
+  final bool picking, embedded;
+  const CloudProfilesPage({
+    super.key,
+    this.picking = false,
+    this.embedded = false,
+  });
   @override
   State<CloudProfilesPage> createState() => _ProfilesState();
 }
@@ -139,6 +159,7 @@ class _ProfilesState extends State<CloudProfilesPage> {
     if (!account.signedIn) return cloudAccessRequired(context);
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     return DetailScaffold(
+      embedded: widget.embedded,
       title: tr(context, widget.picking ? '选择打印配置' : '打印配置'),
       actions: [
         if (account.canManageProduction)
@@ -241,6 +262,23 @@ class _ProfileDetailState extends State<CloudProfileDetailPage> {
     if (!account.signedIn) return cloudAccessRequired(context);
     if (!account.retainsAccess(binding)) return cloudScopeChanged(context);
     return DetailScaffold(
+      bottomBar: account.canEdit
+          ? FilledButton.icon(
+              onPressed: () {
+                if (!account.retainsAccess(binding)) return;
+                if (widget.picking) {
+                  Navigator.pop(context, profile);
+                } else {
+                  openPage(
+                    context,
+                    CloudCreateTaskPage(initialProfile: profile),
+                  );
+                }
+              },
+              icon: const Icon(Icons.add_task),
+              label: Text(tr(context, widget.picking ? '使用此配置' : '使用此配置创建任务')),
+            )
+          : null,
       title: '${profile['name']}',
       children: [
         HeroBanner(
@@ -322,19 +360,6 @@ class _ProfileDetailState extends State<CloudProfileDetailPage> {
                 },
               ),
             ],
-          ),
-        if (account.canEdit)
-          FilledButton.icon(
-            onPressed: () {
-              if (!account.retainsAccess(binding)) return;
-              if (widget.picking) {
-                Navigator.pop(context, profile);
-              } else {
-                openPage(context, CloudCreateTaskPage(initialProfile: profile));
-              }
-            },
-            icon: const Icon(Icons.add_task),
-            label: Text(tr(context, widget.picking ? '使用此配置' : '使用此配置创建任务')),
           ),
       ],
     );

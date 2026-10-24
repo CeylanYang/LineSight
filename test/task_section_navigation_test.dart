@@ -50,25 +50,25 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets(
-    'top issue action reveals section and actionable issue on a small phone',
-    (tester) async {
-      await show(tester);
-      final tabs = find.byType(SegmentedButton<int>);
-      expect(tester.getTopLeft(tabs).dy, greaterThan(500));
-      final action = find.widgetWithText(FilledButton, '处理异常').first;
-      await tester.ensureVisible(action);
-      await tester.tap(action);
-      await tester.pumpAndSettle();
-      expect(tester.widget<SegmentedButton<int>>(tabs).selected, {2});
-      expect(tester.getTopLeft(tabs).dy, lessThan(350));
-      expect(
-        find.text('Diameter outside tolerance').hitTestable(),
-        findsOneWidget,
-      );
-      expect(account.posts, isEmpty);
-    },
-  );
+  testWidgets('pinned issue action opens the single issue form directly', (
+    tester,
+  ) async {
+    await show(tester);
+    final action = find.widgetWithText(FilledButton, '处理异常');
+    expect(action.hitTestable(), findsOneWidget);
+    await tester.tap(action);
+    await tester.pumpAndSettle();
+    final form = tester.widget<CloudTaskCommandPage>(
+      find.byType(CloudTaskCommandPage),
+    );
+    expect(form.action, 'resolve');
+    expect(form.issue?['id'], 42);
+    expect(find.text('确认提交').hitTestable(), findsOneWidget);
+    expect(account.posts, isEmpty);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byType(CloudTaskPage), findsOneWidget);
+  });
   testWidgets(
     'manual section selection moves content into view without business writes',
     (tester) async {
@@ -109,9 +109,10 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    final action = find.widgetWithText(FilledButton, '处理异常').first;
-    await tester.ensureVisible(action);
-    await tester.tap(action);
+    final tabs = find.byType(SegmentedButton<int>);
+    await tester.ensureVisible(tabs);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('历史'));
     await tester.pump();
     await tester.pump();
     expect(

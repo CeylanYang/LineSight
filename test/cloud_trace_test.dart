@@ -113,7 +113,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       tester.widget<LiquidGlassBar>(find.byType(LiquidGlassBar)).selectedIndex,
-      3,
+      4,
     );
     await tester.binding.handlePushRoute('linesight://task/1/$taskId');
     await tester.pumpAndSettle();

@@ -520,7 +520,8 @@ Future<String?> cloudTextPrompt(BuildContext context, String title) async {
 }
 
 class CloudTemplatesPage extends StatelessWidget {
-  const CloudTemplatesPage({super.key});
+  final bool compact;
+  const CloudTemplatesPage({super.key, this.compact = false});
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
@@ -541,26 +542,47 @@ class CloudTemplatesPage extends StatelessWidget {
     }
     return PageBody(
       children: [
-        PageHeading(
-          eyebrow: 'CONFIGURATION / TEMPLATES',
-          title: tr(context, '检查模板'),
-          subtitle: tr(context, '统一检查口径，模板版本随检验记录一起归档。'),
-          trailing: owner
-              ? IconButton.filled(
+        if (compact)
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  tr(context, '检查模板'),
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              if (owner)
+                IconButton(
                   tooltip: tr(context, '发布检查模板'),
                   onPressed: () => openTemplate(const CloudTemplateEditor()),
-                  icon: const Icon(Icons.add, size: 22),
-                  style: IconButton.styleFrom(
-                    minimumSize: const Size(44, 44),
-                    backgroundColor: blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                  icon: const Icon(Icons.add_circle_outline, color: blue),
+                ),
+            ],
+          )
+        else
+          PageHeading(
+            eyebrow: 'CONFIGURATION / TEMPLATES',
+            title: tr(context, '检查模板'),
+            subtitle: tr(context, '统一检查口径，模板版本随检验记录一起归档。'),
+            trailing: owner
+                ? IconButton.filled(
+                    tooltip: tr(context, '发布检查模板'),
+                    onPressed: () => openTemplate(const CloudTemplateEditor()),
+                    icon: const Icon(Icons.add, size: 22),
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size(44, 44),
+                      backgroundColor: blue,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                  ),
-                )
-              : null,
-        ),
+                  )
+                : null,
+          ),
         if (!account.signedIn)
           EmptyState(
             icon: Icons.lock_outline,
@@ -1589,7 +1611,13 @@ Future<int?> cloudPickPhoto(
 class CloudReportPage extends StatefulWidget {
   final String? jobId;
   final Map<String, String> filters;
-  const CloudReportPage({super.key, this.jobId, this.filters = const {}});
+  final bool embedded;
+  const CloudReportPage({
+    super.key,
+    this.jobId,
+    this.filters = const {},
+    this.embedded = false,
+  });
   @override
   State<CloudReportPage> createState() => _CloudReportPageState();
 }
@@ -1810,6 +1838,7 @@ class _CloudReportPageState extends State<CloudReportPage> {
     }
 
     return DetailScaffold(
+      embedded: widget.embedded,
       title: tr(context, '质量洞察与报告'),
       actions: [
         IconButton(
@@ -1819,37 +1848,90 @@ class _CloudReportPageState extends State<CloudReportPage> {
         ),
       ],
       children: [
-        HeroBanner(
-          eyebrow: 'QUALITY / ANALYTICS',
-          title: tr(context, '质量洞察'),
-          subtitle:
-              '${account.activeWorkspace?['name'] ?? ''} · ${cloudScopeLabel(context, filters)}',
-          actions: [
-            HeroAction(
-              label: tr(context, '筛选范围'),
-              icon: Icons.filter_alt_outlined,
-              ghost: true,
-              onPressed: busy
-                  ? null
-                  : () async {
-                      final selected = await cloudFilterDialog(
-                        context,
-                        filters,
-                        records: true,
-                      );
-                      if (selected != null && mounted) {
-                        setState(() => filters = selected);
-                        load();
-                      }
+        GlassPanel(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                '${account.activeWorkspace?['name'] ?? ''} · ${cloudScopeLabel(context, filters)}',
+                style: const TextStyle(fontSize: 13, color: muted),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 10,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: busy
+                        ? null
+                        : () async {
+                            final selected = await cloudFilterDialog(
+                              context,
+                              filters,
+                              records: true,
+                            );
+                            if (selected != null && mounted) {
+                              setState(() => filters = selected);
+                              load();
+                            }
+                          },
+                    icon: const Icon(Icons.filter_alt_outlined, size: 18),
+                    label: Text(tr(context, '筛选范围')),
+                  ),
+                  PopupMenuButton<String>(
+                    enabled: !busy && scopedMetrics != null && error == null,
+                    tooltip: tr(context, '导出与报告'),
+                    onSelected: (value) {
+                      if (value == 'csv') exportCsv();
+                      if (value == 'preview') preview();
+                      if (value == 'pdf') printReport();
                     },
-            ),
-            HeroAction(
-              label: tr(context, '刷新数据'),
-              icon: Icons.refresh,
-              ghost: true,
-              onPressed: busy ? null : load,
-            ),
-          ],
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'csv',
+                        child: Text(tr(context, '导出 CSV')),
+                      ),
+                      PopupMenuItem(
+                        value: 'preview',
+                        child: Text(tr(context, '报告预览')),
+                      ),
+                      PopupMenuItem(
+                        value: 'pdf',
+                        child: Text(tr(context, '打印质量报告')),
+                      ),
+                    ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.file_download_outlined,
+                            size: 20,
+                            color: blue,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            tr(context, '导出与报告'),
+                            style: const TextStyle(
+                              color: blue,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const Icon(Icons.expand_more, size: 18, color: blue),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         if (busy) const CloudLoadingPanel(),
         if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
@@ -2183,61 +2265,6 @@ class _CloudReportPageState extends State<CloudReportPage> {
               ],
             ),
           ),
-          SectionHeader(tr(context, '导出与报告'), icon: Icons.description_outlined),
-          GlassPanel(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              children: [
-                MenuTile(
-                  title: tr(context, '查看范围内任务'),
-                  subtitle: tr(context, '跳转到与当前筛选一致的任务列表'),
-                  icon: Icons.list_alt,
-                  onTap: () => openPage(
-                    context,
-                    CloudTaskListPage(filters: Map.of(filters)),
-                  ),
-                ),
-                const Divider(height: 1),
-                MenuTile(
-                  title: tr(context, '导出 CSV'),
-                  subtitle: tr(context, '下载当前范围的明细数据'),
-                  icon: Icons.table_view_outlined,
-                  color: green,
-                  trailing: const Icon(
-                    Icons.download_outlined,
-                    size: 19,
-                    color: muted,
-                  ),
-                  onTap: busy ? null : exportCsv,
-                ),
-                const Divider(height: 1),
-                MenuTile(
-                  title: tr(context, '报告预览'),
-                  subtitle: tr(context, '在应用内查看带照片的报告快照'),
-                  icon: Icons.preview_outlined,
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    size: 19,
-                    color: muted,
-                  ),
-                  onTap: busy ? null : preview,
-                ),
-                const Divider(height: 1),
-                MenuTile(
-                  title: tr(context, '打印质量报告'),
-                  subtitle: tr(context, '使用系统打印服务生成 PDF'),
-                  icon: Icons.print_outlined,
-                  color: amber,
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    size: 19,
-                    color: muted,
-                  ),
-                  onTap: busy ? null : printReport,
-                ),
-              ],
-            ),
-          ),
         ],
       ],
     );
@@ -2282,7 +2309,8 @@ class _CountPill extends StatelessWidget {
 }
 
 class CloudRecordsPage extends StatefulWidget {
-  const CloudRecordsPage({super.key});
+  final bool compact;
+  const CloudRecordsPage({super.key, this.compact = false});
   @override
   State<CloudRecordsPage> createState() => _CloudRecordsPageState();
 }
@@ -2362,24 +2390,44 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
     final failed = rows.length - passed;
     return PageBody(
       children: [
-        PageHeading(
-          eyebrow: 'TRACEABILITY / RECORDS',
-          title: tr(context, '检测记录'),
-          subtitle: tr(context, '逐轮追溯检验结论、检验人与照片证据。'),
-          trailing: account.signedIn
-              ? IconButton.filledTonal(
-                  tooltip: tr(context, '刷新'),
-                  onPressed: busy ? null : load,
-                  icon: const Icon(Icons.refresh, size: 19),
-                  style: IconButton.styleFrom(
-                    minimumSize: const Size(42, 42),
-                    backgroundColor: Colors.white,
-                    foregroundColor: ink,
-                    side: const BorderSide(color: hairline),
+        if (widget.compact)
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  tr(context, '检测记录'),
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
                   ),
-                )
-              : null,
-        ),
+                ),
+              ),
+              IconButton(
+                tooltip: tr(context, '刷新'),
+                onPressed: busy ? null : load,
+                icon: const Icon(Icons.refresh),
+              ),
+            ],
+          )
+        else
+          PageHeading(
+            eyebrow: 'TRACEABILITY / RECORDS',
+            title: tr(context, '检测记录'),
+            subtitle: tr(context, '逐轮追溯检验结论、检验人与照片证据。'),
+            trailing: account.signedIn
+                ? IconButton.filledTonal(
+                    tooltip: tr(context, '刷新'),
+                    onPressed: busy ? null : load,
+                    icon: const Icon(Icons.refresh, size: 19),
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size(42, 42),
+                      backgroundColor: Colors.white,
+                      foregroundColor: ink,
+                      side: const BorderSide(color: hairline),
+                    ),
+                  )
+                : null,
+          ),
         if (!account.signedIn)
           EmptyState(
             icon: Icons.lock_outline,

@@ -1,6 +1,6 @@
 # LineSight
 
-当前开发交付：**1.1.55+8079，内容版本 5（验收包）**。功能清单、测试依据及后续事项见 [2026-10-24 开发收尾报告](docs/product/linesight/CLOSEOUT_20261024.md)。官网 https://99ai.pronhubcn.com/ 当前发布版本仍为 1.1.54+8078。
+当前界面调整：**1.1.56+8080**，说明见 [界面与导航调整](docs/product/linesight/UI_DELIVERY_20261024.md)。上一轮完整功能清单、测试依据及待验收事项见 [开发收尾报告](docs/product/linesight/CLOSEOUT_20261024.md)。官网 https://99ai.pronhubcn.com/ 当前发布版本仍为 1.1.54+8078。
 
 以下为 1.1.20 及更早版本的历史说明；其中旧版本的本地认证、模拟相机或无云功能描述不代表当前版本，当前能力以收尾报告为准。
 

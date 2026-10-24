@@ -309,7 +309,7 @@ void main() {
           await expectLater(
             find.byType(Scaffold).first,
             matchesGoldenFile(
-              '../docs/product/linesight/acceptance/access2-batch/png/79-${failing ? 'issue' : 'pass'}-$language-desktop-render.png',
+              '../docs/product/linesight/acceptance/ui80-batch/access2-batch/png/79-${failing ? 'issue' : 'pass'}-$language-desktop-render.png',
             ),
           );
         },

@@ -112,7 +112,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/history-batch/png/64-history-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/history-batch/png/64-history-$locale-desktop-render.png',
         ),
       );
       await show(tester, CloudInspectionDetailPage(record: inspection), locale);
@@ -137,7 +137,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/history-batch/png/65-serial-results-$locale-desktop-render.png',
+          '../docs/product/linesight/acceptance/ui80-batch/history-batch/png/65-serial-results-$locale-desktop-render.png',
         ),
       );
       account.activeWorkspace = {'id': 2, 'role': 'owner'};

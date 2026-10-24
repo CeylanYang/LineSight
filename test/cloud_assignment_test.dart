@@ -419,7 +419,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold).last,
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/assignment-batch/png/291-assignment-$state-$language-component.png',
+            '../docs/product/linesight/acceptance/ui80-batch/assignment-batch/png/291-assignment-$state-$language-component.png',
           ),
         );
       });

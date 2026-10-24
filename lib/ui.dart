@@ -2,7 +2,7 @@ import 'l10n.dart';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.55';
+const appVersion = '1.1.56';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -270,17 +270,63 @@ class PageBody extends StatelessWidget {
 class DetailScaffold extends StatelessWidget {
   final String title;
   final List<Widget> children, actions;
+  final bool embedded;
+  final Widget? bottomBar;
   const DetailScaffold({
     super.key,
     required this.title,
     required this.children,
     this.actions = const [],
+    this.embedded = false,
+    this.bottomBar,
   });
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(title), actions: actions),
-    body: Backdrop(child: PageBody(maxWidth: 1000, children: children)),
-  );
+  Widget build(BuildContext context) {
+    final body = Backdrop(child: PageBody(maxWidth: 1000, children: children));
+    if (embedded) {
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 12, 10, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                ...actions,
+              ],
+            ),
+          ),
+          Expanded(child: body),
+        ],
+      );
+    }
+    return Scaffold(
+      appBar: AppBar(title: Text(title), actions: actions),
+      body: body,
+      bottomNavigationBar: bottomBar == null
+          ? null
+          : Material(
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.viewInsetsOf(context).bottom,
+                ),
+                child: SafeArea(
+                  top: false,
+                  minimum: const EdgeInsets.fromLTRB(18, 10, 18, 12),
+                  child: bottomBar!,
+                ),
+              ),
+            ),
+    );
+  }
 }
 
 class PageHeading extends StatelessWidget {

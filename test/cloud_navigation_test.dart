@@ -31,6 +31,7 @@ int selectedTab(WidgetTester tester) =>
 Future<void> chooseTab(WidgetTester tester, int index) async {
   const icons = [
     Icons.space_dashboard_outlined,
+    Icons.precision_manufacturing_outlined,
     Icons.fact_check_outlined,
     Icons.layers_outlined,
     Icons.person_outline_rounded,
@@ -51,7 +52,7 @@ void main() {
     tester,
   ) async {
     await showShell(tester);
-    for (final tab in [1, 2, 3]) {
+    for (final tab in [1, 2, 3, 4]) {
       await chooseTab(tester, tab);
       expect(selectedTab(tester), tab);
       await tester.binding.handlePopRoute();
@@ -63,7 +64,7 @@ void main() {
 
   testWidgets('ordinary secondary back preserves origin tab', (tester) async {
     await showShell(tester);
-    for (final tab in [2, 3]) {
+    for (final tab in [2, 3, 4]) {
       await chooseTab(tester, tab);
       final context = tester.element(find.byType(CloudShell));
       Navigator.of(
@@ -77,7 +78,7 @@ void main() {
     }
   });
 
-  for (final tab in [1, 2, 3]) {
+  for (final tab in [1, 2, 3, 4]) {
     for (final kind in ['scope', 'access', 'draft', '404', '403', '413']) {
       testWidgets(
         'explicit workbench from tab $tab via $kind clears nested routes',
@@ -125,40 +126,40 @@ void main() {
       );
     }
   }
-  testWidgets('one secondary login page fits narrow Chinese and English UI', (
-    tester,
-  ) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(320, 740);
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    for (final language in ['zh', 'en']) {
-      final store = AppStore()
-        ..ready = true
-        ..preferences = {
-          'language': language,
-          'reduceMotion': true,
-          'glass': false,
-        };
-      final cloud = CloudAccount()..restoring = false;
-      await tester.pumpWidget(
-        LineSightApp(key: UniqueKey(), store: store, cloud: cloud),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(CloudShell), findsOneWidget);
-      expect(find.byType(CloudLoginPage), findsNothing);
-      await tester.tap(find.byIcon(Icons.login).first);
-      await tester.pumpAndSettle();
-      expect(find.byType(CloudLoginPage), findsOneWidget);
-      expect(find.byType(TextField), findsNothing);
-      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
-      expect(tester.takeException(), isNull);
-      await tester.tap(find.byIcon(Icons.arrow_back));
-      await tester.pumpAndSettle();
-      expect(find.byType(CloudLoginPage), findsNothing);
-      await tester.pumpWidget(const SizedBox.shrink());
-      store.dispose();
-      cloud.dispose();
-    }
-  });
+  testWidgets(
+    'login methods are directly visible in narrow Chinese and English UI',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(320, 740);
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      for (final language in ['zh', 'en']) {
+        final store = AppStore()
+          ..ready = true
+          ..preferences = {
+            'language': language,
+            'reduceMotion': true,
+            'glass': false,
+          };
+        final cloud = CloudAccount()..restoring = false;
+        await tester.pumpWidget(
+          LineSightApp(key: UniqueKey(), store: store, cloud: cloud),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(CloudLoginPanel), findsOneWidget);
+        expect(find.byType(CloudLoginPage), findsNothing);
+        expect(find.byIcon(Icons.login).hitTestable(), findsOneWidget);
+        expect(find.byIcon(Icons.nfc).hitTestable(), findsOneWidget);
+        expect(
+          find.byIcon(Icons.explore_outlined).hitTestable(),
+          findsOneWidget,
+        );
+        expect(find.byType(TextField), findsNothing);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+        store.dispose();
+        cloud.dispose();
+      }
+    },
+  );
 }

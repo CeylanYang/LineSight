@@ -244,7 +244,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/closure-batch/png/77-account-$locale-desktop-render.png',
+            '../docs/product/linesight/acceptance/ui80-batch/closure-batch/png/77-account-$locale-desktop-render.png',
           ),
         );
         await tester.pumpWidget(const SizedBox.shrink());
@@ -261,7 +261,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold),
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/team-batch/png/172-viewer-team-$locale-desktop-render.png',
+            '../docs/product/linesight/acceptance/ui80-batch/team-batch/png/172-viewer-team-$locale-desktop-render.png',
           ),
         );
       },

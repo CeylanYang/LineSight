@@ -344,7 +344,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold).last,
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/create-navigation-batch/png/290-created-task-$language-component.png',
+          '../docs/product/linesight/acceptance/ui80-batch/create-navigation-batch/png/290-created-task-$language-component.png',
         ),
       );
     });

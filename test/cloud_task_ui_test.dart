@@ -157,7 +157,7 @@ void main() {
       await tester.tap(find.text('确认提交'));
       await tester.pumpAndSettle();
       expect(find.text('Inspector notes'), findsOneWidget);
-      expect(find.text('返回并刷新任务'), findsOneWidget);
+      expect(find.text('返回任务'), findsOneWidget);
       expect(
         tester
             .widget<FilledButton>(find.widgetWithText(FilledButton, '确认提交'))

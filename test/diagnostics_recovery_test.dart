@@ -294,7 +294,7 @@ void main() {
     tester,
   ) async {
     await show(tester, page: const CloudShell());
-    await chooseTab(tester, 3);
+    await chooseTab(tester, 4);
     await tap(tester, 'Guide and app information');
     expect(find.byType(HelpPage), findsOneWidget);
     await tester.pageBack();
