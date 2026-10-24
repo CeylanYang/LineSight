@@ -1,8 +1,8 @@
 # LineSight — 界面功能方案与持续开发台账
 
 > **版本**：v1.0 · 2026-10-23  
-> **方案起点**：Android 1.1.18+4022（debug），现有 Flutter App + HTTPS API + 管理后台  
-> **当前交付**：Android 1.1.54+8078；2026-10-24 已接入自托管 OTA、正式邮件找回及服务端脱敏日志。逐项状态以配套 Excel 为准，详见[交付状态](DELIVERY_STATUS_20261024.md)。  
+> **方案起点**：Android 1.1.18+4022（debug），现有 Flutter App + HTTPS API + 管理后台<br>
+> **当前交付**：Android 1.1.54+8078；2026-10-24 已接入自托管 OTA、正式邮件找回及服务端脱敏日志。逐项状态以配套 Excel 为准，详见[交付状态](DELIVERY_STATUS_20261024.md)。<br>
 > **目标**：以小改造构建高感知价值的「任务—质检—异常—复检—报告」体验，持续开发、可追踪、可验证；**不按周排期**。  
 > **配套产物**：`LineSight_Development_Backlog.xlsx`（主台账）、`LineSight_Development_Backlog.csv`（导入/协作）、`LineSight_UI_Prototype.html`（离线交互预览）。
 
