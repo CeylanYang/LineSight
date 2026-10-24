@@ -89,6 +89,40 @@ void main() {
     },
   );
 
+  testWidgets('lost native visibility reply cannot hold the startup screen', (
+    tester,
+  ) async {
+    final nativeReply = Completer<void>();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+          const MethodChannel('linesight/brand-haptics'),
+          (call) async {
+            calls.add(call);
+            if (call.method == 'awaitVisible') await nativeReply.future;
+            return null;
+          },
+        );
+    final s = BootStore()..loaded();
+    await tester.pumpWidget(LineSightApp(store: s, showBrandReveal: true));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1900));
+    expect(find.byType(StartupPage), findsOneWidget);
+    expect(calls.where((call) => call.method == 'play'), isEmpty);
+    await tester.pump(const Duration(milliseconds: 150));
+    await tester.pump();
+    expect(calls.where((call) => call.method == 'play'), hasLength(1));
+    await tester.pump(const Duration(milliseconds: 900));
+    nativeReply.complete();
+    await tester.pump();
+    expect(calls.where((call) => call.method == 'play'), hasLength(1));
+    await tester.pumpAndSettle();
+    expect(find.byType(AuthPage), findsOneWidget);
+    expect(find.byType(StartupPage), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    s.dispose();
+  });
+
   testWidgets(
     'ready early prebuilds login without exposing it or restarting reveal',
     (tester) async {

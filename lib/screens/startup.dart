@@ -89,7 +89,16 @@ class _StartupPageState extends State<StartupPage>
 
   Future<void> _invoke(String method, [Object? arguments]) async {
     try {
-      await _haptics.invokeMethod<void>(method, arguments);
+      final reply = _haptics.invokeMethod<void>(method, arguments);
+      if (method == 'awaitVisible') {
+        // The first Flutter frame has already rasterized. A missing Android
+        // visibility acknowledgement must not leave that frame on screen forever.
+        await reply.timeout(const Duration(seconds: 2));
+      } else {
+        await reply;
+      }
+    } on TimeoutException {
+      /* Continue after a lost native visibility acknowledgement. */
     } on MissingPluginException {
       /* Other platforms have a silent reveal. */
     } on PlatformException {
