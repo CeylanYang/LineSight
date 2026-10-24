@@ -6,6 +6,7 @@
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
+| 四角色配置/团队导航回归 | 360px、中英文、管理员/主管/操作/只读 8 组组件导航测试通过：配置和模板管理入口、任务表单入口权限及返回原详情、团队邀请及菜单权限、零写入。该测试文件静态检查通过；原生模拟器再次在登录前退出，原生四角色未完成，临时身份及数据均清理 | acceptance/roles72-batch/validation.json、widget-tests.txt、cleanup.json |
 | 官网手机布局 | 已发布独立手机样式：700px 及以下改为纵向布局，首屏提供正式版/兼容升级下载按钮，48px 高、16px 字号；正文及表单按手机尺寸显示。独立 Chrome 公网 320/390/700/1440px 无横向溢出、无脚本异常，手机任务演示交互正常；桌面保留原布局 | acceptance/portal71-batch/deployment.json、live/validation.json、截图 |
 | 原生管理员权限补验（部分） | 实际 App 二级登录 → Keycloak → AppAuth 回调，确认临时管理员身份和独立团队；6 组页面 XML/PNG 校验覆盖团队邀请/成员菜单、任务创建、打印配置及模板发布入口。模拟器宿主两次退出，四角色整体验收未通过；4 个临时身份、4 个 API 用户及 5 个工作区已清理，未修改客户团队 | acceptance/roles69-batch/partial-validation.json、cleanup.json |
 | 原生崩溃后的 OTA 回退 | 独立 API34 x86_64：正常 force-stop 保留补丁；首帧完成后对精确 App PID 注入 SIGSEGV，Android 记录 reason=5/status=11。下一次启动移除、拉黑、拒绝再次应用并恢复工作台。未修改线上或客户数据 | acceptance/native68-batch/validation.json、exit-and-ui-evidence.json |

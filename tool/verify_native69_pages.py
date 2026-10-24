@@ -5,8 +5,10 @@ from pathlib import Path
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
+BATCH = 'roles69-batch'
 
 
 def ui(action, value=None):
@@ -14,7 +16,7 @@ def ui(action, value=None):
     if value:
         command.append(value)
     if action == 'capture':
-        command += ['--batch', 'roles69-batch']
+        command += ['--batch', BATCH]
     return subprocess.check_output(command, cwd=ROOT, timeout=60).decode('utf-8', errors='replace')
 
 
@@ -29,19 +31,24 @@ def action(label, allowed):
 
 
 def main():
+    global BATCH
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('role', choices=['owner', 'manager', 'operator', 'viewer'])
     parser.add_argument('--resume-template', action='store_true', help='Keep this run\'s existing first four page captures after host exit')
+    parser.add_argument('--batch', default='roles69-batch')
+    parser.add_argument('--first', type=int, default=380)
     args = parser.parse_args()
     role = args.role
+    assert re.fullmatch(r'roles[0-9]+-batch', args.batch)
+    BATCH = args.batch
     state = json.loads((Path.home() / 'LineSight-private/native-role69.json').read_text())
-    folder = ROOT / 'docs/product/linesight/acceptance/roles69-batch'
+    folder = ROOT / 'docs/product/linesight/acceptance' / BATCH
     folder.mkdir(parents=True, exist_ok=True)
-    first = 380 + ['owner', 'manager', 'operator', 'viewer'].index(role) * 6
+    first = args.first + ['owner', 'manager', 'operator', 'viewer'].index(role) * 6
     screenshots = []
 
     def capture(suffix, offset):
-        name = str(first + offset) + '-roles69-' + role + '-' + suffix + '-emulator'
+        name = str(first + offset) + '-' + BATCH.removesuffix('-batch') + '-' + role + '-' + suffix + '-emulator'
         ui('capture', name)
         screenshots.append(name)
 
@@ -61,7 +68,7 @@ def main():
     assert state['team_name'] in current
     if args.resume_template:
         for offset, suffix in enumerate(['workbench', 'profiles', 'profile-detail', 'templates']):
-            name = str(first + offset) + '-roles69-' + role + '-' + suffix + '-emulator'
+            name = str(first + offset) + '-' + BATCH.removesuffix('-batch') + '-' + role + '-' + suffix + '-emulator'
             assert (folder / 'ui' / (name + '.xml')).is_file()
             screenshots.append(name)
         ui('tap', '配方中心')

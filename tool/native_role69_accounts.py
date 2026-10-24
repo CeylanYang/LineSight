@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import secrets
 import uuid
+import re
 
 import verify_cloud_sessions as kc
 from verify_live_role_matrix import api, cleanup
@@ -25,11 +26,11 @@ def save(state):
     STATE.write_text(json.dumps(state), encoding='utf-8')
 
 
-def prepare():
+def prepare(batch):
     assert not STATE.exists(), 'Private state exists; inspect and resume/clean it before creating more users'
     admin = administrator()
     run = uuid.uuid4().hex[:10]
-    state = {'team_name': 'Role56 Native69 ' + run, 'workspace': None,
+    state = {'team_name': 'Role56 Native69 ' + run, 'evidence_batch': batch, 'workspace': None,
              'subjects': [], 'locations': [], 'people': {}, 'run': run}
     save(state)
     try:
@@ -82,7 +83,7 @@ def remove():
         kc.call(kc.origin + '/realms/master/protocol/openid-connect/logout', kc.urlencode({
             'client_id': 'admin-cli', 'refresh_token': admin['refresh_token']}).encode())
     result['disposable_identity_accounts_deleted'] = len(state['locations'])
-    folder = Path('docs/product/linesight/acceptance/roles69-batch')
+    folder = Path('docs/product/linesight/acceptance') / state.get('evidence_batch', 'roles69-batch')
     folder.mkdir(parents=True, exist_ok=True)
     (folder / 'cleanup.json').write_text(json.dumps(result, indent=2) + '\n')
     STATE.unlink()
@@ -92,5 +93,7 @@ def remove():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['prepare', 'cleanup'])
+    parser.add_argument('--batch', default='roles69-batch')
     args = parser.parse_args()
-    prepare() if args.action == 'prepare' else remove()
+    assert re.fullmatch(r'roles[0-9]+-batch', args.batch)
+    prepare(args.batch) if args.action == 'prepare' else remove()

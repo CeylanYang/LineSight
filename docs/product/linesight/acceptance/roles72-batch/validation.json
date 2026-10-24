@@ -1,0 +1,32 @@
+{
+  "widget_tests_passed": 8,
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "width": 360,
+  "roles": [
+    "owner",
+    "manager",
+    "operator",
+    "viewer"
+  ],
+  "coverage": [
+    "profile/template management controls",
+    "task creation entry permissions",
+    "configuration and template task-form return routes",
+    "team invitation and member menu permissions",
+    "zero submitted mutations"
+  ],
+  "test_sha256": "d236716a01968b9eb890b10bab9e014e182ab935e201227a2e5f2480220dabb3",
+  "native_roles_complete": false,
+  "native_attempt": "Same preserved AVD booted; emulator and QEMU host processes disappeared before hosted login. Cause undetermined.",
+  "emulators_connected_after_attempt": false,
+  "cleanup": {
+    "disposable_api_users_deleted": 4,
+    "disposable_workspaces_deleted": 5,
+    "customer_teams_modified": false,
+    "disposable_identity_accounts_deleted": 4
+  },
+  "app_code_or_apk_changed": false
+}

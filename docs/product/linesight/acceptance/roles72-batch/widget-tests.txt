@@ -1,0 +1,10 @@
+00:00 +0: loading C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_role_navigation_test.dart
+00:00 +0: en owner configuration and team route permissions at 360px
+00:01 +1: en manager configuration and team route permissions at 360px
+00:02 +2: en operator configuration and team route permissions at 360px
+00:03 +3: en viewer configuration and team route permissions at 360px
+00:03 +4: zh owner configuration and team route permissions at 360px
+00:04 +5: zh manager configuration and team route permissions at 360px
+00:04 +6: zh operator configuration and team route permissions at 360px
+00:05 +7: zh viewer configuration and team route permissions at 360px
+00:05 +8: All tests passed!
