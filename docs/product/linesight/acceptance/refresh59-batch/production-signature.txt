@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=LineSight Release, O=LineSight, C=CN
+Signer #1 certificate SHA-256 digest: 2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2
+Signer #1 certificate SHA-1 digest: 8e74b51c9576fe1f409e12e337a56778552282c7
+Signer #1 certificate MD5 digest: 4f0676ee542184455d2e2a340d2a5b47
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: 4fd856aa9913d8f8e0ff3785cedd3dc9aef872527b805350538c0caeb67ca1a9
+Signer #1 public key SHA-1 digest: a635978593cef9e1342b61e5c2956cd8e509d8f9
+Signer #1 public key MD5 digest: 10bc9295a6e55ab2a6d2b0140d669279

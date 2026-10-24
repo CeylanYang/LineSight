@@ -1,0 +1,461 @@
+00:00 +0: loading C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart
+00:00 +0: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +1: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +2: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +3: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +4: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +5: C:/Users/29668/LineSight-workspaces/sync-delivery/test/app_theme_reuse_test.dart: store notifications and session changes reuse fixed themes
+00:00 +6: C:/Users/29668/LineSight-workspaces/sync-delivery/test/backup_test.dart: backup read and write limits count UTF-8 bytes and reject unsupported size
+00:00 +7: C:/Users/29668/LineSight-workspaces/sync-delivery/test/backup_test.dart: invalid audit targets and change payloads are rejected
+00:01 +8: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +9: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +10: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +11: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +12: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +13: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: GPU startup cannot consume the reveal while storage preloads
+00:02 +14: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +15: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +16: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +17: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +18: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +19: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +20: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +21: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +22: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +23: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +24: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +25: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +26: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: profile replaces the old identity draft and password uses hosted action
+00:02 +27: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: production reveal still runs when storage finishes before first mount
+00:02 +28: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: late member response cannot cross team switch: management=false
+00:02 +29: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: ready early prebuilds login without exposing it or restarting reveal
+00:02 +30: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: late member response cannot cross team switch: management=true
+00:02 +31: C:/Users/29668/LineSight-workspaces/sync-delivery/test/brand_startup_test.dart: slow storage holds final logo, announces work, then opens login
+00:03 +32: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_access_ui_test.dart: an old template callback cannot publish into a different team
+00:03 +33: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +34: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +35: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +36: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +37: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +38: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:03 +39: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +40: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +41: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +42: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +43: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +44: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:04 +45: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: only active writers are eligible; save returns confirmed version to detail despite stale GET
+00:05 +46: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:05 +47: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:05 +48: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:05 +49: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:05 +50: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:05 +51: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:06 +52: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_conflict_review_test.dart: review latest task and return without losing the conflicting draft
+00:06 +53: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: confirmed create opens receipt immediately while list reload is pending; back skips form
+00:06 +54: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: confirmed create opens receipt immediately while list reload is pending; back skips form
+00:07 +55: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: confirmed create opens receipt immediately while list reload is pending; back skips form
+00:07 +56: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_evidence_viewer_test.dart: opens selected photo with translated stage and bounded gallery navigation
+00:07 +57: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_evidence_viewer_test.dart: opens selected photo with translated stage and bounded gallery navigation
+00:07 +58: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:07 +59: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:07 +60: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:07 +61: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:08 +62: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:08 +63: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:08 +64: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_feedback_test.dart: task retry retains filters and failure is not an empty result
+00:08 +65: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +66: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +67: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +68: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +69: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +70: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +71: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +72: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +73: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +74: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:08 +75: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:09 +76: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:09 +77: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: create scrolls from submit to first missing field without a request
+00:09 +78: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +79: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +80: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +81: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +82: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +83: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +84: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +85: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:09 +86: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +87: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +88: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +89: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +90: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +91: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +92: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +93: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +94: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +95: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: no success feedback while pending or after a server rejection
+00:10 +96: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_history_test.dart: live history and first-round SN zh desktop evidence
+00:10 +97: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: create from profile returns from result to original profile detail
+00:10 +98: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: create from profile returns from result to original profile detail
+00:10 +99: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: assignee can be cleared and selection is saved immediately
+00:10 +100: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: assignee can be cleared and selection is saved immediately
+00:11 +101: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: identity change while submitting suppresses feedback for the old identity
+00:11 +102: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: identity change while submitting suppresses feedback for the old identity
+00:11 +103: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: identity change while submitting suppresses feedback for the old identity
+00:11 +104: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: identity change while submitting suppresses feedback for the old identity
+00:11 +105: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: create from checklist returns from result to selected checklist
+00:11 +106: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection locates incomplete checklist before writing
+00:11 +107: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection locates incomplete checklist before writing
+00:11 +108: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection locates incomplete checklist before writing
+00:11 +109: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection locates incomplete checklist before writing
+00:11 +110: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection locates incomplete checklist before writing
+00:11 +111: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: en assignment conflict PNG
+00:11 +112: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: en assignment conflict PNG
+00:11 +113: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_assignment_test.dart: en assignment conflict PNG
+00:11 +114: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: zh confirmed task navigation PNG
+00:11 +115: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: zh confirmed task navigation PNG
+00:12 +116: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: zh confirmed task navigation PNG
+00:12 +117: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: zh confirmed task navigation PNG
+00:12 +118: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_form_validation_test.dart: inspection rejects inconsistent quantities and preserves checklist
+00:12 +119: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass zh returns to task and records feedback PNG
+00:12 +120: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass zh returns to task and records feedback PNG
+00:12 +121: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: en confirmed task navigation PNG
+00:12 +122: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: en confirmed task navigation PNG
+00:12 +123: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_create_navigation_test.dart: en confirmed task navigation PNG
+00:12 +124: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:12 +125: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:12 +126: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:12 +127: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:13 +128: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:13 +129: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: cloud login alone exposes no local count or records
+00:13 +130: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed issue zh returns to task and records feedback PNG
+00:13 +131: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed issue zh returns to task and records feedback PNG
+00:13 +132: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_evidence_viewer_test.dart: en viewer handles small large-text and tablet layouts
+00:13 +133: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: preview excludes samples and cancellation sends no import
+00:13 +134: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_import_ui_test.dart: preview excludes samples and cancellation sends no import
+00:13 +135: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass en returns to task and records feedback PNG
+00:14 +136: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass en returns to task and records feedback PNG
+00:14 +137: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass en returns to task and records feedback PNG
+00:14 +138: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_haptics_test.dart: confirmed pass en returns to task and records feedback PNG
+00:14 +139: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +140: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +141: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +142: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +143: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +144: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +145: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +146: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +147: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +148: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:14 +149: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:15 +150: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:15 +151: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: Android back goes from each main tab to workbench
+00:15 +152: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_nfc_test.dart: leaving scanning stops NFC and late discovery cannot complete navigation
+00:15 +153: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_nfc_test.dart: leaving scanning stops NFC and late discovery cannot complete navigation
+00:15 +154: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +155: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +156: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +157: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +158: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +159: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +160: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +161: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +162: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +163: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +164: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:15 +165: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:16 +166: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:16 +167: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_notifications_test.dart: notification opens missing cached task and back returns to notifications
+00:16 +168: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_nfc_test.dart: card pages en fit 360px and save desktop PNG
+00:16 +169: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: explicit workbench from tab 1 via access clears nested routes
+00:16 +170: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: explicit workbench from tab 1 via access clears nested routes
+00:16 +171: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: explicit workbench from tab 1 via access clears nested routes
+00:16 +172: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_navigation_test.dart: explicit workbench from tab 1 via access clears nested routes
+00:16 +173: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:16 +174: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:16 +175: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:16 +176: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:16 +177: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +178: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +179: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +180: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +181: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +182: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +183: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +184: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +185: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +186: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +187: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:17 +188: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +189: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +190: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +191: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +192: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +193: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +194: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: edit pins checklist version and posts revision; receipt returns to updated detail
+00:18 +195: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +196: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +197: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +198: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +199: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +200: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +201: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:18 +202: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:19 +203: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:19 +204: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:19 +205: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_workflow_test.dart: picker round trip preserves task fields and submits selected profile
+00:19 +206: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:19 +207: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:19 +208: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:19 +209: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:20 +210: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:20 +211: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:20 +212: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: same account reauthentication restores inspection and never replays its write
+00:20 +213: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +214: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +215: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +216: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +217: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +218: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:20 +219: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +220: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +221: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +222: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +223: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +224: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: inspection requires issue note and sends stable versioned command
+00:21 +225: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +226: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +227: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +228: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +229: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +230: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_team_workflow_test.dart: role selection is read-only; repeated generation retains selected role and clears old code
+00:21 +231: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: publishing preserves source IDs and flags when items are reordered
+00:21 +232: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: publishing preserves source IDs and flags when items are reordered
+00:21 +233: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: publishing preserves source IDs and flags when items are reordered
+00:22 +234: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: publishing preserves source IDs and flags when items are reordered
+00:22 +235: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: publishing preserves source IDs and flags when items are reordered
+00:22 +236: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +237: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +238: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +239: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +240: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +241: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +242: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +243: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_trace_test.dart: deep link uses secondary login and reads the task only after authentication
+00:22 +244: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_profile_management_test.dart: choosing an unbound profile preserves the draft explicit checklist
+00:22 +245: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +246: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +247: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +248: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +249: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +250: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +251: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: viewer cannot restore or submit another writable draft
+00:23 +252: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +253: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +254: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +255: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +256: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +257: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:23 +258: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:24 +259: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: new item controls enforce three to six items and retain option toggles
+00:24 +260: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: task sections fit a narrow screen in both languages
+00:24 +261: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: task sections fit a narrow screen in both languages
+00:24 +262: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: task sections fit a narrow screen in both languages
+00:24 +263: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_task_ui_test.dart: task sections fit a narrow screen in both languages
+00:24 +264: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +265: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +266: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +267: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +268: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +269: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:24 +270: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:25 +271: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:25 +272: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup zh render actual source contours and server fixture
+00:25 +273: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +274: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +275: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +276: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +277: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +278: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +279: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: login with a failed workspace load stays open until retry succeeds
+00:25 +280: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: changing the payload after a failed attempt uses a different publication key
+00:25 +281: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_vision_test.dart: vision and piece lookup en render actual source contours and server fixture
+00:25 +282: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +283: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +284: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +285: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +286: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +287: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +288: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +289: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:25 +290: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +291: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +292: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +293: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +294: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +295: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +296: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +297: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workbench_test.dart: narrow zh dashboard renders correct date counts
+00:26 +298: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: stale publication compares the latest version and requires explicit acceptance
+00:26 +299: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: stale publication compares the latest version and requires explicit acceptance
+00:26 +300: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:26 +301: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:26 +302: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:27 +303: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:27 +304: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:27 +305: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:27 +306: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: new task draft returns to original accessible workspace after login at personal home
+00:27 +307: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: dirty back asks once; cancel preserves content and discard returns to origin
+00:27 +308: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_template_workflow_test.dart: dirty back asks once; cancel preserves content and discard returns to origin
+00:27 +309: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:27 +310: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:28 +311: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:28 +312: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:28 +313: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:28 +314: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_workspace_read_ui_test.dart: first team can be created when signed in without a workspace
+00:28 +315: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: return from a recovered inspection refreshes its original task parent
+00:28 +316: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: return from a recovered inspection refreshes its original task parent
+00:28 +317: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:28 +318: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:28 +319: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:28 +320: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:28 +321: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:28 +322: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:29 +323: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:29 +324: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV audit displays file verification without hiding other changes
+00:29 +325: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: trace-link parent rebuilt during login refreshes after restored inspection closes
+00:29 +326: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: trace-link parent rebuilt during login refreshes after restored inspection closes
+00:29 +327: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: trace-link parent rebuilt during login refreshes after restored inspection closes
+00:29 +328: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: trace-link parent rebuilt during login refreshes after restored inspection closes
+00:29 +329: C:/Users/29668/LineSight-workspaces/sync-delivery/test/cloud_reauthentication_test.dart: trace-link parent rebuilt during login refreshes after restored inspection closes
+00:30 +330: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_test.dart: worker writes more than 20 MiB without losing rows or order
+00:30 +331: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_test.dart: worker writes more than 20 MiB without losing rows or order
+00:30 +332: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +333: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +334: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +335: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +336: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +337: C:/Users/29668/LineSight-workspaces/sync-delivery/test/csv_layout_test.dart: CSV preview supports narrow large text, dark tablets and empty selections
+00:30 +338: C:/Users/29668/LineSight-workspaces/sync-delivery/test/diagnostics_recovery_test.dart: diagnostics exports only approved fields and returns to origin
+00:30 +339: C:/Users/29668/LineSight-workspaces/sync-delivery/test/diagnostics_recovery_test.dart: diagnostics exports only approved fields and returns to origin
+00:31 +340: C:/Users/29668/LineSight-workspaces/sync-delivery/test/diagnostics_recovery_test.dart: diagnostics exports only approved fields and returns to origin
+00:31 +341: C:/Users/29668/LineSight-workspaces/sync-delivery/test/diagnostics_recovery_test.dart: diagnostics exports only approved fields and returns to origin
+00:31 +342: C:/Users/29668/LineSight-workspaces/sync-delivery/test/diagnostics_recovery_test.dart: diagnostics exports only approved fields and returns to origin
+00:31 +343: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +344: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +345: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +346: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +347: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +348: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +349: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +350: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +351: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +352: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +353: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +354: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:31 +355: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +356: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +357: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +358: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +359: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +360: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +361: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +362: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +363: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +364: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +365: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +366: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +367: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:32 +368: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +369: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +370: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +371: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +372: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +373: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +374: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +375: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +376: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +377: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +378: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:33 +379: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +380: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +381: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +382: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +383: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +384: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +385: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +386: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +387: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +388: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +389: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +390: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +391: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +392: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +393: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +394: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:34 +395: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +396: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +397: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +398: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +399: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +400: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +401: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +402: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +403: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +404: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:35 +405: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=false
+00:36 +406: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: Profile contains a working language setting for both directions
+00:36 +407: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: Profile contains a working language setting for both directions
+00:36 +408: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: Profile contains a working language setting for both directions
+00:36 +409: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: Profile contains a working language setting for both directions
+00:36 +410: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: Profile contains a working language setting for both directions
+00:36 +411: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=true
+00:36 +412: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=true
+00:38 +413: C:/Users/29668/LineSight-workspaces/sync-delivery/test/layout_test.dart: main navigation and secondary screens render at phone width, dark=true
+00:38 +414: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:38 +415: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +416: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +417: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +418: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +419: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +420: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +421: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +422: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:39 +423: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:40 +424: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:40 +425: C:/Users/29668/LineSight-workspaces/sync-delivery/test/localization_test.dart: English pages handle narrow large text and tablet layouts
+00:41 +426: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +427: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +428: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +429: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:41 +430: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +431: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +432: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +433: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +434: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +435: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:42 +436: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +437: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +438: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +439: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +440: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +441: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +442: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +443: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +444: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +445: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +446: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +447: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +448: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +449: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +450: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +451: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +452: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +453: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +454: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +455: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:43 +456: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:44 +457: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:44 +458: C:/Users/29668/LineSight-workspaces/sync-delivery/test/restore_layout_test.dart: restore and audit detail pages handle narrow large text and tablets
+00:46 +459: All tests passed!

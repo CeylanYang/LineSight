@@ -1,0 +1,105 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 2,
+  "flutter_tests": 459,
+  "new_refresh_tests": 6,
+  "analyze_clean": true,
+  "native_preview_ota4_verified": true,
+  "native_expired_session_requires_login": true,
+  "native_secondary_login_entry_verified": true,
+  "apk_reinstalled_during_fix": false,
+  "observed_last_update_time": "2026-10-24 05:44:43",
+  "app_data_cleared": false,
+  "production_ota1_published": true,
+  "production_runtime_tested": false,
+  "physical_devices_tested": false,
+  "full_native_role_matrix_complete": false,
+  "emulator_exited_before_demo_login": true,
+  "exit_cause_confirmed": false,
+  "artifacts": [
+    {
+      "file": "LineSight-1.1.54-8078-preview.apk",
+      "bytes": 75547520,
+      "sha256": "cc7a20bdfc8af84679cecf656bf22562cfec3cb05c05eb2669387cfd7574c47d",
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e"
+    },
+    {
+      "file": "LineSight-1.1.54-8078-production.apk",
+      "bytes": 75547520,
+      "sha256": "d19bedfe7df47129682f9669c792d164a080cff78fda468e738afc589248402a",
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2"
+    }
+  ],
+  "manifests": [
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T07:27:52.882291+00:00",
+      "schema": 1,
+      "sequence": 4,
+      "sha256": "1cd68d5ac0fe368e9c47c8b4e180655bf723eed7f2019d4c27ae9c0a7bb1ddc6",
+      "size": 11207568,
+      "track": "preview"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T07:27:52.913029+00:00",
+      "schema": 1,
+      "sequence": 4,
+      "sha256": "48b7d12f1acf5cdd227bff045415093db513acf2585796ff7f63f7cecd48aa8a",
+      "size": 11469712,
+      "track": "preview"
+    },
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T07:34:36.913258+00:00",
+      "schema": 1,
+      "sequence": 1,
+      "sha256": "051cb2adf7a5da3cacab6ceb87585aab8545bd9c8618e0969a7e4ab221a1de3e",
+      "size": 11207568,
+      "track": "production"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T07:34:36.944789+00:00",
+      "schema": 1,
+      "sequence": 1,
+      "sha256": "d97215a34bd5b5d4f02a020365938ac2ee48d7db3163590582180d5d93933974",
+      "size": 11469712,
+      "track": "production"
+    }
+  ],
+  "captures": [
+    {
+      "file": "png/328-refresh-error-before-emulator.png",
+      "sha256": "34783bb2c6a6dc4dda05018df65e4352aa3905f76a94c967c9db3bb7e63f8d9f",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/329-refresh-patch-ready-emulator.png",
+      "sha256": "a10fd72499d2fb918b8e82b297daf3a94052dabe0ecd31110ec514645509dc35",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/330-refresh-expired-recovered-emulator.png",
+      "sha256": "2ab6ca7b89655ae66b29d359d10ed09fc9db84616d085d37c4db8a94e7556fb4",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": true
+    },
+    {
+      "file": "png/331-refresh-secondary-login-emulator.png",
+      "sha256": "8cf00754066c0e680f9e60942eb0adb2aafe9ac6490b3c9863685bf7000630dc",
+      "origin": "android-emulator-screenshot",
+      "ui_xml": false
+    }
+  ]
+}
