@@ -369,7 +369,7 @@ void main() {
         await expectLater(
           find.byType(Scaffold).last,
           matchesGoldenFile(
-            '../docs/product/linesight/acceptance/diagnostics-batch/png/293-$state-$language-component.png',
+            '../docs/product/linesight/acceptance/version-components/$appVersion/293-$state-$language-component.png',
           ),
         );
       });

@@ -1,0 +1,129 @@
+{
+  "version": "1.1.55+8079",
+  "content_revision": 5,
+  "status": "candidate_pending_native_acceptance",
+  "flutter_tests_passed": 474,
+  "initial_run": {
+    "passed": 466,
+    "version_golden_failures": 8
+  },
+  "version_images": [
+    {
+      "file": "181-unified-login-en-desktop-render.png",
+      "previous_sha256": "34c722a5e3a504cbcf81337cf56840aae6d57d3b4b52cb6cc2981eb70e7da671",
+      "current_sha256": "b5e865a6f555ce70248c9abdc35808bde94b10c1b0790e7670b81c26539aaf80",
+      "pixel_difference_bounds": [
+        215,
+        809,
+        221,
+        818
+      ]
+    },
+    {
+      "file": "181-unified-login-zh-desktop-render.png",
+      "previous_sha256": "39d1b19b9aafd9ce00ab7bd9f95a3040c01a6e6218040c6e3ea043f025e7545b",
+      "current_sha256": "472fa23fa1ced34e670050ea6db11cfca1f9944b4ad6207ed98b0d8c69b6c607",
+      "pixel_difference_bounds": [
+        215,
+        763,
+        221,
+        772
+      ]
+    },
+    {
+      "file": "293-healthy-en-component.png",
+      "previous_sha256": "c62d89c2eb9e3284e9b447891c6166e342e848d8eb45ad40f0a9d2e07757885d",
+      "current_sha256": "87824784df20b59794915c31199e832f4ee30fffa8bb7b373f3a70c073402e6d",
+      "pixel_difference_bounds": [
+        117,
+        80,
+        125,
+        91
+      ]
+    },
+    {
+      "file": "293-healthy-zh-component.png",
+      "previous_sha256": "7d739d152d71806797728d17717bdae3d62e30f1ed68ad37e9c8a889d0210a71",
+      "current_sha256": "e63280bf9046f3f09117c4627ab2ff31814e864f7ac17c1e0b2a52e2e8153958",
+      "pixel_difference_bounds": [
+        117,
+        79,
+        125,
+        91
+      ]
+    },
+    {
+      "file": "293-help-en-component.png",
+      "previous_sha256": "46e8c4dce104e2db847bed6de4309ce26830b201a367fb08b67b7cae32327f30",
+      "current_sha256": "3ae24a1da007b6f790fa23f2739463b53d31c3d39e2e4f2f7536adc24425ea38",
+      "pixel_difference_bounds": [
+        174,
+        165,
+        181,
+        174
+      ]
+    },
+    {
+      "file": "293-help-zh-component.png",
+      "previous_sha256": "f4915b68ead76ef92e1e0db02a97055251ff92c6763b2250cb6573c64327ebad",
+      "current_sha256": "eecad9bee9f537a8ac11d9f424dc13b8551b459fe842b8e9942dcffc7ba71727",
+      "pixel_difference_bounds": [
+        120,
+        164,
+        127,
+        174
+      ]
+    },
+    {
+      "file": "293-offline-en-component.png",
+      "previous_sha256": "40223081d05245b856c074f1bd9d8c9c7fb9c46023faf9c2658c60e5a48ab048",
+      "current_sha256": "141507affc8527ddd01fba584db933e422f73dadf8c8495538ca3e6632033bb9",
+      "pixel_difference_bounds": [
+        117,
+        80,
+        125,
+        91
+      ]
+    },
+    {
+      "file": "293-offline-zh-component.png",
+      "previous_sha256": "3796b04df1f4f0d75b46df72d0308abef2059f0387ca8a1a71f7683154feb8b2",
+      "current_sha256": "eb5eb3654ee64823c4035b62c5bd1921aedaf7508408c80dff72ac1d8f0d32fb",
+      "pixel_difference_bounds": [
+        117,
+        79,
+        125,
+        91
+      ]
+    }
+  ],
+  "historical_images_unchanged": true,
+  "artifacts": [
+    {
+      "track": "production",
+      "file": "LineSight-1.1.55-8079-production.apk",
+      "bytes": 75498368,
+      "sha256": "546e621026c6e0196e7c50e9ec2a74708c6dec68924ea868017a901ecb432b4d",
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2",
+      "direct_dex_log_check_passed": true
+    },
+    {
+      "track": "preview",
+      "file": "LineSight-1.1.55-8079-preview.apk",
+      "bytes": 75498368,
+      "sha256": "cc3ae4fb45740a564dafba91aee8722d84f51d9be8f4b16ae8fbadfa762d36ae",
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e",
+      "direct_dex_log_check_passed": true
+    }
+  ],
+  "published": false,
+  "new_ota_base_frozen": false,
+  "native_resources_assets_engine_equal_across_tracks": true,
+  "flutter_assets_and_engine_equal_to_8078": true,
+  "remaining": [
+    "native startup, browser callback and upgrade/session retention for both signatures",
+    "native OTA crash guard regression",
+    "native library and Android crash-log privacy",
+    "other delivery requirements remain in DELIVERY_STATUS_20261024.md"
+  ]
+}

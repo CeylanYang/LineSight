@@ -6,7 +6,7 @@
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
-| 原生插件日志修复候选 | 新增 release R8 规则及正式打包 DEX 检查。旧内容 5 APK 保留 1,656 处 Log 调用及 24 处 printStackTrace；1.1.55+8079 正式签名候选检查范围内全部归零，11 项错误过滤/OTA 签名测试通过。候选未发布，需原生启动/回调/回退补验、完整测试及兼容签名候选；8078 线上基线和 OTA 未修改 | acceptance/privacy73-batch/candidate.json、candidate-production.json、shipped-content5.json |
+| 原生插件日志修复候选 | release R8 及正式打包 DEX 检查：旧内容 5 APK 保留 1,656 处 Log、24 处 printStackTrace；1.1.55+8079 两种签名候选均归零，474 项完整 Flutter 测试通过。8 张版本号差异截图逐一审阅并按版本归档，旧证据未覆盖；两签名 native/资源/资产/引擎指纹相同。候选未发布，仍需原生启动/回调/升级保留/回退补验；8078 线上基线和 OTA 未修改 | acceptance/privacy74-batch/validation.json、full-test-result.txt；privacy73-batch/shipped-content5.json |
 | 四角色配置/团队导航回归 | 360px、中英文、管理员/主管/操作/只读 8 组组件导航测试通过：配置和模板管理入口、任务表单入口权限及返回原详情、团队邀请及菜单权限、零写入。该测试文件静态检查通过；原生模拟器再次在登录前退出，原生四角色未完成，临时身份及数据均清理 | acceptance/roles72-batch/validation.json、widget-tests.txt、cleanup.json |
 | 官网手机布局 | 已发布独立手机样式：700px 及以下改为纵向布局，首屏提供正式版/兼容升级下载按钮，48px 高、16px 字号；正文及表单按手机尺寸显示。独立 Chrome 公网 320/390/700/1440px 无横向溢出、无脚本异常，手机任务演示交互正常；桌面保留原布局 | acceptance/portal71-batch/deployment.json、live/validation.json、截图 |
 | 原生管理员权限补验（部分） | 实际 App 二级登录 → Keycloak → AppAuth 回调，确认临时管理员身份和独立团队；6 组页面 XML/PNG 校验覆盖团队邀请/成员菜单、任务创建、打印配置及模板发布入口。模拟器宿主两次退出，四角色整体验收未通过；4 个临时身份、4 个 API 用户及 5 个工作区已清理，未修改客户团队 | acceptance/roles69-batch/partial-validation.json、cleanup.json |

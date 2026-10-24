@@ -370,7 +370,7 @@ void main() {
       await expectLater(
         find.byType(Scaffold),
         matchesGoldenFile(
-          '../docs/product/linesight/acceptance/template-batch/png/181-unified-login-$language-desktop-render.png',
+          '../docs/product/linesight/acceptance/version-components/$appVersion/181-unified-login-$language-desktop-render.png',
         ),
       );
     });
