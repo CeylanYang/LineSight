@@ -1,0 +1,31 @@
+{
+  "track": "production",
+  "before": {
+    "package": {
+      "version_code": 8078,
+      "version_name": "1.1.54",
+      "first_install_time": "2026-10-24 08:42:22",
+      "last_update_time": "2026-10-24 08:42:22"
+    },
+    "demo": {
+      "workspace": "演示团队",
+      "awaiting": 13,
+      "exception": 3,
+      "closed": 13
+    }
+  },
+  "after_package": {
+    "version_code": 8079,
+    "version_name": "1.1.55",
+    "first_install_time": "2026-10-24 08:42:22",
+    "last_update_time": "2026-10-24 11:15:05"
+  },
+  "demo_session_and_29_task_counts_retained": true,
+  "data_cleared": false,
+  "uninstall_used": false,
+  "browser_login_callback_verified": true,
+  "preview_upgrade_verified": false,
+  "ota_crash_guard_reverified": false,
+  "browser_login_callback_evidence": "../roles76-batch/ui/410-roles76-owner-workbench-emulator.xml",
+  "cold_start_demo_session_retained": true
+}

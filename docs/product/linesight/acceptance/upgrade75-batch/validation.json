@@ -1,8 +1,8 @@
 {
-  "status": "incomplete",
-  "production_upgrade_verified": false,
-  "candidate_installed": false,
-  "baseline_capture_completed": false,
+  "status": "partial",
+  "production_upgrade_verified": true,
+  "candidate_installed": true,
+  "baseline_capture_completed": true,
   "observed_existing_version_code": 8078,
   "observed_demo_session": {
     "workspace": "演示团队",
@@ -37,8 +37,13 @@
   "emulator_running_after_attempt": false,
   "public_release_changed": false,
   "next_required": [
-    "Stable native test runtime",
-    "Successful baseline capture before preserved-data APK upgrade",
-    "Production and preview upgrade, login callback and OTA regression"
-  ]
+    "Preview preserved-data upgrade",
+    "Remaining native roles/pages",
+    "Candidate OTA crash-guard regression",
+    "Stable runtime without diagnostic debugger"
+  ],
+  "cold_start_demo_session_retained": true,
+  "browser_login_callback_verified": true,
+  "completion_evidence": "upgrade.json and four paired UI/PNG captures",
+  "original_failed_attempts_preserved": true
 }

@@ -4,11 +4,13 @@
 
 ## 本次新增完成
 
-原生补验第 75 批尚未通过：原模拟器 36.2.12 与独立安装的 37.2.12 均以 Windows 访问冲突 `0xC0000005` 退出。新版成功启动并实际读取到原演示团队及 13/3/13 任务数量，但升级前截图采集未完成，因此未执行候选安装，也没有生成升级通过结论。AVD 数据保留，模拟器已退出；证据见 `acceptance/upgrade75-batch/validation.json`。邮件测试收件人再次确认已收到。
+原生补验第 75/76 批已有实质进展：正式签名 8078→8079 保留数据升级通过，首次安装时间不变；演示登录及 13/3/13 任务数量保留，强制停止后冷启动仍保留；应用更新页实际显示 1.1.55 / 内容版本 5。候选中的 App 二级登录→浏览器→AppAuth 回调已载入独立临时管理员身份。证据见 `acceptance/upgrade75-batch/upgrade.json`、`validation.json` 与配对 PNG/XML。线上仍为 8078，候选尚未发布。
+
+原模拟器 36.2.12 与独立 37.2.12 的软件渲染运行均曾以 `0xC0000005` 退出；本次在诊断监控下取得上述证据后再次崩溃，ProcDump 成功捕获宿主异常。异常地址不属于已载入模块，崩溃线程栈中有 `gles_swiftshader/libGLESv2.dll` 地址；这仅为软件图形后端线索，尚不能确定根因。原始转储仅保存在本机私有目录。切换 AMD 显卡后端已启动，但长期稳定性仍待验证。第 76 批管理员配置/模板等 4 组页面有配对证据，完整角色页面验收未完成；4 个临时身份、4 个 API 用户及 5 个工作区已清理，客户团队未修改。邮件测试收件人再次确认已收到。
 
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
-| 原生插件日志修复候选 | release R8 及正式打包 DEX 检查：旧内容 5 APK 保留 1,656 处 Log、24 处 printStackTrace；1.1.55+8079 两种签名候选均归零，474 项完整 Flutter 测试通过。8 张版本号差异截图逐一审阅并按版本归档，旧证据未覆盖；两签名 native/资源/资产/引擎指纹相同。候选未发布，仍需原生启动/回调/升级保留/回退补验；8078 线上基线和 OTA 未修改 | acceptance/privacy74-batch/validation.json、full-test-result.txt；privacy73-batch/shipped-content5.json |
+| 原生插件日志修复候选 | release R8 及正式打包 DEX 检查：旧内容 5 APK 保留 1,656 处 Log、24 处 printStackTrace；1.1.55+8079 两种签名候选均归零，474 项完整 Flutter 测试通过。8 张版本号差异截图逐一审阅并按版本归档，旧证据未覆盖；两签名 native/资源/资产/引擎指纹相同。正式签名升级保留、冷启动、版本页及浏览器回调已补验；兼容签名升级、剩余角色页面及候选回退未完成。候选未发布，8078 线上基线和 OTA 未修改 | acceptance/privacy74-batch/validation.json、full-test-result.txt；upgrade75-batch/upgrade.json |
 | 四角色配置/团队导航回归 | 360px、中英文、管理员/主管/操作/只读 8 组组件导航测试通过：配置和模板管理入口、任务表单入口权限及返回原详情、团队邀请及菜单权限、零写入。该测试文件静态检查通过；原生模拟器再次在登录前退出，原生四角色未完成，临时身份及数据均清理 | acceptance/roles72-batch/validation.json、widget-tests.txt、cleanup.json |
 | 官网手机布局 | 已发布独立手机样式：700px 及以下改为纵向布局，首屏提供正式版/兼容升级下载按钮，48px 高、16px 字号；正文及表单按手机尺寸显示。独立 Chrome 公网 320/390/700/1440px 无横向溢出、无脚本异常，手机任务演示交互正常；桌面保留原布局 | acceptance/portal71-batch/deployment.json、live/validation.json、截图 |
 | 原生管理员权限补验（部分） | 实际 App 二级登录 → Keycloak → AppAuth 回调，确认临时管理员身份和独立团队；6 组页面 XML/PNG 校验覆盖团队邀请/成员菜单、任务创建、打印配置及模板发布入口。模拟器宿主两次退出，四角色整体验收未通过；4 个临时身份、4 个 API 用户及 5 个工作区已清理，未修改客户团队 | acceptance/roles69-batch/partial-validation.json、cleanup.json |

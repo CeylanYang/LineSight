@@ -1,0 +1,28 @@
+{
+  "status": "partial",
+  "candidate_version_code": 8079,
+  "track": "production",
+  "hosted_browser_login_started_from_app": true,
+  "callback_to_native_app_observed": true,
+  "temporary_owner_identity_observed": true,
+  "shared_test_workspace_selected": true,
+  "paired_screenshots_and_ui": [
+    "410-roles76-owner-workbench-emulator",
+    "411-roles76-owner-profiles-emulator",
+    "412-roles76-owner-profile-detail-emulator",
+    "413-roles76-owner-templates-emulator"
+  ],
+  "owner_all_pages_passed": false,
+  "all_four_roles_passed": false,
+  "failure": "Emulator host access violation while inspecting template detail",
+  "diagnostic": {
+    "exception": "0xC0000005",
+    "exception_address_in_loaded_module": false,
+    "crashing_thread_stack_has_module_addresses": "emulator/lib64/gles_swiftshader/libGLESv2.dll",
+    "root_cause_established": false,
+    "raw_dump": "local private storage only; not committed or uploaded"
+  },
+  "task_or_template_submitted": false,
+  "cleanup_evidence": "cleanup.json",
+  "customer_data_changed": false
+}
