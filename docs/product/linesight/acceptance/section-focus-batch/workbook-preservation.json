@@ -1,0 +1,69 @@
+{
+  "changed_cells": [
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "D35"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "H35"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "I35"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "J35"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "D38"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "H38"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "I38"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "J38"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "H41"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "I41"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "J41"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "D57"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "H57"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "I57"
+    },
+    {
+      "sheet": "xl/worksheets/sheet1.xml",
+      "cell": "J57"
+    }
+  ],
+  "styles_preserved": true,
+  "all_sheet_settings_preserved": true,
+  "formulas_preserved": true,
+  "unrelated_values_preserved": true,
+  "native_parts_preserved": true
+}

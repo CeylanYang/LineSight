@@ -1,0 +1,17 @@
+{
+  "version": "1.1.51+8075",
+  "flutter_full_tests_passed": 445,
+  "new_behavior_tests": 3,
+  "flutter_analyze_clean": true,
+  "section_focus_verified": true,
+  "backend_source_unchanged": true,
+  "previous_backend_tests_passed": 87,
+  "backend_evidence": "../assignment-batch/validation.json",
+  "native_business_flow_version": "1.1.50+8074",
+  "native_business_flow_png": 18,
+  "native_final_apk_verified": false,
+  "physical_devices_verified": false,
+  "delivery_goal_complete": true,
+  "goal_scope": "Current usable version and evidence handoff, per user closeout request; remaining work retained.",
+  "product_plan_complete": false
+}

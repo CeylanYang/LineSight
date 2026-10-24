@@ -1302,6 +1302,25 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
   late Map<String, dynamic> job = widget.job;
   List<Map<String, dynamic>> history = [];
   int tab = 0;
+  final sectionAnchor = GlobalKey();
+  void selectSection(int next) {
+    setState(() => tab = next);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final target = sectionAnchor.currentContext;
+      if (!mounted || tab != next || target == null) return;
+      final reduceMotion =
+          AppScope.of(context).reduceMotion ||
+          MediaQuery.disableAnimationsOf(context);
+      Scrollable.ensureVisible(
+        target,
+        alignment: 0,
+        duration: reduceMotion
+            ? Duration.zero
+            : const Duration(milliseconds: 220),
+      );
+    });
+  }
+
   bool busy = false, loaded = false, wasCurrent = false;
   Object? error;
   String? binding;
@@ -1468,7 +1487,7 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
     };
     void primaryAction() {
       if (status == 'exception') {
-        setState(() => tab = 2);
+        selectSection(2);
       } else {
         command(
           status == 'inspection'
@@ -1516,157 +1535,172 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
         ),
       ],
       children: [
-        PartArt(
-          partName: partName,
-          defect: status == 'exception' || openIssues > 0,
-          height: 186,
-          caption: 'CAM 01 · TOP',
-        ),
-        const SizedBox(height: 14),
-        GlassPanel(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PartArt(
+              partName: partName,
+              defect: status == 'exception' || openIssues > 0,
+              height: 186,
+              caption: 'CAM 01 · TOP',
+            ),
+            const SizedBox(height: 14),
+            GlassPanel(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          partName,
-                          style: const TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w800,
-                            color: ink,
-                            letterSpacing: -.4,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        SelectableText(
-                          '${job['id']}',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: muted,
-                            letterSpacing: .3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Tag(
-                    tr(context, taskStatusLabels[status] ?? status),
-                    color: taskColor(status),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              InfoGrid(
-                items: {
-                  tr(context, '打印设备'): '${job['printer'] ?? ''}',
-                  if ('${job['profile_version'] ?? ''}'.isNotEmpty)
-                    tr(context, '配置版本'): '${job['profile_version']}',
-                  if ('${job['profile_source'] ?? ''}'.isNotEmpty)
-                    tr(context, '配置来源'): '${job['profile_source']}',
-                  tr(context, '工件数量'):
-                      '${job['quantity'] ?? ''} ${tr(context, '件')}',
-                  tr(context, '批次号'): '${job['batch_code'] ?? ''}',
-                  tr(context, '负责人'): '${job['assignee'] ?? ''}'.isEmpty
-                      ? tr(context, '未指派')
-                      : '${job['assignee']}',
-                  tr(context, '创建时间'): cloudTimestamp(job['created_at']),
-                },
-              ),
-              if ('${job['note'] ?? ''}'.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF7FAFF),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(color: const Color(0xFFEDF3FB)),
-                  ),
-                  child: Text(
-                    '${job['note']}',
-                    style: const TextStyle(
-                      fontSize: 11.5,
-                      height: 1.5,
-                      color: muted,
-                    ),
-                  ),
-                ),
-              ],
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(0, 44),
-                        textStyle: TextStyle(
-                          fontFamily: Theme.of(
-                            context,
-                          ).textTheme.labelLarge?.fontFamily,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              partName,
+                              style: const TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w800,
+                                color: ink,
+                                letterSpacing: -.4,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SelectableText(
+                              '${job['id']}',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: muted,
+                                letterSpacing: .3,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      icon: const Icon(Icons.description_outlined, size: 17),
-                      label: Text(tr(context, '质量报告')),
-                      onPressed: () => openPage(
-                        context,
-                        CloudReportPage(jobId: '${job['id']}'),
+                      const SizedBox(width: 8),
+                      Tag(
+                        tr(context, taskStatusLabels[status] ?? status),
+                        color: taskColor(status),
                       ),
-                    ),
+                    ],
                   ),
-                  if (canEdit &&
-                      !busy &&
-                      error == null &&
-                      actionLabel != null) ...[
-                    const SizedBox(width: 9),
-                    Expanded(
-                      child: FilledButton.icon(
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size(0, 44),
-                          textStyle: TextStyle(
-                            fontFamily: Theme.of(
-                              context,
-                            ).textTheme.labelLarge?.fontFamily,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                          ),
+                  const SizedBox(height: 14),
+                  InfoGrid(
+                    items: {
+                      tr(context, '打印设备'): '${job['printer'] ?? ''}',
+                      if ('${job['profile_version'] ?? ''}'.isNotEmpty)
+                        tr(context, '配置版本'): '${job['profile_version']}',
+                      if ('${job['profile_source'] ?? ''}'.isNotEmpty)
+                        tr(context, '配置来源'): '${job['profile_source']}',
+                      tr(context, '工件数量'):
+                          '${job['quantity'] ?? ''} ${tr(context, '件')}',
+                      tr(context, '批次号'): '${job['batch_code'] ?? ''}',
+                      tr(context, '负责人'): '${job['assignee'] ?? ''}'.isEmpty
+                          ? tr(context, '未指派')
+                          : '${job['assignee']}',
+                      tr(context, '创建时间'): cloudTimestamp(job['created_at']),
+                    },
+                  ),
+                  if ('${job['note'] ?? ''}'.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF7FAFF),
+                        borderRadius: BorderRadius.circular(13),
+                        border: Border.all(color: const Color(0xFFEDF3FB)),
+                      ),
+                      child: Text(
+                        '${job['note']}',
+                        style: const TextStyle(
+                          fontSize: 11.5,
+                          height: 1.5,
+                          color: muted,
                         ),
-                        onPressed: primaryAction,
-                        icon: const Icon(Icons.arrow_forward_rounded, size: 17),
-                        label: Text(actionLabel),
                       ),
                     ),
                   ],
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(0, 44),
+                            textStyle: TextStyle(
+                              fontFamily: Theme.of(
+                                context,
+                              ).textTheme.labelLarge?.fontFamily,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          icon: const Icon(
+                            Icons.description_outlined,
+                            size: 17,
+                          ),
+                          label: Text(tr(context, '质量报告')),
+                          onPressed: () => openPage(
+                            context,
+                            CloudReportPage(jobId: '${job['id']}'),
+                          ),
+                        ),
+                      ),
+                      if (canEdit &&
+                          !busy &&
+                          error == null &&
+                          actionLabel != null) ...[
+                        const SizedBox(width: 9),
+                        Expanded(
+                          child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size(0, 44),
+                              textStyle: TextStyle(
+                                fontFamily: Theme.of(
+                                  context,
+                                ).textTheme.labelLarge?.fontFamily,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            onPressed: primaryAction,
+                            icon: const Icon(
+                              Icons.arrow_forward_rounded,
+                              size: 17,
+                            ),
+                            label: Text(actionLabel),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 14),
+            CloudLifecycleTrack(job: job),
+            const SizedBox(height: 16),
+            SingleChildScrollView(
+              key: sectionAnchor,
+              scrollDirection: Axis.horizontal,
+              child: SegmentedButton<int>(
+                showSelectedIcon: false,
+                segments: [
+                  for (final e in {0: '概览', 1: '质检', 2: '异常', 3: '历史'}.entries)
+                    ButtonSegment(
+                      value: e.key,
+                      label: Text(tr(context, e.value)),
+                    ),
+                ],
+                selected: {tab},
+                onSelectionChanged: (selected) => selectSection(selected.first),
+              ),
+            ),
+            const SizedBox(height: 14),
+          ],
         ),
-        const SizedBox(height: 14),
-        CloudLifecycleTrack(job: job),
-        const SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SegmentedButton<int>(
-            showSelectedIcon: false,
-            segments: [
-              for (final e in {0: '概览', 1: '质检', 2: '异常', 3: '历史'}.entries)
-                ButtonSegment(value: e.key, label: Text(tr(context, e.value))),
-            ],
-            selected: {tab},
-            onSelectionChanged: (selected) =>
-                setState(() => tab = selected.first),
-          ),
-        ),
-        const SizedBox(height: 14),
         if (busy) const CloudLoadingPanel(),
         if (error != null) CloudFailurePanel(failure: error!, onRetry: load),
         if (tab == 0) ...[

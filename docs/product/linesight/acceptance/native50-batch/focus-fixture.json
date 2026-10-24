@@ -1,0 +1,61 @@
+{
+  "workspace_id": 5,
+  "job": {
+    "id": "2257d644-f637-45c1-b81e-073e7f6818cb",
+    "version": 4,
+    "part_name": "Native51-Section-Focus",
+    "printer": "Native validation",
+    "quantity": 1,
+    "note": "",
+    "status": "exception",
+    "created_at": "2026-10-24T04:25:32.330748+00:00",
+    "updated_at": "2026-10-24T04:25:32.712711+00:00",
+    "batch_code": "NATIVE51-FOCUS",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": null,
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [
+      {
+        "id": 13,
+        "note": "Focus navigation fixture",
+        "status": "open",
+        "assignee": "LineSight Demo",
+        "resolution": "",
+        "category": "other",
+        "severity": "major",
+        "inspection_id": 31,
+        "creator": "LineSight Demo",
+        "created_at": "2026-10-24T04:25:32.710696+00:00",
+        "resolved_at": null
+      }
+    ],
+    "inspections": [
+      {
+        "id": 31,
+        "task_id": "2257d644-f637-45c1-b81e-073e7f6818cb",
+        "part_name": "Native51-Section-Focus",
+        "batch_code": "NATIVE51-FOCUS",
+        "round_no": 1,
+        "verdict": "fail",
+        "note": "Focus navigation fixture",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-24T04:25:32.709632+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 1,
+        "pass_qty": 0,
+        "fail_qty": 1,
+        "scrap_qty": 0,
+        "template_snapshot": {},
+        "answers": [],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "origin": "real-cloud-api-fixture"
+}

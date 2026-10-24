@@ -1,0 +1,11 @@
+{
+  "emulator_created_task_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+  "two_rounds_preserved": true,
+  "four_checklist_answers_each_round": true,
+  "original_template_preserved": true,
+  "handover_and_resolution_preserved": true,
+  "metrics_report_csv_match": true,
+  "first_pass_rate": 0,
+  "final_release_rate": 1,
+  "native_photo_capture_verified": false
+}

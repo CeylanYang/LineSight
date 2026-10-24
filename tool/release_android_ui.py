@@ -42,5 +42,9 @@ elif args.action=='capture':
     xml_folder=folder.parent/'ui';xml_folder.mkdir(parents=True,exist_ok=True)
     (xml_folder/(name+'.xml')).write_bytes(run('exec-out','cat','/sdcard/linesight-release-ui.xml'))
 elif args.action=='back': run('shell','input','keyevent','4')
-elif args.action=='swipe': run('shell','input','swipe','360','1050','360','430','350')
+elif args.action=='swipe':
+    # Respect the device's current size, including any wm size override.
+    sizes=re.findall(r'(\d+)x(\d+)',run('shell','wm','size').decode())
+    width,height=map(int,sizes[-1])
+    run('shell','input','swipe',str(width//2),str(int(height*.85)),str(width//2),str(int(height*.3)),'350')
 elif args.action=='launch': run('shell','am','start','-n','com.example.linesight_flutter/.MainActivity')

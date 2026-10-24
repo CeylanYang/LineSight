@@ -1,7 +1,367 @@
 {
-  "screenshots": 306,
+  "screenshots": 324,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
+    {
+      "file": "native50-batch/png/294-signed-out-workbench-emulator.png",
+      "title": "294-signed-out-workbench-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "7db797071a1fc1c9f297d9083e183955c4ea15f1f109f1491421c0ec47f16b67",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/295-secondary-login-emulator.png",
+      "title": "295-secondary-login-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "5129d30277f1dd9ccfdc7d2009b03ce56e8597d241aa82425a3aab7c5baea1c0",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/296-demo-workbench-emulator.png",
+      "title": "296-demo-workbench-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "667bd08becec229f0a75854f37ec7b5a3d551ba42d1083543f0510c73bfb113e",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/297-create-task-form-emulator.png",
+      "title": "297-create-task-form-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "b436f6ba36685e9da6318445fb58b76c275868fb514a05cae5adee23a1ea8a41",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/298-created-task-detail-emulator.png",
+      "title": "298-created-task-detail-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "61d2727ac92c28d3a9f50a8c4735e2d5c6399b1d371069ec9e919f6a7f5200e6",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/299-assignment-form-emulator.png",
+      "title": "299-assignment-form-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "72dddc1033364ea08eccca8d5fab9936e7550650b6ab31914bb6604d02862caa",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/300-unsaved-assignment-confirm-emulator.png",
+      "title": "300-unsaved-assignment-confirm-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "ed221f0021ab62a6b19d56699f971cd810afd2e0030ba0938f90d256f8a1b07e",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/301-assigned-task-detail-emulator.png",
+      "title": "301-assigned-task-detail-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "e4c11803ccc5aaa910eb4d53885f324a534cdfeb75345306efdec86b51c29ac9",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/302-awaiting-inspection-emulator.png",
+      "title": "302-awaiting-inspection-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "057ea40400bcc3a0210129a66a66619db34702b4809c7543b29dde5cc1378095",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/303-inspection-checklist-fail-emulator.png",
+      "title": "303-inspection-checklist-fail-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "70265b54abd4da23a094ca4e0644062c3660f8aa26a99d38a44a07c1986c9d87",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/304-exception-task-emulator.png",
+      "title": "304-exception-task-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "bb5b57edfd6c5139ba0a957684ee1fbfeb6521284a190e95fe0c8288de4d4986",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/305-handover-required-note-emulator.png",
+      "title": "305-handover-required-note-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "194c87403b8c3d52739e8c9ac01bbcb2442126779aca9986708a4513568057ab",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/306-exception-tab-actions-emulator.png",
+      "title": "306-exception-tab-actions-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "9ff07bff331e354010a8c6ed30aa719adb328c7ecfa9b33058785f2cf7755a4f",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/307-resolution-form-emulator.png",
+      "title": "307-resolution-form-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "be3b27cf8c5706395aa15eb42186de4af011c34f3ce681087f3c2f664f100afd",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/308-awaiting-reinspection-emulator.png",
+      "title": "308-awaiting-reinspection-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "0df112af50c59ac13b79d830067ab06f329bb977449822986d3af5ef3c87916c",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/309-reinspection-checklist-emulator.png",
+      "title": "309-reinspection-checklist-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "9be2b17450ca53c6c9587ae40a4301df79e19efb40c4b9d47587638abb407544",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/310-closed-after-reinspection-emulator.png",
+      "title": "310-closed-after-reinspection-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "5b295daa1b397b4d8d8866fa4b114ac0caa98fc019227ea7fd6c12ff262c4f97",
+      "batch_notes": "native50-batch/README.md"
+    },
+    {
+      "file": "native50-batch/png/311-immutable-task-history-emulator.png",
+      "title": "311-immutable-task-history-emulator",
+      "batch": "native50-batch",
+      "batch_requirement_ids": [
+        "UI-03",
+        "UI-08",
+        "QC-02",
+        "QC-03",
+        "QC-06",
+        "QC-08",
+        "COL-03",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "86e8d057fda5a94fc40b359bfd702e570265e47c28443ab6d1c736ec036accb4",
+      "batch_notes": "native50-batch/README.md"
+    },
     {
       "file": "diagnostics-batch/png/293-healthy-en-component.png",
       "title": "293-healthy-en-component",
@@ -16,7 +376,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "dc6249893b462320c71b7fb252c3dc3513d9b2ee20d66cd1264a75988b72bfc4",
+      "sha256": "6d51f148ef32b24deb30192cdaf758a8b9929f11a6e745687fee26e94e8fa655",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -33,7 +393,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "e33c8d2191c0ac8f13dad3b88fc43063fcc39a4e91f84582b7ab4937418b0fb9",
+      "sha256": "138bdff809857ddcd61b1a7768e7bb31197c76f7cd0f61ab9eda786c57072536",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -50,7 +410,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "a80d559497a7a040dff4cc63404696c5fbeb1e97c94a4238732483684c66b612",
+      "sha256": "ef776209386e9093a25f3fa0cfae049bdfaeccaf42974bbfa6a5d58e528af2d9",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -67,7 +427,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "9a9aae6c702f063199822a1d54fbcd9531908e9b44caaf49e345c4cf4d69134c",
+      "sha256": "c3e9f2bc1dbff8c200ac0387290772c7def6d46434709a23def9959304ee707f",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -84,7 +444,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "c7794a14dfb4096cc898f09ab960a533efd484216edb802ab7b16ea97b9d3d5c",
+      "sha256": "d1a7ed65b1ab230faaff6638da5d8221f7e2864ec42d8c1156cda88b374f6f8d",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -101,7 +461,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "8306897aadbee3594fc90d58fd0d1d44c7f61fdc3b69a862396948478b5c0b41",
+      "sha256": "9511040f232c3bb2f059e8d9972bcb309d9f65ed0c2e4f4813d7caa7f0d5390d",
       "batch_notes": "diagnostics-batch/README.md"
     },
     {
@@ -2933,7 +3293,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "5cbd123c22231b22cf03249210843e393f13c77fc387b7709f822124f4f0143a",
+      "sha256": "eb2a377440bc794eae3918124e8e993f1da57d920cb2b8b62a5b4542337a40ea",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -2951,7 +3311,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "6d040ee231227737519b63df400cd5a8a8643a10b832c6bb149587c634fab1ac",
+      "sha256": "087ca4b83f3aecbe71504b7dbeee958ca99ba14901b740236228c9f9ba0ea5b4",
       "batch_notes": "template-batch/README.md"
     },
     {

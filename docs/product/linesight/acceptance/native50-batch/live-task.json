@@ -1,0 +1,769 @@
+{
+  "workspace_id": 5,
+  "job": {
+    "id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+    "version": 8,
+    "part_name": "Native50-Quality-Bracket",
+    "printer": "Bambu Lab P2S",
+    "quantity": 2,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-24T04:10:56.025878+00:00",
+    "updated_at": "2026-10-24T04:19:48.363748+00:00",
+    "batch_code": "NATIVE50-20261024",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": null,
+    "assignee": "",
+    "template": {
+      "id": 2,
+      "name": "尺寸与装配检查",
+      "version": 1,
+      "items": [
+        {
+          "id": "item-1",
+          "label": "关键尺寸",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-2",
+          "label": "孔位与配合",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-3",
+          "label": "装配适配",
+          "required": true,
+          "allow_na": false
+        },
+        {
+          "id": "item-4",
+          "label": "紧固与稳定性",
+          "required": true,
+          "allow_na": true
+        }
+      ],
+      "built_in": true
+    },
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [
+      {
+        "id": 12,
+        "note": "Diameter-outside-tolerance",
+        "status": "resolved",
+        "assignee": "",
+        "resolution": "Reworked-diameter-and-checked-fit",
+        "category": "dimension",
+        "severity": "major",
+        "inspection_id": 29,
+        "creator": "LineSight Demo",
+        "created_at": "2026-10-24T04:16:08.695066+00:00",
+        "resolved_at": "2026-10-24T04:18:30.486897+00:00"
+      }
+    ],
+    "inspections": [
+      {
+        "id": 30,
+        "task_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+        "part_name": "Native50-Quality-Bracket",
+        "batch_code": "NATIVE50-20261024",
+        "round_no": 2,
+        "verdict": "pass",
+        "note": "Reinspection-all-checks-pass",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-24T04:19:48.362829+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      },
+      {
+        "id": 29,
+        "task_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+        "part_name": "Native50-Quality-Bracket",
+        "batch_code": "NATIVE50-20261024",
+        "round_no": 1,
+        "verdict": "fail",
+        "note": "Diameter-outside-tolerance",
+        "inspector": "LineSight Demo",
+        "created_at": "2026-10-24T04:16:08.692516+00:00",
+        "inspector_id": 9,
+        "inspected_qty": 2,
+        "pass_qty": 0,
+        "fail_qty": 2,
+        "scrap_qty": 0,
+        "template_snapshot": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ]
+        },
+        "answers": [
+          {
+            "id": "item-1",
+            "result": "fail",
+            "note": "Diameter--outside-tolerance"
+          },
+          {
+            "id": "item-2",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-3",
+            "result": "pass",
+            "note": ""
+          },
+          {
+            "id": "item-4",
+            "result": "pass",
+            "note": ""
+          }
+        ],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "history": [
+    {
+      "id": 187,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "job.created",
+      "object_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "object_type": "task",
+      "version": 1,
+      "details": {
+        "status": "queued"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:10:56.027288+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 188,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "job.assigned",
+      "object_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "object_type": "task",
+      "version": 2,
+      "details": {
+        "previous_assignee_id": null,
+        "previous_assignee": "",
+        "assignee_id": 9,
+        "assignee": "LineSight Demo",
+        "note": "",
+        "handed_over_issues": [],
+        "actor_role": "operator"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:12:15.815026+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 189,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "job.status",
+      "object_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "object_type": "task",
+      "version": 3,
+      "details": {
+        "previous": "queued",
+        "status": "printing"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:13:03.034228+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 190,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "job.status",
+      "object_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "object_type": "task",
+      "version": 4,
+      "details": {
+        "previous": "printing",
+        "status": "inspection"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:13:20.117060+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 191,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "exception.created",
+      "object_id": "12",
+      "object_type": "issue",
+      "version": 5,
+      "details": {
+        "inspection_id": 29,
+        "category": "dimension",
+        "severity": "major",
+        "assignee": "LineSight Demo"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:16:08.696078+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 192,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "inspection.fail",
+      "object_id": "29",
+      "object_type": "inspection",
+      "version": 5,
+      "details": {
+        "verdict": "fail",
+        "previous": "inspection",
+        "status": "exception",
+        "round_no": 1,
+        "inspected_qty": 2,
+        "pass_qty": 0,
+        "fail_qty": 2,
+        "scrap_qty": 0,
+        "evidence_ids": []
+      },
+      "record": {
+        "id": 29,
+        "round_no": 1,
+        "verdict": "fail",
+        "inspected_qty": 2,
+        "pass_qty": 0,
+        "fail_qty": 2,
+        "scrap_qty": 0,
+        "template_version": 1
+      },
+      "created_at": "2026-10-24T04:16:08.697270+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 193,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "job.assigned",
+      "object_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "object_type": "task",
+      "version": 6,
+      "details": {
+        "previous_assignee_id": 9,
+        "previous_assignee": "LineSight Demo",
+        "assignee_id": null,
+        "assignee": "",
+        "note": "Shared-queue-diameter-repair",
+        "handed_over_issues": [
+          {
+            "id": 12,
+            "assignee": "LineSight Demo"
+          }
+        ],
+        "actor_role": "operator"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:17:13.350427+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 194,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "exception.resolved",
+      "object_id": "12",
+      "object_type": "issue",
+      "version": 7,
+      "details": {
+        "resolution": "Reworked-diameter-and-checked-fit",
+        "previous": "exception",
+        "status": "inspection",
+        "disposition": null,
+        "closure_reason": null,
+        "actor_role": "operator"
+      },
+      "record": null,
+      "created_at": "2026-10-24T04:18:30.488953+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    },
+    {
+      "id": 195,
+      "job_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+      "workspace_id": 5,
+      "action": "inspection.pass",
+      "object_id": "30",
+      "object_type": "inspection",
+      "version": 8,
+      "details": {
+        "verdict": "pass",
+        "previous": "inspection",
+        "status": "closed",
+        "round_no": 2,
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "evidence_ids": []
+      },
+      "record": {
+        "id": 30,
+        "round_no": 2,
+        "verdict": "pass",
+        "inspected_qty": 2,
+        "pass_qty": 2,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_version": 1
+      },
+      "created_at": "2026-10-24T04:19:48.364385+00:00",
+      "actor_id": 9,
+      "actor": "LineSight Demo"
+    }
+  ],
+  "metrics": {
+    "task_counts": {
+      "queued": 0,
+      "printing": 0,
+      "inspection": 0,
+      "exception": 0,
+      "closed": 1
+    },
+    "first_inspected_pieces": 2,
+    "first_pass_pieces": 0,
+    "first_pass_rate": 0.0,
+    "final_planned_pieces": 2,
+    "final_released_pieces": 2,
+    "final_release_rate": 1.0,
+    "latest_fail_pieces": 0,
+    "latest_scrap_pieces": 0,
+    "trend": [
+      {
+        "day": "2026-10-18",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-19",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-20",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-21",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-22",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-23",
+        "inspected": 0,
+        "passed": 0
+      },
+      {
+        "day": "2026-10-24",
+        "inspected": 2,
+        "passed": 0
+      }
+    ],
+    "issue_categories": {
+      "dimension": 1
+    },
+    "average_issue_seconds": 141.791831,
+    "unknown_quantity_checks": 0,
+    "task_ids": [
+      "0c23f42c-369e-4ea0-88fc-32982b2eff6f"
+    ]
+  },
+  "report": {
+    "workspace": "演示团队",
+    "workspace_id": 5,
+    "source": "cloud",
+    "filters": {
+      "q": "0c23f42c-369e-4ea0-88fc-32982b2eff6f"
+    },
+    "report_id": "LS-B7385222DFD158C9",
+    "generated_at": "2026-10-24T04:25:32.056511+00:00",
+    "jobs": [
+      {
+        "id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+        "version": 8,
+        "part_name": "Native50-Quality-Bracket",
+        "printer": "Bambu Lab P2S",
+        "quantity": 2,
+        "note": "",
+        "status": "closed",
+        "created_at": "2026-10-24T04:10:56.025878+00:00",
+        "updated_at": "2026-10-24T04:19:48.363748+00:00",
+        "batch_code": "NATIVE50-20261024",
+        "tracking_mode": "batch",
+        "serial_numbers": [],
+        "assignee_id": null,
+        "assignee": "",
+        "template": {
+          "id": 2,
+          "name": "尺寸与装配检查",
+          "version": 1,
+          "items": [
+            {
+              "id": "item-1",
+              "label": "关键尺寸",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-2",
+              "label": "孔位与配合",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-3",
+              "label": "装配适配",
+              "required": true,
+              "allow_na": false
+            },
+            {
+              "id": "item-4",
+              "label": "紧固与稳定性",
+              "required": true,
+              "allow_na": true
+            }
+          ],
+          "built_in": true
+        },
+        "profile_version": "",
+        "profile_source": "",
+        "exceptions": [
+          {
+            "id": 12,
+            "note": "Diameter-outside-tolerance",
+            "status": "resolved",
+            "assignee": "",
+            "resolution": "Reworked-diameter-and-checked-fit",
+            "category": "dimension",
+            "severity": "major",
+            "inspection_id": 29,
+            "creator": "LineSight Demo",
+            "created_at": "2026-10-24T04:16:08.695066+00:00",
+            "resolved_at": "2026-10-24T04:18:30.486897+00:00"
+          }
+        ],
+        "inspections": [
+          {
+            "id": 30,
+            "task_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+            "part_name": "Native50-Quality-Bracket",
+            "batch_code": "NATIVE50-20261024",
+            "round_no": 2,
+            "verdict": "pass",
+            "note": "Reinspection-all-checks-pass",
+            "inspector": "LineSight Demo",
+            "created_at": "2026-10-24T04:19:48.362829+00:00",
+            "inspector_id": 9,
+            "inspected_qty": 2,
+            "pass_qty": 2,
+            "fail_qty": 0,
+            "scrap_qty": 0,
+            "template_snapshot": {
+              "id": 2,
+              "name": "尺寸与装配检查",
+              "version": 1,
+              "items": [
+                {
+                  "id": "item-1",
+                  "label": "关键尺寸",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-2",
+                  "label": "孔位与配合",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-3",
+                  "label": "装配适配",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-4",
+                  "label": "紧固与稳定性",
+                  "required": true,
+                  "allow_na": true
+                }
+              ]
+            },
+            "answers": [
+              {
+                "id": "item-1",
+                "result": "pass",
+                "note": ""
+              },
+              {
+                "id": "item-2",
+                "result": "pass",
+                "note": ""
+              },
+              {
+                "id": "item-3",
+                "result": "pass",
+                "note": ""
+              },
+              {
+                "id": "item-4",
+                "result": "pass",
+                "note": ""
+              }
+            ],
+            "serial_results": {},
+            "evidence": []
+          },
+          {
+            "id": 29,
+            "task_id": "0c23f42c-369e-4ea0-88fc-32982b2eff6f",
+            "part_name": "Native50-Quality-Bracket",
+            "batch_code": "NATIVE50-20261024",
+            "round_no": 1,
+            "verdict": "fail",
+            "note": "Diameter-outside-tolerance",
+            "inspector": "LineSight Demo",
+            "created_at": "2026-10-24T04:16:08.692516+00:00",
+            "inspector_id": 9,
+            "inspected_qty": 2,
+            "pass_qty": 0,
+            "fail_qty": 2,
+            "scrap_qty": 0,
+            "template_snapshot": {
+              "id": 2,
+              "name": "尺寸与装配检查",
+              "version": 1,
+              "items": [
+                {
+                  "id": "item-1",
+                  "label": "关键尺寸",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-2",
+                  "label": "孔位与配合",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-3",
+                  "label": "装配适配",
+                  "required": true,
+                  "allow_na": false
+                },
+                {
+                  "id": "item-4",
+                  "label": "紧固与稳定性",
+                  "required": true,
+                  "allow_na": true
+                }
+              ]
+            },
+            "answers": [
+              {
+                "id": "item-1",
+                "result": "fail",
+                "note": "Diameter--outside-tolerance"
+              },
+              {
+                "id": "item-2",
+                "result": "pass",
+                "note": ""
+              },
+              {
+                "id": "item-3",
+                "result": "pass",
+                "note": ""
+              },
+              {
+                "id": "item-4",
+                "result": "pass",
+                "note": ""
+              }
+            ],
+            "serial_results": {},
+            "evidence": []
+          }
+        ],
+        "evidence": []
+      }
+    ],
+    "metrics": {
+      "task_counts": {
+        "queued": 0,
+        "printing": 0,
+        "inspection": 0,
+        "exception": 0,
+        "closed": 1
+      },
+      "first_inspected_pieces": 2,
+      "first_pass_pieces": 0,
+      "first_pass_rate": 0.0,
+      "final_planned_pieces": 2,
+      "final_released_pieces": 2,
+      "final_release_rate": 1.0,
+      "latest_fail_pieces": 0,
+      "latest_scrap_pieces": 0,
+      "trend": [
+        {
+          "day": "2026-10-18",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-19",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-20",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-21",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-22",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-23",
+          "inspected": 0,
+          "passed": 0
+        },
+        {
+          "day": "2026-10-24",
+          "inspected": 2,
+          "passed": 0
+        }
+      ],
+      "issue_categories": {
+        "dimension": 1
+      },
+      "average_issue_seconds": 141.791831,
+      "unknown_quantity_checks": 0,
+      "task_ids": [
+        "0c23f42c-369e-4ea0-88fc-32982b2eff6f"
+      ]
+    },
+    "tasks": [
+      "0c23f42c-369e-4ea0-88fc-32982b2eff6f"
+    ]
+  }
+}
