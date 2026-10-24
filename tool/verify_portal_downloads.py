@@ -35,7 +35,8 @@ def main():
     checks = [('/' + name, sha) for name, sha in deployed['files'].items()]
     checks.extend([('/linesight/', deployed['files']['index.html']),
                    ('/', deployed['files']['index.html'])])
-    preview = deployed['files']['downloads/LineSight-1.1.54-content4-preview.apk']
+    preview_name = 'downloads/' + deployed['aliases']['downloads/LineSight-legacy-upgrade.apk']
+    preview = deployed['files'][preview_name]
     # Validate real old bookmark redirects through their stable compatible alias.
     checks.extend((prefix + '/downloads/LineSight-1.1.20-arm64-v8a.apk', preview)
                   for prefix in ('', '/linesight'))

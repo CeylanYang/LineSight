@@ -52,7 +52,7 @@ try {
         try {
             $stream.CopyTo($buffer)
             $dex = [Text.Encoding]::ASCII.GetString($buffer.ToArray())
-            if ($dex.Contains('IntegrationTestPlugin') -or $dex.Contains('StorageAuditInstrumentation')) { throw 'Acceptance code unexpectedly packaged in app DEX' }
+            if ($dex.Contains('IntegrationTestPlugin') -or $dex.Contains('StorageAuditInstrumentation') -or $dex.Contains('OtaBootAudit') -or $dex.Contains('NativePrivacyAudit')) { throw 'Acceptance code unexpectedly packaged in app DEX' }
         } finally { $stream.Dispose(); $buffer.Dispose() }
     }
 } finally { $archive.Dispose() }

@@ -1,0 +1,58 @@
+[
+  {
+    "mode": "framework",
+    "native_fixed_failure": "LINESIGHT_ERROR source=framework category=state",
+    "raw_canary_in_process_logs": false,
+    "process_log_lines_checked": 47,
+    "fault_payload_removed": true,
+    "blacklisted": true,
+    "same_fault_reapply_rejected": true,
+    "base_navigation_recovered": true,
+    "audit": {
+      "mode": "inspect",
+      "pid": 6586,
+      "patch_exists": false,
+      "blacklist": [
+        {
+          "version": "local-ota67-framework",
+          "md5": "5b293e412657b3c01e1dd4659708c69c",
+          "reason": "BOOT_CRASH",
+          "blacklistedAt": 1792834119946
+        }
+      ],
+      "customer_accounts_used": false,
+      "public_patch_published": false
+    }
+  },
+  {
+    "mode": "asynchronous",
+    "native_fixed_failure": "LINESIGHT_ERROR source=asynchronous category=platform",
+    "raw_canary_in_process_logs": false,
+    "process_log_lines_checked": 46,
+    "fault_payload_removed": true,
+    "blacklisted": true,
+    "same_fault_reapply_rejected": true,
+    "base_navigation_recovered": true,
+    "audit": {
+      "mode": "inspect",
+      "pid": 6969,
+      "patch_exists": false,
+      "blacklist": [
+        {
+          "version": "local-ota67-framework",
+          "md5": "5b293e412657b3c01e1dd4659708c69c",
+          "reason": "BOOT_CRASH",
+          "blacklistedAt": 1792834119946
+        },
+        {
+          "version": "local-ota67-asynchronous",
+          "md5": "5b293e412657b3c01e1dd4659708c69c",
+          "reason": "BOOT_CRASH",
+          "blacklistedAt": 1792834137249
+        }
+      ],
+      "customer_accounts_used": false,
+      "public_patch_published": false
+    }
+  }
+]

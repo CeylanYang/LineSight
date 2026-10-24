@@ -1,0 +1,72 @@
+{
+  "cases": [
+    {
+      "mode": "framework",
+      "native_fixed_failure": "LINESIGHT_ERROR source=framework category=state",
+      "raw_canary_in_process_logs": false,
+      "process_log_lines_checked": 47,
+      "fault_payload_removed": true,
+      "blacklisted": true,
+      "same_fault_reapply_rejected": true,
+      "base_navigation_recovered": true,
+      "audit": {
+        "mode": "inspect",
+        "pid": 6586,
+        "patch_exists": false,
+        "blacklist": [
+          {
+            "version": "local-ota67-framework",
+            "md5": "5b293e412657b3c01e1dd4659708c69c",
+            "reason": "BOOT_CRASH",
+            "blacklistedAt": 1792834119946
+          }
+        ],
+        "customer_accounts_used": false,
+        "public_patch_published": false
+      }
+    },
+    {
+      "mode": "asynchronous",
+      "native_fixed_failure": "LINESIGHT_ERROR source=asynchronous category=platform",
+      "raw_canary_in_process_logs": false,
+      "process_log_lines_checked": 46,
+      "fault_payload_removed": true,
+      "blacklisted": true,
+      "same_fault_reapply_rejected": true,
+      "base_navigation_recovered": true,
+      "audit": {
+        "mode": "inspect",
+        "pid": 6969,
+        "patch_exists": false,
+        "blacklist": [
+          {
+            "version": "local-ota67-framework",
+            "md5": "5b293e412657b3c01e1dd4659708c69c",
+            "reason": "BOOT_CRASH",
+            "blacklistedAt": 1792834119946
+          },
+          {
+            "version": "local-ota67-asynchronous",
+            "md5": "5b293e412657b3c01e1dd4659708c69c",
+            "reason": "BOOT_CRASH",
+            "blacklistedAt": 1792834137249
+          }
+        ],
+        "customer_accounts_used": false,
+        "public_patch_published": false
+      }
+    }
+  ],
+  "native_assets_engine_identical": true,
+  "fault_sha256": "34fcb43beb8d0e1f6cc82acc34a89babde1d92551b41e8b42c9c2bf80bf695d8",
+  "avd": "LineSightOtaFaultValidation",
+  "api": 34,
+  "abi": "x86_64",
+  "app_reinstalled": false,
+  "app_data_cleared": false,
+  "public_fault_patch_published": false,
+  "customer_accounts_used": false,
+  "system_dialogs_dismissed_during_run": [],
+  "bootstrap_interruption": "Initial wait blocked by Android Bluetooth keeps stopping dialog; captured, dismissed, resumed without reinstall or data clear",
+  "os_native_crash_or_anr_injected": false
+}

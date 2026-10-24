@@ -4,6 +4,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -36,10 +37,7 @@ def activate(stage):
         target = root / name
         if name.endswith('.apk') and target.exists():
             assert digest(target) == expected, 'Immutable APK collision'
-    aliases = {
-        'downloads/LineSight-Android.apk': 'LineSight-1.1.54-content4-production.apk',
-        'downloads/LineSight-legacy-upgrade.apk': 'LineSight-1.1.54-content4-preview.apk',
-    }
+    aliases = manifest['aliases']
     for name in aliases:
         target = root / name
         assert not target.exists() or target.is_symlink(), 'Alias is a regular file'
@@ -115,7 +113,10 @@ def publish(args):
     repo = Path(__file__).resolve().parents[1]
     delivery = Path(args.delivery)
     receipt = json.loads((delivery / 'delivery.json').read_text(encoding='utf-8-sig'))
-    assert receipt['version'] == '1.1.54+8078' and receipt['content_revision'] == 4
+    version = receipt['version'].split('+')[0]
+    revision = receipt['content_revision']
+    assert re.fullmatch(r'\d+\.\d+\.\d+', version) and isinstance(revision, int) and revision >= 0
+    release_name = 'LineSight-' + version + '-content' + str(revision)
     identity = str(Path.home() / '.ssh' / 'linesight-ali-baot.pem')
     host = 'root@47.111.81.94'
     options = ['-o', 'BatchMode=yes', '-i', identity]
@@ -130,10 +131,17 @@ def publish(args):
             source = delivery / artifact['file']
             assert digest(source) == artifact['sha256'] and source.stat().st_size == artifact['bytes']
             track = 'production' if '-production.apk' in artifact['file'] else 'preview'
-            sources['downloads/LineSight-1.1.54-content4-' + track + '.apk'] = source
+            sources['downloads/' + release_name + '-' + track + '.apk'] = source
         manifest = {'files': {}, 'previous': {
             'index.html': '9d505b536e4123189cb08808c05d0ff508aafee7530a5489ec070c5a6bb62cf8',
             'app.js': 'defd82ffcd4c4cf5fea3c46d0f871dd10e0a588b2b84177842a8497699ee5665'}}
+        if args.previous_deployment:
+            previous = json.loads(Path(args.previous_deployment).read_text(encoding='utf-8'))
+            manifest['previous'] = {name: previous['files'][name] for name in ['index.html', 'app.js']}
+        manifest['aliases'] = {
+            'downloads/LineSight-Android.apk': release_name + '-production.apk',
+            'downloads/LineSight-legacy-upgrade.apk': release_name + '-preview.apk',
+        }
         for name, source in sources.items():
             target = stage / name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -160,6 +168,7 @@ if __name__ == '__main__':
     parser.add_argument('--remote-stage')
     parser.add_argument('--delivery')
     parser.add_argument('--evidence')
+    parser.add_argument('--previous-deployment', help='Previous receipt for live-file concurrent-change checks')
     args = parser.parse_args()
     if args.remote_stage:
         activate(args.remote_stage)

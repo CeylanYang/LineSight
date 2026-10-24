@@ -103,7 +103,7 @@ const cards = [
     "id": "start",
     "title": "开始使用",
     "category": "下载中心 / Android",
-    "caption": "安装 LineSight 1.1.54 · 内容版本 4",
+    "caption": "安装 LineSight 1.1.54 · 内容版本 5",
     "detail": "首次安装选择正式版；已安装旧体验版请在下载中心选择兼容升级。安装后进入「我的」登录，账号由团队管理员提供。",
     "image_type": "统一登录 · 团队协作"
   }
@@ -162,7 +162,7 @@ function openCard(index){
   const caption=document.createElement('p');caption.textContent=card.caption;
   const detail=document.createElement('p');detail.textContent=card.detail;
   const note=document.createElement('p');note.className='source-note';note.textContent=card.image_type;
-  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.54-content4-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.54':'进入网页演示 →';
+  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.54-content5-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.54':'进入网页演示 →';
   if(index===11)link.setAttribute('download','');
   const banner=document.createElement('div');banner.className='detail-banner';banner.textContent='★ LineSight 产线视界 · 看见每一步 ★';
   content.append(title,caption,detail,note,link,banner);container.append(img,content);

@@ -1,0 +1,80 @@
+{
+  "version": "1.1.54+8078",
+  "content_revision": 5,
+  "source_fix_commit": "d60477a",
+  "flutter_tests": 466,
+  "analyze_clean": true,
+  "native_assets_engine_unchanged": true,
+  "preview_ota7_published": true,
+  "production_ota4_published": true,
+  "production_content5_runtime_verified": true,
+  "preview_content5_runtime_verified": false,
+  "startup_dart_fault_rollback_verified": true,
+  "native_process_fatal_crash_or_anr_verified": false,
+  "physical_devices_verified": false,
+  "customer_data_changed": false,
+  "first_install_time": "2026-10-24 08:42:22",
+  "last_update_time": "2026-10-24 08:42:22",
+  "app_reinstalled": false,
+  "app_data_cleared": false,
+  "artifacts": [
+    {
+      "file": "LineSight-1.1.54-8078-preview.apk",
+      "sha256": "e00b9e58ed51f7e018d6892e652f1920f4bc554776febc87afe2b8d40ebaa4ae",
+      "bytes": 75547520,
+      "certificate_sha256": "235a5af21396781cffd17f2081cffcb947de9b00894f97c959c6f64fa7a7010e"
+    },
+    {
+      "file": "LineSight-1.1.54-8078-production.apk",
+      "sha256": "e9767aabd40c5b3fa6abf5727ff435aa54a6cb4dc29a1184fcd352207f68019d",
+      "bytes": 75547520,
+      "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2"
+    }
+  ],
+  "manifests": [
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T09:32:32.726380+00:00",
+      "schema": 1,
+      "sequence": 7,
+      "sha256": "e243837a7f77484a62495c8c321ff28259fa6656d40c9f9e09809cf0c2124f29",
+      "size": 11207568,
+      "track": "preview"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T09:32:32.757448+00:00",
+      "schema": 1,
+      "sequence": 7,
+      "sha256": "14aa88c763dc928c64a6226f2680c854df077ef72c8e0571c0601178e8f63780",
+      "size": 11469712,
+      "track": "preview"
+    },
+    {
+      "abi": "arm64-v8a",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T09:34:59.763997+00:00",
+      "schema": 1,
+      "sequence": 4,
+      "sha256": "d76ea59524aaff15a3c9620c73ca54fb08a050893ec1d8bfdb7d70fef6292749",
+      "size": 11207568,
+      "track": "production"
+    },
+    {
+      "abi": "x86_64",
+      "action": "patch",
+      "base": 8078,
+      "expires": "2027-01-22T09:34:59.803436+00:00",
+      "schema": 1,
+      "sequence": 4,
+      "sha256": "eb866a81d2cca68f235605e25c2ae8953142907f3f93a25e5cac5fb25ffa1360",
+      "size": 11469712,
+      "track": "production"
+    }
+  ]
+}
