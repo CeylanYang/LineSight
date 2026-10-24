@@ -1,0 +1,64 @@
+/* Keep the desktop portal; use readable document flow on phones. */
+@media (max-width: 700px) {
+  body { font: 16px/1.65 "Microsoft YaHei", sans-serif; }
+  body.qc-chrome-on { padding: 0 !important; }
+  #page-viewport, #portal { width: 100% !important; height: auto !important; transform: none !important; overflow: visible; }
+  .main-paper { position: relative; inset: auto; width: 100%; min-height: 0; padding: 10px; overflow: hidden; display: flex; flex-direction: column; gap: 12px; }
+  .billboards, .floating-ad, #stickers, #sparkles, .qc-chrome, .qc-corner,
+  .qc-grain, .qc-scanlines, .qc-flash, .casino-rain, .retro-rain,
+  .retro-roaming-card, .ls-banner { display: none !important; }
+  .masthead { height: auto; order: -3; }
+  .topline { height: auto; padding: 8px; }
+  .topline strong { font-size: 16px; }
+  .top-center, .top-right, .ticker, .quickline, .brand-tagline { display: none; }
+  .brand { height: 84px; }
+  .brand > a { left: 8px; top: 0; width: min(270px, 100%); height: 84px; }
+  .portal .main-nav { height: auto; padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; white-space: normal; font-size: 14px; }
+  .main-nav em { display: none; }
+  .main-nav a { min-height: 44px; display: grid; place-items: center; }
+  .searchline { height: auto; padding: 8px 0; }
+  .searchline input { width: 0; flex: 1; min-width: 0; }
+  .searchline > span { display: none; }
+  .check-in-strip, .stats, .promo-strip, .news-layout, .dashboard, .vip-banner, .community { position: relative; inset: auto; width: 100%; height: auto; }
+  .check-in-strip { order: -2; display: grid; gap: 10px; padding: 14px; scroll-margin-top: 12px; }
+  .check-in-strip .status-blink { display: none; }
+  .portal .check-in-strip h2 { font-size: 22px; }
+  .portal .retro-button, .portal .check-in-strip .retro-button { min-height: 48px; display: grid; place-items: center; padding: 10px; font-size: 16px; line-height: 1.5; white-space: normal; text-align: center; }
+  .stats { order: -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > div { padding: 10px; }
+  .stats span { font-size: 13px; line-height: 1.6; }
+  .promo-strip { grid-template-columns: 1fr; gap: 8px; }
+  .promo { min-height: 86px; }
+  .news-layout, .dashboard-panels, .community-layout { display: grid; grid-template-columns: minmax(0, 1fr); height: auto; gap: 12px; }
+  .site-sidebar, .news-right { display: none; }
+  .bar, .dashboard-title, .community-title { height: auto; min-height: 36px; line-height: 1.5; padding: 8px; font-size: 15px; }
+  .dashboard-title > span, .community-title > span { display: none; }
+  .news-tabs { white-space: normal; }
+  .news-body { padding: 12px; }
+  .portal .news-body h1 { font-size: 24px; }
+  .news-list { font-size: 15px; line-height: 1.8; padding-left: 20px; }
+  .news-list a { display: inline-block; padding: 8px 0; }
+  .hero-footnote { position: static; margin-top: 12px; font-size: 14px; }
+  .headline-caption { font-size: 13px; }
+  .dashboard-card { padding: 14px; }
+  .dashboard-card h3 { font-size: 18px; }
+  .dashboard-card > p { font-size: 14px; white-space: normal; }
+  .dashboard-card > button, .button-row > button { font-size: 15px; min-height: 44px; height: auto; }
+  input, textarea, select, .training select { font-size: 16px; min-height: 44px; height: auto; }
+  .vip-banner { aspect-ratio: 8 / 1; }
+  .gallery { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 12px; }
+  .gallery-card header, .gallery-card footer, .gallery-card footer p { height: auto; min-height: 30px; font-size: 14px; line-height: 1.6; white-space: normal; }
+  .gallery-card header span { font-size: 12px; }
+  .gallery-image, .gallery-card:nth-child(n+7):nth-child(-n+9) .gallery-image { height: auto; }
+  .gallery-image img, .gallery-card:nth-child(n+7):nth-child(-n+9) .gallery-image img { width: 100%; height: auto; max-height: none; object-fit: contain; }
+  .like { min-height: 44px; height: auto; font-size: 14px; padding: 6px 12px; }
+  .guestbook, .honor { height: auto; padding: 12px; }
+  .guestbook h3, .honor h3 { font-size: 18px; }
+  .guestbook button, .honor li { min-height: 44px; height: auto; font-size: 15px; }
+  .guestbook > p, .honor p, .friend-note, .boji-note { font-size: 14px; line-height: 1.7; }
+  .casino-service { display: none; }
+  .qc-audio-toggle { top: auto !important; bottom: 12px !important; right: 12px !important; }
+  .casino-entry-card { max-height: 90dvh; overflow: auto; }
+  .casino-entry-close { min-width: 44px; min-height: 44px; }
+  .casino-entry-actions button { min-height: 48px; font-size: 16px; }
+}

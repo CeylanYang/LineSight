@@ -1,0 +1,10 @@
+{
+  "backup": "/var/backups/linesight/portal-mobile/linesight-mobile-20261024T101822Z",
+  "files": {
+    "index.html": "935dc2d9ca0eba386e3d292412836f84d1741b98945f16c75791d4386c980f5f",
+    "mobile.css": "2949391a25f421e25a8386c0923666d9639a08241d00a6800a66d5d70274ec54"
+  },
+  "previous_index": "7caec968c6e6aa2cae80db2b18daddcf3fc99b1820f365fd7722366e1750fe9e",
+  "downloads_modified": false,
+  "auth_or_server_config_modified": false
+}

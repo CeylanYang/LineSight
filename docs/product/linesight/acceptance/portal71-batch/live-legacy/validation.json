@@ -1,0 +1,32 @@
+[
+  {
+    "width": 390,
+    "url": "https://99ai.pronhubcn.com/linesight/",
+    "geometry": {
+      "width": 390,
+      "documentWidth": 390
+    },
+    "buttons": [
+      {
+        "text": "↓ 首次安装正式版",
+        "href": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-production.apk",
+        "x": 26,
+        "y": 421.6875,
+        "width": 338,
+        "height": 48,
+        "font": 16
+      },
+      {
+        "text": "旧体验版兼容升级",
+        "href": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-1.1.54-content5-preview.apk",
+        "x": 26,
+        "y": 479.6875,
+        "width": 338,
+        "height": 48,
+        "font": 16
+      }
+    ],
+    "page_errors": [],
+    "task_interaction_checked": true
+  }
+]
