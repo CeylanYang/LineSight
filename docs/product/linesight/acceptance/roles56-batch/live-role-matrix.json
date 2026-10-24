@@ -1,0 +1,63 @@
+{
+  "real_https_pkce_identities": 4,
+  "roles": {
+    "owner": {
+      "read_jobs": 200,
+      "read_records": 200,
+      "read_metrics": 200,
+      "read_report": 200,
+      "read_templates": 200,
+      "read_members": 200,
+      "read_printer-profiles": 200,
+      "read_notifications": 200,
+      "create_task": 201
+    },
+    "manager": {
+      "read_jobs": 200,
+      "read_records": 200,
+      "read_metrics": 200,
+      "read_report": 200,
+      "read_templates": 200,
+      "read_members": 200,
+      "read_printer-profiles": 200,
+      "read_notifications": 200,
+      "create_task": 201,
+      "invite_member": 403
+    },
+    "operator": {
+      "read_jobs": 200,
+      "read_records": 200,
+      "read_metrics": 200,
+      "read_report": 200,
+      "read_templates": 200,
+      "read_members": 200,
+      "read_printer-profiles": 200,
+      "read_notifications": 200,
+      "create_task": 201,
+      "invite_member": 403
+    },
+    "viewer": {
+      "read_jobs": 200,
+      "read_records": 200,
+      "read_metrics": 200,
+      "read_report": 200,
+      "read_templates": 200,
+      "read_members": 200,
+      "read_printer-profiles": 200,
+      "read_notifications": 200,
+      "create_task": 403,
+      "invite_member": 403
+    }
+  },
+  "downgrade_old_token_status": 401,
+  "downgraded_fresh_token_read_status": 200,
+  "downgraded_fresh_token_write_status": 403,
+  "removed_member_old_token_status": 404,
+  "last_owner_leave_status": 409,
+  "native_final_apk_role_matrix_verified": false,
+  "physical_devices_verified": false,
+  "disposable_api_users_deleted": 4,
+  "disposable_workspaces_deleted": 5,
+  "customer_teams_modified": false,
+  "disposable_identity_accounts_deleted": 4
+}
