@@ -35,3 +35,5 @@ backend/local.sqlite3
 Thumbs.db
 *.log
 /.artifact-work/
+/outputs/
+*.xlsx.inspect.ndjson
