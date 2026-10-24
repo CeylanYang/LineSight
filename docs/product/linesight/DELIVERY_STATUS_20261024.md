@@ -4,6 +4,8 @@
 
 ## 本次新增完成
 
+原生补验第 75 批尚未通过：原模拟器 36.2.12 与独立安装的 37.2.12 均以 Windows 访问冲突 `0xC0000005` 退出。新版成功启动并实际读取到原演示团队及 13/3/13 任务数量，但升级前截图采集未完成，因此未执行候选安装，也没有生成升级通过结论。AVD 数据保留，模拟器已退出；证据见 `acceptance/upgrade75-batch/validation.json`。邮件测试收件人再次确认已收到。
+
 | 项目 | 验证结果 | 证据 |
 | --- | --- | --- |
 | 原生插件日志修复候选 | release R8 及正式打包 DEX 检查：旧内容 5 APK 保留 1,656 处 Log、24 处 printStackTrace；1.1.55+8079 两种签名候选均归零，474 项完整 Flutter 测试通过。8 张版本号差异截图逐一审阅并按版本归档，旧证据未覆盖；两签名 native/资源/资产/引擎指纹相同。候选未发布，仍需原生启动/回调/升级保留/回退补验；8078 线上基线和 OTA 未修改 | acceptance/privacy74-batch/validation.json、full-test-result.txt；privacy73-batch/shipped-content5.json |

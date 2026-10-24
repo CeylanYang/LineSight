@@ -1,0 +1,44 @@
+{
+  "status": "incomplete",
+  "production_upgrade_verified": false,
+  "candidate_installed": false,
+  "baseline_capture_completed": false,
+  "observed_existing_version_code": 8078,
+  "observed_demo_session": {
+    "workspace": "演示团队",
+    "awaiting": 13,
+    "exception": 3,
+    "closed": 13,
+    "evidence_kind": "live uiautomator inspection; screenshot capture failed"
+  },
+  "runtime_attempts": [
+    {
+      "version": "36.2.12",
+      "gpu": "angle_indirect",
+      "host_exit_code": -1073741819
+    },
+    {
+      "version": "37.2.12.0 (16428233)",
+      "installation": "isolated SDK tools; original SDK preserved",
+      "gpu": "swiftshader",
+      "host_exit_code": -1073741819,
+      "boot_completed_observed": true,
+      "demo_workbench_observed": true,
+      "failure_stage": "baseline screenshot capture before APK installation"
+    }
+  ],
+  "failure_class": "Windows host access violation 0xC0000005; module and root cause not established",
+  "avd": "LineSightProductionFreshValidation",
+  "requested_memory_mb": 1536,
+  "cores": 2,
+  "data_cleared": false,
+  "uninstall_used": false,
+  "customer_data_modified": false,
+  "emulator_running_after_attempt": false,
+  "public_release_changed": false,
+  "next_required": [
+    "Stable native test runtime",
+    "Successful baseline capture before preserved-data APK upgrade",
+    "Production and preview upgrade, login callback and OTA regression"
+  ]
+}
