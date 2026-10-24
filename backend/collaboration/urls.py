@@ -27,6 +27,7 @@ urlpatterns = [
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/", workflow.task),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/history/", workflow.history),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/inspection/", workflow.inspect),
+    path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/assignment/", workflow.assign),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/evidence/", api.upload_evidence),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/evidence/<int:evidence_id>/preview/", api.evidence_preview),
     path("workspaces/<int:workspace_id>/jobs/<uuid:job_id>/evidence/<int:evidence_id>/original/", api.evidence_original),

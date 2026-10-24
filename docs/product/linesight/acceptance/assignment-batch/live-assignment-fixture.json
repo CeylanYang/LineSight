@@ -1,0 +1,423 @@
+{
+  "workspace_id": 16,
+  "before_handoff": {
+    "id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+    "version": 6,
+    "part_name": "Assignment handover probe",
+    "printer": "A1",
+    "quantity": 3,
+    "note": "",
+    "status": "exception",
+    "created_at": "2026-10-24T00:08:05.607657+00:00",
+    "updated_at": "2026-10-24T00:08:06.839395+00:00",
+    "batch_code": "",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": 19,
+    "assignee": "Assignment owner",
+    "template": null,
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [
+      {
+        "id": 11,
+        "note": "Crack requiring repair",
+        "status": "open",
+        "assignee": "Assignment owner",
+        "resolution": "",
+        "category": "other",
+        "severity": "major",
+        "inspection_id": 27,
+        "creator": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.837510+00:00",
+        "resolved_at": null
+      }
+    ],
+    "inspections": [
+      {
+        "id": 27,
+        "task_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+        "part_name": "Assignment handover probe",
+        "batch_code": "",
+        "round_no": 1,
+        "verdict": "fail",
+        "note": "Crack requiring repair",
+        "inspector": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.835003+00:00",
+        "inspector_id": 19,
+        "inspected_qty": 3,
+        "pass_qty": 0,
+        "fail_qty": 3,
+        "scrap_qty": 0,
+        "template_snapshot": {},
+        "answers": [],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "assigned": {
+    "id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+    "version": 7,
+    "part_name": "Assignment handover probe",
+    "printer": "A1",
+    "quantity": 3,
+    "note": "",
+    "status": "exception",
+    "created_at": "2026-10-24T00:08:05.607657+00:00",
+    "updated_at": "2026-10-24T00:08:07.089515+00:00",
+    "batch_code": "",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": 20,
+    "assignee": "Assignment receiver",
+    "template": null,
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [
+      {
+        "id": 11,
+        "note": "Crack requiring repair",
+        "status": "open",
+        "assignee": "Assignment receiver",
+        "resolution": "",
+        "category": "other",
+        "severity": "major",
+        "inspection_id": 27,
+        "creator": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.837510+00:00",
+        "resolved_at": null
+      }
+    ],
+    "inspections": [
+      {
+        "id": 27,
+        "task_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+        "part_name": "Assignment handover probe",
+        "batch_code": "",
+        "round_no": 1,
+        "verdict": "fail",
+        "note": "Crack requiring repair",
+        "inspector": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.835003+00:00",
+        "inspector_id": 19,
+        "inspected_qty": 3,
+        "pass_qty": 0,
+        "fail_qty": 3,
+        "scrap_qty": 0,
+        "template_snapshot": {},
+        "answers": [],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "closed": {
+    "id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+    "version": 9,
+    "part_name": "Assignment handover probe",
+    "printer": "A1",
+    "quantity": 3,
+    "note": "",
+    "status": "closed",
+    "created_at": "2026-10-24T00:08:05.607657+00:00",
+    "updated_at": "2026-10-24T00:08:07.856903+00:00",
+    "batch_code": "",
+    "tracking_mode": "batch",
+    "serial_numbers": [],
+    "assignee_id": 20,
+    "assignee": "Assignment receiver",
+    "template": null,
+    "profile_version": "",
+    "profile_source": "",
+    "exceptions": [
+      {
+        "id": 11,
+        "note": "Crack requiring repair",
+        "status": "resolved",
+        "assignee": "Assignment receiver",
+        "resolution": "Crack repaired",
+        "category": "other",
+        "severity": "major",
+        "inspection_id": 27,
+        "creator": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.837510+00:00",
+        "resolved_at": "2026-10-24T00:08:07.719398+00:00"
+      }
+    ],
+    "inspections": [
+      {
+        "id": 28,
+        "task_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+        "part_name": "Assignment handover probe",
+        "batch_code": "",
+        "round_no": 2,
+        "verdict": "pass",
+        "note": "Repaired surface checked",
+        "inspector": "Assignment receiver",
+        "created_at": "2026-10-24T00:08:07.855643+00:00",
+        "inspector_id": 20,
+        "inspected_qty": 3,
+        "pass_qty": 3,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_snapshot": {},
+        "answers": [],
+        "serial_results": {},
+        "evidence": []
+      },
+      {
+        "id": 27,
+        "task_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+        "part_name": "Assignment handover probe",
+        "batch_code": "",
+        "round_no": 1,
+        "verdict": "fail",
+        "note": "Crack requiring repair",
+        "inspector": "Assignment owner",
+        "created_at": "2026-10-24T00:08:06.835003+00:00",
+        "inspector_id": 19,
+        "inspected_qty": 3,
+        "pass_qty": 0,
+        "fail_qty": 3,
+        "scrap_qty": 0,
+        "template_snapshot": {},
+        "answers": [],
+        "serial_results": {},
+        "evidence": []
+      }
+    ],
+    "evidence": []
+  },
+  "history": [
+    {
+      "id": 177,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.created",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 1,
+      "details": {
+        "status": "queued"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:05.609396+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 178,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.assigned",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 2,
+      "details": {
+        "previous_assignee_id": 19,
+        "previous_assignee": "Assignment owner",
+        "assignee_id": 20,
+        "assignee": "Assignment receiver",
+        "note": "",
+        "handed_over_issues": [],
+        "actor_role": "owner"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:05.766613+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 179,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.assigned",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 3,
+      "details": {
+        "previous_assignee_id": 20,
+        "previous_assignee": "Assignment receiver",
+        "assignee_id": 19,
+        "assignee": "Assignment owner",
+        "note": "",
+        "handed_over_issues": [],
+        "actor_role": "owner"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:06.175893+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 180,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.status",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 4,
+      "details": {
+        "previous": "queued",
+        "status": "printing"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:06.587519+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 181,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.status",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 5,
+      "details": {
+        "previous": "printing",
+        "status": "inspection"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:06.709015+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 182,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "exception.created",
+      "object_id": "11",
+      "object_type": "issue",
+      "version": 6,
+      "details": {
+        "inspection_id": 27,
+        "category": "other",
+        "severity": "major",
+        "assignee": "Assignment owner"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:06.838927+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 183,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "inspection.fail",
+      "object_id": "27",
+      "object_type": "inspection",
+      "version": 6,
+      "details": {
+        "verdict": "fail",
+        "previous": "inspection",
+        "status": "exception",
+        "round_no": 1,
+        "inspected_qty": 3,
+        "pass_qty": 0,
+        "fail_qty": 3,
+        "scrap_qty": 0,
+        "evidence_ids": []
+      },
+      "record": {
+        "id": 27,
+        "round_no": 1,
+        "verdict": "fail",
+        "inspected_qty": 3,
+        "pass_qty": 0,
+        "fail_qty": 3,
+        "scrap_qty": 0,
+        "template_version": null
+      },
+      "created_at": "2026-10-24T00:08:06.840064+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 184,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "job.assigned",
+      "object_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "object_type": "task",
+      "version": 7,
+      "details": {
+        "previous_assignee_id": 19,
+        "previous_assignee": "Assignment owner",
+        "assignee_id": 20,
+        "assignee": "Assignment receiver",
+        "note": "Continue the crack repair and attach completion evidence",
+        "handed_over_issues": [
+          {
+            "id": 11,
+            "assignee": "Assignment owner"
+          }
+        ],
+        "actor_role": "owner"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:07.090996+00:00",
+      "actor_id": 19,
+      "actor": "Assignment owner"
+    },
+    {
+      "id": 185,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "exception.resolved",
+      "object_id": "11",
+      "object_type": "issue",
+      "version": 8,
+      "details": {
+        "resolution": "Crack repaired",
+        "previous": "exception",
+        "status": "inspection",
+        "disposition": null,
+        "closure_reason": null,
+        "actor_role": "operator"
+      },
+      "record": null,
+      "created_at": "2026-10-24T00:08:07.721390+00:00",
+      "actor_id": 20,
+      "actor": "Assignment receiver"
+    },
+    {
+      "id": 186,
+      "job_id": "0052dba8-f191-4e8e-92ac-489895cf446b",
+      "workspace_id": 16,
+      "action": "inspection.pass",
+      "object_id": "28",
+      "object_type": "inspection",
+      "version": 9,
+      "details": {
+        "verdict": "pass",
+        "previous": "inspection",
+        "status": "closed",
+        "round_no": 2,
+        "inspected_qty": 3,
+        "pass_qty": 3,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "evidence_ids": []
+      },
+      "record": {
+        "id": 28,
+        "round_no": 2,
+        "verdict": "pass",
+        "inspected_qty": 3,
+        "pass_qty": 3,
+        "fail_qty": 0,
+        "scrap_qty": 0,
+        "template_version": null
+      },
+      "created_at": "2026-10-24T00:08:07.859191+00:00",
+      "actor_id": 20,
+      "actor": "Assignment receiver"
+    }
+  ]
+}

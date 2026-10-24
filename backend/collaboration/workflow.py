@@ -190,6 +190,44 @@ def inspect(request, workspace_id, job_id):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def assign(request, workspace_id, job_id):
+    member = membership(request, workspace_id, write=True)
+    def command(job):
+        from .product import person
+        if job.status == 'closed':
+            return reject('已关闭任务不能更改负责人')
+        if 'assignee_id' not in request.data:
+            return Response({'detail': '请选择负责人或未指派'}, status=400)
+        selected = request.data['assignee_id']
+        if selected is not None and (type(selected) is not int or not 1 <= selected <= 2**63-1):
+            return Response({'detail': '负责人编号无效'}, status=400)
+        target = Membership.objects.select_related('user', 'user__cloud_identity').filter(
+            workspace=member.workspace, user_id=selected, user__is_active=True,
+            role__in=[Membership.OWNER, Membership.OPERATOR]).first() if selected is not None else None
+        if selected is not None and target is None:
+            return Response({'detail': '请选择当前团队可处理任务的成员'}, status=400)
+        if selected == job.assignee_id:
+            return Response({'detail': '负责人未改变'}, status=400)
+        note = str(request.data.get('note', '')).strip()
+        if len(note) > 500 or (job.status == 'exception' and not note):
+            return Response({'detail': '异常交接需要填写1至500字的交接说明'}, status=400)
+        previous_id, previous = job.assignee_id, person(job.assignee)
+        current = person(target.user) if target else ''
+        # Pending issues follow the task's responsible member. Resolved issues
+        # and their inspection/resolution history remain unchanged.
+        pending = list(job.exceptions.filter(status='open').values('id', 'assignee'))
+        job.exceptions.filter(status='open').update(assignee=current)
+        job.assignee_id = selected
+        job.save(update_fields=['assignee', 'updated_at'])
+        event(request, job, 'job.assigned', job.pk, previous_assignee_id=previous_id,
+            previous_assignee=previous, assignee_id=selected, assignee=current,
+            note=note, handed_over_issues=pending, actor_role=member.role)
+        return Response(job_json(job))
+    return mutate(request, member, job_id, command)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def exception(request, workspace_id, job_id):
     member = membership(request, workspace_id, write=True)
     return mutate(request, member, job_id, lambda job: inspection_command(request, job, exception_only=True))

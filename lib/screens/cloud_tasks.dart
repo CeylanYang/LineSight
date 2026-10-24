@@ -19,6 +19,7 @@ import '../ui.dart';
 import '../time.dart' show zonedStamp;
 import 'cloud_business.dart';
 import 'cloud_profiles.dart';
+import 'cloud_assignment.dart';
 import 'cloud_shell.dart' show CloudLoginPage, cloudReauthenticate;
 
 String cloudTimestamp(Object? value) {
@@ -765,8 +766,11 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
               .cast<Map<String, dynamic>>();
       if (mounted && account.retainsAccess(accessBinding)) {
         setState(() {
-          teamMembers = rows;
-          if (assigneeId != null && !rows.any((m) => m['id'] == assigneeId)) {
+          teamMembers = rows
+              .where((m) => m['role'] != 'viewer' && m['active'] != false)
+              .toList();
+          if (assigneeId != null &&
+              !teamMembers.any((m) => m['id'] == assigneeId)) {
             assigneeId = null;
           }
         });
@@ -1377,8 +1381,11 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
           .cast<Map<String, dynamic>>();
       if (mounted && captured == binding && account.retainsAccess(captured)) {
         setState(() {
-          job = latest;
-          history = events;
+          if ((latest['version'] as int? ?? 0) >=
+              (job['version'] as int? ?? 0)) {
+            job = latest;
+            history = events;
+          }
         });
       }
     } on CollaborationApiException catch (failure) {
@@ -1406,6 +1413,23 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
         ),
       ),
     );
+  }
+
+  Future<void> assign() async {
+    final account = CloudScope.of(context), captured = binding;
+    final result = await Navigator.of(context).push<Map<String, dynamic>>(
+      appPageRoute<Map<String, dynamic>>(
+        context,
+        CloudAssignmentPage(job: job, workspaceId: widget.workspaceId),
+      ),
+    );
+    if (!mounted || result == null || !account.retainsAccess(captured)) return;
+    setState(() {
+      job = result;
+      error = null;
+    });
+    unawaited(load());
+    unawaited(account.reload());
   }
 
   @override
@@ -1459,6 +1483,12 @@ class _CloudTaskPageState extends State<CloudTaskPage> {
     return DetailScaffold(
       title: partName,
       actions: [
+        if (canEdit && status != 'closed')
+          IconButton(
+            onPressed: busy || error != null ? null : assign,
+            tooltip: tr(context, '更改负责人'),
+            icon: const Icon(Icons.person_outline, size: 21),
+          ),
         IconButton(
           icon: const Icon(Icons.qr_code, size: 21),
           tooltip: tr(context, '任务二维码'),

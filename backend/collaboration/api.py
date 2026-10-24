@@ -119,7 +119,7 @@ def account(request):
 def members(request, workspace_id):
     member = membership(request, workspace_id)
     rows = Membership.objects.filter(workspace=member.workspace).select_related("user", "user__cloud_identity").order_by("user__username")
-    return Response([{"id": row.user_id, "username": row.user.username, "role": row.role, "is_self": row.user_id == request.user.pk,
+    return Response([{"id": row.user_id, "username": row.user.username, "role": row.role, "active": row.user.is_active, "is_self": row.user_id == request.user.pk,
         "display_name": identity.display_name if (identity := getattr(row.user, "cloud_identity", None)) else row.user.get_full_name() or row.user.username} for row in rows])
 
 
@@ -395,7 +395,9 @@ def jobs(request, workspace_id):
     elif serials:
         return Response({'detail': '批次模式不可混入SN记录'}, status=400)
     assignee_id = d.get('assignee_id')
-    if assignee_id is not None and not Membership.objects.filter(workspace=member.workspace, user_id=assignee_id).exists():
+    if assignee_id is not None and (type(assignee_id) is not int or not 1 <= assignee_id <= 2**63-1 or not Membership.objects.filter(
+            workspace=member.workspace, user_id=assignee_id, user__is_active=True,
+            role__in=[Membership.OWNER, Membership.OPERATOR]).exists()):
         return Response({'detail': '负责人不属于当前团队'}, status=400)
     template = None
     if d.get('template_id') is not None:

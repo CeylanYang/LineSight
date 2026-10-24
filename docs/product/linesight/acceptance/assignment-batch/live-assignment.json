@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "native_pkce_provider_flow": true,
+  "new_isolated_workspaces": 2,
+  "new_probe_tasks": 1,
+  "assignment_notification_read_and_reassignment": true,
+  "concurrent_one_success_one_conflict": true,
+  "receipt_replay_and_mismatched_key_rejected": true,
+  "issue_handoff_note_required": true,
+  "handoff_keeps_original_inspection": true,
+  "previous_recipient_notice_removed": true,
+  "new_recipient_notice_unread": true,
+  "foreign_workspace_and_recipient_rejected": true,
+  "receiver_completes_repair_and_reinspection": true,
+  "closed_assignment_rejected": true,
+  "versioned_handover_history": true,
+  "existing_user_data_modified": false,
+  "temporary_provider_identities_deleted": true
+}

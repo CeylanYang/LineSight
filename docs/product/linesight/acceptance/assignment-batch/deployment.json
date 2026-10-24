@@ -1,0 +1,20 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/assignment/20261024T000751Z",
+  "before_sha256": {
+    "collaboration/api.py": "684d172c29953a8b5fea67050e40b1570d871b7bdf8b13cecef9ff740de57a11",
+    "collaboration/workflow.py": "7bc4c769d3366109761fe76b3b0fd9d9bc5c80e22477e9ee498c54638ec4924a",
+    "collaboration/urls.py": "9a2485b5079b4701f5d238b7bad7d8cabffc586707ad275bdb54a4b2aaad9fe1"
+  },
+  "after_sha256": {
+    "collaboration/api.py": "969d1c870352772865a6b79d6ccd02c243754418f9dc6b3a0d15e183f7161daa",
+    "collaboration/workflow.py": "baa3d27a6346253ad0ded4beb61aec74dd62c98d4f31628288f31bf4a6147105",
+    "collaboration/urls.py": "b254b790b35d1dcc6ad7c67d9867d5bcf074492460aca261342996a300690cb4"
+  },
+  "schema_changed": false,
+  "existing_tables_checked": 31,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false,
+  "rollback_preserves_live_writes": true
+}

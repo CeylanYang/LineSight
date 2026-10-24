@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.example.linesight_flutter/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.example.linesight_flutter/.MainActivity
+TotalTime: 3522
+WaitTime: 3649
+Complete

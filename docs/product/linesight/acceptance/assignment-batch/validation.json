@@ -1,0 +1,56 @@
+{
+  "version": "1.1.49+8073",
+  "flutter_full_tests_passed": 425,
+  "backend_tests_passed": 87,
+  "new_flutter_tests": 16,
+  "new_backend_tests": 9,
+  "new_component_png": 8,
+  "flutter_analyze_clean": true,
+  "assignment_and_issue_handover_verified": true,
+  "real_https_verified": true,
+  "native_final_apk_verified": false,
+  "physical_devices_verified": false,
+  "product_plan_complete": false,
+  "screenshots": [
+    {
+      "file": "png/291-assignment-conflict-en-component.png",
+      "sha256": "5b0639f44e5a2599e239e1ef7938fe667568d7503c66f0c522858f91006fdd53",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-conflict-zh-component.png",
+      "sha256": "7b78793cf8b0d932f670f3519a5b201b4fdaaa733f7cd9baf65e8558f10a2d11",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-form-en-component.png",
+      "sha256": "76626968179a9201a5af0f741f15e9eb8dc6f20538fdaea45e9547a04b58cf4e",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-form-zh-component.png",
+      "sha256": "904887565cb571dd302f027bf6c35cd6a02f8edc7914380d1fd63722c45167ff",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-handoff-en-component.png",
+      "sha256": "9f75bf099e4ad57f023976fbace0672db25dc547e45f78ddd3a0dee780aa1898",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-handoff-zh-component.png",
+      "sha256": "3519f3b2e8b51d78d2eca2a556495acb30afde52d340f5d4e61d89f53fd7d827",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-history-en-component.png",
+      "sha256": "48e2c4bb4b1a623986b3b2c357b81200af161a701f89845743b5637a54c784fd",
+      "origin": "desktop-component-render"
+    },
+    {
+      "file": "png/291-assignment-history-zh-component.png",
+      "sha256": "b63458ea463ddc9258d8d1be3e136eae20830dac349964716caccae208c64ed5",
+      "origin": "desktop-component-render"
+    }
+  ]
+}

@@ -67,6 +67,7 @@ class CloudHistoryEvent extends StatelessWidget {
     final title = switch (event['action']) {
       'job.created' => '创建任务',
       'job.status' => '任务状态更新',
+      'job.assigned' => '更改负责人',
       'inspection.pass' => '检验合格',
       'inspection.fail' => '检验异常',
       'exception.created' => '创建异常',
@@ -75,6 +76,15 @@ class CloudHistoryEvent extends StatelessWidget {
       _ => '任务操作',
     };
     final values = <String, String>{
+      if (event['action'] == 'job.assigned') ...{
+        '原负责人': '${details['previous_assignee'] ?? ''}'.isEmpty
+            ? tr(context, '未指派')
+            : '${details['previous_assignee']}',
+        '新负责人': '${details['assignee'] ?? ''}'.isEmpty
+            ? tr(context, '未指派')
+            : '${details['assignee']}',
+        if ('${details['note'] ?? ''}'.isNotEmpty) '交接说明': '${details['note']}',
+      },
       if (event['version'] != null) '任务版本': '${event['version']}',
       '记录编号': '${event['object_id'] ?? ''}',
       if (record['round_no'] != null) '检验轮次': '${record['round_no']}',

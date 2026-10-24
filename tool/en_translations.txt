@@ -1707,3 +1707,24 @@
 1706|Profile updated; review the latest version
 1707|Continue from latest, keeping edits
 1708|Check the name, version and HTTPS source, then check your connection and save again.
+1709|Change assignee
+1710|Assignee changes are not saved.
+1711|Assignee updated
+1712|Hand over this task and all open issues.
+1713|Choose a member to take over this task.
+1714|Current assignee
+1715|New assignee
+1716|Previous assignee
+1717|Handover note
+1718|Enter a handover note
+1719|Confirm assignee
+1720|Closed tasks cannot be reassigned
+1721|Task updated; review the latest version
+1722|Continue with latest task
+1723|No available assignees
+1724|Refresh the member list and try again.
+1725|Choose an assignee or Unassigned
+1726|Invalid assignee
+1727|Choose a member who can handle tasks in this team
+1728|Assignee has not changed
+1729|Issue handover needs a note of 1 to 500 characters

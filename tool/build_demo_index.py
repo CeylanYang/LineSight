@@ -8,6 +8,7 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1] / 'docs/product/linesight/acceptance'
 groups = {
+    'assignment-batch': ['COL-03','QC-06','UI-03','UI-08','UI-11','SEC-04','QA-04'],
     'sso': ['SSO-01','SSO-02','SSO-04'],
     'product-batch': ['UI-03','QC-01','QC-02','QC-05','REP-03'],
     'offline-batch': ['OFF-01','OFF-02','OFF-03','COL-03'],
@@ -46,7 +47,7 @@ for group, ids in groups.items():
         items.append({'file':path.relative_to(root).as_posix(), 'title':path.stem,
             'batch':group,'batch_requirement_ids':ids,
             'origin':('android-emulator-screenshot' if '-emulator' in path.name else
-                'desktop-component-render' if 'desktop-render' in path.name else
+                'desktop-component-render' if 'desktop-render' in path.name or '-component' in path.name else
                 'generated-trace-code' if '-generated' in path.name else
                 'processed-reference-image' if '-processed' in path.name else
                 'reference-source-image' if '-source' in path.name else 'android-screenshot'),

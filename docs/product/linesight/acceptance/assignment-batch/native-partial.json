@@ -1,0 +1,15 @@
+{
+  "version": "1.1.49+8073",
+  "preview_apk_sha256": "b1d99de1a98d2bdfb9beae8b64dd7deaaa16fb6152ea29b68c5aad08b68b03dc",
+  "data_preserving_upgrade": true,
+  "install_success": true,
+  "native_launch_passed": true,
+  "android_display_ms": 3522,
+  "workbench_ui_xml_read": true,
+  "full_native_navigation_verified": false,
+  "emulator_process_exited_unexpectedly": true,
+  "exit_cause_confirmed": false,
+  "repeat_same_configuration_exit_code": 1,
+  "retained_process_session_repeated_exit": true,
+  "physical_devices_currently_available": false
+}

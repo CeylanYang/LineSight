@@ -1,7 +1,178 @@
 {
-  "screenshots": 291,
+  "screenshots": 300,
   "scope": "Batch IDs describe the batch, not acceptance of every state in each PNG.",
   "items": [
+    {
+      "file": "assignment-batch/png/291-assignment-conflict-en-component.png",
+      "title": "291-assignment-conflict-en-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "5b0639f44e5a2599e239e1ef7938fe667568d7503c66f0c522858f91006fdd53",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-conflict-zh-component.png",
+      "title": "291-assignment-conflict-zh-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "7b78793cf8b0d932f670f3519a5b201b4fdaaa733f7cd9baf65e8558f10a2d11",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-form-en-component.png",
+      "title": "291-assignment-form-en-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "76626968179a9201a5af0f741f15e9eb8dc6f20538fdaea45e9547a04b58cf4e",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-form-zh-component.png",
+      "title": "291-assignment-form-zh-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "904887565cb571dd302f027bf6c35cd6a02f8edc7914380d1fd63722c45167ff",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-handoff-en-component.png",
+      "title": "291-assignment-handoff-en-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "9f75bf099e4ad57f023976fbace0672db25dc547e45f78ddd3a0dee780aa1898",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-handoff-zh-component.png",
+      "title": "291-assignment-handoff-zh-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "3519f3b2e8b51d78d2eca2a556495acb30afde52d340f5d4e61d89f53fd7d827",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-history-en-component.png",
+      "title": "291-assignment-history-en-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "48e2c4bb4b1a623986b3b2c357b81200af161a701f89845743b5637a54c784fd",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/291-assignment-history-zh-component.png",
+      "title": "291-assignment-history-zh-component",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "desktop-component-render",
+      "width": 360,
+      "height": 1100,
+      "sha256": "b63458ea463ddc9258d8d1be3e136eae20830dac349964716caccae208c64ed5",
+      "batch_notes": "assignment-batch/README.md"
+    },
+    {
+      "file": "assignment-batch/png/292-upgraded-startup-emulator.png",
+      "title": "292-upgraded-startup-emulator",
+      "batch": "assignment-batch",
+      "batch_requirement_ids": [
+        "COL-03",
+        "QC-06",
+        "UI-03",
+        "UI-08",
+        "UI-11",
+        "SEC-04",
+        "QA-04"
+      ],
+      "origin": "android-emulator-screenshot",
+      "width": 412,
+      "height": 824,
+      "sha256": "4e01c60c47e197c97d1411ef11b83ea41e6133fafe183da7e953a1c95f1b780e",
+      "batch_notes": "assignment-batch/README.md"
+    },
     {
       "file": "sso/png/01-cloud-visitor-workbench.png",
       "title": "01-cloud-visitor-workbench",
@@ -1839,7 +2010,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1500,
-      "sha256": "89331b9a7bfa4b71f8cac92e0d8a286bbccbaee47eebadb23dd72cf0271b46f9",
+      "sha256": "e09d2156aea8459c17828ee611df8cca9bcbf0f92b87dd5a66114dde17b2b4d5",
       "batch_notes": "access2-batch/README.md"
     },
     {
@@ -1855,7 +2026,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1500,
-      "sha256": "f401f498dab3355d8d34dfcea41a428660bc0d7741e18435ca103d86fecafd3b",
+      "sha256": "97494553782a5903cec31f803870baadf97f7633df1781255ed7fac498cf5540",
       "batch_notes": "access2-batch/README.md"
     },
     {
@@ -2660,7 +2831,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "c0e222e683e2e82ee279c0b96d5345a2eeed793ed284fa9f2bbfd5a8290edb27",
+      "sha256": "b51517fce47e048605061544c9220a5e462f9d53357386beade9c5b71abc8670",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -2678,7 +2849,7 @@
       "origin": "desktop-component-render",
       "width": 360,
       "height": 1600,
-      "sha256": "9fdcc2f02b2ef8d90afe5b3f223689f39dca24bfb4129bc9f1c862094cb6e5b0",
+      "sha256": "5708f768b331d38a083326566b4cd32c1d12c519fb706efcfa86a1297e9e603e",
       "batch_notes": "template-batch/README.md"
     },
     {
@@ -4075,7 +4246,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "998f26d56a3d2ed6c12e8e02b215758455b5246305ef491644e8ad4902f1c436",
@@ -4091,7 +4262,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "69cc0fed8c2ce1c3f26b0f19df2e8208d09d06a81643938ea25b859d9ef758fe",
@@ -4107,7 +4278,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "c6b92dde50e2832247537870d0e148e1361f75c9f1e26711d71f5d9951eacdc1",
@@ -4123,7 +4294,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "a5eddc50a28dbd205d1b488a438f1cde68238c8209f70e9c22de2a3c2fba7529",
@@ -4139,7 +4310,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "926f48637c27591e5099a1c81fc8ba975aee50c6f0ab85007829a5c9643dcab9",
@@ -4155,7 +4326,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "e8f99b440e837aa65f93ef84b9e1cf83546182e90d4f9399e4e880cb3cfd78de",
@@ -4171,7 +4342,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "edbaa20cd74c30b8052a89cf855d82dd591805366848ff0f9a5765cf2d7500b4",
@@ -4187,7 +4358,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "2709f2d2a746ab1798e5e4facb258cb54f35b2e64e55e72f3931ab13af3d9b67",
@@ -4203,7 +4374,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "74d4c32c0c56b8c5d1cb2a6dd238d70f490a957b95d174834fc395938ab0770c",
@@ -4219,7 +4390,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "37cd6ba16ecaff67365e42842639d785462df8f4b244992cf3e042ef6ea7ba49",
@@ -4236,7 +4407,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "2bbdad533e05a12e70fd338e42a5e1ae6ec1ae35a8b0eba3c7ecf5a0f983fa7e",
@@ -4253,7 +4424,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "7f46a71d253d6c5af6ad11b9b9626f5ed72a031ff6df3edf4de443192839aa3b",
@@ -4270,7 +4441,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "415120a8d87aa38c7284ea5048d35ac02620286841d8f18dd4460f98694871b5",
@@ -4287,7 +4458,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "8294fd4c43841f22104929f2d9d4eba1010f2267544123eb804539ebb34599fa",
@@ -4304,7 +4475,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "dae820ea4d80ce1d55f2746f6be98998634a3046a049e92402803733dd9d4e9b",
@@ -4321,7 +4492,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "e5df1ea06952b998f4653fc81479c2c7c38fc60abc51933fd727abc501927c0e",
@@ -4338,7 +4509,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "d2cca07412ec788af6a1458f0002f25bccedd09f09ff16b5a40e1227863e0740",
@@ -4355,7 +4526,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "ac19acaeeca80dee95d2d42982e2ecfbeae6c34fa6b7db646852000ac9a0cb0f",
@@ -4372,7 +4543,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "513b4532922300292e320f0981560ba6c76c8852e862a5e56658bfb8593ce168",
@@ -4389,7 +4560,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "cb6ffe90cb0db55cfca99a2e6b858a5866331f2d4aa62c1a2b2fd3d91c77ce77",
@@ -4406,7 +4577,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "6b9db6d097dfaa2274d1ae9870d5f9db5bac6b292311d4628b6e25d01246a5e2",
@@ -4423,7 +4594,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "50c67dea645a204ae8057887c7fd5e852a15a3adabd7465868b5eb4515ac59b5",
@@ -4440,7 +4611,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "9ea47ae7ff6376396afcd3821bf76273db613825f57f824657e9b8023018e7d1",
@@ -4457,7 +4628,7 @@
         "UI-11",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
       "sha256": "38106e48a3e45387fe7d5b1882d1bda09060f515a0e57c08fd9b7e0666d97ba0",
@@ -4678,10 +4849,10 @@
         "OFF-01",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "015af2847e65a116c997ffbe6fc7907b73a80a2cb164aeca852b70e51f8d24d7",
+      "sha256": "836dce92eeca67e570f1bbb5d4bb42a7302bcf6e2f0d82100f622a42cda1961a",
       "batch_notes": "create-navigation-batch/README.md"
     },
     {
@@ -4695,10 +4866,10 @@
         "OFF-01",
         "QA-04"
       ],
-      "origin": "android-screenshot",
+      "origin": "desktop-component-render",
       "width": 360,
       "height": 1100,
-      "sha256": "5aeff34f64472e55def7808cb77ed467226e5c81980f067b77ecad1e70df60fc",
+      "sha256": "5b777941cd77162a3fc37f5afed57216d96a99399ccc82ca2f484801c2131f74",
       "batch_notes": "create-navigation-batch/README.md"
     }
   ],
