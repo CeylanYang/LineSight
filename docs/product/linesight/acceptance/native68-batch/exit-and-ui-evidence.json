@@ -1,0 +1,22 @@
+{
+  "crash_exit": [
+    "timestamp=2026-10-24 09:45:18.408 pid=4904 realUid=10192 packageUid=10192 definingUid=10192 user=0",
+    "process=com.example.linesight_flutter reason=5 (APP CRASH(NATIVE)) subreason=0 (UNKNOWN) status=11"
+  ],
+  "normal_close_control_exit": [
+    "timestamp=2026-10-24 09:45:08.029 pid=4704 realUid=10192 packageUid=10192 definingUid=10192 user=0",
+    "process=com.example.linesight_flutter reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0"
+  ],
+  "screens": [
+    {
+      "name": "376-native68-patched-emulator",
+      "png_sha256": "90b9772a3760e2238ec847aeddfb7046099ebce9171f2d1a8e412399c30fa7f1",
+      "xml_sha256": "f0267a6d04954053a931865f86e3e56eafa0985b2f0a37eddd571c7ab4bf179e"
+    },
+    {
+      "name": "377-native68-recovered-emulator",
+      "png_sha256": "f0c48f79a70b78729c97c3a06752f20cdb9bb5371d22009a1882b812ea7a1e93",
+      "xml_sha256": "f0267a6d04954053a931865f86e3e56eafa0985b2f0a37eddd571c7ab4bf179e"
+    }
+  ]
+}
