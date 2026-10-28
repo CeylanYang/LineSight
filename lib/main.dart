@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'editions/edition_brand.dart';
 import 'presentation/aurora_input.dart';
 import 'package:flutter/foundation.dart';
 import 'presentation/presentation_config.dart';
@@ -119,6 +120,7 @@ class _LineSightAppState extends State<LineSightApp>
   late final ThemeData _lightTheme = appTheme(false);
   late final _specialTheme = specialTheme(_lightTheme);
   final _specialInteraction = SpecialInteractionController();
+  final _editionLauncher = EditionLauncher();
   late final _presentation =
       widget.presentationController ?? PresentationController();
   late final AuroraInputBridge _auroraInput;
@@ -272,6 +274,7 @@ class _LineSightAppState extends State<LineSightApp>
       listenable: Listenable.merge([widget.store, RuntimeContent.instance]),
       builder: (context, _) {
         final s = widget.store;
+        if (s.ready) _editionLauncher.configure(s.specialEdition);
         _specialInteraction.configure(s.specialEdition);
         _openPendingTrace();
         final app = MaterialApp(

@@ -1,4 +1,5 @@
 import '../../screens/settings.dart' show MembersPage;
+import '../edition_brand.dart';
 import 'special_activity.dart';
 import '../../cloud_account.dart';
 import '../../screens/cloud_business.dart';
@@ -28,13 +29,11 @@ class SpecialEditionHeader extends StatelessWidget {
               width: 361,
               child: Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      'assets/checkcheck/illustrations/logo_checkcheck.png',
-                      width: 40,
-                      height: 40,
-                    ),
+                  Image.asset(
+                    specialLogoAsset,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.contain,
                   ),
                   const SizedBox(width: 9),
                   Expanded(

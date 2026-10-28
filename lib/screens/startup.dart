@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../brand_reveal.dart';
+import '../editions/edition_brand.dart';
 import '../l10n.dart';
 import '../ui.dart';
 
@@ -178,14 +179,24 @@ class _StartupPageState extends State<StartupPage>
           fit: StackFit.expand,
           children: [
             RepaintBoundary(
-              child: CustomPaint(
-                key: const ValueKey('brand-reveal-canvas'),
-                painter: BrandRevealPainter(
-                  timeline: _timeline,
-                  logo: _logo,
-                  reduced: _reduced,
-                ),
-              ),
+              child: AppScope.of(context).specialEdition
+                  ? Center(
+                      child: FractionallySizedBox(
+                        widthFactor: .58,
+                        child: Image.asset(
+                          specialLogoAsset,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  : CustomPaint(
+                      key: const ValueKey('brand-reveal-canvas'),
+                      painter: BrandRevealPainter(
+                        timeline: _timeline,
+                        logo: _logo,
+                        reduced: _reduced,
+                      ),
+                    ),
             ),
             Positioned(
               left: 24,

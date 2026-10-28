@@ -49,6 +49,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/brand/reveal_logo.png
+    - assets/brand/special_logo.png
     - assets/fonts/NotoSansSC.ttf
     - assets/fonts/NotoSansSC-Regular.ttf
     - assets/fonts/NotoSansSC-SemiBold.ttf

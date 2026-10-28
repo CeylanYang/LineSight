@@ -103,6 +103,29 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/edition").setMethodCallHandler { call, result ->
+            if (call.method != "setSpecialEdition") {
+                result.notImplemented()
+            } else {
+                try {
+                    val special = call.arguments == true
+                    val enabled = if (special) "SpecialLauncher" else "DefaultLauncher"
+                    val disabled = if (special) "DefaultLauncher" else "SpecialLauncher"
+                    val pm = packageManager
+                    pm.setComponentEnabledSetting(
+                        android.content.ComponentName(this, "$packageName.$enabled"),
+                        android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        android.content.pm.PackageManager.DONT_KILL_APP)
+                    pm.setComponentEnabledSetting(
+                        android.content.ComponentName(this, "$packageName.$disabled"),
+                        android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        android.content.pm.PackageManager.DONT_KILL_APP)
+                    result.success(null)
+                } catch (error: Exception) {
+                    result.error("launcher_update", error.message, null)
+                }
+            }
+        }
         auroraChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/aurora").also { channel ->
             channel.setMethodCallHandler { call, result ->
                 if (call.method == "configure") {

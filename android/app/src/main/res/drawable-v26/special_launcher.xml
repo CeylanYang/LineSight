@@ -1,0 +1,9 @@
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@android:color/white" />
+    <foreground>
+        <inset android:inset="8dp">
+            <bitmap android:src="@drawable/special_logo"
+                android:gravity="fill" android:filter="true" />
+        </inset>
+    </foreground>
+</adaptive-icon>
