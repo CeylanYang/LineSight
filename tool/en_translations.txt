@@ -1843,3 +1843,267 @@
 1842|Production line model, material or inspection recipe changes
 1843|Visual inspection guide
 1844|Changeover checklist
+1845|File saved
+1846|Save cancelled
+1847|Print job submitted
+1848|Printing cancelled
+1849|Draft was not deleted. Please retry.
+1850|Reading progress was not saved. Tap the bookmark to retry.
+1851|Bookmark saved. Continue reading next time.
+1852|Water intake was not saved. Please retry.
+1853|Unable to claim reward. Please retry.
+1854|Already claimed today. Come back tomorrow.
+1855|Reward history updated
+1856|Invitation link copied
+1857|Reading points added
+1858|Workout saved
+1859|Save failed. Your elapsed time is retained. Please retry.
+1860|Unable to clear. Please retry.
+1861|Today’s workout points added
+1862|Choose pickup and return dates first.
+1863|Saved to My plans
+1864|Unable to save. Please retry.
+1865|Unable to restore. Please retry.
+1866|Unable to remove. Please retry.
+1867|Membership activated. Your badge is ready.
+1868|Unable to bookmark. Please retry.
+1869|Keep watching. More is coming.
+1870|Points added
+1871|Episode {0} bookmarked. Come back any time.
+1872|Production schedule
+1873|Template update
+1874|Announcements
+1875|View production task
+1876|View checklist
+1877|The checklist has changed. Go back and refresh.
+1878|Marked as read
+1879|Sync failed. Please retry.
+1880|This checklist is unavailable. Contact your team admin.
+1881|Unable to load checklist. Please retry.
+1882|{0} points
+1883|Reward and redemption history
+1884|No rewards yet. Check in to get started.
+1885|Check in
+1886|Invite colleagues to explore together
+1887|Copy website link
+1888|Gift puzzle · {0}/6 collected
+1889|✓ Piece {0}
+1890|Collect\npiece {0}
+1891|Today's puzzle reward claimed
+1892|Complete the puzzle for 80 points
+1893|Daily check-in rewards
+1894|Check in +20 · Daily gift +50
+1895|Checked in today
+1896|Check in now
+1897|Today's gift claimed
+1898|Claim daily gift
+1899|Today's chest opened
+1900|Open free chest
+1901|Earn more with activities
+1902|Watch videos
+1903|Read a chapter
+1904|Collect puzzle pieces
+1905|Get moving
+1906|Points shop
+1907|Welcome voucher
+1908|Membership gift
+1909|{0} · Redeemed today
+1910|{0} · {1} points
+1911|Not enough points. Complete daily activities to earn more.
+1912|Redemption failed. Please retry.
+1913|Daily check-in
+1914|Daily gift
+1915|Coin chest
+1916|Puzzle completion reward
+1917|Welcome voucher redemption
+1918|Membership gift redemption
+1919|Piece was not saved. Please retry.
+1920|Unable to copy link. Please retry.
+1921|Reading
+1922|Small-Town Workdays
+1923|A slice of life in three chapters
+1924|Chapter {0}
+1925|Text size
+1926|Add bookmark
+1927|Chapter 1 · The First Light
+1928|Chapter 2 · The Paper Plane
+1929|Chapter 3 · After Work
+1930|Today's chapter points claimed
+1931|Finish this chapter for 20 points
+1932|Next chapter
+1933|Book complete
+1934|Reading / Chapter {0}
+1935|At dawn, the workshop lights came on one by one. Lin put her tools in their places and wrote the first task of the day in her notebook.\n\nA leaf had landed by the window. She looked up as a colleague arrived with hot tea. "Let us get this one right first." They both smiled.\n\nBefore noon, the final check was done. The finished parts stood in a neat row, like a letter ready to be passed to the next pair of hands.
+1936|A little paper plane sat on the handover desk. Three things to watch for were written on its wings. The handwriting was crooked, but the message was clear.\n\nLin unfolded it and checked each item. Before leaving, she folded it again and added a line on the back: "All checked. See you tomorrow."\n\nA breeze drifted through the window. The plane stayed on the desk, keeping a quiet promise for everyone.
+1937|The end-of-shift bell rang, and the city began to change color. Lin walked slowly along the river as streetlights stretched her shadow.\n\nShe bought a bottle of water, sat on a bench, and opened her notebook. Nothing extraordinary had happened, but there were plenty of small things worth remembering.\n\nShe closed the notebook and sent a friend a message: "Shall we watch the sunrise this weekend?"
+1938|Running
+1939|Exercise
+1940|Health
+1941|Free run
+1942|Jogging
+1943|Brisk walk
+1944|Stretching
+1945|Squats
+1946|Plank
+1947|Clear this timer?
+1948|Saved workouts will be kept.
+1949|Keep timer
+1950|Clear timer
+1951|Finish and save
+1952|Clear current timer
+1953|Start a workout to record your day.
+1954|Your previous workout is paused. You can resume it.
+1955|Workout timer
+1956|Resume workout
+1957|Start workout
+1958|Today's workout points claimed
+1959|Claim 20 workout points
+1960|Recent workouts
+1961|{0} · {1} sec
+1962|Take care of yourself today
+1963|Drink water +200 ml
+1964|Undo one glass
+1965|Take a relaxing walk
+1966|Stretch your body
+1967|Read and unwind
+1968|Today's workout
+1969|Finance
+1970|Insurance
+1971|Car rental
+1972|Ad · Financing calculator
+1973|Choose a car for your next trip
+1974|Choose your travel protection
+1975|Flexible funds
+1976|Equipment upgrade
+1977|Everyday peace of mind
+1978|Economy
+1979|Comfort
+1980|Business
+1981|City commute
+1982|Weekend trip
+1983|Family protection
+1984|Amount ¥{0}
+1985|{0} installments
+1986|Monthly rate 0.35% · Equal payments
+1987|About ¥{0} per installment
+1988|Departure city
+1989|Hangzhou
+1990|Shanghai
+1991|Beijing
+1992|Shenzhen
+1993|Select pickup date
+1994|Pickup {0}
+1995|Select return date
+1996|Return {0}
+1997|¥{0} / day · Days: {1} · Total ¥{2}
+1998|Accident coverage
+1999|100,000
+2000|300,000
+2001|500,000
+2002|Travel services
+2003|Roadside assistance
+2004|Baggage protection
+2005|Family travel
+2006|Planned budget
+2007|¥{0} / month
+2008|Compare plans
+2009|City commute covers daily travel. Weekend trip adds baggage protection. Family protection brings your family travel plans together.
+2010|Save trip plan
+2011|Save this plan
+2012|My plans
+2013|No saved plans yet. Choose a plan above to save it.
+2014|Remove plan
+2015|Plan removed
+2016|Undo
+2017|¥{0} · {1} installments · ¥{2} each
+2018|{0} · {1} · Days: {2} · ¥{3}
+2019|Budget ¥{0} / month
+2020|Videos
+2021|Short dramas
+2022|Garden Adventures
+2023|Nature on Screen
+2024|Today's picks · Take a break
+2025|Unable to prepare playback. Tap to retry.
+2026|Previous episode
+2027|Next episode
+2028|Play
+2029|Episode {0} · {1}
+2030|The Bee's Busy Morning
+2031|The Butterfly's Afternoon
+2032|Bookmark episode
+2033|Open bookmarked episode {0}
+2034|Today's episode points claimed
+2035|Claim 20 points
+2036|All episodes
+2037|Recommended screenings
+2038|Episode {0}
+2039|Video / Episode {0}
+2040|Drama / Episode {0}
+2041|Membership
+2042|Platinum member
+2043|Diamond member
+2044|Supreme member
+2045|Celestial member
+2046|Your membership is one tap away
+2047|Your member badge awaits
+2048|Current membership: {0}
+2049|Claimed · Explore benefits
+2050|Claim {0} free
+2051|Your member benefits
+2052|Member badge
+2053|Show your membership below your avatar
+2054|Daily member gifts
+2055|Check-in rewards, coins and puzzle gifts
+2056|Theater and reading room
+2057|Keep your episodes and reading progress
+2058|Travel perks
+2059|Save insurance plans and car rental trips
+2060|Claim a membership to show your badge below your avatar
+2061|Stocks
+2062|What if you had bought it?
+2063|Sample backtest · Fixed example prices
+2064|Investment amount
+2065|Enter an amount from 1 to 100000000.
+2066|Calculate sample return
+2067|Final value ¥{0}
+2068|Period return {0}%
+2069|Period
+2070|Sample price
+2071|Month {0}
+2072|Open full WhatIfIBought backtest
+2073|Connection failed. Reload
+2074|Explore life · Rewards everywhere
+2075|Ad · Make today special
+2076|Membership is free. Explore a financing plan for your everyday needs.
+2077|Maybe later
+2078|Open calculator
+2079|Ad · New everyday plans
+2080|Calculate and save a plan for you
+2081|All services
+2082|Rewards center
+2083|Points history
+2084|Invite colleagues
+2085|Coins
+2086|Points
+2087|Puzzle pieces
+2088|Member exclusives · New treats daily
+2089|{0} · Discover rewards
+2090|Exclusive coupons / Top picks / Daily rewards
+2091|Check in for coins · Invite rewards · Open a chest
+2092|Coin dramas · Take a break
+2093|More ›
+2094|A day in quality inspection
+2095|Unexpected defects
+2096|How AI finds defects
+2097|Peaceful factory moments
+2098|Featured picks · Workshop essentials
+2099|Equipment care · Storage · Gift packs
+2100|Invalid checklist template ID
+2101|Choose a checklist template first
+2102|Checklist notes must be text of no more than 500 characters
+2103|Day {0}
+2104|Claimed
+2105|Find records
+2106|View inspection records
+2107|Printing failed. Please try again.
+2108|Export failed. Please try again.

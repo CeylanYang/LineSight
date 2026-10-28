@@ -1,0 +1,93 @@
+{
+  "upstream": "mamawai/wtfibought",
+  "checks": {
+    "anonymous_spoof_denied": true,
+    "stomp_connected": true,
+    "existing_admin_identity": true,
+    "native_session_reused": true,
+    "local_admin_and_signup_closed": true,
+    "original_stock_catalogue": true,
+    "live_prices_and_real_stock_klines": true,
+    "preference_persists_and_is_restored": true,
+    "logout_revokes_browser_sso": true,
+    "ordinary_identity_is_not_admin": true,
+    "identity_persists_after_reload": true,
+    "mobile_tab_taps": true
+  },
+  "layouts": [
+    {
+      "width": 1440,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "horizontal_overflow": false
+    }
+  ],
+  "routes": [
+    {
+      "route": "bstock",
+      "rendered": true
+    },
+    {
+      "route": "coin",
+      "rendered": true
+    },
+    {
+      "route": "portfolio",
+      "rendered": true
+    },
+    {
+      "route": "arena",
+      "rendered": true
+    },
+    {
+      "route": "ai",
+      "rendered": true
+    },
+    {
+      "route": "strategies",
+      "rendered": true
+    },
+    {
+      "route": "backtest",
+      "rendered": true
+    },
+    {
+      "route": "me",
+      "rendered": true
+    }
+  ],
+  "http_errors": [],
+  "expected_denials": [
+    {
+      "path": "/linesight/whatif/api/auth/register",
+      "status": 410
+    },
+    {
+      "path": "/linesight/whatif/api/auth/login/local",
+      "status": 410
+    },
+    {
+      "path": "/linesight/whatif/api/auth/login/password",
+      "status": 410
+    },
+    {
+      "path": "/linesight/whatif/api/auth/callback/linuxdo",
+      "status": 410
+    },
+    {
+      "path": "/linesight/whatif/api/auth/mode",
+      "status": 410
+    }
+  ],
+  "page_errors": 0,
+  "service_health": {
+    "feed": "UP",
+    "sim": "UP",
+    "agent": "UP"
+  },
+  "verification_virtual_transfer_fee": 0.02,
+  "completed": true,
+  "failed_stage_rerun": "mobile root Link selector corrected to actual basename URL; touch navigation reverified"
+}

@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-25T06:35:25+08:00",
+  "current_release": "1.1.68+8103",
+  "android_devices": [],
+  "ota_original_key_present": false,
+  "next_dispatch_trigger": "2026-10-25T09:00:00+08:00",
+  "last_dispatch_exit": "2026-10-25T01:52:49+08:00",
+  "first_scheduled_trigger_verified": false,
+  "code_change_this_batch": false,
+  "unresolved_gates": [
+    "restore original OTA signing key",
+    "current APK all-role/native and physical hardware acceptance",
+    "two physical Android collaboration run",
+    "ten external users task evaluation",
+    "first real scheduled dispatch",
+    "independent key custody and second-host recovery boot"
+  ],
+  "goal_complete": false
+}

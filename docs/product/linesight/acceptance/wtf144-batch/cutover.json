@@ -1,0 +1,8 @@
+{
+  "upstream": "mamawai/wtfibought",
+  "commit": "d99fd9bae3564a2630880a3a8f52fcd0dfee7bdb",
+  "cutover_utc": "2026-10-25T06:00:16.559927+00:00",
+  "url": "https://99ai.pronhubcn.com/linesight/whatif/",
+  "gateway": "Keycloak + OAuth2 Proxy",
+  "passwords_reset": false
+}

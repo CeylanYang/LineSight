@@ -1,0 +1,19 @@
+[Unit]
+Description=Publish scheduled LineSight workspace updates
+After=network.target linesight.service
+[Service]
+Type=oneshot
+User=linesight
+Group=linesight
+WorkingDirectory=/opt/linesight/backend
+EnvironmentFile=/etc/linesight/linesight.env
+ExecStart=/usr/bin/flock -n /var/lib/linesight/dispatch.lock /opt/linesight/venv/bin/python /opt/linesight/backend/scheduled_manage.py dispatch_workspace
+MemoryMax=192M
+CPUQuota=25%
+Nice=10
+TimeoutStartSec=120
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/linesight

@@ -1,0 +1,20 @@
+{
+  "version": "1.1.69+8105",
+  "content_revision": 32,
+  "apk": "LineSight-1.1.69-8105-content32-production.apk",
+  "apk_sha256": "edf20a51aac9689bb3a187a4d75310be2b0497730c1d201c107f5cefc8463ba8",
+  "bytes": 101779442,
+  "package_id": "com.example.linesight_flutter",
+  "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2",
+  "ota": {
+    "base": 8104,
+    "sequence": 32,
+    "abis": [
+      "arm64-v8a",
+      "x86_64"
+    ]
+  },
+  "recovery_base": 8105,
+  "upgrade_mode": "same-signature overlay installation, retain data; old 8104 patches rejected by versionCode",
+  "stable_apk_url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-Android.apk"
+}

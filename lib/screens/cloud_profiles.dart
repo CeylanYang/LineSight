@@ -162,6 +162,11 @@ class _ProfilesState extends State<CloudProfilesPage> {
       embedded: widget.embedded,
       title: tr(context, widget.picking ? '选择打印配置' : '打印配置'),
       actions: [
+        IconButton(
+          tooltip: tr(context, '刷新'),
+          icon: const Icon(Icons.refresh),
+          onPressed: loading ? null : load,
+        ),
         if (account.canManageProduction)
           IconButton(
             tooltip: tr(context, '创建打印配置'),

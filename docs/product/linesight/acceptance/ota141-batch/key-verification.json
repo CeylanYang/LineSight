@@ -1,0 +1,12 @@
+{
+  "first_base": 8104,
+  "old_key_found_on_server": false,
+  "rotation_authorized_by_user": true,
+  "local_vault": "C:\\Users\\29668\\LineSight-private\\ota-signing-v2",
+  "working_copy_matches": true,
+  "sign_verify_probe": true,
+  "canonical_key_is_outside_worktree": true,
+  "server_key_matches": true,
+  "server_permissions_verified": true,
+  "apk_signing_key_rotated": false
+}

@@ -7,22 +7,26 @@ import '../runtime_content.dart';
 import '../quality_documents.dart';
 import '../ui.dart';
 
-Future<void> deliverQualityPdf(
+Future<bool> deliverQualityPdf(
   Uint8List bytes,
   String filename, {
   bool print = false,
 }) async {
   if (print) {
-    await Printing.layoutPdf(name: filename, onLayout: (_) async => bytes);
+    return Printing.layoutPdf(name: filename, onLayout: (_) async => bytes);
   } else {
-    await FilePicker.platform.saveFile(
+    final path = await FilePicker.platform.saveFile(
       fileName: filename,
       type: FileType.custom,
       allowedExtensions: ['pdf'],
       bytes: bytes,
     );
+    return path != null;
   }
 }
+
+String qualityDeliveryMessage(bool completed, {bool print = false}) =>
+    completed ? (print ? '已提交打印' : '文件已保存') : (print ? '已取消打印' : '已取消保存');
 
 class QualityDocumentLinks extends StatelessWidget {
   final bool compact;
@@ -92,7 +96,7 @@ class QualityDocumentPage extends StatefulWidget {
 }
 
 class _QualityDocumentPageState extends State<QualityDocumentPage> {
-  late final Future<Uint8List> original;
+  late Future<Uint8List> original;
   final results = <String, String>{};
   final order = TextEditingController(),
       batch = TextEditingController(),
@@ -116,6 +120,7 @@ class _QualityDocumentPageState extends State<QualityDocumentPage> {
   }
 
   Future<void> export({bool print = false}) async {
+    if (busy) return;
     setState(() => busy = true);
     try {
       final bytes = await buildProcedureDocument(
@@ -128,17 +133,40 @@ class _QualityDocumentPageState extends State<QualityDocumentPage> {
         },
       );
       if (!mounted) return;
-      await deliverQualityPdf(
+      final completed = await deliverQualityPdf(
         bytes,
         'LineSight-${widget.definition['code']}.pdf',
         print: print,
       );
-    } catch (error) {
-      if (mounted) toast(context, error.toString());
+      if (mounted) {
+        toast(context, qualityDeliveryMessage(completed, print: print));
+      }
+    } catch (_) {
+      if (mounted) toast(context, print ? '打印失败，请重试' : '导出失败，请重试');
     } finally {
       if (mounted) setState(() => busy = false);
     }
   }
+
+  Widget imageFailure() => Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      children: [
+        Text(tr(context, '图片无法显示，请重新加载')),
+        TextButton.icon(
+          key: const ValueKey('procedure-original-retry'),
+          onPressed: () => setState(() {
+            original = RuntimeContent.instance.image(
+              widget.definition,
+              fallback: 'assets/templates/${widget.definition['asset']}',
+            );
+          }),
+          icon: const Icon(Icons.refresh),
+          label: Text(tr(context, '重新加载')),
+        ),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -176,17 +204,24 @@ class _QualityDocumentPageState extends State<QualityDocumentPage> {
         if (busy) const LinearProgressIndicator(),
         const SizedBox(height: 12),
         ExpansionTile(
+          maintainState: true,
           title: Text(tr(context, '原版文件')),
           children: [
             FutureBuilder<Uint8List>(
               future: original,
-              builder: (context, state) => state.hasData
+              builder: (context, state) => state.hasError
+                  ? imageFailure()
+                  : state.hasData
                   ? SizedBox(
                       height: 440,
                       child: InteractiveViewer(
                         minScale: .5,
                         maxScale: 5,
-                        child: Image.memory(state.data!, fit: BoxFit.contain),
+                        child: Image.memory(
+                          state.data!,
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, error, stack) => imageFailure(),
+                        ),
                       ),
                     )
                   : const SizedBox(

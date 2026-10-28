@@ -1,3 +1,6 @@
+import '../editions/special/special_vip.dart';
+import '../editions/special/special_workbench.dart';
+import '../editions/special/special_content.dart';
 import '../cloud_avatar.dart';
 import '../cloud_layout.dart';
 import 'cloud_inspection_hub.dart';
@@ -24,6 +27,7 @@ import 'app_updates.dart';
 import '../nfc_reader.dart';
 import '../editions/edition_host.dart';
 import '../official_website.dart';
+import '../editions/special/special_media.dart' show SpecialWebPage;
 
 class CloudShell extends StatefulWidget {
   const CloudShell({super.key});
@@ -265,7 +269,13 @@ class _CloudShellState extends State<CloudShell> {
                       Expanded(
                         child: IndexedStack(
                           index: selectedTab,
-                          children: pages,
+                          children: [
+                            for (var i = 0; i < pages.length; i++)
+                              SpecialSectionScope(
+                                title: labels[i],
+                                child: pages[i],
+                              ),
+                          ],
                         ),
                       ),
                     ],
@@ -280,6 +290,7 @@ class _CloudShellState extends State<CloudShell> {
             : LiquidGlassBar(
                 labels: labels,
                 icons: icons,
+                iconBuilder: local.specialEdition ? specialTabIcon : null,
                 selectedIndex: selectedTab,
                 onSelected: select,
                 glass: local.glass,
@@ -415,7 +426,14 @@ class _CloudShellState extends State<CloudShell> {
                       context,
                       notice['reinspection'] == true
                           ? '待复检'
-                          : taskStatusLabels[notice['status']] ?? '待处理',
+                          : (notice['bulletin'] == true
+                                    ? (notice['kind'] == 'task'
+                                          ? '生产安排'
+                                          : notice['kind'] == 'template'
+                                          ? '模板更新'
+                                          : '通知预告')
+                                    : taskStatusLabels[notice['status']]) ??
+                                '待处理',
                     ),
                     style: const TextStyle(fontSize: 10.5, color: muted),
                   ),
@@ -439,8 +457,55 @@ class _CloudShellState extends State<CloudShell> {
         ],
       );
     }
+    if (AppScope.of(context).specialEdition) {
+      return SpecialWorkbenchPage(
+        workspaceUpdates: account.notifications.isEmpty
+            ? null
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Card(
+                  child: Column(
+                    children: [
+                      for (final notice in account.notifications.take(2))
+                        _noticeRow(context, account, notice),
+                    ],
+                  ),
+                ),
+              ),
+        onRecords: () => _openInspection(1),
+        onTemplates: () => _openConfiguration(1),
+        counts: {
+          'jobs': account.jobs.length,
+          'alerts': account.jobs
+              .where((j) => j['status'] == 'exception')
+              .length,
+          'records': account.records.length,
+          'templates': account.templates.length,
+        },
+        actions: {
+          '搜索': () => openPage(context, const CloudTaskListPage()),
+          '在线质检': () => openPage(context, const CloudLiveInspectionPage()),
+          '扫码追溯': () => openPage(context, const CloudScanPage()),
+          '新建任务': () => account.canEdit
+              ? openPage(context, const CloudCreateTaskPage())
+              : _selectTab(1),
+          '质量报告': () => _openInspection(2),
+          '待检任务': () => _openInspection(0),
+          '异常处理': () =>
+              openPage(context, const CloudTaskListPage(status: 'exception')),
+          '检测记录': () => _openInspection(1),
+          '打印配置': () => _openConfiguration(0),
+          '检查模板': () => _openConfiguration(1),
+        },
+      );
+    }
     final notices = account.notifications
-        .where((n) => n['status'] == 'inspection' || n['status'] == 'exception')
+        .where(
+          (n) =>
+              n['bulletin'] == true ||
+              n['status'] == 'inspection' ||
+              n['status'] == 'exception',
+        )
         .take(2)
         .toList();
     void search() {
@@ -567,6 +632,46 @@ class _CloudShellState extends State<CloudShell> {
             ],
           ),
         ),
+        const SizedBox(height: 8),
+        GlassPanel(
+          key: const ValueKey('workbench-stocks-strip'),
+          padding: EdgeInsets.zero,
+          child: InkWell(
+            onTap: () => openPage(context, const SpecialWebPage()),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF7359CB).withValues(alpha: .09),
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+                    child: const Icon(
+                      Icons.candlestick_chart,
+                      color: Color(0xFF7359CB),
+                      size: 22,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      tr(context, '在线股票'),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: ink,
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: muted, size: 22),
+                ],
+              ),
+            ),
+          ),
+        ),
         const SizedBox(height: 12),
         CloudWorkbenchSummary(account: account),
         if (account.workspaceDataReady) ...[
@@ -642,29 +747,31 @@ class _CloudShellState extends State<CloudShell> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      CloudAvatar(
-                        data: account.profile?['avatar_data'],
-                        size: 56,
-                        fallback: Container(
-                          width: 56,
-                          height: 56,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                      SpecialVipAvatar(
+                        child: CloudAvatar(
+                          data: account.profile?['avatar_data'],
+                          size: 56,
+                          fallback: Container(
+                            width: 56,
+                            height: 56,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [Color(0xFF5699FF), Color(0xFF2A63E8)],
+                              ),
+                              shape: BoxShape.circle,
                             ),
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            account.displayName.isEmpty
-                                ? 'L'
-                                : account.displayName.characters.first,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
+                            alignment: Alignment.center,
+                            child: Text(
+                              account.displayName.isEmpty
+                                  ? 'L'
+                                  : account.displayName.characters.first,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),

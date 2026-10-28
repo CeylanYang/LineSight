@@ -1,0 +1,9 @@
+{
+  "old_config_sha256": "c00553d77f00608aa5f83b4e3731c27548de019111f1ab1c36587063ad3f4c01",
+  "new_config_sha256": "80856bb1c0cad8f804c27e15a312d61090f3f0dbb25403beb17500c2e47f1634",
+  "backup": "/var/backups/linesight/connection143",
+  "issuer": "https://99ai.pronhubcn.com/sso/realms/linesight",
+  "authorization_endpoint": "https://99ai.pronhubcn.com/sso/realms/linesight/protocol/openid-connect/auth",
+  "token_endpoint": "https://47.111.81.94/_linesight/identity/token",
+  "discovery_sha256": "5dddb5bae2e252f89e5f936a39a7d015423c3d97c43fd62c43d6786136fbcb79"
+}

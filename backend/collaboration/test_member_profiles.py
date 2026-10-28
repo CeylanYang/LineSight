@@ -69,3 +69,13 @@ class MemberProfileTests(TestCase):
         before=get_user_model().objects.count()
         self.assertEqual(self.client.post('/api/v1/auth/register/',{'username':'outsider2','password':'SomePassword12!'},format='json').status_code,410)
         self.assertEqual(get_user_model().objects.count(),before)
+
+    @override_settings(LINESIGHT_OIDC_ISSUER='')
+    def test_registration_stays_closed_without_identity_configuration(self):
+        self.client.force_authenticate(None)
+        before = get_user_model().objects.count()
+        for payload in [{}, {'username': 'outsider-new', 'password': 'SomePassword12!'}, {'username': 'outsider-new', 'password': 'SomePassword12!', 'code': 'pretend-invitation-token'}]:
+            response = self.client.post('/api/v1/auth/register/', payload, format='json')
+            self.assertEqual(response.status_code, 410)
+            self.assertEqual(get_user_model().objects.count(), before)
+        self.assertFalse(get_user_model().objects.filter(username='outsider-new').exists())

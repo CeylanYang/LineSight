@@ -6,8 +6,14 @@ https://github.com/keycloak/keycloak. The Android app uses AppAuth authorization
 code + PKCE S256 through `flutter_appauth`, and secure token storage through
 `flutter_secure_storage`. Normal accounts have no password grant.
 
-The production issuer is `https://47.111.81.94/sso/realms/linesight`. Caddy exposes
+The public issuer is `https://99ai.pronhubcn.com/sso/realms/linesight`. Caddy exposes
 `/sso/*` and forwards to loopback port 8081. PostgreSQL has no public port.
+Legacy installed apps retain the old IP issuer; Caddy explicitly sets the
+forwarding host for both accepted hosts. The API's explicit alias list maps
+verified domain subjects to their permanent pre-migration identity records.
+Introspection uses the verified issuing host. Stored legacy sessions refresh
+and log out at their issuing endpoint; fresh sign-ins always use the domain.
+WhatIfIBought shares the realm via OAuth2 Proxy; public registration stays off.
 
 Generate private inputs once using `tool/prepare_keycloak.py`. Never regenerate
 the live realm or credentials as an implicit deploy step. Inputs under

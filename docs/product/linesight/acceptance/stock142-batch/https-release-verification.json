@@ -1,0 +1,30 @@
+{
+  "tested_from": "production host over HTTPS",
+  "patches": [
+    {
+      "abi": "arm64-v8a",
+      "sequence": 31,
+      "bytes": 12845968,
+      "sha256": "e4c4edb112b8f230bf5f6869e36ebbb4529e0e4b6c8059acfb0fa03154e04b76",
+      "signature_valid": true,
+      "legacy_domain_route_same_manifest": true,
+      "old_base_8103_unchanged": true
+    },
+    {
+      "abi": "x86_64",
+      "sequence": 31,
+      "bytes": 13173648,
+      "sha256": "6af620c67b90886834e01397207a567f228d006f7eb78431cef1fc8e71ebe0db",
+      "signature_valid": true,
+      "legacy_domain_route_same_manifest": true,
+      "old_base_8103_unchanged": true
+    }
+  ],
+  "apk": {
+    "stable_https_url": "https://99ai.pronhubcn.com/linesight/downloads/LineSight-Android.apk",
+    "bytes": 101779438,
+    "sha256": "f73cce743040964624a522fcc47e93521df52912ab43d7426ad88bdb291ffc34",
+    "matches_signed_release": true
+  },
+  "portal_links_current": true
+}

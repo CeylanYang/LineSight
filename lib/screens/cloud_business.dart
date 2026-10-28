@@ -1,3 +1,4 @@
+import 'dart:convert';
 import '../cloud_avatar.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ Future<Map<int, Uint8List>> cloudReportImages(
   return images;
 }
 
-class CloudReportSnapshotPage extends StatelessWidget {
+class CloudReportSnapshotPage extends StatefulWidget {
   final Map snapshot;
   final Map<int, Uint8List> images;
   const CloudReportSnapshotPage({
@@ -76,6 +77,15 @@ class CloudReportSnapshotPage extends StatelessWidget {
     required this.snapshot,
     required this.images,
   });
+  @override
+  State<CloudReportSnapshotPage> createState() =>
+      _CloudReportSnapshotPageState();
+}
+
+class _CloudReportSnapshotPageState extends State<CloudReportSnapshotPage> {
+  bool exporting = false;
+  Map get snapshot => widget.snapshot;
+  Map<int, Uint8List> get images => widget.images;
   @override
   Widget build(BuildContext context) {
     final account = CloudScope.of(context);
@@ -95,25 +105,36 @@ class CloudReportSnapshotPage extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.download_outlined),
           tooltip: tr(context, '导出 PDF'),
-          onPressed: () async {
-            final scope = account.accessScope;
-            try {
-              final bytes = await buildQualityReport(
-                snapshot: snapshot,
-                images: images,
-                scopeLabel: cloudScopeLabel(context, filters),
-              );
-              if (!context.mounted || !account.retainsAccess(scope)) return;
-              await deliverQualityPdf(
-                bytes,
-                "LineSight-${snapshot['report_id']}.pdf",
-              );
-            } catch (error) {
-              if (context.mounted && account.retainsAccess(scope)) {
-                toast(context, '$error');
-              }
-            }
-          },
+          onPressed: exporting
+              ? null
+              : () async {
+                  if (exporting) return;
+                  final scope = account.accessScope;
+                  setState(() => exporting = true);
+                  try {
+                    final bytes = await buildQualityReport(
+                      snapshot: snapshot,
+                      images: images,
+                      scopeLabel: cloudScopeLabel(context, filters),
+                    );
+                    if (!context.mounted || !account.retainsAccess(scope)) {
+                      return;
+                    }
+                    final completed = await deliverQualityPdf(
+                      bytes,
+                      "LineSight-${snapshot['report_id']}.pdf",
+                    );
+                    if (context.mounted && account.retainsAccess(scope)) {
+                      toast(context, qualityDeliveryMessage(completed));
+                    }
+                  } catch (error) {
+                    if (context.mounted && account.retainsAccess(scope)) {
+                      toast(context, '$error');
+                    }
+                  } finally {
+                    if (mounted) setState(() => exporting = false);
+                  }
+                },
         ),
         IconButton(
           icon: const Icon(Icons.copy, size: 20),
@@ -1250,11 +1271,14 @@ class _CloudInspectionDetailPageState extends State<CloudInspectionDetailPage> {
         images: images,
       );
       if (!mounted || !account.retainsAccess(scope)) return;
-      await deliverQualityPdf(
+      final completed = await deliverQualityPdf(
         bytes,
         "LineSight-inspection-${record['id']}.pdf",
         print: print,
       );
+      if (mounted && account.retainsAccess(scope)) {
+        toast(context, qualityDeliveryMessage(completed, print: print));
+      }
     } catch (error) {
       if (mounted && account.retainsAccess(scope)) toast(context, '$error');
     } finally {
@@ -1783,12 +1807,15 @@ class _CloudReportPageState extends State<CloudReportPage> {
           'workspaces/${account.activeWorkspace!['id']}/report/${query.isEmpty ? '?' : '$query&'}download=csv',
         );
         if (!mounted || !account.retainsAccess(scope)) return;
-        await FilePicker.platform.saveFile(
+        final path = await FilePicker.platform.saveFile(
           fileName: 'LineSight-quality.csv',
           type: FileType.custom,
           allowedExtensions: ['csv'],
           bytes: Uint8List.fromList(bytes),
         );
+        if (context.mounted && account.retainsAccess(scope)) {
+          toast(context, qualityDeliveryMessage(path != null));
+        }
       } catch (failure) {
         if (mounted) setState(() => error = failure);
       } finally {
@@ -1838,11 +1865,14 @@ class _CloudReportPageState extends State<CloudReportPage> {
           scopeLabel: label,
         );
         if (!mounted || !account.retainsAccess(scope)) return;
-        await deliverQualityPdf(
+        final completed = await deliverQualityPdf(
           bytes,
           "LineSight-${snapshot['report_id']}.pdf",
           print: print,
         );
+        if (context.mounted && account.retainsAccess(scope)) {
+          toast(context, qualityDeliveryMessage(completed, print: print));
+        }
       } catch (failure) {
         if (mounted && account.retainsAccess(scope)) {
           setState(() => error = failure);
@@ -2349,7 +2379,7 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
     super.didChangeDependencies();
     final account = CloudScope.of(context);
     final next = account.draftKey('record-query');
-    final revision = account.records.map((row) => '${row['id']}').join(',');
+    final revision = jsonEncode(account.records);
     final changed = revision != sourceVersion;
     sourceVersion = revision;
     if (next != scope) {
@@ -2379,7 +2409,6 @@ class _CloudRecordsPageState extends State<CloudRecordsPage> {
       loaded = false;
       error = null;
       rows = [];
-      loaded = false;
     });
     try {
       final data =
@@ -3398,7 +3427,14 @@ class _CloudNotificationsPageState extends State<CloudNotificationsPage> {
                                       context,
                                       notice['reinspection'] == true
                                           ? '待复检'
-                                          : taskStatusLabels[notice['status']] ??
+                                          : (notice['bulletin'] == true
+                                                    ? (notice['kind'] == 'task'
+                                                          ? '生产安排'
+                                                          : notice['kind'] ==
+                                                                'template'
+                                                          ? '模板更新'
+                                                          : '通知预告')
+                                                    : taskStatusLabels[notice['status']]) ??
                                                 '待处理',
                                     ),
                                     color: notice['reinspection'] == true

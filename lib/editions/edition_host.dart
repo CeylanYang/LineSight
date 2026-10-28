@@ -7,12 +7,26 @@ class EditionHost extends StatelessWidget {
   final Widget child;
   const EditionHost({super.key, required this.child});
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      if (AppScope.of(context).specialEdition) const SpecialEditionHeader(),
-      Expanded(key: const ValueKey('shared-edition-workspace'), child: child),
-    ],
-  );
+  Widget build(BuildContext context) {
+    final special = AppScope.of(context).specialEdition;
+    return Column(
+      children: [
+        if (special) const SpecialEditionHeader(),
+        Expanded(
+          key: const ValueKey('shared-edition-workspace'),
+          child: MediaQuery(
+            // The header already clears the status bar; nested pages must not
+            // inset for it a second time. The wrapper stays in both editions so
+            // toggling never rebuilds the workspace subtree.
+            data: special
+                ? MediaQuery.of(context).removePadding(removeTop: true)
+                : MediaQuery.of(context),
+            child: child,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class EditionSwitch extends StatelessWidget {

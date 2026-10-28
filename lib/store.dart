@@ -814,6 +814,85 @@ class AppStore extends ChangeNotifier {
     return operation;
   }
 
+  Map<String, dynamic> get specialActivity =>
+      preferences['specialActivity'] is Map
+      ? Map<String, dynamic>.from(preferences['specialActivity'] as Map)
+      : {};
+  int get specialPointsBalance => specialActivity['points'] as int? ?? 2340;
+  bool specialRewardClaimed(String action) {
+    final key = '${DateTime.now().toIso8601String().substring(0, 10)}/$action';
+    return (specialActivity['history'] as List? ?? []).any(
+      (row) => row['key'] == key,
+    );
+  }
+
+  Future<void> claimSpecialReward(String action, {int points = 20}) {
+    final operation = _preferenceWrites.then((_) async {
+      final state = specialActivity;
+      final history = List<Map<String, dynamic>>.from(
+        (state['history'] as List? ?? []).map(
+          (row) => Map<String, dynamic>.from(row as Map),
+        ),
+      );
+      final day = DateTime.now().toIso8601String().substring(0, 10);
+      final key = '$day/$action';
+      if (history.any((row) => row['key'] == key)) return;
+      if (specialPointsBalance + points < 0) throw StateError('积分不足，先去完成每日任务');
+      final next = {
+        ...preferences,
+        'specialActivity': {
+          'points': specialPointsBalance + points,
+          'history': [
+            {'key': key, 'label': action, 'points': points, 'date': day},
+            ...history.take(59),
+          ],
+        },
+      };
+      if (ready) {
+        await db.transaction(
+          (tx) => StateStorage.write(tx, 'preferences', jsonEncode(next)),
+        );
+      }
+      preferences = next;
+      notifyListeners();
+    });
+    _preferenceWrites = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace __) {},
+    );
+    return operation;
+  }
+
+  Map<String, dynamic> specialExperienceFor(String actor) {
+    final accounts = preferences['specialExperiences'] as Map? ?? {};
+    return Map<String, dynamic>.from(accounts[actor] as Map? ?? {});
+  }
+
+  Future<void> updateSpecialExperience(
+    String actor,
+    Map<String, dynamic> Function(Map<String, dynamic>) update,
+  ) {
+    final operation = _preferenceWrites.then((_) async {
+      final accounts = Map<String, dynamic>.from(
+        preferences['specialExperiences'] as Map? ?? {},
+      );
+      accounts[actor] = update(specialExperienceFor(actor));
+      final next = {...preferences, 'specialExperiences': accounts};
+      if (ready) {
+        await db.transaction(
+          (tx) => StateStorage.write(tx, 'preferences', jsonEncode(next)),
+        );
+      }
+      preferences = next;
+      notifyListeners();
+    });
+    _preferenceWrites = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace __) {},
+    );
+    return operation;
+  }
+
   Future<void> rename(String name) async {
     _require();
     name = name.trim();

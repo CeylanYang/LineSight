@@ -110,3 +110,20 @@ class OidcApiTests(TestCase):
         second = self.client.get("/api/v1/auth/me/").data
         self.assertNotEqual(first["id"], second["id"])
         self.assertNotEqual(first["home_workspace_id"], second["home_workspace_id"])
+
+    @override_settings(LINESIGHT_OIDC_ISSUER_ALIASES=("https://domain.test/sso/realms/linesight",))
+    def test_domain_alias_preserves_user_workspace_and_does_not_allow_other_realms(self):
+        self.sign_in()
+        original = self.client.get("/api/v1/auth/me/").data
+        for issuer in ("https://domain.test/sso/realms/linesight", "https://identity.test/realms/linesight"):
+            self.sign_in(iss=issuer)
+            current = self.client.get("/api/v1/auth/me/")
+            self.assertEqual(current.status_code, 200)
+            self.assertEqual(current.data["id"], original["id"])
+            self.assertEqual(current.data["home_workspace_id"], original["home_workspace_id"])
+            self.assertEqual(self.introspection.call_args.args[0].full_url, issuer + "/protocol/openid-connect/token/introspect")
+        self.assertEqual(CloudIdentity.objects.count(), 1)
+        for issuer in ("https://domain.test/sso/realms/other", "https://domain.test.attacker.invalid/sso/realms/linesight"):
+            self.sign_in(iss=issuer)
+            self.assertEqual(self.client.get("/api/v1/auth/me/").status_code, 401)
+        self.assertEqual(CloudIdentity.objects.count(), 1)

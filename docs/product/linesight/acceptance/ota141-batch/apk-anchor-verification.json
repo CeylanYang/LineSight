@@ -1,0 +1,15 @@
+{
+  "abis": {
+    "arm64-v8a": {
+      "new_anchor_present": true,
+      "old_anchor_absent": true
+    },
+    "x86_64": {
+      "new_anchor_present": true,
+      "old_anchor_absent": true
+    }
+  },
+  "actual_key_sign_verify": true,
+  "apk_certificate_unchanged": true,
+  "probe_manifest_published": false
+}

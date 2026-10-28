@@ -1,3 +1,12 @@
+import 'dart:async';
+import 'presentation/aurora_input.dart';
+import 'package:flutter/foundation.dart';
+import 'presentation/presentation_config.dart';
+import 'presentation/presentation_controller.dart';
+import 'presentation/presentation_layer.dart';
+import 'editions/special/special_content.dart';
+import 'editions/special/special_interaction.dart';
+import 'editions/special/special_theme.dart';
 import 'liquid_glass_bar.dart';
 import 'l10n.dart';
 import 'dart:ui' show FrameTiming;
@@ -10,6 +19,8 @@ import 'screens/dashboard.dart';
 import 'screens/records.dart';
 import 'screens/modules.dart';
 import 'screens/settings.dart';
+import 'screens/production.dart';
+import 'editions/special/special_workbench.dart';
 import 'screens/storage_recovery.dart';
 import 'screens/startup.dart';
 import 'startup_trace.dart';
@@ -88,12 +99,14 @@ class LineSightApp extends StatefulWidget {
   final CloudAccount? cloud;
   final bool? showBrandReveal;
   final Future<void>? revealStartAfter;
+  final PresentationController? presentationController;
   const LineSightApp({
     super.key,
     required this.store,
     this.cloud,
     this.showBrandReveal,
     this.revealStartAfter,
+    this.presentationController,
   });
   @override
   State<LineSightApp> createState() => _LineSightAppState();
@@ -104,6 +117,33 @@ class _LineSightAppState extends State<LineSightApp>
   // Both themes depend only on fixed design tokens. Reuse them across store
   // progress, data updates and navigator resets; theme mode still follows state.
   late final ThemeData _lightTheme = appTheme(false);
+  late final _specialTheme = specialTheme(_lightTheme);
+  final _specialInteraction = SpecialInteractionController();
+  late final _presentation =
+      widget.presentationController ?? PresentationController();
+  late final AuroraInputBridge _auroraInput;
+
+  void _syncPresentation() => _presentation.update(
+    settings: PresentationConfig.fromRuntime(RuntimeContent.instance.data),
+    ready:
+        _revealFinished &&
+        widget.store.ready &&
+        widget.store.startupError == null,
+    special: widget.store.specialEdition,
+    signedIn: widget.cloud?.signedIn ?? (widget.store.user != null),
+    interactiveLoginRevision: widget.cloud?.interactiveLoginRevision,
+  );
+
+  @override
+  Future<bool> didPopRoute() async {
+    if (!_presentation.auroraVisible && !_presentation.adVisible) return false;
+    _specialInteraction.suppressFor(const Duration(milliseconds: 700));
+    _presentation.dismissAurora();
+    _presentation.skipAd();
+    return true;
+  }
+
+  late final _specialObserver = SpecialNavigationObserver(_specialInteraction);
   late final ThemeData _darkTheme = appTheme(true);
   late bool _revealFinished;
   final _cloudNavigator = GlobalKey<NavigatorState>();
@@ -156,9 +196,22 @@ class _LineSightAppState extends State<LineSightApp>
   Future<bool> didPushRoute(String route) =>
       didPushRouteInformation(RouteInformation(uri: Uri.parse(route)));
 
+  Timer? _workspaceSyncTimer;
+  bool _syncForeground = true;
+
   @override
   void initState() {
     super.initState();
+    LicenseRegistry.addLicense(() async* {
+      yield const LicenseEntryWithLineBreaks(
+        ['Aurora (Flutter adaptation)'],
+        'Aurora by tornikegomareli. MIT License, as declared in the upstream README.\n'
+        'https://github.com/tornikegomareli/Aurora\n'
+        'Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the Software), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n'
+        'The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n'
+        'THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.',
+      );
+    });
     // Preinitialized test/embedded workspaces do not replay the cold-start brand.
     _revealFinished = !(widget.showBrandReveal ?? !widget.store.ready);
     final initialLink =
@@ -167,17 +220,41 @@ class _LineSightAppState extends State<LineSightApp>
       _pendingTrace = initialLink;
     }
     WidgetsBinding.instance.addObserver(this);
+    widget.store.addListener(_syncPresentation);
+    widget.cloud?.addListener(_syncPresentation);
+    _workspaceSyncTimer = Timer.periodic(const Duration(seconds: 60), (_) {
+      if (_syncForeground) widget.cloud?.syncWorkspace();
+    });
+    RuntimeContent.instance.addListener(_syncPresentation);
+    _syncPresentation();
+    _auroraInput = AuroraInputBridge(
+      _presentation,
+      onDismissInteraction: () =>
+          _specialInteraction.suppressFor(const Duration(milliseconds: 700)),
+    );
   }
 
   @override
   void dispose() {
+    _workspaceSyncTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
+    widget.store.removeListener(_syncPresentation);
+    widget.cloud?.removeListener(_syncPresentation);
+    RuntimeContent.instance.removeListener(_syncPresentation);
+    _auroraInput.dispose();
+    if (widget.presentationController == null) {
+      _presentation.dispose();
+    }
     _cloudTabs.dispose();
+    _specialInteraction.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    _syncForeground = state == AppLifecycleState.resumed;
+    if (_syncForeground) widget.cloud?.syncWorkspace();
+    _presentation.setForeground(state == AppLifecycleState.resumed);
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.hidden) {
       widget.store.backgrounded();
@@ -195,6 +272,7 @@ class _LineSightAppState extends State<LineSightApp>
       listenable: Listenable.merge([widget.store, RuntimeContent.instance]),
       builder: (context, _) {
         final s = widget.store;
+        _specialInteraction.configure(s.specialEdition);
         _openPendingTrace();
         final app = MaterialApp(
           key: ValueKey(widget.cloud == null ? s.session : 'cloud'),
@@ -207,7 +285,8 @@ class _LineSightAppState extends State<LineSightApp>
               : const Locale('zh', 'CN'),
           supportedLocales: const [Locale('zh', 'CN'), Locale('en')],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          theme: _lightTheme,
+          theme: s.specialEdition ? _specialTheme : _lightTheme,
+          navigatorObservers: [_specialObserver],
           darkTheme: _darkTheme,
           themeMode: ThemeMode.light,
           builder: (context, child) => MediaQuery(
@@ -215,7 +294,18 @@ class _LineSightAppState extends State<LineSightApp>
               disableAnimations:
                   s.reduceMotion || MediaQuery.of(context).disableAnimations,
             ),
-            child: child!,
+            child: PresentationLayer(
+              controller: _presentation,
+              reduceMotion:
+                  s.reduceMotion || MediaQuery.of(context).disableAnimations,
+              onPassThroughInteraction: () => _specialInteraction.suppressFor(
+                const Duration(milliseconds: 700),
+              ),
+              child: SpecialInteractionLayer(
+                controller: _specialInteraction,
+                child: child!,
+              ),
+            ),
           ),
           home: s.startupError != null
               ? s.recoveryUser == null
@@ -236,7 +326,7 @@ class _LineSightAppState extends State<LineSightApp>
                                 ? const EditionHost(child: CloudShell())
                                 : s.user == null
                                 ? const AuthPage()
-                                : const AppShell(),
+                                : const EditionHost(child: AppShell()),
                           ),
                         ),
                       ),
@@ -248,6 +338,7 @@ class _LineSightAppState extends State<LineSightApp>
                         onRevealComplete: () {
                           if (mounted && !_revealFinished) {
                             setState(() => _revealFinished = true);
+                            _syncPresentation();
                           }
                         },
                       ),
@@ -272,28 +363,71 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
+  bool? _previousSpecial;
   int tab = 0;
+  static const _specialTabs = <String>['工作台', '生产', '质检', '配置', '我的'];
+  static const _specialTabAssets = <String>[
+    'workbench',
+    'production',
+    'inspect',
+    'config',
+    'me',
+  ];
+
+  Widget _specialTabIcon(int i, bool selected) => Image.asset(
+    'assets/checkcheck/icons/tab_${_specialTabAssets[i]}'
+    '${selected ? '_active' : ''}.png',
+    width: 26,
+    height: 26,
+    filterQuality: FilterQuality.high,
+  );
+
   @override
   Widget build(BuildContext context) {
     final s = AppScope.of(context);
-    final labels = [
-      tr(context, "工作台"),
-      tr(context, "检测记录"),
-      tr(context, "配方中心"),
-      tr(context, "我的"),
-    ];
+    final special = s.specialEdition;
+    if (_previousSpecial != null && _previousSpecial != special) {
+      tab = special ? [0, 2, 3, 4][tab] : [0, 0, 1, 2, 3][tab];
+    }
+    _previousSpecial = special;
+    final labels = special
+        ? _specialTabs.map((x) => tr(context, x)).toList()
+        : [
+            tr(context, "工作台"),
+            tr(context, "检测记录"),
+            tr(context, "配方中心"),
+            tr(context, "我的"),
+          ];
     const icons = [
+      Icons.space_dashboard_outlined,
+      Icons.factory_outlined,
+      Icons.fact_check_outlined,
+      Icons.tune_rounded,
+      Icons.person_outline_rounded,
+    ];
+    const sharedIcons = [
       Icons.space_dashboard_outlined,
       Icons.fact_check_outlined,
       Icons.layers_outlined,
       Icons.person_outline_rounded,
     ];
-    final pages = [
-      DashboardPage(onRecords: () => setState(() => tab = 1)),
-      const RecordsPage(),
-      const ModulesPage(),
-      const SettingsPage(),
-    ];
+    final pages = special
+        ? [
+            SpecialWorkbenchPage(
+              onRecords: () => setState(() => tab = 2),
+              onTemplates: () => setState(() => tab = 3),
+            ),
+            const ProductionPage(),
+            const RecordsPage(key: ValueKey('shared-records')),
+            const ModulesPage(key: ValueKey('shared-modules')),
+            const SettingsPage(key: ValueKey('shared-settings')),
+          ]
+        : [
+            DashboardPage(onRecords: () => setState(() => tab = 1)),
+            const RecordsPage(key: ValueKey('shared-records')),
+            const ModulesPage(key: ValueKey('shared-modules')),
+            const SettingsPage(key: ValueKey('shared-settings')),
+          ];
     final wide = MediaQuery.sizeOf(context).width >= 900;
     void select(int i) {
       s.feedback();
@@ -302,6 +436,7 @@ class _AppShellState extends State<AppShell> {
 
     return Scaffold(
       extendBody: !wide,
+      backgroundColor: const Color(0xFFF4F8FF),
       body: Backdrop(
         child: SafeArea(
           bottom: false,
@@ -323,9 +458,14 @@ class _AppShellState extends State<AppShell> {
                         child: BrandMark(size: 44),
                       ),
                       destinations: List.generate(
-                        4,
+                        labels.length,
                         (i) => NavigationRailDestination(
-                          icon: Icon(icons[i]),
+                          icon: special
+                              ? _specialTabIcon(i, false)
+                              : Icon(sharedIcons[i]),
+                          selectedIcon: special
+                              ? _specialTabIcon(i, true)
+                              : Icon(sharedIcons[i]),
                           label: Text(labels[i]),
                         ),
                       ),
@@ -333,7 +473,17 @@ class _AppShellState extends State<AppShell> {
                   ),
                 ),
               Expanded(
-                child: IndexedStack(index: tab, children: pages),
+                child: IndexedStack(
+                  index: tab,
+                  children: [
+                    for (var i = 0; i < pages.length; i++)
+                      SpecialSectionScope(
+                        key: pages[i].key,
+                        title: labels[i],
+                        child: pages[i],
+                      ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -343,7 +493,8 @@ class _AppShellState extends State<AppShell> {
           ? null
           : LiquidGlassBar(
               labels: labels,
-              icons: icons,
+              icons: special ? icons.sublist(0, 5) : sharedIcons,
+              iconBuilder: special ? _specialTabIcon : null,
               selectedIndex: tab,
               onSelected: select,
               glass: s.glass,

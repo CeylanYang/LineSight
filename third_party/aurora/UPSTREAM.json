@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/tornikegomareli/Aurora",
+  "commit": "a3f9296a1e7744529b69d8a9f9e360bf3c8c81bf",
+  "license": "MIT (declared in upstream README)",
+  "integration": "Flutter fragment shader adaptation for Android; SwiftUI is not an Android runtime dependency."
+}

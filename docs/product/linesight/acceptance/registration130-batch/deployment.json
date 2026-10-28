@@ -1,0 +1,16 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/registration130/20261024T220859Z",
+  "before_sha256": {
+    "collaboration/api.py": "75dfbc6f2a55e02ec6021a959f48edccf27b8d788c8c7f509fe1dff465d988ab"
+  },
+  "after_sha256": {
+    "collaboration/api.py": "9519e645e99d7dbb53e0eb184ed19e63f79fd4399e0b6cebe97e176410fc88a1"
+  },
+  "schema_changed": false,
+  "existing_tables_checked": 33,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false,
+  "rollback_preserves_live_writes": true
+}

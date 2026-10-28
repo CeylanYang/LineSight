@@ -1,0 +1,19 @@
+{
+  "services": {
+    "feed": "active",
+    "sim": "active",
+    "agent": "active",
+    "redis": "active"
+  },
+  "checks": {
+    "local_registration_and_admin_closed": true,
+    "missing_and_unsigned_jwt_denied": true,
+    "mounted_static_and_deep_links": true,
+    "existing_portal_and_runtime_config_available": true
+  },
+  "jars": {
+    "feed": "da8828318fa44597d646dbdf4de806bfae2a46bfbe8025510e6007200e019bd1",
+    "sim": "68bc2dfee5358a20ddbae07072d6cab0b1f71821d16d38942181b343e8a4c418",
+    "agent": "f1b84c7727cc5a4b42209cb30e9d367ba5de8942eb4af4d90b06015c47621d5c"
+  }
+}

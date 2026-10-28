@@ -1,0 +1,8 @@
+{
+  "previous_revision": 2,
+  "revision": 3,
+  "before_sha256": "7dc6193641894acf7d63a50f9d9a6be15b97a53e1f4b9a114d59c1d3294c473e",
+  "after_sha256": "facefdb0c7680bb4c24805dc7e1dc892b5eff2afd442be44a658a952a576fe9a",
+  "same_content_except_revision_expiry": true,
+  "v2_signature_verified": true
+}

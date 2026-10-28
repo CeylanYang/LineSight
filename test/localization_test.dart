@@ -42,7 +42,10 @@ void main() {
     expect(englishMessages['操作成员'], 'Operator');
     expect(englishMessages['只读成员'], 'View only');
     expect(englishMessages['团队成员'], 'Team members');
-    expect(englishMessages['查看照片与边缘参考 #{0}'], 'View photo and edge reference #{0}');
+    expect(
+      englishMessages['查看照片与边缘参考 #{0}'],
+      'View photo and edge reference #{0}',
+    );
   });
 
   test(
@@ -182,6 +185,20 @@ void main() {
     expect(
       trMessage(context, '正在生成 CSV · 3 / 10 条'),
       'Generating CSV · 3 / 10 records',
+    );
+    expect(
+      trMessage(context, '草稿未删除，请重试'),
+      'Draft was not deleted. Please retry.',
+    );
+    expect(trMessage(context, '已提交打印'), 'Print job submitted');
+    expect(trMessage(context, '已取消打印'), 'Printing cancelled');
+    expect(
+      trMessage(context, '阅读进度未保存，请点书签重试'),
+      'Reading progress was not saved. Tap the bookmark to retry.',
+    );
+    expect(
+      trMessage(context, '已收藏，第 12 集等你回来'),
+      'Episode 12 bookmarked. Come back any time.',
     );
     expect(trMessage(context, '用户输入原文 {0}'), '用户输入原文 {0}');
   });

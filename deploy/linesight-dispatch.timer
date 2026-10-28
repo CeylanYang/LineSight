@@ -1,0 +1,11 @@
+[Unit]
+Description=LineSight workspace updates at 09:00, 12:00 and 18:00 China time
+[Timer]
+OnCalendar=*-*-* 09:00:00 Asia/Shanghai
+OnCalendar=*-*-* 12:00:00 Asia/Shanghai
+OnCalendar=*-*-* 18:00:00 Asia/Shanghai
+Persistent=true
+AccuracySec=1s
+Unit=linesight-dispatch.service
+[Install]
+WantedBy=timers.target

@@ -63,7 +63,7 @@ def realm_document(demo_password, api_secret=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=Path(".artifact-work/sso"))
-    parser.add_argument("--public-url", default="https://47.111.81.94/sso")
+    parser.add_argument("--public-url", default="https://99ai.pronhubcn.com/sso")
     args = parser.parse_args()
     parsed = urlsplit(args.public_url)
     if parsed.scheme != "https" or not parsed.netloc or parsed.path != "/sso" or parsed.query or parsed.fragment:
@@ -84,7 +84,7 @@ def main():
     (output / "identity.env").write_text("".join(f"{k}={v}\n" for k, v in env.items()), encoding="utf-8")
     (output / "realm/linesight-realm.json").write_text(json.dumps(realm_document(password, api_secret), ensure_ascii=False, indent=2), encoding="utf-8")
     (output / "demo-build.json").write_text(json.dumps({
-        "LINESIGHT_API_BASE_URL": "https://47.111.81.94/api/v1/",
+        "LINESIGHT_API_BASE_URL": "https://99ai.pronhubcn.com/api/v1/",
         "LINESIGHT_OIDC_ISSUER": args.public_url + "/realms/linesight",
         "LINESIGHT_DEMO_USERNAME": "linesight.demo", "LINESIGHT_DEMO_PASSWORD": password,
     }, indent=2), encoding="utf-8")

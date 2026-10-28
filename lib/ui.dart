@@ -1,8 +1,9 @@
+import 'editions/special/special_content.dart';
 import 'l10n.dart';
 import 'package:flutter/material.dart';
 import 'store.dart';
 
-const appVersion = '1.1.58';
+const appVersion = '1.1.69';
 
 const blue = Color(0xFF3478F6),
     green = Color(0xFF139D83),
@@ -17,6 +18,8 @@ const ink = Color(0xFF122036),
 class AppScope extends InheritedNotifier<AppStore> {
   const AppScope({super.key, required AppStore store, required super.child})
     : super(notifier: store);
+  static AppStore? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<AppScope>()?.notifier;
   static AppStore of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<AppScope>()!.notifier!;
 }
@@ -249,6 +252,27 @@ class PageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final narrow = MediaQuery.sizeOf(context).width < 900;
+    final special = AppScope.maybeOf(context)?.specialEdition == true;
+    final sharedChildren = [
+      for (var i = 0; i < children.length; i++)
+        KeyedSubtree(
+          key: children[i].key == null
+              ? ValueKey('business-$i')
+              : ValueKey<Key>(children[i].key!),
+          child: children[i],
+        ),
+    ];
+    final content = special
+        ? <Widget>[
+            SpecialPromotionStrip(title: SpecialSectionScope.titleOf(context)),
+            const SpecialPromotionShortcuts(),
+            ...sharedChildren.take(3),
+            if (children.length > 3)
+              const SpecialPromotionStrip(title: '会员好礼', membership: true),
+            ...sharedChildren.skip(3),
+            const SpecialDiscoveryShelf(),
+          ]
+        : sharedChildren;
     return Align(
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
@@ -260,7 +284,7 @@ class PageBody extends StatelessWidget {
             narrow ? 18 : 22,
             (narrow ? 108 : 32) + MediaQuery.paddingOf(context).bottom,
           ),
-          children: children,
+          children: content,
         ),
       ),
     );
@@ -282,7 +306,10 @@ class DetailScaffold extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final body = Backdrop(child: PageBody(maxWidth: 1000, children: children));
+    final body = SpecialSectionScope(
+      title: title,
+      child: Backdrop(child: PageBody(maxWidth: 1000, children: children)),
+    );
     if (embedded) {
       return Column(
         children: [
@@ -1160,9 +1187,12 @@ Future<bool> perform(
   }
 }
 
-void toast(BuildContext context, String text) => ScaffoldMessenger.of(
-  context,
-).showSnackBar(SnackBar(content: Text(trMessage(context, text))));
+void toast(BuildContext context, String text) {
+  final messenger = ScaffoldMessenger.of(context);
+  messenger.clearSnackBars();
+  messenger.showSnackBar(SnackBar(content: Text(trMessage(context, text))));
+}
+
 void openPage(BuildContext context, Widget page) {
   final s = AppScope.of(context);
   s.feedback();

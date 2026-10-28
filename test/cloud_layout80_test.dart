@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:linesight_flutter/cloud_account.dart';
 import 'package:linesight_flutter/cloud_navigation.dart';
 import 'package:linesight_flutter/cloud_workbench.dart';
+import 'package:linesight_flutter/cloud_layout.dart';
 import 'package:linesight_flutter/screens/cloud_shell.dart';
 import 'package:linesight_flutter/screens/cloud_tasks.dart';
 import 'package:linesight_flutter/store.dart';
@@ -162,7 +163,7 @@ void main() {
     await expectLater(
       find.byType(Scaffold).first,
       matchesGoldenFile(
-        '../docs/product/linesight/acceptance/${['05-templates-390-zh','07-my-390-zh','09-report-390-zh'].contains(name) ? 'cloud82-batch' : 'ui80-batch'}/png/$name.png',
+        '../docs/product/linesight/acceptance/${['05-templates-390-zh', '07-my-390-zh', '09-report-390-zh'].contains(name) ? 'cloud82-batch' : 'ui80-batch'}/png/$name.png',
       ),
     );
   }
@@ -185,7 +186,7 @@ void main() {
   });
 
   for (final width in [360.0, 390.0, 412.0]) {
-    testWidgets('all twelve shortcuts are above the fold at $width', (
+    testWidgets('twelve shortcuts and aligned stocks strip at $width', (
       tester,
     ) async {
       final account = Layout80Account();
@@ -203,12 +204,31 @@ void main() {
         '团队成员',
         '我的卡片',
         '同步与草稿',
+        '在线股票',
       ]) {
         expect(find.text(label).hitTestable(), findsOneWidget, reason: label);
       }
       expect(find.byType(CloudTaskTile), findsNothing);
       expect(find.byType(CloudSummaryMetric), findsNWidgets(3));
       expect(find.byType(ExpansionTile), findsNothing);
+      final grids = tester
+          .widgetList<CloudShortcutGrid>(find.byType(CloudShortcutGrid))
+          .toList();
+      expect(grids.map((grid) => grid.entries.length), [4, 8]);
+      final gridPanel = find
+          .ancestor(
+            of: find.byType(CloudShortcutGrid).last,
+            matching: find.byType(GlassPanel),
+          )
+          .first;
+      final gridRect = tester.getRect(gridPanel);
+      final stripRect = tester.getRect(
+        find.byKey(const ValueKey('workbench-stocks-strip')),
+      );
+      expect(stripRect.left, gridRect.left);
+      expect(stripRect.width, gridRect.width);
+      expect(stripRect.top, gridRect.bottom + 8);
+      expect(stripRect.width, greaterThan(stripRect.height * 3));
       await shot(tester, '02-home-${width.toInt()}-zh');
     });
   }

@@ -1,0 +1,14 @@
+{
+  "scope": "Django APIClient with authenticated workspace member; no physical Android validation",
+  "dispatch_tests": 11,
+  "flow": [
+    "scheduled job GET includes bound template",
+    "queued to printing to inspection",
+    "missing required checklist rejected without version change",
+    "corrected form can reuse unconsumed idempotency key",
+    "pass closes task",
+    "replay returns same result",
+    "inspection preserves template and answers"
+  ],
+  "production_code_changed": false
+}

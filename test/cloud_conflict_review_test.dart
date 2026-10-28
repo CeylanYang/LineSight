@@ -11,6 +11,15 @@ import 'package:linesight_flutter/ui.dart';
 import 'cloud_task_ui_test.dart' show DraftTaskAccount;
 
 class ReviewAccount extends DraftTaskAccount {
+  bool cleanupFails = false;
+  int deletes = 0;
+  @override
+  Future<void> deleteDraft(String key) async {
+    deletes++;
+    if (cleanupFails) throw StateError('storage unavailable');
+    await super.deleteDraft(key);
+  }
+
   @override
   Future<dynamic> request(
     String method,
@@ -66,6 +75,44 @@ void main() {
     await tester.tap(find.text('确认提交'));
     await tester.pumpAndSettle();
   }
+
+  testWidgets(
+    'discard cancellation and storage failure retain draft; retry succeeds',
+    (tester) async {
+      account.conflict = true;
+      account.cleanupFails = true;
+      await open(tester);
+      await tester.enterText(find.byType(TextField).last, 'Keep this draft');
+      await submit(tester);
+      final key = account.draftKey('inspect-task-1')!;
+      Future<void> discard() async {
+        await tester.ensureVisible(find.text('放弃草稿并刷新'));
+        await tester.tap(find.text('放弃草稿并刷新'));
+        await tester.pumpAndSettle();
+      }
+
+      await discard();
+      await tester.tap(find.text('取消'));
+      await tester.pumpAndSettle();
+      expect(account.deletes, 0);
+      expect(account.saved[key]?['note'], 'Keep this draft');
+      await discard();
+      await tester.tap(find.text('确认'));
+      await tester.pumpAndSettle();
+      expect(account.deletes, 1);
+      expect(find.byType(CloudTaskCommandPage), findsOneWidget);
+      expect(find.text('草稿未删除，请重试'), findsOneWidget);
+      expect(account.saved[key]?['note'], 'Keep this draft');
+      expect(tester.takeException(), isNull);
+      account.cleanupFails = false;
+      await discard();
+      await tester.tap(find.text('确认'));
+      await tester.pumpAndSettle();
+      expect(account.deletes, 2);
+      expect(account.saved.containsKey(key), false);
+      expect(find.byType(CloudTaskCommandPage), findsNothing);
+    },
+  );
 
   testWidgets(
     'review latest task and return without losing the conflicting draft',

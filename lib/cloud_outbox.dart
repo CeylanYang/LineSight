@@ -123,7 +123,15 @@ class CloudOutbox {
     final index = rows.indexWhere((r) => r['key'] == key);
     if (index < 0) throw const CollaborationApiException(404, '图片队列已更新，请刷新');
     final item = rows[index];
-    if (item['state'] == 'uploaded') return item['evidence_id'] as int;
+    if (item['state'] == 'uploaded') {
+      if (item.containsKey('error')) {
+        item.remove('error');
+        await _save(rows);
+      }
+      await _cleanup(key);
+      authorize();
+      return item['evidence_id'] as int;
+    }
     try {
       final bytes = await AesGcm.with256bits().decrypt(
         SecretBox.fromConcatenation(
@@ -148,8 +156,8 @@ class CloudOutbox {
       item['evidence_id'] = result['id'];
       item.remove('error');
       await _save(rows);
-      final file = await _file(key);
-      if (await file.exists()) await file.delete();
+      await _cleanup(key);
+      authorize();
       return result['id'] as int;
     } catch (failure) {
       authorize();
@@ -160,6 +168,17 @@ class CloudOutbox {
       rethrow;
     }
   });
+  // A durable upload receipt remains successful when temporary-file cleanup
+  // fails. Replaying the uploaded row retries cleanup without uploading again.
+  Future<void> _cleanup(String key) async {
+    try {
+      final file = await _file(key);
+      if (await file.exists()) await file.delete();
+    } on FileSystemException {
+      // Keep the encrypted file for a later cleanup attempt.
+    }
+  }
+
   Future<void> remove(String key) => locked(() async {
     final rows = await _rows();
     rows.removeWhere((r) => r['key'] == key);

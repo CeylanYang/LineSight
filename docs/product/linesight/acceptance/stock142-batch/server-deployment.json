@@ -1,0 +1,12 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/stock142/20261025T032448Z",
+  "site": "/opt/linesight-extras/whatif-original-142b",
+  "original_ui": true,
+  "oauth2_proxy": "7.15.5",
+  "canonical_issuer": "https://99ai.pronhubcn.com/sso/realms/linesight",
+  "legacy_issuer_compatible": true,
+  "registration_allowed": false,
+  "business_tables_preserved": 33,
+  "all_business_rows_preserved": true
+}

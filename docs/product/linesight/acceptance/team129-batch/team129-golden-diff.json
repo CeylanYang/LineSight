@@ -1,0 +1,64 @@
+[
+  {
+    "file": "181-unified-login-en-desktop-render.png",
+    "changed_bounds": null
+  },
+  {
+    "file": "181-unified-login-zh-desktop-render.png",
+    "changed_bounds": null
+  },
+  {
+    "file": "293-healthy-en-component.png",
+    "changed_bounds": [
+      118,
+      79,
+      125,
+      91
+    ]
+  },
+  {
+    "file": "293-healthy-zh-component.png",
+    "changed_bounds": [
+      118,
+      79,
+      125,
+      91
+    ]
+  },
+  {
+    "file": "293-help-en-component.png",
+    "changed_bounds": [
+      175,
+      165,
+      181,
+      174
+    ]
+  },
+  {
+    "file": "293-help-zh-component.png",
+    "changed_bounds": [
+      120,
+      164,
+      127,
+      174
+    ]
+  },
+  {
+    "file": "293-offline-en-component.png",
+    "changed_bounds": [
+      118,
+      79,
+      125,
+      91
+    ]
+  },
+  {
+    "file": "293-offline-zh-component.png",
+    "changed_bounds": [
+      118,
+      79,
+      125,
+      91
+    ]
+  }
+]

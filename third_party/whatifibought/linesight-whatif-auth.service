@@ -1,0 +1,21 @@
+[Unit]
+Description=LineSight WhatIfIBought Keycloak authentication gateway
+After=network-online.target linesight-identity.service linesight-whatif.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+EnvironmentFile=/etc/linesight/whatif-auth.env
+ExecStart=/opt/linesight-extras/oauth2-proxy-7.15.5/oauth2-proxy --config=/opt/linesight-extras/oauth2-proxy-7.15.5/whatif-auth.cfg --trusted-proxy-ip=127.0.0.1/32 --trusted-proxy-ip=::1/128
+Restart=on-failure
+RestartSec=5
+MemoryMax=128M
+CPUQuota=20%
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

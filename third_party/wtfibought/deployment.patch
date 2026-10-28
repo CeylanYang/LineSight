@@ -1,0 +1,269 @@
+diff --git a/wiib-sim/pom.xml b/wiib-sim/pom.xml
+index abe8282..a4def1c 100644
+--- a/wiib-sim/pom.xml
++++ b/wiib-sim/pom.xml
+@@ -14,6 +14,10 @@
+     <packaging>jar</packaging>
+ 
+     <dependencies>
++        <dependency>
++            <groupId>org.springframework.security</groupId>
++            <artifactId>spring-security-oauth2-jose</artifactId>
++        </dependency>
+         <!-- wiib-common -->
+         <dependency>
+             <groupId>com.mawai</groupId>
+diff --git a/wiib-sim/src/main/java/com/mawai/wiibsim/config/SaTokenConfig.java b/wiib-sim/src/main/java/com/mawai/wiibsim/config/SaTokenConfig.java
+index 9bdc4b5..e2efa20 100644
+--- a/wiib-sim/src/main/java/com/mawai/wiibsim/config/SaTokenConfig.java
++++ b/wiib-sim/src/main/java/com/mawai/wiibsim/config/SaTokenConfig.java
+@@ -21,6 +21,7 @@ public class SaTokenConfig extends BaseSaTokenConfig {
+     protected List<String> getExcludePaths() {
+         List<String> paths = new ArrayList<>(getDefaultExcludePaths());
+         paths.add("/api/auth/callback/**");
++        paths.add("/api/auth/linesight");
+         paths.add("/api/auth/mode");        // 登录前拉取登录模式
+         paths.add("/api/auth/login/**");    // 管理员直登/密码登录，登录前访问
+         paths.add("/api/auth/register");    // 邀请码注册，登录前访问
+diff --git a/wiib-web/src/App.tsx b/wiib-web/src/App.tsx
+index 5504b18..ff65e89 100644
+--- a/wiib-web/src/App.tsx
++++ b/wiib-web/src/App.tsx
+@@ -16,7 +16,6 @@ import { CommoditySelect } from './pages/CommoditySelect';
+ import { TradFiSelect } from './pages/TradFiSelect';
+ import { Ranking } from './pages/Ranking';
+ import { Comments } from './pages/Comments';
+-import { Login } from './pages/Login';
+ import { Admin } from './pages/Admin';
+ import { Intro } from './pages/Intro';
+ import { Me } from './pages/Me';
+@@ -112,9 +111,9 @@ function App() {
+   }, []);
+ 
+   return (
+-    <BrowserRouter>
++    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+       <Routes>
+-        <Route path="/login" element={<Login />} />
++        <Route path="/login" element={<Navigate to="/" replace />} />
+         <Route
+           path="/*"
+           element={
+diff --git a/wiib-web/src/api/index.ts b/wiib-web/src/api/index.ts
+index 6646556..449a0ec 100644
+--- a/wiib-web/src/api/index.ts
++++ b/wiib-web/src/api/index.ts
+@@ -9,7 +9,7 @@ import type { PromptGenEvent, PromptGenView } from '../types';
+ import type { User, PageResult, RankingItem, CommentItem, NotificationItem, CryptoPrice, CryptoOrderRequest, CryptoOrder, CryptoPosition, BStock, FuturesOpenRequest, FuturesCloseRequest, FuturesAddMarginRequest, FuturesReduceMarginRequest, FuturesStopLossRequest, FuturesTakeProfitRequest, FuturesAdjustLeverageRequest, FuturesCrossAccount, WalletTransferPreview, FuturesPosition, FuturesOrder, FuturesReverseResult, FuturesBracket, FundingRateView, TradeFilterMap, PredictionRound, PredictionBet, PredictionBuyRequest, PredictionBetLive, PredictionPnl, AssetSnapshot, CategoryAverages, ForceOrder, AiKeyConfig, AiModelAssignment, NewsBackfillResult, InviteCode, ChatIntent, WorkbenchEvent, StrategyAccountView, TraderPublicView, TraderOwnerView, TraderDetailView, AiTraderDecisionView, TraderEquityPoint, TraderUpsertRequest, TraderExperience, TraderSpec, StrategySignalState, FeedStreamHealth, WorkbenchSessionSummary, WorkbenchSessionStatus, WorkbenchChatMessage, WorkbenchPrefs, TraderActionPanel, TraderActionResult, TradeRecordView, TraderLiveEvent, WakeTrace } from '../types';
+ 
+ const api = axios.create({
+-  baseURL: '/api',
++  baseURL: `${import.meta.env.BASE_URL}api`,
+   withCredentials: true,
+ });
+ 
+@@ -57,7 +57,7 @@ api.interceptors.response.use(
+       // 游客本来没 token，401 只是这一个请求失败，不弹人
+       if (res.config.headers['satoken']) {
+         localStorage.removeItem('wiib-user');
+-        window.location.href = '/login';
++        window.location.href = `${import.meta.env.BASE_URL}login`;
+       }
+       return Promise.reject(new ApiError(msg || i18n.t('errors:unauthorized'), code));
+     }
+@@ -272,7 +272,7 @@ const parseChatStreamEvent = (block: string): ChatStreamEvent => {
+ // K线数据（直接返回Binance原始数组，不走拦截器解包）；现货/合约仅路径不同
+ const rawKlines = (path: string) =>
+   (symbol = 'BTCUSDT', interval = '1m', limit = 500, endTime?: number) =>
+-    axios.get<number[][]>(path, {
++    axios.get<number[][]>(import.meta.env.BASE_URL.replace(/\/$/, "") + path, {
+       params: { symbol, interval, limit, ...(endTime ? { endTime } : {}) },
+       headers: sseHeaders(),
+     }).then(res => {
+@@ -429,7 +429,7 @@ const consumeSse = async <E,>(response: Response, onEvent: (e: E) => void) => {
+ 
+ /** POST 一个 JSON 请求、以 SSE 收流 */
+ const postSse = async <E,>(url: string, body: unknown, onEvent: (e: E) => void, signal?: AbortSignal) => {
+-  const response = await fetch(url, {
++  const response = await fetch(import.meta.env.BASE_URL.replace(/\/$/, "") + url, {
+     method: 'POST',
+     credentials: 'include',
+     headers: { 'Content-Type': 'application/json', ...sseHeaders() },
+@@ -441,7 +441,7 @@ const postSse = async <E,>(url: string, body: unknown, onEvent: (e: E) => void,
+ 
+ /** GET 一条 SSE 流（订阅型：trader 现场/竞技场列表），断流由调用方重连 */
+ const getSse = async <E,>(url: string, onEvent: (e: E) => void, signal?: AbortSignal) => {
+-  const response = await fetch(url, { credentials: 'include', headers: sseHeaders(), signal });
++  const response = await fetch(import.meta.env.BASE_URL.replace(/\/$/, "") + url, { credentials: 'include', headers: sseHeaders(), signal });
+   await consumeSse<E>(response, onEvent);
+ };
+ 
+diff --git a/wiib-web/src/components/Layout.tsx b/wiib-web/src/components/Layout.tsx
+index 7165f4f..288a0c0 100644
+--- a/wiib-web/src/components/Layout.tsx
++++ b/wiib-web/src/components/Layout.tsx
+@@ -27,7 +27,7 @@ interface Props { children: React.ReactNode }
+ const INTRO_URL = 'https://intro.wtfibought.com';
+ 
+ /** 因子挖掘是同域下 wiib-alpha 托管的页面，不是本应用的路由，整页跳过去 */
+-const ALPHA_URL = '/alpha/';
++const ALPHA_URL = `${import.meta.env.BASE_URL}alpha/`;
+ 
+ /** 桌面 logo 展开态是整词，往下滚折叠成 WIIB.：留 W(hat) I(f) I B(ought)，其余字母挂 go 淡掉 */
+ const WORDMARK = 'WHATIFIBOUGHT';
+diff --git a/wiib-web/src/hooks/stompClient.ts b/wiib-web/src/hooks/stompClient.ts
+index 71db78f..10b63a2 100644
+--- a/wiib-web/src/hooks/stompClient.ts
++++ b/wiib-web/src/hooks/stompClient.ts
+@@ -37,7 +37,7 @@ function currentToken(): string {
+ function getClient(): Client {
+   if (client) return client;
+   client = new Client({
+-    webSocketFactory: () => new SockJS('/ws/quotes'),
++    webSocketFactory: () => new SockJS(`${import.meta.env.BASE_URL}ws/quotes`),
+     // token 只走 CONNECT 头，不进 URL——URL 会落进 nginx access log 和浏览器历史。
+     // 每次建连（含自动重连）前都会跑，所以总是拿到当下最新的 token；
+     // 游客没 token 就匿名连，后端不会拒，照样收行情广播
+diff --git a/wiib-web/src/lib/coinIcons.tsx b/wiib-web/src/lib/coinIcons.tsx
+index 2dd626a..288aef9 100644
+--- a/wiib-web/src/lib/coinIcons.tsx
++++ b/wiib-web/src/lib/coinIcons.tsx
+@@ -28,7 +28,7 @@ export const Eth = ({ className, ...rest }: LucideProps) => (
+ // DOGE 用真实柴犬+金币 PNG（dogecoin.com 官方 logo）
+ export const Doge = ({ className, ...rest }: LucideProps) => (
+     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className} {...rest}>
+-      <image href="/coin-icons/doge.png" x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" />
++      <image href={`${import.meta.env.BASE_URL}coin-icons/doge.png`} x="0" y="0" width="24" height="24" preserveAspectRatio="xMidYMid meet" />
+     </svg>
+ );
+ 
+diff --git a/wiib-web/src/main.tsx b/wiib-web/src/main.tsx
+index 4df0d01..c0a5895 100644
+--- a/wiib-web/src/main.tsx
++++ b/wiib-web/src/main.tsx
+@@ -6,10 +6,37 @@ import './index.css'
+ // 国际化初始化：必须排在 App 之前，组件首次渲染时词表就得在位
+ import './i18n'
+ import App from './App.tsx'
++import { useUserStore } from './stores/userStore'
+ import { ToastProvider } from './components/ui/toast.tsx'
+ 
+-createRoot(document.getElementById('root')!).render(
++async function mount() {
++  const base = import.meta.env.BASE_URL;
++  const previous = useUserStore.getState().token;
++  const response = await fetch(`${base}api/auth/linesight`, { method: "POST", credentials: "same-origin", headers: { "X-Lang": "zh", ...(previous ? { satoken: previous } : {}) } });
++  if (response.status === 401 || response.status === 403 || response.redirected) {
++    if (sessionStorage.getItem('wiib-sso-retry')) throw new Error("Session unavailable");
++    sessionStorage.setItem('wiib-sso-retry', '1');
++    window.location.replace(`${base}oauth2/start?rd=${encodeURIComponent(base)}`); return;
++  }
++  if (!response.ok) throw new Error("Service unavailable");
++  const result = await response.json();
++  if (result.code !== 0 || typeof result.data !== "string") throw new Error("SSO unavailable");
++  sessionStorage.removeItem('wiib-sso-retry');
++  useUserStore.getState().setUser(null);
++  useUserStore.getState().setToken(result.data);
++  createRoot(document.getElementById('root')!).render(
+   <ToastProvider>
+     <App />
+   </ToastProvider>,
+ )
++
++}
++void mount().catch(() => {
++  document.getElementById('splash')?.remove();
++  createRoot(document.getElementById('root')!).render(
++    <main className="min-h-screen flex flex-col items-center justify-center gap-4 p-6">
++      <p>连接暂时中断，请重试</p>
++      <button type="button" onClick={() => { sessionStorage.removeItem('wiib-sso-retry'); window.location.reload(); }}>重新连接</button>
++    </main>
++  );
++});
+diff --git a/wiib-web/src/pages/Admin.tsx b/wiib-web/src/pages/Admin.tsx
+index aa7ff73..369af3b 100644
+--- a/wiib-web/src/pages/Admin.tsx
++++ b/wiib-web/src/pages/Admin.tsx
+@@ -313,7 +313,7 @@ export function Admin() {
+       <div className="flex items-center gap-3">
+         <h1 className="text-2xl font-bold">{t('admin.title')}</h1>
+         {/* 因子挖掘只有管理员用，入口就放这儿；页面是 wiib-alpha 自己托管的，整页跳过去 */}
+-        <a href="/alpha/" className="ml-auto text-xs font-bold text-primary hover:underline">{t('admin.alphaLink')}</a>
++        <a href={`${import.meta.env.BASE_URL}alpha/`} className="ml-auto text-xs font-bold text-primary hover:underline">{t('admin.alphaLink')}</a>
+       </div>
+ 
+       {/* feed 数据流健康：独立于任务状态加载，管理员进页即见 */}
+diff --git a/wiib-web/src/pages/Me.tsx b/wiib-web/src/pages/Me.tsx
+index 11ebff8..a52c508 100644
+--- a/wiib-web/src/pages/Me.tsx
++++ b/wiib-web/src/pages/Me.tsx
+@@ -71,7 +71,7 @@ export function Me() {
+     { icon: LineChart, label: t('me.nav.strategies'), to: '/strategies', color: 'text-violet-400' },
+     { icon: FlaskConical, label: t('me.nav.backtest'), to: '/backtest', color: 'text-orange-400' },
+     // 因子挖掘是同域下 wiib-alpha 托管的页面
+-    { icon: Pickaxe, label: t('me.nav.alpha'), to: '/alpha/', color: 'text-emerald-400', page: true },
++    { icon: Pickaxe, label: t('me.nav.alpha'), to: `${import.meta.env.BASE_URL}alpha/`, color: 'text-emerald-400', page: true },
+     { icon: Trophy, label: t('me.nav.ranking'), to: '/ranking', color: 'text-amber-400' },
+     { icon: MessageSquare, label: t('me.nav.comments'), to: '/comments', color: 'text-teal-400' },
+     // 介绍站是单独部署的静态站，手机端从这里进
+diff --git a/wiib-web/src/pages/TestnetMonitor.tsx b/wiib-web/src/pages/TestnetMonitor.tsx
+index 3c98bba..682b13e 100644
+--- a/wiib-web/src/pages/TestnetMonitor.tsx
++++ b/wiib-web/src/pages/TestnetMonitor.tsx
+@@ -409,7 +409,7 @@ export function TestnetMonitor() {
+         <div className="rounded-lg border border-border bg-card px-4 py-3 text-xs leading-relaxed border-l-4 border-l-warning">
+           <span className="font-black text-warning">{t('testnet.banner.title')}</span>
+           <span className="text-muted-foreground">{t('testnet.banner.body')}</span>
+-          <a href="/strategies" className="font-bold text-primary hover:underline ml-1">{t('testnet.banner.link')} →</a>
++          <a href={`${import.meta.env.BASE_URL}strategies`} className="font-bold text-primary hover:underline ml-1">{t('testnet.banner.link')} →</a>
+         </div>
+       )}
+ 
+diff --git a/wiib-web/src/stores/userStore.ts b/wiib-web/src/stores/userStore.ts
+index 26814ac..518c914 100644
+--- a/wiib-web/src/stores/userStore.ts
++++ b/wiib-web/src/stores/userStore.ts
+@@ -49,6 +49,7 @@ export const useUserStore = create<UserState>()(
+           // ignore
+         }
+         set({ user: null, token: null });
++        window.location.assign(`${import.meta.env.BASE_URL}oauth2/sign_out?rd=${encodeURIComponent(import.meta.env.BASE_URL)}`);
+         reconnectWithIdentity();   // 退回匿名身份，否则登出后仍能收到上一个账号的通知
+       },
+     }),
+diff --git a/wiib-web/vite.config.ts b/wiib-web/vite.config.ts
+index ecd1393..acba5cd 100644
+--- a/wiib-web/vite.config.ts
++++ b/wiib-web/vite.config.ts
+@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
+ 
+ // https://vite.dev/config/
+ export default defineConfig({
++  base: "/linesight/whatif/",
+   plugins: [
+     react(),
+     tailwindcss(),
+@@ -18,18 +19,18 @@ export default defineConfig({
+         short_name: 'WIIB',
+         description: '虚拟资金交易代币化美股、加密现货 / 永续合约与大宗商品，观察 AI 量化研判',
+         lang: 'zh-CN',
+-        start_url: '/',
+-        scope: '/',
++        start_url: '/linesight/whatif/',
++        scope: '/linesight/whatif/',
+         display: 'standalone',
+         // 不锁竖屏：K 线横屏看是真实需求，且横屏宽度(如 852px)已过 md 断点，自动切桌面版布局
+         orientation: 'any',
+         background_color: '#fafaf7',  // 启动闪屏底色，对齐亮色主题 --color-background
+         theme_color: '#F97316',
+         icons: [
+-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
++          { src: '/linesight/whatif/icon-192.png', sizes: '192x192', type: 'image/png' },
++          { src: '/linesight/whatif/icon-512.png', sizes: '512x512', type: 'image/png' },
+           // maskable：安卓自适应图标，内容已收进安全圆，随系统裁圆/方不会切字
+-          { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
++          { src: '/linesight/whatif/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+         ],
+       },
+       workbox: {

@@ -1,0 +1,10 @@
+{
+  "domain_and_legacy_pkce": true,
+  "rs256_issuer_audience": true,
+  "same_existing_identity": true,
+  "same_team_and_owner_role": true,
+  "legacy_refresh_preserved": true,
+  "demo_login": true,
+  "registration_closed": true,
+  "passwords_changed": false
+}

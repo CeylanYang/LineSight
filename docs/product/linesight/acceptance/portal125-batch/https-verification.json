@@ -1,0 +1,8 @@
+{
+  "verification_origin": "production server HTTPS request with normal certificate verification",
+  "index_sha256": "60eb9cbfbd8dc1dcfdbea83959f668a0140b0217b9d9be23214c7052e6752c25",
+  "download_alias_sha256": "93fe81d1d478070beb17921f5084ec3cd48061908bdaccbc3d6369fbd14a3269",
+  "preview_status": 200,
+  "preview_alias": "LineSight-1.1.58-content8-preview.apk",
+  "local_windows_https": "TLS unexpected EOF; local network verification incomplete"
+}

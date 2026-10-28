@@ -1,3 +1,4 @@
+import 'service_transport.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -121,7 +122,7 @@ class OtaUpdates extends ChangeNotifier {
   }
 
   Future<Uint8List> _read(Uri uri, int limit, {bool payload = false}) async {
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       if (uri.scheme != 'https') throw const FormatException('HTTPS required');

@@ -1,0 +1,16 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/inspection114/20261024T205614Z",
+  "before_sha256": {
+    "collaboration/workflow.py": "8081fa99f31aad31f6edf0c1c6e9382b48e9ba248811f696ac5a0a5a39da66b5"
+  },
+  "after_sha256": {
+    "collaboration/workflow.py": "8d817dbf1a7de402e095a23d410dae7bf3d4d961759c038671d75348b7b98d2a"
+  },
+  "schema_changed": false,
+  "existing_tables_checked": 33,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false,
+  "rollback_preserves_live_writes": true
+}

@@ -3,6 +3,9 @@ package com.example.linesight_flutter
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import android.view.KeyEvent
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +16,59 @@ import java.security.MessageDigest
 import java.util.concurrent.Executors
 
 class MainActivity : FlutterActivity() {
+    private var auroraChannel: MethodChannel? = null
+    private val auroraKeys = AuroraKeySequence()
+    private var auroraEnabled = false
+    private var auroraActive = false
+    private var auroraForeground = false
+    private var auroraWindowMs = 360
+    private var auroraBackCallback: OnBackInvokedCallback? = null
+
+    private fun updateAuroraBackCallback() {
+        if (Build.VERSION.SDK_INT < 33) return
+        val visible = auroraActive && auroraEnabled && auroraForeground
+        if (visible && auroraBackCallback == null) {
+            val callback = OnBackInvokedCallback { dismissAuroraFromNative() }
+            auroraBackCallback = callback
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_OVERLAY, callback)
+        } else if (!visible) {
+            auroraBackCallback?.let { onBackInvokedDispatcher.unregisterOnBackInvokedCallback(it) }
+            auroraBackCallback = null
+        }
+    }
+
+    private fun dismissAuroraFromNative() {
+        auroraActive = false
+        auroraKeys.reset()
+        updateAuroraBackCallback()
+        auroraChannel?.invokeMethod("dismiss", null)
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onBackPressed() {
+        if (auroraActive) dismissAuroraFromNative() else super.onBackPressed()
+    }
+
+    // Volume always reaches Android's normal dispatch path. No system-wide hook.
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (auroraForeground && auroraEnabled && event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+            if (auroraActive && event.keyCode != KeyEvent.KEYCODE_BACK) {
+                dismissAuroraFromNative()
+            } else if (!auroraActive && auroraKeys.onDown(event.keyCode, event.repeatCount, event.eventTime)) {
+                auroraActive = true
+                updateAuroraBackCallback()
+                auroraChannel?.invokeMethod("show", null)
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        auroraForeground = true
+        auroraKeys.reset()
+    }
+
     private val saveRequest = 53145
     private val io = Executors.newSingleThreadExecutor()
     private var reply: MethodChannel.Result? = null
@@ -47,6 +103,22 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        auroraChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/aurora").also { channel ->
+            channel.setMethodCallHandler { call, result ->
+                if (call.method == "configure") {
+                    auroraEnabled = call.argument<Boolean>("enabled") == true
+                    auroraActive = auroraEnabled && call.argument<Boolean>("active") == true
+                    val nextWindow = (call.argument<Int>("doublePressMs") ?: 360).coerceIn(200, 600)
+                    if (nextWindow != auroraWindowMs) {
+                        auroraWindowMs = nextWindow
+                        auroraKeys.setWindowMs(nextWindow)
+                    }
+                    if (!auroraEnabled) auroraKeys.reset()
+                    updateAuroraBackCallback()
+                    result.success(null)
+                } else result.notImplemented()
+            }
+        }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "linesight/brand-haptics").setMethodCallHandler { call, result ->
             when (call.method) {
                 "awaitVisible" -> {
@@ -168,11 +240,19 @@ class MainActivity : FlutterActivity() {
     }
 
     override fun onPause() {
+        auroraForeground = false
+        auroraActive = false
+        auroraKeys.reset()
+        updateAuroraBackCallback()
         brandHaptics.cancel()
         super.onPause()
     }
 
     override fun onDestroy() {
+        auroraActive = false
+        updateAuroraBackCallback()
+        auroraChannel?.setMethodCallHandler(null)
+        auroraChannel = null
         visibleReplies.forEach { it.error("activity_closed", "Activity closed before first display", null) }
         visibleReplies.clear()
         brandHaptics.cancel()

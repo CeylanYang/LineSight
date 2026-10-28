@@ -5,7 +5,7 @@ import hashlib
 import json
 from datetime import timedelta
 from django.db import transaction
-from django.db.models import Q, F, OuterRef, Subquery
+from django.db.models import Q, F, OuterRef, Subquery, Exists
 from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from .api import membership
-from .models import AuditEvent, CheckTemplate, Membership, QualityInspection, Workspace, NotificationReceipt
+from .models import AuditEvent, CheckTemplate, Membership, QualityInspection, Workspace, NotificationReceipt, WorkspaceBulletin
 
 
 def person(user):
@@ -255,11 +255,18 @@ def notifications(request, workspace_id):
     rows = member.workspace.jobs.filter(
         Q(assignee=request.user, status__in=['queued', 'printing', 'inspection', 'exception']) |
         Q(assignee__isnull=True, status__in=['inspection', 'exception'])
-    ).order_by('-updated_at')
+    ).annotate(has_inspections=Exists(QualityInspection.objects.filter(job_id=OuterRef('pk')))).order_by('-updated_at')
     seen = dict(NotificationReceipt.objects.filter(user=request.user, job__workspace=member.workspace).values_list('job_id', 'version'))
-    return Response([{'id': str(job.pk), 'task_id': str(job.pk), 'version': job.version, 'read': seen.get(job.pk, 0) >= job.version, 'part_name': job.part_name,
+    notices = [{'id': str(job.pk), 'task_id': str(job.pk), 'version': job.version, 'read': seen.get(job.pk, 0) >= job.version, 'part_name': job.part_name,
         'status': job.status, 'updated_at': job.updated_at.isoformat(),
-        'reinspection': job.status == 'inspection' and job.quality_inspections.exists()} for job in rows])
+        'reinspection': job.status == 'inspection' and job.has_inspections} for job in rows]
+    if 'workspace-bulletins-v1' not in request.headers.get('X-LineSight-Features', '').split(','):
+        return Response(notices)
+    bulletins = list(member.workspace.bulletins.filter(published_at__lte=timezone.now()).order_by('-published_at', '-source_key')[:120])
+    read = set(WorkspaceBulletin.objects.filter(workspace=member.workspace, pk__in=[row.pk for row in bulletins], read_by=request.user).values_list('pk', flat=True))
+    for row in bulletins:
+        notices.append({'id': str(row.pk), 'task_id': str(row.pk), 'version': 1, 'read': row.pk in read, 'part_name': row.title, 'body': row.body, 'kind': row.kind, 'bulletin': True, 'status': 'announcement', 'updated_at': row.published_at.isoformat(), 'linked_task': str(row.job_id) if row.job_id else None, 'template_id': row.template_id})
+    return Response(sorted(notices, key=lambda n: n['updated_at'], reverse=True))
 
 
 @api_view(['POST'])
@@ -268,6 +275,12 @@ def read_notification(request, workspace_id, job_id):
     from django.http import Http404
     member = membership(request, workspace_id)
     with transaction.atomic():
+        bulletin = member.workspace.bulletins.filter(pk=job_id, published_at__lte=timezone.now()).first()
+        if bulletin is not None:
+            if type(request.data.get('version')) is not int or request.data.get('version') != 1:
+                raise ValidationError('请刷新通知后重试')
+            bulletin.read_by.add(request.user)
+            return Response({'task_id': str(bulletin.pk), 'read': True, 'version': 1})
         Workspace.objects.filter(pk=workspace_id).update(name=F('name'))
         job = member.workspace.jobs.filter(pk=job_id).filter(Q(assignee=request.user) | Q(assignee__isnull=True)).first()
         if job is None:

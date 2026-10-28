@@ -1,3 +1,4 @@
+import 'service_transport.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
@@ -6,7 +7,7 @@ import 'package:flutter/foundation.dart';
 
 const defaultCollaborationApi = String.fromEnvironment(
   'LINESIGHT_API_BASE_URL',
-  defaultValue: 'https://47.111.81.94/api/v1/',
+  defaultValue: 'https://99ai.pronhubcn.com/api/v1/',
 );
 
 class CollaborationSession {
@@ -55,11 +56,12 @@ class CollaborationApi {
     Object? body,
     String? idempotencyKey,
   }) async {
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final req = await client.openUrl(method, _uri(path));
       req.headers.set(HttpHeaders.acceptHeader, 'application/json');
+      req.headers.set('X-LineSight-Features', 'workspace-bulletins-v1');
       if (token != null) {
         req.headers.set(HttpHeaders.authorizationHeader, 'Bearer $token');
       }
@@ -282,7 +284,7 @@ class CollaborationApi {
     List<int> bytes,
   ) async {
     final boundary = 'LineSight${DateTime.now().microsecondsSinceEpoch}';
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final req = await client.postUrl(
@@ -333,7 +335,7 @@ class CollaborationApi {
     String jobId,
     int evidenceId,
   ) async {
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final req = await client.getUrl(
@@ -361,7 +363,7 @@ class CollaborationApi {
     String jobId,
     int evidenceId,
   ) async {
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final req = await client.getUrl(

@@ -1,0 +1,28 @@
+# Insert inside the existing HTTPS IP server block. Keep public browser URLs on the canonical domain.
+
+    # BEGIN LINESIGHT NATIVE IDENTITY RELAY
+    @nativeDiscovery {
+        path /_linesight/identity/discovery
+        method GET
+    }
+    handle @nativeDiscovery {
+        rewrite * /discovery.json
+        root * /srv/linesight/identity
+        header Cache-Control "no-store"
+        file_server
+    }
+    @nativeToken {
+        path /_linesight/identity/token
+        method POST
+    }
+    handle @nativeToken {
+        request_body {
+            max_size 64KB
+        }
+        rewrite * /sso/realms/linesight/protocol/openid-connect/token
+        reverse_proxy 127.0.0.1:8081 {
+            header_up X-Forwarded-Host 99ai.pronhubcn.com
+            header_up X-Forwarded-Proto https
+        }
+    }
+    # END LINESIGHT NATIVE IDENTITY RELAY

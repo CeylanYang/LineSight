@@ -48,6 +48,82 @@ class QueueAccount extends CloudAccount {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   test(
+    'workspace change during cleanup hides receipt while preserving original upload',
+    () async {
+      final folder = await Directory.systemTemp.createTemp(
+        'linesight-outbox-scope-',
+      );
+      final account = QueueAccount()..loseAcknowledgment = false;
+      var directoryReads = 0;
+      final queue = CloudOutbox(
+        account,
+        directory: () async {
+          if (++directoryReads == 3) account.activeWorkspace = {'id': 2};
+          return folder.path;
+        },
+      );
+      try {
+        final item = await queue.enqueue('job-1', [4, 5, 6]);
+        await expectLater(queue.retry(item['key'] as String), throwsException);
+        expect(
+          await CloudOutbox(account, directory: () async => folder.path).list(),
+          isEmpty,
+        );
+        account.activeWorkspace = {'id': 1};
+        expect((await queue.list()).single['state'], 'uploaded');
+        account.loseAcknowledgment = true;
+        expect(await queue.retry(item['key'] as String), 1);
+        expect(account.loseAcknowledgment, true);
+      } finally {
+        account.dispose();
+        await folder.delete(recursive: true);
+      }
+    },
+  );
+  test(
+    'cleanup failure preserves receipt and replay cleans without another upload',
+    () async {
+      final folder = await Directory.systemTemp.createTemp(
+        'linesight-outbox-cleanup-',
+      );
+      final account = QueueAccount()..loseAcknowledgment = false;
+      var directoryReads = 0;
+      final queue = CloudOutbox(
+        account,
+        directory: () async {
+          directoryReads++;
+          if (directoryReads == 3) {
+            throw const FileSystemException('temporary cleanup failure');
+          }
+          return folder.path;
+        },
+      );
+      try {
+        final item = await queue.enqueue('job-1', [1, 2, 3]);
+        final key = item['key'] as String;
+        expect(await queue.retry(key), 1);
+        final uploaded = (await queue.list()).single;
+        expect(uploaded['state'], 'uploaded');
+        expect(uploaded['evidence_id'], 1);
+        expect(uploaded.containsKey('error'), false);
+        final encrypted = Directory('${folder.path}/cloud-outbox');
+        expect(await encrypted.list().length, 1);
+        // Older builds could persist an error beside a successful receipt.
+        (account.saved[queue.scope]!['items'] as List).single['error'] =
+            'stale cleanup error';
+        account.loseAcknowledgment = true;
+        expect(await queue.retry(key), 1);
+        expect(account.loseAcknowledgment, true);
+        expect(account.receipts, hasLength(1));
+        expect(await encrypted.list().length, 0);
+        expect((await queue.list()).single.containsKey('error'), false);
+      } finally {
+        account.dispose();
+        await folder.delete(recursive: true);
+      }
+    },
+  );
+  test(
     'encrypted queue survives restart, deduplicates uncertain uploads and isolates identities',
     () async {
       final folder = await Directory.systemTemp.createTemp('linesight-outbox-');

@@ -1,0 +1,9 @@
+{
+  "/api/v1/ota/production/8103/arm64-v8a/manifest.json": 204,
+  "/api/v1/ota/production/8103/x86_64/manifest.json": 204,
+  "/api/v1/ota/production/8105/arm64-v8a/manifest.json": 204,
+  "/api/v1/ota/production/8105/x86_64/manifest.json": 204,
+  "/register": 410,
+  "/linesight/whatif/api/stock-data?ticker=AAPL&date=2020-01-01": 302,
+  "/linesight/": 200
+}

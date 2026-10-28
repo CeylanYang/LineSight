@@ -1,0 +1,14 @@
+{
+  "backup": "/var/backups/linesight/portal-downloads/20261025T024613Z",
+  "files": {
+    "index.html": "e838d61c8dcb49a97d63bae085d7c2bb918c802439b37720fb25aab84f30993f",
+    "app.js": "30c2ea5b8db12c53ad9026fde5406195cb97109a09872af1332ae92d0174dafe",
+    "downloads/LineSight-1.1.68-8104-production.apk": "f6484495f7e9fcf60d0927fd030df8d681955aad93f953138f3a68c8c4b879be"
+  },
+  "aliases": {
+    "downloads/LineSight-Android.apk": "LineSight-1.1.68-8104-production.apk"
+  },
+  "legacy_download_redirect": "/linesight/downloads/LineSight-legacy-upgrade.apk",
+  "legacy_apk_preserved": true,
+  "caddy_validated_reloaded": true
+}

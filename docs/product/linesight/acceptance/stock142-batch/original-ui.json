@@ -1,0 +1,10 @@
+{
+  "app/page.tsx": "eb433872980695bc3e9189c35863c32ea4a66ed2377dfc3637a0890bb2a4cf9e",
+  "app/layout.tsx": "d1de9a33cb794f66f17cf6049b43186e47192594f8e89d7ffd1ba5562249f935",
+  "app/globals.css": "060615553a1eb6330b0454da14a1ba82daf3363fa2ef061297c3b3b79bbb6237",
+  "components/investment-form.tsx": "6e155f8f9943c25346cde77c1633b592957a81c399422bf54d1ded82c418359f",
+  "components/investment-chart.tsx": "3879458e9bac1cdcf4c089a8058c97e6325655cd5ab8fc0f0996d2b2de132877",
+  "components/how-it-works.tsx": "f2d19bf83bafd68383f870f99cb4e94494c9ba2cdb757ea0d2c18e3c3cb27fb1",
+  "app/api/stock-data/route.ts": "fc4c07239929a3d35b4a7d6c436443ccf9ff3e878dfa74a690a28e6af89f49b6",
+  "site_tgz_sha256": "a1a534a3f799c2a1d606ff5a13cc4f900f72417bde4f7f916b9ad6fbcef02714"
+}

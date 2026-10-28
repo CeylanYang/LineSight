@@ -2,6 +2,9 @@
 
 import os
 LINESIGHT_OIDC_ISSUER = os.environ.get("LINESIGHT_OIDC_ISSUER", "")
+LINESIGHT_OIDC_ISSUER_ALIASES = tuple(
+    item.strip().rstrip("/") for item in os.environ.get("LINESIGHT_OIDC_ISSUER_ALIASES", "").split(",") if item.strip()
+)
 LINESIGHT_OIDC_CLIENT_SECRET = os.environ.get("LINESIGHT_OIDC_CLIENT_SECRET", "")
 LINESIGHT_NFC_CLIENT_SECRET = os.environ.get('LINESIGHT_NFC_CLIENT_SECRET','')
 LINESIGHT_NFC_TICKET_SECRET = os.environ.get('LINESIGHT_NFC_TICKET_SECRET','')
@@ -105,7 +108,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
-CSRF_TRUSTED_ORIGINS = ["https://47.111.81.94"]
+CSRF_TRUSTED_ORIGINS = ["https://47.111.81.94", "https://99ai.pronhubcn.com"]
 
 LOGGING = {
     "version": 1,

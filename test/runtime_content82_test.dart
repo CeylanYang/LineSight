@@ -77,4 +77,33 @@ void main() {
       await expectLater(verify(await signed()), throwsFormatException);
     },
   );
+  test(
+    'signed presentation config accepts legacy omission and bounded bundled effects',
+    () async {
+      config.remove('presentation');
+      expect((await verify(await signed()))['presentation'], isNull);
+      config['presentation'] = {
+        'aurora': {
+          'enabled': false,
+          'double_press_ms': 360,
+          'palette': 'ocean',
+          'style': 'subtle',
+          'speed': 0.35,
+        },
+        'login_ad': {'enabled': true, 'seconds': 5, 'asset': 'ai_assistant'},
+      };
+      expect(
+        (await verify(await signed()))['presentation']['aurora']['enabled'],
+        false,
+      );
+      config['presentation']['login_ad']['seconds'] = 6;
+      await expectLater(verify(await signed()), throwsFormatException);
+      config['presentation']['login_ad']['seconds'] = 5;
+      config['presentation']['login_ad']['url'] = 'https://example.com/code';
+      await expectLater(verify(await signed()), throwsFormatException);
+      config['presentation']['login_ad'].remove('url');
+      config['presentation']['aurora']['double_press_ms'] = 0;
+      await expectLater(verify(await signed()), throwsFormatException);
+    },
+  );
 }

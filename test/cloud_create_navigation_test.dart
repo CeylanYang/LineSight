@@ -16,6 +16,21 @@ import 'cloud_profile_workflow_test.dart' show printerProfile;
 
 class CreateNavigationAccount extends DraftTaskAccount {
   int writes = 0, refreshes = 0;
+  Completer<Map<String, dynamic>?>? draftGate;
+  bool draftReadFails = false, draftSaveFails = false;
+  @override
+  Future<void> saveDraft(String key, Map<String, dynamic> value) async {
+    if (draftSaveFails) throw StateError('storage unavailable');
+    await super.saveDraft(key, value);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> readDraft(String key) async {
+    if (draftReadFails) throw StateError('storage unavailable');
+    if (draftGate != null) return draftGate!.future;
+    return super.readDraft(key);
+  }
+
   Completer<Map<String, dynamic>>? postGate;
   final reloadGate = Completer<void>();
   Object? writeFailure;
@@ -92,6 +107,7 @@ void main() {
     WidgetTester tester, {
     Widget page = const CloudCreateTaskPage(),
     String language = 'en',
+    bool settle = true,
   }) async {
     await tester.binding.setSurfaceSize(const Size(800, 1600));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -145,8 +161,77 @@ void main() {
       ),
     );
     await tester.tap(find.text('Origin'));
-    await tester.pumpAndSettle();
+    if (settle) {
+      await tester.pumpAndSettle();
+    } else {
+      await tester.pump(const Duration(milliseconds: 400));
+    }
   }
+
+  testWidgets(
+    'slow draft restore blocks editing until original data is ready',
+    (tester) async {
+      account.draftGate = Completer<Map<String, dynamic>?>();
+      await show(tester, settle: false);
+      expect(find.byType(TextFormField), findsNothing);
+      expect(account.writes, 0);
+      expect(account.saved, isEmpty);
+      account.draftGate!.complete({
+        'name': 'Recovered bracket',
+        'quantity': '7',
+        'request_key': 'stable-request',
+      });
+      await tester.pumpAndSettle();
+      expect(find.text('Recovered bracket'), findsOneWidget);
+      expect(find.text('7'), findsOneWidget);
+      expect(find.byType(TextFormField), findsWidgets);
+    },
+  );
+
+  testWidgets('failed restore cannot overwrite old draft and supports retry', (
+    tester,
+  ) async {
+    final key = account.draftKey('create')!;
+    account.saved[key] = {
+      'name': 'Saved bracket',
+      'quantity': '3',
+      'request_key': 'old-key',
+    };
+    account.draftReadFails = true;
+    await show(tester, language: 'zh');
+    expect(find.byType(TextFormField), findsNothing);
+    expect(account.saved[key]?['name'], 'Saved bracket');
+    account.draftReadFails = false;
+    await tester.tap(find.text('重试'));
+    await tester.pumpAndSettle();
+    expect(find.text('Saved bracket'), findsOneWidget);
+    expect(account.writes, 0);
+  });
+
+  testWidgets(
+    'manual draft retry clears stale error and confirms durable save',
+    (tester) async {
+      await show(tester, language: 'zh');
+      account.draftSaveFails = true;
+      await tester.enterText(find.byType(TextFormField).first, 'Bracket draft');
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('保存草稿'));
+      await tester.pumpAndSettle();
+      expect(find.text('草稿保存失败，请重试'), findsOneWidget);
+      expect(find.text('草稿已保存'), findsNothing);
+      expect(account.saved, isEmpty);
+      account.draftSaveFails = false;
+      await tester.tap(find.text('保存草稿'));
+      await tester.pumpAndSettle();
+      expect(find.text('草稿保存失败，请重试'), findsNothing);
+      expect(find.text('草稿已保存'), findsOneWidget);
+      expect(
+        account.saved[account.draftKey('create')]?['name'],
+        'Bracket draft',
+      );
+      expect(account.writes, 0);
+    },
+  );
 
   Future<void> tap(
     WidgetTester tester,

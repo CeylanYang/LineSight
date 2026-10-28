@@ -1,0 +1,52 @@
+{
+  "repository": "https://github.com/mamawai/wtfibought",
+  "commit": "d99fd9bae3564a2630880a3a8f52fcd0dfee7bdb",
+  "windows_checkout_line_endings_normalized": true,
+  "core_ui": [
+    {
+      "file": "wiib-web/src/pages/Home.tsx",
+      "sha256_lf": "d178784b767db781b9e1e90da046937cda7b7a3356fd78f88720981ec91d78ab",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/pages/BStockList.tsx",
+      "sha256_lf": "7d89b402147a0b386e05bfb77764701179710d8d4d5fd8704100f2665cd60f8a",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/pages/Portfolio.tsx",
+      "sha256_lf": "fb075c976d30296acb971208bad34f81ae2989bc02e88b653c83384898841b96",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/pages/Coin.tsx",
+      "sha256_lf": "3e5cc111340e70f5dcbe82d5d65827e873f63c33e966318500e754b9e8fbcc77",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/pages/Arena.tsx",
+      "sha256_lf": "02babdb080a8440c4975e0be2dd2e7204aa567fc54b6733f5a98fc3c498a6cd9",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/pages/Backtest.tsx",
+      "sha256_lf": "28a50606351f630bc3d1a2d43d469bc2830f4afc8edcf4606d7f2b5bff411708",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/components/HomeMonthGrid.tsx",
+      "sha256_lf": "92698640e67dc7f5781e2899ee6bcea98db4df73fe96695ea10e9db20fa77c77",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/components/HomeTraderBlock.tsx",
+      "sha256_lf": "36ff51f7a879b304626def3debdd77ca5e1e9d74d63dbeb58660aaf34b651acd",
+      "unchanged": true
+    },
+    {
+      "file": "wiib-web/src/index.css",
+      "sha256_lf": "d24d9ec08913ffd9618e19e1a329d02292996fec46024c43b8032a945975d2d5",
+      "unchanged": true
+    }
+  ]
+}

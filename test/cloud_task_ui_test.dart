@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linesight_flutter/cloud_account.dart';
@@ -76,6 +77,40 @@ class DraftTaskAccount extends TaskAccount {
   }
 }
 
+class CommandReceiptAccount extends DraftTaskAccount {
+  bool cleanupFails = false, refreshFails = false;
+  Completer<void>? refreshGate;
+  int writes = 0, refreshes = 0;
+  @override
+  Future<dynamic> request(
+    String method,
+    String path, {
+    Object? body,
+    String? idempotencyKey,
+  }) {
+    if (method != 'GET') writes++;
+    return super.request(
+      method,
+      path,
+      body: body,
+      idempotencyKey: idempotencyKey,
+    );
+  }
+
+  @override
+  Future<void> deleteDraft(String key) async {
+    if (cleanupFails) throw StateError('storage unavailable');
+    await super.deleteDraft(key);
+  }
+
+  @override
+  Future<void> reload() async {
+    refreshes++;
+    if (refreshFails) throw StateError('refresh unavailable');
+    await refreshGate?.future;
+  }
+}
+
 void main() {
   late AppStore store;
   late TaskAccount account;
@@ -95,6 +130,45 @@ void main() {
     final context = tester.element(find.byType(Scaffold).first);
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
     await tester.pumpAndSettle();
+  }
+
+  for (final delayed in [false, true]) {
+    testWidgets(
+      'confirmed command returns despite cleanup failure; delayed refresh=$delayed',
+      (tester) async {
+        account.dispose();
+        final receipt = CommandReceiptAccount()..cleanupFails = true;
+        account = receipt;
+        if (delayed) {
+          receipt.refreshGate = Completer<void>();
+          addTearDown(() => receipt.refreshGate!.complete());
+        } else {
+          receipt.refreshFails = true;
+        }
+        await tester.binding.setSurfaceSize(const Size(800, 1800));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        await open(
+          tester,
+          CloudTaskCommandPage(
+            job: receipt.task,
+            workspaceId: 1,
+            action: 'inspect',
+          ),
+        );
+        await tester.ensureVisible(find.text('确认提交'));
+        await tester.tap(find.text('确认提交'));
+        await tester.pumpAndSettle();
+        expect(receipt.writes, 1);
+        expect(receipt.refreshes, 1);
+        expect(find.byType(CloudTaskCommandPage), findsNothing);
+        expect(find.text('网络连接失败，草稿已保留，请重试'), findsNothing);
+        expect(
+          receipt.saved[receipt.draftKey('inspect-task-1')]?['request_key'],
+          receipt.submittedKey,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
   }
 
   testWidgets(

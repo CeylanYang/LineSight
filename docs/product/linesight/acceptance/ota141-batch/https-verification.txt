@@ -1,0 +1,4 @@
+Origin: production server HTTPS with certificate verification
+f6484495f7e9fcf60d0927fd030df8d681955aad93f953138f3a68c8c4b879be  -
+e838d61c8dcb49a97d63bae085d7c2bb918c802439b37720fb25aab84f30993f  -
+LineSight-1.1.58-content8-preview.apk

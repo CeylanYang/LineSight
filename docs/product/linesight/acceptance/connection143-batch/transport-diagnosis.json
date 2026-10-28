@@ -1,0 +1,8 @@
+{
+ "before": {"local_dart_domain_https": "HandshakeException: Connection terminated during handshake", "local_dart_legacy_https": 200, "schannel_domain_https": "connection reset", "node_chromium_domain_https": 200},
+ "server_observation": "client-facing TCP reset immediately after domain ClientHello, before a server TLS response; browser and IP handshakes succeed",
+ "conclusion": "domain migration exposed a TLS connectivity failure in the actual app transport; browser-only verification missed it",
+ "fix": "fixed allowlisted CA-validated TLS connection failover, canonical HTTP Host retained; native AppAuth uses fixed discovery/token relay preserving canonical issuer and browser URLs",
+ "credential_or_team_changes": false,
+ "device_validation": "no attached Android devices; this evidence is desktop Dart/Java/Chromium plus Flutter tests"
+}

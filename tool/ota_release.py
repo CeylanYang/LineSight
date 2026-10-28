@@ -1,6 +1,6 @@
 """Signed self-hosted Android OTA publishing (no public write endpoint).
 
-init-key: private key stays in ignored .artifact-work; back it up securely.
+init-key: private key stays in the protected user vault; back it up securely.
 base: save the delivered APK's immutable native/assets fingerprint.
 pack: refuse native/assets/engine drift, extract each ABI's libapp.so and sign.
 rollback: publish a higher-sequence signed command reverting to the base APK.
@@ -11,6 +11,7 @@ import base64
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -20,7 +21,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 ROOT = Path(__file__).resolve().parents[1]
-PRIVATE = ROOT / '.artifact-work/ota/patch-signing.pem'
+PRIVATE = Path(os.environ.get('LINESIGHT_OTA_SIGNING_KEY', str(Path.home() / 'LineSight-private/ota-signing-v2/patch-signing.pem')))
 ABIS = ('arm64-v8a', 'x86_64')
 
 
@@ -33,8 +34,27 @@ def apk_fingerprint(apk):
                 and not re.fullmatch(r'lib/[^/]+/libapp\.so', n)}
 
 
-def signed(data):
-    key = serialization.load_pem_private_key(PRIVATE.read_bytes(), password=None)
+def signing_key():
+    if not PRIVATE.is_file():
+        raise SystemExit('Original OTA signing key is missing. Restore its protected backup; do not generate a replacement key for existing APKs.')
+    try:
+        key = serialization.load_pem_private_key(PRIVATE.read_bytes(), password=None)
+        if not isinstance(key, Ed25519PrivateKey):
+            raise ValueError('Wrong key type')
+        anchor = re.search(r"otaPublicKey = '([^']+)'", (ROOT / 'lib/ota_key.dart').read_text(encoding='utf-8'))
+        if anchor is None:
+            raise ValueError('Missing trust anchor')
+        expected = base64.b64decode(anchor[1], validate=True)
+        actual = key.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)
+        if expected != actual:
+            raise ValueError('Trust anchor mismatch')
+    except (OSError, ValueError, TypeError):
+        raise SystemExit('OTA signing key is unreadable or does not match the app trust anchor. Restore the original key; no patch was signed.') from None
+    return key
+
+
+def signed(data, key=None):
+    key = signing_key() if key is None else key
     payload = json.dumps(data, sort_keys=True, separators=(',', ':')).encode()
     return {'payload': base64.b64encode(payload).decode(),
             'signature': base64.b64encode(key.sign(payload)).decode()}
@@ -79,6 +99,7 @@ def main():
         print('Frozen native/assets/engine fingerprint:', len(fingerprint), 'entries')
         return
     if args.command in ('pack', 'rollback'):
+        key = signing_key()
         assert args.sequence and args.sequence > 0, 'A positive increasing sequence is required'
         if args.command == 'pack':
             assert apk_fingerprint(args.apk) == json.loads(record.read_text()), \
@@ -99,7 +120,7 @@ def main():
                 digest = hashlib.sha256(payload).hexdigest()
                 (target / (digest + '.so')).write_bytes(payload)
                 data.update(sha256=digest, size=len(payload))
-            manifest.write_text(json.dumps(signed(data), separators=(',', ':')) + '\n')
+            manifest.write_text(json.dumps(signed(data, key), separators=(',', ':')) + '\n')
         print('Prepared signed', args.command, 'sequence', args.sequence, 'for both ABIs')
         return
     ssh = ['ssh', '-i', str(args.ssh_key), '-o', 'BatchMode=yes', 'root@47.111.81.94']

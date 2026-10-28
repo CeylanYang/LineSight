@@ -40,6 +40,7 @@ Map<String, dynamic> checklist({
 class TemplateAccount extends AccessAccount {
   final posts = <({Map<String, dynamic> body, String? key})>[];
   int reads = 0;
+  Completer<List<Map<String, dynamic>>>? readGate;
   Object? writeFailure, readFailure;
   Completer<Map<String, dynamic>>? postGate;
   List<Map<String, dynamic>> serverRows = [checklist()];
@@ -56,6 +57,7 @@ class TemplateAccount extends AccessAccount {
     if (method == 'GET') {
       reads++;
       if (readFailure != null) throw readFailure!;
+      if (readGate != null) return readGate!.future;
       return serverRows;
     }
     final data = Map<String, dynamic>.from(body as Map);
@@ -252,6 +254,32 @@ void main() {
       expect(account.posts.last.key, isNot(key));
     },
   );
+  testWidgets(
+    'confirmed publication can finish while catalogue refresh is pending',
+    (tester) async {
+      await show(tester, routed: true);
+      await tester.tap(find.text('Origin'));
+      await tester.pumpAndSettle();
+      account.readGate = Completer<List<Map<String, dynamic>>>();
+      await tester.ensureVisible(find.text('Publish'));
+      await tester.tap(find.text('Publish'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(account.posts.length, 1);
+      final done = find.widgetWithText(FilledButton, 'Done');
+      expect(tester.widget<FilledButton>(done).onPressed, isNotNull);
+      await tester.ensureVisible(done);
+      await tester.tap(done);
+      await tester.pumpAndSettle();
+      expect(find.byType(CloudTemplateEditor), findsNothing);
+      expect(find.text('Origin'), findsOneWidget);
+      account.readGate!.complete(account.serverRows);
+      await tester.pumpAndSettle();
+      expect(account.templates.any((row) => row['id'] == 12), true);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets(
     'acknowledged publication remains successful when catalogue refresh fails',
     (tester) async {

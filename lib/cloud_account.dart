@@ -1,3 +1,4 @@
+import 'service_transport.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -9,10 +10,29 @@ import 'nfc_client.dart';
 
 const cloudIssuer = String.fromEnvironment(
   'LINESIGHT_OIDC_ISSUER',
-  defaultValue: 'https://47.111.81.94/sso/realms/linesight',
+  defaultValue: 'https://99ai.pronhubcn.com/sso/realms/linesight',
 );
 const _redirect = 'com.linesight.app:/oauthredirect';
 const _scopes = ['openid', 'profile', 'email'];
+
+// Only the two deployed hosts belong to this realm. A persisted token may
+// select the legacy refresh/logout endpoint, never an arbitrary JWT URL.
+String cloudSessionIssuer(String configured, CloudTokens tokens) {
+  const domain = 'https://99ai.pronhubcn.com/sso/realms/linesight';
+  const legacy = 'https://47.111.81.94/sso/realms/linesight';
+  if (configured != domain) return configured;
+  try {
+    final parts = tokens.access.split('.');
+    if (parts.length != 3) return configured;
+    final claims = jsonDecode(
+      utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
+    );
+    if (claims is Map && claims['iss'] == legacy) return legacy;
+  } catch (_) {
+    // Server-side signature/expiry checks remain authoritative.
+  }
+  return configured;
+}
 
 class CloudTokens {
   final String access, refresh, clientId;
@@ -140,7 +160,8 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         AuthorizationTokenRequest(
           'linesight-android',
           _redirect,
-          issuer: issuer,
+          issuer: cloudDiscoveryUrl(issuer) == null ? issuer : null,
+          discoveryUrl: cloudDiscoveryUrl(issuer),
           scopes: _scopes,
           additionalParameters: {
             'max_age': '240',
@@ -158,13 +179,16 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
 
   Future<Map<String, dynamic>> _form(
     String endpoint,
-    Map<String, String> body,
-  ) async {
-    final client = HttpClient()
+    Map<String, String> body, {
+    String? sessionIssuer,
+  }) async {
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final request = await client.postUrl(
-        Uri.parse('$issuer/protocol/openid-connect/$endpoint'),
+        Uri.parse(
+          '${sessionIssuer ?? issuer}/protocol/openid-connect/$endpoint',
+        ),
       );
       request.headers.contentType = ContentType(
         'application',
@@ -223,7 +247,7 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         'grant_type': 'refresh_token',
         'client_id': previous.clientId,
         'refresh_token': previous.refresh,
-      });
+      }, sessionIssuer: cloudSessionIssuer(issuer, previous));
       return CloudTokens(
         result['access_token'] as String,
         result['refresh_token'] as String? ?? previous.refresh,
@@ -250,7 +274,11 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
         TokenRequest(
           previous.clientId,
           _redirect,
-          issuer: issuer,
+          issuer:
+              cloudDiscoveryUrl(cloudSessionIssuer(issuer, previous)) == null
+              ? cloudSessionIssuer(issuer, previous)
+              : null,
+          discoveryUrl: cloudDiscoveryUrl(cloudSessionIssuer(issuer, previous)),
           refreshToken: previous.refresh,
         ),
       );
@@ -289,13 +317,17 @@ class KeycloakIdentityGateway implements CloudIdentityGateway {
       await _form('logout', {
         'client_id': previous.clientId,
         'refresh_token': previous.refresh,
-      });
+      }, sessionIssuer: cloudSessionIssuer(issuer, previous));
       return true;
     }
     try {
       await appAuth.endSession(
         EndSessionRequest(
-          issuer: issuer,
+          issuer:
+              cloudDiscoveryUrl(cloudSessionIssuer(issuer, previous)) == null
+              ? cloudSessionIssuer(issuer, previous)
+              : null,
+          discoveryUrl: cloudDiscoveryUrl(cloudSessionIssuer(issuer, previous)),
           idTokenHint: previous.idToken,
           postLogoutRedirectUrl: _redirect,
         ),
@@ -322,6 +354,7 @@ class CloudAccount extends ChangeNotifier {
            identity ??
            KeycloakIdentityGateway(nfcClient: NfcClient(apiUrl: apiUrl));
   CloudTokens? _tokens;
+  int interactiveLoginRevision = 0;
   Map<String, dynamic>? profile, activeWorkspace;
   List<Map<String, dynamic>> workspaces = [], jobs = [];
   List<Map<String, dynamic>> templates = [], records = [], notifications = [];
@@ -459,7 +492,10 @@ class CloudAccount extends ChangeNotifier {
       }
       final api =
           identityApiFactory?.call(_tokens!.access) ??
-          CollaborationApi('$cloudIssuer/account/', token: _tokens!.access);
+          CollaborationApi(
+            '${cloudSessionIssuer(cloudIssuer, _tokens!)}/account/',
+            token: _tokens!.access,
+          );
       final result = await api.request(method, path);
       if (epoch != _epoch) throw const CollaborationApiException(401, '请先登录');
       return result;
@@ -551,8 +587,56 @@ class CloudAccount extends ChangeNotifier {
         _tokens = tokens;
         await _persist(epoch);
         await _load();
+        if (epoch == _epoch && signedIn) interactiveLoginRevision++;
       });
   Future<void> reload() => _operation(_load);
+  Future<void>? _syncingWorkspace;
+  Future<void> syncWorkspace() {
+    if (!signedIn || activeWorkspace == null || busy || workspaceLoading) {
+      return Future<void>.value();
+    }
+    return _syncingWorkspace ??= _syncWorkspace().whenComplete(
+      () => _syncingWorkspace = null,
+    );
+  }
+
+  Future<void> _syncWorkspace() async {
+    final scope = accessScope;
+    final epoch = _workspaceEpoch;
+    final noticeEpoch = _notificationEpoch;
+    final base = 'workspaces/${activeWorkspace!['id']}/';
+    try {
+      final data = await Future.wait([
+        for (final path in [
+          'jobs/',
+          'templates/',
+          'records/',
+          'metrics/',
+          'notifications/',
+        ])
+          request('GET', '$base$path'),
+      ]);
+      if (!retainsAccess(scope) || epoch != _workspaceEpoch || busy) return;
+      List<Map<String, dynamic>> rows(int i) => (data[i] as List)
+          .map((r) => Map<String, dynamic>.from(r as Map))
+          .toList();
+      // Validate the complete snapshot before replacing any visible data.
+      final nextJobs = rows(0);
+      final nextTemplates = rows(1);
+      final nextRecords = rows(2);
+      final nextMetrics = Map<String, dynamic>.from(data[3] as Map);
+      final nextNotifications = rows(4);
+      jobs = nextJobs;
+      templates = nextTemplates;
+      records = nextRecords;
+      metrics = nextMetrics;
+      if (noticeEpoch == _notificationEpoch) notifications = nextNotifications;
+      notifyListeners();
+    } catch (_) {
+      // Keep the last complete workspace while disconnected; next tick retries.
+    }
+  }
+
   void acceptTemplatePublication(String? scope, Map<String, dynamic> result) {
     requireAccess(scope, write: true, owner: true);
     templates = [
@@ -582,6 +666,7 @@ class CloudAccount extends ChangeNotifier {
     _tokens = CloudTokens.fromNfc(result, result['credential_id'] as String);
     await _persist(epoch);
     await _load();
+    if (epoch == _epoch && signedIn) interactiveLoginRevision++;
   });
   void _beginWorkspaceRead() {
     _notificationEpoch++;
@@ -764,7 +849,7 @@ class CloudAccount extends ChangeNotifier {
     )) {
       await _refresh();
     }
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
       final req = await client.getUrl(Uri.parse(apiUrl).resolve(path));
@@ -807,7 +892,7 @@ class CloudAccount extends ChangeNotifier {
     )) {
       await _refresh();
     }
-    final client = HttpClient()
+    final client = serviceHttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     final boundary = 'linesight${DateTime.now().microsecondsSinceEpoch}';
     uploadProgress[key] = 0;

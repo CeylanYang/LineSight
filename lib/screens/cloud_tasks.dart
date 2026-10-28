@@ -712,7 +712,8 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   Object? draftOwner, recoveryFailure;
   int? draftWorkspace;
   bool recovering = false;
-  bool draftLoaded = false;
+  bool draftLoaded = false, readingDraft = false;
+  Object? draftRestoreFailure;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -785,6 +786,10 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   }
 
   Future<void> restoreDraft(CloudAccount account) async {
+    setState(() {
+      readingDraft = true;
+      draftRestoreFailure = null;
+    });
     try {
       final data = await account.readDraft(draftStorageKey!);
       if (!mounted || data == null || !account.retainsAccess(accessBinding)) {
@@ -817,15 +822,26 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
             : null;
       });
     } catch (failure) {
-      if (mounted) setState(() => error = '无法恢复草稿，请重试');
+      if (mounted) {
+        setState(
+          () => draftRestoreFailure = const CollaborationApiException(
+            503,
+            '无法恢复草稿，请重试',
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => readingDraft = false);
     }
   }
 
-  Future<void> saveDraft() async {
+  Future<bool> saveDraft() async {
     final account = CloudScope.of(context);
-    if (draftStorageKey == null ||
+    if (readingDraft ||
+        draftRestoreFailure != null ||
+        draftStorageKey == null ||
         draftStorageKey != account.draftKey('create')) {
-      return;
+      return false;
     }
     try {
       await account.saveDraft(draftStorageKey!, {
@@ -841,8 +857,16 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
         'templateId': templateId,
         'assignee_id': assigneeId,
       });
+      if (!mounted || !account.retainsAccess(accessBinding)) return false;
+      if (error == '草稿保存失败，请重试') {
+        setState(() => error = null);
+      }
+      return true;
     } catch (failure) {
-      if (mounted) setState(() => error = '草稿保存失败，请重试');
+      if (mounted && account.retainsAccess(accessBinding)) {
+        setState(() => error = '草稿保存失败，请重试');
+      }
+      return false;
     }
   }
 
@@ -855,6 +879,7 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
   }
 
   Future<void> submit() async {
+    if (busy || readingDraft || draftRestoreFailure != null) return;
     if (!validateCloudForm(form)) return;
     final account = CloudScope.of(context),
         workspace = CloudScope.of(context).activeWorkspace;
@@ -946,6 +971,19 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
             draftStorageKey != account.draftKey('create'))) {
       return cloudScopeChanged(context);
     }
+    if (readingDraft) {
+      return DetailScaffold(
+        title: tr(context, '恢复草稿'),
+        children: const [CloudLoadingPanel()],
+      );
+    }
+    if (draftRestoreFailure != null) {
+      return cloudDraftRecoveryFailure(
+        context,
+        draftRestoreFailure!,
+        () => restoreDraft(account),
+      );
+    }
     final choices = <int, Map<String, dynamic>>{
       for (final t in account.templates) t['id'] as int: t,
     };
@@ -983,8 +1021,8 @@ class _CloudCreateTaskPageState extends State<CloudCreateTaskPage> {
               onPressed: busy
                   ? null
                   : () async {
-                      await saveDraft();
-                      if (context.mounted && error == null) {
+                      final saved = await saveDraft();
+                      if (saved && context.mounted) {
                         toast(context, '草稿已保存');
                       }
                     },
@@ -2351,7 +2389,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     }
   }
 
-  bool busy = false;
+  bool busy = false, discarding = false;
   bool checklistChanged = false;
   String? error;
   Map<String, dynamic>? conflict;
@@ -2365,7 +2403,46 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
     super.dispose();
   }
 
+  Future<void> discardDraft() async {
+    final account = CloudScope.of(context);
+    if (busy || discarding || draftFinished || draftStorageKey == null) return;
+    setState(() => discarding = true);
+    try {
+      final accepted = await confirm(
+        context,
+        tr(context, '放弃草稿'),
+        tr(context, '确认放弃这份未提交的草稿？'),
+      );
+      if (!accepted || !mounted || !account.retainsAccess(accessBinding)) {
+        return;
+      }
+      setState(() => busy = true);
+      draftFinished = true;
+      try {
+        await account.deleteDraft(draftStorageKey!);
+      } catch (_) {
+        draftFinished = false;
+        rethrow;
+      }
+      if (mounted && account.retainsAccess(accessBinding)) {
+        Navigator.pop(context);
+      }
+    } catch (_) {
+      if (mounted && account.retainsAccess(accessBinding)) {
+        toast(context, '草稿未删除，请重试');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          busy = false;
+          discarding = false;
+        });
+      }
+    }
+  }
+
   Future<void> submit() async {
+    if (busy || discarding || draftFinished) return;
     final account = CloudScope.of(context), action = widget.action;
     if (!account.retainsAccess(accessBinding) ||
         !account.canEdit ||
@@ -2462,17 +2539,27 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
           if (action != 'resolve' && action != 'inspect') 'status': action,
         },
       );
+      // The durable server result must not become a failed submission because
+      // local cleanup or the caller's list refresh is unavailable.
       draftFinished = true;
-      if (draftStorageKey != null) await account.deleteDraft(draftStorageKey!);
+      if (draftStorageKey != null) {
+        unawaited(account.deleteDraft(draftStorageKey!).catchError((_) {}));
+      }
       if (outbox != null) {
-        await outbox.consume(
-          '${widget.job['id']}',
-          action == 'inspect'
-              ? evidence
-              : uploads.map((r) => r['evidence_id'] as int).toList(),
+        unawaited(
+          outbox
+              .consume(
+                '${widget.job['id']}',
+                action == 'inspect'
+                    ? List<int>.of(evidence)
+                    : uploads.map((r) => r['evidence_id'] as int).toList(),
+              )
+              .catchError((_) {}),
         );
       }
-      await account.reload();
+      if (account.retainsAccess(accessBinding)) {
+        unawaited(account.reload().catchError((_) {}));
+      }
       if (mounted && account.retainsAccess(accessBinding)) {
         cloudOutcome(
           context,
@@ -3437,18 +3524,7 @@ class _CloudTaskCommandPageState extends State<CloudTaskCommandPage> {
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: OutlinedButton(
-                            onPressed: () async {
-                              if (!await confirm(
-                                context,
-                                tr(context, '放弃草稿'),
-                                tr(context, '确认放弃这份未提交的草稿？'),
-                              )) {
-                                return;
-                              }
-                              draftFinished = true;
-                              await account.deleteDraft(draftStorageKey!);
-                              if (context.mounted) Navigator.pop(context);
-                            },
+                            onPressed: busy || discarding ? null : discardDraft,
                             child: Text(tr(context, '放弃草稿并刷新')),
                           ),
                         ),

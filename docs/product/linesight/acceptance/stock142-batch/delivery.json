@@ -1,0 +1,17 @@
+{
+  "version": "1.1.68+8104",
+  "content_revision": 31,
+  "apk": "LineSight-1.1.68-8104-content31-production.apk",
+  "apk_sha256": "f73cce743040964624a522fcc47e93521df52912ab43d7426ad88bdb291ffc34",
+  "certificate_sha256": "2427e2ea173f5c33ce915b4268c8c78fe4622d774ec8831e7c53d223486ad0b2",
+  "base": 8104,
+  "native_assets_fingerprint_entries": 546,
+  "native_assets_unchanged": true,
+  "ota_sequence": 31,
+  "flutter_tests": 634,
+  "backend_tests": 119,
+  "analyze_clean": true,
+  "stock_url": "https://99ai.pronhubcn.com/linesight/whatif",
+  "login_url": "https://99ai.pronhubcn.com/login",
+  "registration_open": false
+}

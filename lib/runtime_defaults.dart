@@ -73,6 +73,19 @@ const defaultRuntimeContent = <String, dynamic>{
       "disposition": "异常项须填写异常编码、位号及处置记录；完成处置和复核后再进行放行确认。",
     },
   ],
+  "presentation": {
+    "aurora": {
+      "enabled": true,
+      "double_press_ms": 360,
+      "style": "standard",
+      "palette": "intelligence",
+      "speed": 0.35,
+      "border_width": 3,
+      "glow_size": 28,
+      "intensity": 0.85,
+    },
+    "login_ad": {"enabled": true, "seconds": 5, "asset": "ai_assistant"},
+  },
   "features": {"document_export": true, "document_library": true},
   "special": {"title": "LineSight", "accent": "#139D83", "sections": []},
 };

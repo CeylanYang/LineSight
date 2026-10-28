@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../cloud_account.dart';
@@ -288,10 +289,11 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
     setState(() => refreshing = true);
     try {
       final rows = await account.reloadTemplates(binding);
-      if (!mounted || !account.retainsAccess(binding)) return;
+      if (!account.retainsAccess(binding)) return;
       if (receipt != null && !rows.any((row) => row['id'] == receipt!['id'])) {
         account.acceptTemplatePublication(binding, receipt!);
       }
+      if (!mounted) return;
       final family =
           rows
               .where(
@@ -361,7 +363,13 @@ class _TemplateEditorState extends State<CloudTemplateEditor> {
       account.acceptTemplatePublication(binding, result);
       widget.onPublished?.call(result);
       cloudOutcome(context, '模板已发布');
-      await refreshCatalog();
+      unawaited(
+        refreshCatalog().catchError((Object error) {
+          if (mounted && account.retainsAccess(binding)) {
+            setState(() => failure = error);
+          }
+        }),
+      );
     } catch (error) {
       if (mounted && account.retainsAccess(binding)) {
         setState(() => failure = error);

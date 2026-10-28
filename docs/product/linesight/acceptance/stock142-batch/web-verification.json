@@ -1,0 +1,23 @@
+{
+  "original_upstream": "devinjudson/WhatIfIBought",
+  "checks": {
+    "registration_closed": true,
+    "existing_linesight_account": true,
+    "domain_callback": true,
+    "secure_httponly_cookie": true,
+    "form_result_and_chart": true,
+    "canvas_line_drawn": true,
+    "shared_keycloak_session": true,
+    "anonymous_api_requires_login": true
+  },
+  "viewport": [
+    {
+      "width": 1440,
+      "horizontal_overflow": false
+    },
+    {
+      "width": 390,
+      "horizontal_overflow": false
+    }
+  ]
+}

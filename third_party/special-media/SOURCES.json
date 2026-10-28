@@ -1,0 +1,12 @@
+[
+  {
+    "asset": "bee.mp4",
+    "source": "https://raw.githubusercontent.com/flutter/assets-for-api-docs/main/assets/videos/bee.mp4",
+    "bytes": 1293015
+  },
+  {
+    "asset": "butterfly.mp4",
+    "source": "https://raw.githubusercontent.com/flutter/assets-for-api-docs/main/assets/videos/butterfly.mp4",
+    "bytes": 2429896
+  }
+]

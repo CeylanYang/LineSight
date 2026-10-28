@@ -1,0 +1,16 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/dispatch132/20261024T221538Z",
+  "before_sha256": {
+    "collaboration/dispatch.py": "9802fed7fc8bd6383fdc5e14978e206c30a1c20e8ee8246241e72def924da501"
+  },
+  "after_sha256": {
+    "collaboration/dispatch.py": "723054c6934d31ddb4305efffa873a9f1cb24ca10d14690093b31040116beb6b"
+  },
+  "schema_changed": false,
+  "existing_tables_checked": 33,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false,
+  "rollback_preserves_live_writes": true
+}

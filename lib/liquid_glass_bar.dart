@@ -16,6 +16,7 @@ class LiquidGlassBar extends StatefulWidget {
     required this.selectedIndex,
     required this.onSelected,
     required this.glass,
+    this.iconBuilder,
   });
 
   final List<String> labels;
@@ -23,6 +24,7 @@ class LiquidGlassBar extends StatefulWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
   final bool glass;
+  final Widget Function(int index, bool selected)? iconBuilder;
 
   @override
   State<LiquidGlassBar> createState() => _LiquidGlassBarState();
@@ -144,7 +146,8 @@ class _LiquidGlassBarState extends State<LiquidGlassBar>
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(widget.icons[i], size: 24),
+                                widget.iconBuilder?.call(i, selected) ??
+                                    Icon(widget.icons[i], size: 24),
                                 const SizedBox(height: 3),
                                 Text(
                                   widget.labels[i],

@@ -33,7 +33,7 @@ class _TeamWorkspacePageState extends State<TeamWorkspacePage> {
   List<Map<String, dynamic>> _legacyRecords = [];
   final Map<String, PlatformFile> _pendingUploads = {};
   Map<String, dynamic>? _active;
-  bool _registering = false, _busy = false;
+  bool _busy = false;
   String? _error;
 
   @override
@@ -93,7 +93,6 @@ class _TeamWorkspacePageState extends State<TeamWorkspacePage> {
 
   Future<void> _authenticate() => _run(() async {
     final api = CollaborationApi(_serviceUrl);
-    if (_registering) await api.register(_username.text.trim(), _password.text);
     final token = await api.login(_username.text.trim(), _password.text);
     _token = token;
     CollaborationSession.token = token;
@@ -937,20 +936,13 @@ class _TeamWorkspacePageState extends State<TeamWorkspacePage> {
             obscureText: true,
             decoration: InputDecoration(labelText: tr(context, '密码（至少 12 位）')),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () => setState(() => _registering = !_registering),
-              child: Text(tr(context, _registering ? '已有团队账户？登录' : '创建团队账户')),
-            ),
-          ),
           const SizedBox(height: 8),
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: _busy ? null : _authenticate,
-              icon: Icon(_registering ? Icons.person_add_alt_1 : Icons.login),
-              label: Text(tr(context, _registering ? '创建并登录' : '登录团队账户')),
+              icon: const Icon(Icons.login),
+              label: Text(tr(context, '登录团队账户')),
             ),
           ),
         ],

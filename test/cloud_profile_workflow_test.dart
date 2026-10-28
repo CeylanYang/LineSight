@@ -178,6 +178,48 @@ void main() {
   }
 
   testWidgets(
+    'profile refresh reads new cloud configuration without leaving page',
+    (tester) async {
+      await show(tester, const CloudProfilesPage());
+      expect(account.reads, 1);
+      account.pending = Completer<List<Map<String, dynamic>>>();
+      await tester.tap(
+        find.byWidgetPredicate(
+          (w) => w is IconButton && w.tooltip == 'Refresh',
+        ),
+      );
+      await tester.pump();
+      expect(account.reads, 2);
+      expect(
+        tester
+            .widget<IconButton>(
+              find.byWidgetPredicate(
+                (w) => w is IconButton && w.tooltip == 'Refresh',
+              ),
+            )
+            .onPressed,
+        isNull,
+      );
+      account.pending!.complete([
+        {...printerProfile, 'name': 'Updated line printer'},
+      ]);
+      await tester.pumpAndSettle();
+      expect(find.text('Updated line printer'), findsOneWidget);
+      expect(find.text('Bambu Lab A1'), findsNothing);
+      expect(
+        tester
+            .widget<IconButton>(
+              find.byWidgetPredicate(
+                (w) => w is IconButton && w.tooltip == 'Refresh',
+              ),
+            )
+            .onPressed,
+        isNotNull,
+      );
+    },
+  );
+
+  testWidgets(
     'picker round trip preserves task fields and submits selected profile',
     (tester) async {
       await show(tester, const CloudCreateTaskPage());

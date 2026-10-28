@@ -1,0 +1,127 @@
+diff --git a/app/results/page.tsx b/app/results/page.tsx
+index 93fa6be..06d761a 100644
+--- a/app/results/page.tsx
++++ b/app/results/page.tsx
+@@ -6,11 +6,12 @@ import InvestmentResults from "@/components/investment-results"
+ import ResultsSkeleton from "@/components/results-skeleton"
+ import { ThemeToggle } from "@/components/theme-toggle"
+ 
+-export default function ResultsPage({
+-  searchParams,
++export default async function ResultsPage({
++  searchParams: input,
+ }: {
+-  searchParams: { [key: string]: string | string[] | undefined }
++  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+ }) {
++  const searchParams = await input
+   const ticker = typeof searchParams.ticker === "string" ? searchParams.ticker : ""
+   const date = typeof searchParams.date === "string" ? searchParams.date : ""
+   const amount = typeof searchParams.amount === "string" ? searchParams.amount : ""
+diff --git a/components/ai-summary.tsx b/components/ai-summary.tsx
+index 84369b1..2be9497 100644
+--- a/components/ai-summary.tsx
++++ b/components/ai-summary.tsx
+@@ -36,7 +36,7 @@ export default function AISummary({
+ 
+         // In a real app, this would be an API call to your backend with OpenAI integration
+         // For demo purposes, we'll simulate the response
+-        const response = await fetch("/api/generate-summary", {
++        const response = await fetch("/linesight/whatif/api/generate-summary", {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+diff --git a/components/api-tester.tsx b/components/api-tester.tsx
+index 9bee968..c3f30e5 100644
+--- a/components/api-tester.tsx
++++ b/components/api-tester.tsx
+@@ -26,7 +26,7 @@ export default function ApiTester() {
+     setResult(null)
+ 
+     try {
+-      const response = await fetch(`/api/stock-data?ticker=${ticker}&date=${date}`)
++      const response = await fetch(`/linesight/whatif/api/stock-data?ticker=${ticker}&date=${date}`)
+       const data = await response.json()
+ 
+       if (response.ok) {
+@@ -56,7 +56,7 @@ export default function ApiTester() {
+     setResult(null)
+ 
+     try {
+-      const response = await fetch("/api/generate-summary", {
++      const response = await fetch("/linesight/whatif/api/generate-summary", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+diff --git a/components/investment-results.tsx b/components/investment-results.tsx
+index 9ea49c8..7971a64 100644
+--- a/components/investment-results.tsx
++++ b/components/investment-results.tsx
+@@ -46,7 +46,7 @@ export default function InvestmentResults({
+ 
+         // In a real app, this would be an API call to your backend
+         // For demo purposes, we'll simulate the data
+-        const response = await fetch(`/api/stock-data?ticker=${ticker}&date=${date}`)
++        const response = await fetch(`/linesight/whatif/api/stock-data?ticker=${ticker}&date=${date}`)
+ 
+         if (!response.ok) {
+           throw new Error("Failed to fetch stock data")
+diff --git a/components/use-ai-summary.tsx b/components/use-ai-summary.tsx
+index c049aa6..a24fd7d 100644
+--- a/components/use-ai-summary.tsx
++++ b/components/use-ai-summary.tsx
+@@ -36,7 +36,7 @@ export function useAISummary({
+ 
+       // In a real app, this would be an API call to your backend with OpenAI integration
+       // For demo purposes, we'll simulate the response
+-      const response = await fetch("/api/generate-summary", {
++      const response = await fetch("/linesight/whatif/api/generate-summary", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+diff --git a/next.config.mjs b/next.config.mjs
+index f5cbc38..806ebf1 100644
+--- a/next.config.mjs
++++ b/next.config.mjs
+@@ -1,14 +1 @@
+-/** @type {import('next').NextConfig} */
+-const nextConfig = {
+-  eslint: {
+-    ignoreDuringBuilds: true,
+-  },
+-  typescript: {
+-    ignoreBuildErrors: true,
+-  },
+-  images: {
+-    unoptimized: true,
+-  },
+-}
+-
+-export default nextConfig
++export default {basePath:"/linesight/whatif", output:"standalone", experimental:{cpus:1}, images:{unoptimized:true}, eslint:{ignoreDuringBuilds:true}}
+diff --git a/package.json b/package.json
+index 12fd129..295f90b 100644
+--- a/package.json
++++ b/package.json
+@@ -41,18 +41,18 @@
+     "class-variance-authority": "^0.7.1",
+     "clsx": "^2.1.1",
+     "cmdk": "1.0.4",
+-    "date-fns": "latest",
++    "date-fns": "3.6.0",
+     "embla-carousel-react": "8.5.1",
+     "input-otp": "1.4.1",
+     "lucide-react": "^0.454.0",
+-    "next": "15.2.4",
++    "next": "^15.5.0",
+     "next-themes": "latest",
+     "react": "^19",
+     "react-day-picker": "8.10.1",
+     "react-dom": "^19",
+     "react-hook-form": "^7.54.1",
+     "react-resizable-panels": "^2.1.7",
+-    "recharts": "latest",
++    "recharts": "2.15.4",
+     "sonner": "^1.7.1",
+     "tailwind-merge": "^2.5.5",
+     "tailwindcss-animate": "^1.0.7",

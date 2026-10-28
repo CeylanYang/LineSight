@@ -1,0 +1,21 @@
+{
+  "base": 8102,
+  "track": "production",
+  "apk_sha256": "828b5d2a09909409774983a450fc36037d54b4f8aa04fad5d922d05837ae4ae5",
+  "fingerprint_entries": 546,
+  "fingerprint_sha256": "7d683b463532a96361039c6fa634ef1d5029135bf0b59a3688c70e49647c2d25",
+  "signing_key_status": "missing at documented path and filename search; restore original key required",
+  "patch_published": false,
+  "device_validation": "pending",
+  "https_verification_origin": "production server",
+  "manifests": {
+    "arm64-v8a": {
+      "status": 204,
+      "bytes": 0
+    },
+    "x86_64": {
+      "status": 204,
+      "bytes": 0
+    }
+  }
+}

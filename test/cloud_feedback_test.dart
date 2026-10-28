@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +9,7 @@ import 'package:linesight_flutter/cloud_account.dart';
 import 'package:linesight_flutter/cloud_feedback.dart';
 import 'package:linesight_flutter/collaboration_api.dart';
 import 'package:linesight_flutter/screens/cloud_business.dart';
+import 'package:linesight_flutter/screens/quality_document_library.dart';
 import 'package:linesight_flutter/screens/cloud_shell.dart';
 import 'package:linesight_flutter/screens/cloud_tasks.dart';
 import 'package:linesight_flutter/store.dart';
@@ -19,6 +21,7 @@ class FeedbackAccount extends AccessAccount {
   Completer<dynamic>? pendingRead;
   final reads = <String>[];
   int refreshes = 0;
+  final downloads = <String>[];
   @override
   Future<void> reload() async {
     refreshes++;
@@ -44,12 +47,32 @@ class FeedbackAccount extends AccessAccount {
 
   @override
   Future<List<int>> download(String path) async {
+    downloads.add(path);
     if (failure != null) throw failure!;
     return <int>[];
   }
 }
 
+class ReportSavePicker extends FilePicker {
+  String? result;
+  final names = <String?>[];
+  @override
+  Future<String?> saveFile({
+    String? dialogTitle,
+    String? fileName,
+    String? initialDirectory,
+    FileType type = FileType.any,
+    List<String>? allowedExtensions,
+    Uint8List? bytes,
+    bool lockParentWindow = false,
+  }) async {
+    names.add(fileName);
+    return result;
+  }
+}
+
 void main() {
+  FilePicker.platform = FilePickerIO();
   late FeedbackAccount account;
   late AppStore store;
   setUp(() {
@@ -219,6 +242,106 @@ void main() {
       expect(account.writes, 0);
     },
   );
+
+  testWidgets('record content refresh keeps active search and verdict', (
+    tester,
+  ) async {
+    account.records = [
+      {'id': 'record-1', 'note': 'before'},
+    ];
+    await show(tester, const Scaffold(body: CloudRecordsPage()));
+    await tester.enterText(find.byType(TextField), 'batch-42');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Pass'));
+    await tester.pumpAndSettle();
+    final before = account.reads.length;
+    account.records = [
+      {'id': 'record-1', 'note': 'after'},
+    ];
+    account.notifyListeners();
+    await tester.pumpAndSettle();
+    expect(account.reads.length, before + 1);
+    final query = Uri.parse(account.reads.last).queryParameters;
+    expect(query['q'], 'batch-42');
+    expect(query['verdict'], 'pass');
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).controller!.text,
+      'batch-42',
+    );
+    // Unrelated account notifications must not make another request.
+    account.notifyListeners();
+    await tester.pumpAndSettle();
+    expect(account.reads.length, before + 1);
+  });
+
+  test(
+    'PDF delivery returns cancellation or completion from save dialog',
+    () async {
+      final original = FilePicker.platform;
+      final picker = ReportSavePicker();
+      FilePicker.platform = picker;
+      addTearDown(() => FilePicker.platform = original);
+      final bytes = Uint8List.fromList([37, 80, 68, 70]);
+      expect(await deliverQualityPdf(bytes, 'quality.pdf'), false);
+      picker.result = '/chosen/quality.pdf';
+      expect(await deliverQualityPdf(bytes, 'quality.pdf'), true);
+      expect(picker.names, ['quality.pdf', 'quality.pdf']);
+    },
+  );
+
+  for (final language in ['zh', 'en']) {
+    testWidgets(
+      'CSV export preserves scope and distinguishes cancel from save in $language',
+      (tester) async {
+        final original = FilePicker.platform;
+        final picker = ReportSavePicker();
+        FilePicker.platform = picker;
+        addTearDown(() => FilePicker.platform = original);
+        const filters = {
+          'q': 'batch-42',
+          'verdict': 'pass',
+          'inspected_from': '2026-10-01',
+        };
+        await show(
+          tester,
+          const CloudReportPage(filters: filters),
+          locale: language,
+        );
+        Future<void> export() async {
+          await tester.tap(find.byType(PopupMenuButton<String>));
+          await tester.pumpAndSettle();
+          await tester.tap(
+            find.text(language == 'en' ? 'Export CSV' : '导出 CSV'),
+          );
+          await tester.pumpAndSettle();
+        }
+
+        await export();
+        expect(
+          find.text(language == 'en' ? 'Save cancelled' : '已取消保存'),
+          findsOneWidget,
+        );
+        expect(
+          find.text(language == 'en' ? 'File saved' : '文件已保存'),
+          findsNothing,
+        );
+        final query = Uri.parse(account.downloads.single).queryParameters;
+        expect(query, {...filters, 'download': 'csv'});
+        await tester.pump(const Duration(seconds: 5));
+        picker.result = '/chosen/report.csv';
+        await export();
+        expect(
+          find.text(language == 'en' ? 'File saved' : '文件已保存'),
+          findsOneWidget,
+        );
+        expect(picker.names, [
+          'LineSight-quality.csv',
+          'LineSight-quality.csv',
+        ]);
+      },
+    );
+  }
 
   testWidgets(
     'loading records uses a stable skeleton and does not claim emptiness',

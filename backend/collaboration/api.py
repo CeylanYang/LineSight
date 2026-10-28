@@ -48,17 +48,9 @@ def membership(request, workspace_id, write=False):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
-    if getattr(settings, "LINESIGHT_OIDC_ISSUER", ""):
-        return Response({"detail": "请使用统一登录入口"}, status=410)
-    username = str(request.data.get("username", "")).strip().lower()
-    password = str(request.data.get("password", ""))
-    if not re.fullmatch(r"[a-z0-9_.-]{3,32}", username) or not 12 <= len(password) <= 128:
-        return Response({"detail": "用户名至少 3 位，密码至少 12 位"}, status=400)
-    User = get_user_model()
-    if User.objects.filter(username=username).exists():
-        return Response({"detail": "用户名已存在"}, status=409)
-    user = User.objects.create_user(username=username, password=password)
-    return Response({"id": user.pk, "username": user.username}, status=201)
+    # Public registration stays retired even if identity configuration is missing.
+    # Accounts are provisioned administratively through the identity provider.
+    return Response({"detail": "请使用统一登录入口"}, status=410)
 
 
 @api_view(["POST"])

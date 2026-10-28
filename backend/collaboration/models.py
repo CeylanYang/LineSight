@@ -15,6 +15,7 @@ def preview_upload_path(instance, filename):
 
 
 class Workspace(models.Model):
+    dispatch_enabled = models.BooleanField(default=False)
     name = models.CharField(max_length=100)
     kind = models.CharField(max_length=12, default="team", choices=[("personal", "Personal"), ("team", "Team"), ("demo", "Demo")])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -259,3 +260,16 @@ class NfcSession(models.Model):
     refresh_hash = models.CharField(max_length=64, unique=True)
     revoked_at = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class WorkspaceBulletin(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE, related_name="bulletins")
+    source_key = models.CharField(max_length=100, unique=True)
+    kind = models.CharField(max_length=16, default="notice")
+    title = models.CharField(max_length=150)
+    body = models.TextField()
+    published_at = models.DateTimeField(db_index=True)
+    job = models.ForeignKey(ProductionJob, null=True, blank=True, on_delete=models.SET_NULL)
+    template = models.ForeignKey(CheckTemplate, null=True, blank=True, on_delete=models.SET_NULL)
+    read_by = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)

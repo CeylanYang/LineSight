@@ -1,0 +1,27 @@
+{
+  "client": "local Dart HTTPS with service transport",
+  "patches": [
+    {
+      "abi": "arm64-v8a",
+      "sequence": 32,
+      "signature_valid": true,
+      "bytes": 12845968,
+      "sha256": "17a44a709892be8495e7136628cdb308d95167c570128990dfe77d405d1e37fe",
+      "complete_payload_download": true
+    },
+    {
+      "abi": "x86_64",
+      "sequence": 32,
+      "signature_valid": true,
+      "bytes": 13173648,
+      "sha256": "629357a8781d0afb5ab3f735b59e8178910169a87db7690b2495c63e731a0170",
+      "complete_payload_download": true
+    }
+  ],
+  "runtime_signature_valid": true,
+  "apk": {
+    "sha256": "edf20a51aac9689bb3a187a4d75310be2b0497730c1d201c107f5cefc8463ba8",
+    "bytes": 101779442,
+    "stable_domain_download_matches_release": true
+  }
+}

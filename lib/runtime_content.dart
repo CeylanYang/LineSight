@@ -1,3 +1,5 @@
+import 'service_transport.dart';
+import 'presentation/presentation_config.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -68,6 +70,7 @@ class RuntimeContent extends ChangeNotifier {
         ).hasMatch('${value['special']['accent']}')) {
       throw const FormatException('Feature schema');
     }
+    PresentationConfig.validate(value['presentation']);
     final ids = <String>{};
     for (final document in value['documents'] as List) {
       if (document is! Map ||
@@ -159,7 +162,8 @@ class RuntimeContent extends ChangeNotifier {
   }
 
   static Future<Uint8List> _read(Uri uri, int limit) async {
-    final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
+    final client = serviceHttpClient()
+      ..connectionTimeout = const Duration(seconds: 8);
     try {
       final request = await client.getUrl(uri);
       request.followRedirects = false;

@@ -1,0 +1,18 @@
+{
+  "backend_tests": 114,
+  "command_sha256": "36b255e1417b14210be6a87b4238e1ca48ddea76f85ad3733ceef4c9c331c86c",
+  "live_command_matches_local": true,
+  "live_timer": "active",
+  "next_trigger": "2026-10-25T09:00:00+08:00",
+  "first_real_timer_trigger": "pending",
+  "boundary_cases": [
+    "08:59",
+    "09:00",
+    "11:59",
+    "12:00",
+    "17:59",
+    "18:00",
+    "23:00 catch-up"
+  ],
+  "app_rebuild_required": false
+}

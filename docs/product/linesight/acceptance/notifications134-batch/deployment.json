@@ -1,0 +1,16 @@
+{
+  "deployed": true,
+  "backup": "/var/backups/linesight/notifications134/20261024T221908Z",
+  "before_sha256": {
+    "collaboration/product.py": "5c9c6074e724cdbfa412047aff14c9496ec42808eb7516bec41e9e7e8b430ac5"
+  },
+  "after_sha256": {
+    "collaboration/product.py": "43b3880a8a966d9ef546bb3665b0378a41bc517568712ffc261fb82c78084624"
+  },
+  "schema_changed": false,
+  "existing_tables_checked": 33,
+  "existing_rows_preserved": true,
+  "api_health": true,
+  "identity_configuration_changed": false,
+  "rollback_preserves_live_writes": true
+}

@@ -1,0 +1,36 @@
+{
+  "client": "Dart HttpClient and Java HttpsURLConnection, local Windows network",
+  "checks": {
+    "same_existing_identity_and_team": true,
+    "workspace_bundle_loaded": true,
+    "domain_identity_sessions": true,
+    "native_refresh_and_api": true,
+    "signed_config_download": true,
+    "both_ota_manifests_reachable": true,
+    "demo_and_saved_legacy_refresh": true
+  },
+  "home_workspace_id": 30,
+  "workspaces": [
+    {
+      "id": 18,
+      "name": "LineSight User 01 的工作区",
+      "role": "owner"
+    },
+    {
+      "id": 30,
+      "name": "checkcheck",
+      "role": "owner"
+    }
+  ],
+  "workspace_counts": {
+    "jobs": 34,
+    "templates": 11,
+    "records": 20,
+    "metrics": 1,
+    "notifications": 33,
+    "members": 12
+  },
+  "native_discovery_tls": true,
+  "native_pkce_exchange": true,
+  "token_signature_issuer_nonce_valid": true
+}

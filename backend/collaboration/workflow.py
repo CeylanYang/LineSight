@@ -121,14 +121,21 @@ def inspection_command(request, job, *, exception_only=False):
         return Response({'detail': '送检数量必须等于合格、异常与报废数量之和，且不超过计划数量'}, status=400)
     if (verdict == 'pass' and (failed or scrapped or inspected != job.quantity)) or (verdict == 'fail' and failed + scrapped == 0):
         return Response({'detail': '检验结论与工件数量不一致'}, status=400)
-    template_id = job.template_id or values.get('template_id')
+    submitted_template = values.get('template_id')
+    if submitted_template is not None and (type(submitted_template) is not int or not 1 <= submitted_template <= 2**63-1):
+        return Response({'detail': '检查模板编号无效'}, status=400)
+    template_id = job.template_id or submitted_template
     template = CheckTemplate.objects.filter(Q(workspace=job.workspace) | Q(workspace__isnull=True), pk=template_id).first() if template_id else None
     if template_id and template is None:
         return Response({'detail': '检查模板不存在'}, status=400)
     answers, snapshot = values.get('answers', []), {}
+    if not isinstance(answers, list) or any(not isinstance(answer, dict) for answer in answers):
+        return Response({'detail': '检查项格式无效'}, status=400)
+    if answers and template is None:
+        return Response({'detail': '请先选择检查模板'}, status=400)
+    if any(not isinstance(answer.get('note', ''), str) or len(answer.get('note', '')) > 500 for answer in answers):
+        return Response({'detail': '检查项备注须为500字以内的文本'}, status=400)
     if template:
-        if not isinstance(answers, list) or any(not isinstance(answer, dict) for answer in answers):
-            return Response({'detail': '检查项格式无效'}, status=400)
         if any(not isinstance(answer.get('id'), str) for answer in answers):
             return Response({'detail': '检查项编号无效'}, status=400)
         by_id = {answer.get('id'): answer for answer in answers}

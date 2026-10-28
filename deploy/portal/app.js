@@ -103,7 +103,7 @@ const cards = [
     "id": "start",
     "title": "开始使用",
     "category": "下载中心 / Android",
-    "caption": "安装 LineSight 1.1.58 · 内容版本 8",
+    "caption": "安装 LineSight 1.1.69 · 云端工作区同步",
     "detail": "首次安装选择正式版；已安装旧体验版请在下载中心选择兼容升级。安装后在工作台直接登录，账号由团队管理员提供。设置中默认使用大字版，可切换特供版。",
     "image_type": "统一登录 · 团队协作"
   }
@@ -162,7 +162,7 @@ function openCard(index){
   const caption=document.createElement('p');caption.textContent=card.caption;
   const detail=document.createElement('p');detail.textContent=card.detail;
   const note=document.createElement('p');note.className='source-note';note.textContent=card.image_type;
-  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.58-content8-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.58':'进入网页演示 →';
+  const link=document.createElement('a');link.href=index===11?'downloads/LineSight-1.1.69-8105-content32-production.apk':'demo/';link.className='retro-button';link.textContent=index===11?'↓ 下载 Android 1.1.69':'进入网页演示 →';
   if(index===11)link.setAttribute('download','');
   const banner=document.createElement('div');banner.className='detail-banner';banner.textContent='★ LineSight 产线视界 · 看见每一步 ★';
   content.append(title,caption,detail,note,link,banner);container.append(img,content);

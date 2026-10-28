@@ -28,9 +28,10 @@ def jwks_client(uri):
 
 def verify_access_token(token, *, require_nfc_session=True):
     issuer = settings.LINESIGHT_OIDC_ISSUER.rstrip("/")
+    issuers = (issuer, *getattr(settings, "LINESIGHT_OIDC_ISSUER_ALIASES", ()))
     try:
         key = jwks_client(getattr(settings, "LINESIGHT_OIDC_JWKS_URL", issuer + "/protocol/openid-connect/certs")).get_signing_key_from_jwt(token)
-        claims = jwt.decode(token, key.key, algorithms=["RS256"], issuer=issuer,
+        claims = jwt.decode(token, key.key, algorithms=["RS256"], issuer=issuers,
             audience="linesight-api", leeway=5,
             options={"require": ["exp", "iat", "iss", "aud", "sub"]})
         if claims.get("azp") not in ("linesight-android", "linesight-demo", "linesight-nfc"):
@@ -49,7 +50,9 @@ def verify_access_token(token, *, require_nfc_session=True):
         raise AuthenticationFailed("登录状态无效或已过期") from exc
     # Signature validation alone cannot revoke a logged-out session immediately.
     # Introspection is deliberately not cached; transient IdP failures are 503.
-    endpoint = getattr(settings, "LINESIGHT_OIDC_INTROSPECTION_URL", issuer + "/protocol/openid-connect/token/introspect")
+    # Keycloak binds introspection to the issuing host. Only use iss after
+    # signature and the explicit issuer allowlist above have been validated.
+    endpoint = getattr(settings, "LINESIGHT_OIDC_INTROSPECTION_URL", claims["iss"] + "/protocol/openid-connect/token/introspect")
     body = urlencode({"client_id": "linesight-api", "client_secret": settings.LINESIGHT_OIDC_CLIENT_SECRET,
                       "token": token, "token_type_hint": "access_token"}).encode()
     try:
@@ -76,7 +79,13 @@ def verify_access_token(token, *, require_nfc_session=True):
 
 
 def resolve_identity(claims):
-    issuer, subject = claims["iss"], claims["sub"]
+    # Explicitly configured host aliases belong to the same realm. Keep the
+    # permanent issuer/subject mapping so a domain change never creates new
+    # users or detaches their teams. Usernames are never used for linking.
+    primary = settings.LINESIGHT_OIDC_ISSUER.rstrip("/")
+    aliases = getattr(settings, "LINESIGHT_OIDC_ISSUER_ALIASES", ())
+    issuer = primary if claims["iss"] in aliases else claims["iss"]
+    subject = claims["sub"]
     try:
         identity = CloudIdentity.objects.select_related("user", "home_workspace").get(issuer=issuer, subject=subject)
     except CloudIdentity.DoesNotExist:

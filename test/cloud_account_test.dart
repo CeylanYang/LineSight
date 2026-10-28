@@ -128,9 +128,11 @@ void main() {
       expect(account.jobs, isEmpty);
       readGate!.complete();
       await pending;
+      expect(account.interactiveLoginRevision, 1);
       expect(account.workspaceDataReady, true);
       emptyRows = true;
       await account.reload();
+      expect(account.interactiveLoginRevision, 1);
       expect(account.workspaceDataReady, true);
       expect(account.jobs, isEmpty);
       expect(account.workspaceFailure, isNull);

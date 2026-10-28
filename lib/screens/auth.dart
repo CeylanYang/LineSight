@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ui.dart';
 import '../language_selector.dart';
-import 'team_workspace.dart';
+import 'team_entry.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -298,7 +298,8 @@ class _AuthPageState extends State<AuthPage> {
                               ),
                               const SizedBox(height: 14),
                               OutlinedButton.icon(
-                                onPressed: () => openPage(context, const TeamWorkspacePage()),
+                                onPressed: () =>
+                                    openPage(context, teamEntry(context)),
                                 icon: const Icon(Icons.groups_outlined),
                                 label: Text(tr(context, '登录或加入团队工作区')),
                               ),

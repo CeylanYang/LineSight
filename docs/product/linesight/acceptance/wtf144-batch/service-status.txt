@@ -1,0 +1,15 @@
+NRestarts=0
+Id=linesight-wiib-feed.service
+ActiveState=active
+
+NRestarts=0
+Id=linesight-wiib-sim.service
+ActiveState=active
+
+NRestarts=0
+Id=linesight-wiib-agent.service
+ActiveState=active
+
+NRestarts=0
+Id=linesight-whatif-auth.service
+ActiveState=active

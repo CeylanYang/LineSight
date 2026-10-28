@@ -1,0 +1,7 @@
+Result=success
+ExecMainExitTimestamp=Sun 2026-10-25 09:00:05 CST
+-- Logs begin at Fri 2026-08-28 18:15:16 CST, end at Sun 2026-10-25 10:47:43 CST. --
+Oct 25 09:00:00 iZbp1empqxtm8lpf7qbqs5Z systemd[1]: Starting Publish scheduled LineSight workspace updates...
+Oct 25 09:00:04 iZbp1empqxtm8lpf7qbqs5Z flock[1274575]: published=14; workspaces=2; day=2026-10-25
+Oct 25 09:00:05 iZbp1empqxtm8lpf7qbqs5Z systemd[1]: linesight-dispatch.service: Succeeded.
+Oct 25 09:00:05 iZbp1empqxtm8lpf7qbqs5Z systemd[1]: Started Publish scheduled LineSight workspace updates.

@@ -1,3 +1,4 @@
+import '../editions/special/special_vip.dart';
 import '../l10n.dart';
 import '../editions/edition_host.dart';
 import 'backup_transfer.dart';
@@ -14,7 +15,7 @@ import 'modules.dart';
 import 'storage_recovery.dart';
 import 'csv_export.dart';
 import '../language_selector.dart';
-import 'team_workspace.dart';
+import 'team_entry.dart';
 import 'app_updates.dart';
 
 export 'audit.dart' show AuditPage;
@@ -36,15 +37,17 @@ class SettingsPage extends StatelessWidget {
         GlassPanel(
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 31,
-                backgroundColor: blue.withValues(alpha: .12),
-                child: Text(
-                  u.name.characters.first,
-                  style: const TextStyle(
-                    color: blue,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w800,
+              SpecialVipAvatar(
+                child: CircleAvatar(
+                  radius: 31,
+                  backgroundColor: blue.withValues(alpha: .12),
+                  child: Text(
+                    u.name.characters.first,
+                    style: const TextStyle(
+                      color: blue,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
@@ -130,7 +133,7 @@ class SettingsPage extends StatelessWidget {
                 icon: Icons.groups_outlined,
                 title: tr(context, "团队协作"),
                 subtitle: tr(context, "连接团队工作区、管理共享任务与成员邀请"),
-                onTap: () => openPage(context, const TeamWorkspacePage()),
+                onTap: () => openPage(context, teamEntry(context)),
               ),
               const Divider(),
               SettingsTile(
